@@ -1,0 +1,53 @@
+local changes before first commit to github
+
+zip-63
+- Build error checking: selected files and/or folders
+  - all jdialogs
+  - geotagging subscreen
+  - exif + xmp checks
+zip-62
+- create python scripts to create TAGName xmls files and from these the csv files 
+zip-61
+- shift datetime working
+- Geotagging + geosync + xmp location info
+- Trim all getText field values as java seems to add a leading space
+Zip-60:
+- Split About in 2 about boxes: exiftool and jexiftoolgui.
+- Heavily modified the View pane to be able to view info by all possible tag names.
+- Add Phil Harvey to program title (Kudos to the master!).
+Zip-59
+- Built the “Copy metadata”
+- Add non-proportional/proportional font option to Your Commands
+Zip-58
+- Built the Remove metadata
+Zip-57
+- Save xmp (currently without region name/type)
+- built gps tab
+- removed almost all flow panels
+Zip-56
+- Save exif data works
+Zip-55
+- First “Your Commands” functionality
+Zip-54
+- file date to datetimeoriginal (-FileModifyDate<DateTimeOriginal)
+Zip-53
+- Repair JPG metadata
+Zip-52
+- copy tags to xmp
+Zip-51
+- Use jtextfield[] in geotagging (geosync not active yet)
+- copy exif from and cop yxmp from
+- Undo the getter/setter Selectedrow
+Zip-50
+- runCommand Output panel
+- Create Args files functional
+Zip-49
+- UseLastFolder
+Zip-48
+- Geotagging -> files and folder
+- single/multi-selection optimised
+
+
+
+Previous not mentioned
+

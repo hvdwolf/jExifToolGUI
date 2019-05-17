@@ -147,7 +147,7 @@ public class RemoveMetadata extends JDialog {
 			    if (!makeBackupOfOriginalsCheckBox.isSelected()) {
 				    params.add("-overwrite_original");
 				}
-                // Remove metadata
+
                 String[] etparams = params.toArray(new String[0]);
                 boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
                 for (int index: selectedFilenamesIndices) {
@@ -158,7 +158,7 @@ public class RemoveMetadata extends JDialog {
                         params.add(files[index].getPath());
                     }
                 }
-                // export metadata
+                // remove metadata
                 try {
                     String res = myUtils.runCommand(params);
                     System.out.println(res);

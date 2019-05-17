@@ -6,8 +6,10 @@ import org.hvdw.jexiftoolgui.programTexts;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExportMetadata extends JDialog {
     private JPanel contentPane;
@@ -111,38 +113,44 @@ public class ExportMetadata extends JDialog {
     public void Export(){
 	    boolean atLeastOneSelected = false;
         List<String> params = new ArrayList<String>();
+        List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option
+        String filepath = ""; // Again: we need this for the csv option
 
+        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+
+        params.add(myUtils.platformExiftool());
+        params.add("-a");
 	    // which options selected?
 		StringBuilder Message = new StringBuilder("<html>You have selected to export:<br>");
 		if (exportAllMetadataCheckBox.isSelected()) {
 		    Message.append("All metadata<br><br>");
-			params.add("-a -all");
+			params.add("-all");
 			atLeastOneSelected = true;
 		} else {
 		    Message.append("<ul>");
 		    if (exportExifDataCheckBox.isSelected()) {
 			    Message.append("<li>the exif data</li>");
-				params.add("-a -exif:all");
+				params.add("-exif:all");
 				atLeastOneSelected = true;
 			}
 			if (exportXmpDataCheckBox.isSelected()) {
 			    Message.append("<li>the xmp data</li>");
-				params.add("-a -xmp:all");
+				params.add("-xmp:all");
 				atLeastOneSelected = true;
 			}
 			if (exportGpsDataCheckBox.isSelected()) {
 			    Message.append("<li>the gps data</li>");
-				params.add("-a -gps:all");
+				params.add("-gps:all");
 				atLeastOneSelected = true;
 			}
 			if (exportIptcDataCheckBox.isSelected()) {
 			    Message.append("<li>the iptc data</li>");
-				params.add("-a -iptc:all");
+				params.add("-iptc:all");
 				atLeastOneSelected = true;
 			}
 			if (exportICCDataCheckBox.isSelected()) {
 			    Message.append("<li>the ICC data</li>");
-				params.add("-a -icc_profile:all");
+				params.add("-icc_profile:all");
 				atLeastOneSelected = true;
 			}
 			Message.append("</ul><br><br>");
@@ -174,9 +182,44 @@ public class ExportMetadata extends JDialog {
                 } else if (csvRadioButton.isSelected()) {
                     params.add("-csv");
                 }
+
+                for (int index: selectedFilenamesIndices) {
+                    //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                    if (isWindows) {
+                        params.add(files[index].getPath().replace("\\", "/"));
+                    } else {
+                        params.add(files[index].getPath());
+                    }
+                    // Again for csv
+                    filepath = files[index].getParent();
+                }
+
+                if (csvRadioButton.isSelected()) {
+                    if (isWindows) {
+                        params.add(" > " + filepath.replace("\\", "/") + "/out.csv");
+                        cmdparams = params;
+                    } else {
+                        // for csv we need the > character which we need to treat differently on unixes
+                        // System.out.println("params to string: " + params.toString());
+                        cmdparams.add("/bin/sh");
+                        cmdparams.add("-c");
+                        cmdparams.add(params.toString().substring(1, params.toString().length()-1).replaceAll(", ", " ") + " > " + filepath + "/out.csv ");
+                    }
+                } else {
+                    cmdparams = params;
+                }
+
+
+
                 // Export metadata
-                String[] etparams = params.toArray(new String[0]);
-                //myUtils.runCommand();
+                //String[] etparams = params.toArray(new String[0]);
+                try {
+                    String res = myUtils.runCommand(cmdparams);
+                    System.out.println(res);
+                    myUtils.runCommandOutput(res);
+                } catch(IOException | InterruptedException ex) {
+                    System.out.println("Error executing command");
+                }
             }
 		} else {
 		    JOptionPane.showMessageDialog(contentPane, programTexts.NoOptionSelected,"No export option selected",JOptionPane.WARNING_MESSAGE);
