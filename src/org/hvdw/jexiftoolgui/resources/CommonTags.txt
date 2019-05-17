@@ -1,0 +1,8 @@
+exif
+xmp
+iptc
+gps
+gps/location
+gpano
+icc_profile
+makernotes

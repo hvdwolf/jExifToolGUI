@@ -1,0 +1,65 @@
+======== Additional mac info =================
+
+= necessary tools: hfsplus or hfsplus-tool, hfsprogs and possible kmod-hfsplus
+= further: zip
+
+======== bundling on linux (or any platform ==
+= Use jar2app to create a bundle.
+https://github.com/Jorl17/jar2app
+
+======== make a dmg with the bundle ==========
+# dd if=/dev/zero of=/tmp/<my dmg>.dmg bs=1M count=1
+# mkfs.hfsplus -v ThisIsMyPackage /tmp/<my dmg>.dmg
+
+= This will make a 1M dmg that can be mounted on a mac
+
+= To mount and work on it on linux do
+# mount -o loop /tmp/<my dmg>.dmg /mnt/<folder>
+
+= Copy the bundle created with jar2app into it together with the GPL3 license (either COPYING or LICENSE).
+= umount
+
+======== open a dmg on linux =================
+Use/install 7z
+
+7z x <some>.dmg
+
+This will deliver "something" like:
+Extracting  0.MBR
+Extracting  1.Primary GPT Header
+Extracting  2.Primary GPT Table
+Extracting  3.free
+Extracting  4.hfs
+Extracting  5.free
+Extracting  6.Backup GPT Table
+Extracting  7.Backup GPT Header
+
+For above example do:
+mount -o loop -t hfsplus 4.hfs
+
+(Simpler ones might giveExtracting  0.ddm
+Extracting  1.Apple_partition_map
+Extracting  2.hfs
+Extracting  3.free
+
+Then do: mount -o loop -t hfsplus 2.hfs)
+
+(dmg2img is also mentioned but does not work on 10.6+ dmg compressed files)
+
+
+======== creating/unpacking mac icns file ====
+install icnsutils package
+
+Make 5 sets of png files
+icon_16px.png
+icon_32px.png
+icon_48px.png
+icon_128px.png
+icon_256px.png
+icon_512px.png
+
+then do: png2icns icon.icns icon_*px.png
+
+extracting: icns2png x icons.icns
+
+

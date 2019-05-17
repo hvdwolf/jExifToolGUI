@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=jExifToolGUI
+Comment=jExifToolGUI exiftool gui
+Exec=/usr/bin
+Icon=/usr/share/jexiftoolgui/jexiftoolgui-48x48.png
+Terminal=false
+Type=Application
+Categories=Utils
+StartupNotify=true

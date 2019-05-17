@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.hvdw.jexiftoolgui.renaming.RenamePhotos">
+  <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="48" y="54" width="873" height="633"/>
+    </constraints>
+    <properties>
+      <preferredSize width="880" height="650"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="9538f" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="OK"/>
+                </properties>
+              </component>
+              <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Cancel"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="766c9" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="92894" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <font style="3"/>
+                  <text value="Name: Prefix_Suffix.extension"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <hspacer id="1f819">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+        </children>
+      </grid>
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="60809" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="0" bottom="10" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e6953" class="javax.swing.JLabel" binding="RenamingGeneralText">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="RenamingGeneralText"/>
+                </properties>
+              </component>
+              <component id="3e8b3" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font style="1"/>
+                  <text value="Source folder:"/>
+                </properties>
+              </component>
+              <grid id="158d8" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3569c" class="javax.swing.JButton" binding="renamingInfobutton">
+                    <constraints/>
+                    <properties>
+                      <text value="Info"/>
+                    </properties>
+                  </component>
+                  <component id="3a4b0" class="javax.swing.JTextField" binding="RenamingSourceFoldertextField">
+                    <constraints/>
+                    <properties>
+                      <preferredSize width="600" height="30"/>
+                    </properties>
+                  </component>
+                  <component id="873e4" class="javax.swing.JButton" binding="RenamingSourceFolderbutton">
+                    <constraints/>
+                    <properties>
+                      <text value="Browse"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="e5c45" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="0" bottom="10" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="bevel-raised"/>
+            <children>
+              <grid id="766cc" binding="RenamingOptions" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a01c" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font style="1"/>
+                      <text value="Select rename options:"/>
+                    </properties>
+                  </component>
+                  <component id="efa47" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font style="1"/>
+                      <text value="Prefix:"/>
+                    </properties>
+                  </component>
+                  <grid id="79d32" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="74c8" class="javax.swing.JRadioButton" binding="prefixDate_timeradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="140" height="19"/>
+                          <selected value="true"/>
+                          <text value="Date_time"/>
+                        </properties>
+                      </component>
+                      <component id="8dc04" class="javax.swing.JComboBox" binding="prefixDate_timecomboBox">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="10b31" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="fca2" class="javax.swing.JRadioButton" binding="prefixDateradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="140" height="19"/>
+                          <rolloverEnabled value="false"/>
+                          <text value="Date"/>
+                        </properties>
+                      </component>
+                      <component id="ca0ea" class="javax.swing.JComboBox" binding="prefixDatecomboBox">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="a28b0" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="6449a" class="javax.swing.JRadioButton" binding="prefixStringradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="140" height="19"/>
+                          <text value="String"/>
+                        </properties>
+                      </component>
+                      <component id="df68d" class="javax.swing.JTextField" binding="prefixStringtextField">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="200" height="30"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="bb8d0" binding="RenamingsuffixPanel" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="39df8" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font style="1"/>
+                      <text value="Suffix:"/>
+                    </properties>
+                  </component>
+                  <grid id="5aa23" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="ca1c9" class="javax.swing.JRadioButton" binding="suffixDonNotUseradioButton">
+                        <constraints/>
+                        <properties>
+                          <minimumSize width="175" height="19"/>
+                          <selected value="true"/>
+                          <text value="Do not use"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="7bcbb" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="359c0" class="javax.swing.JRadioButton" binding="suffixStringradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="175" height="19"/>
+                          <text value="String"/>
+                        </properties>
+                      </component>
+                      <component id="24171" class="javax.swing.JTextField" binding="suffixStringtextField">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="200" height="30"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="a4855" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="c04d" class="javax.swing.JRadioButton" binding="suffixDatetimeradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="175" height="19"/>
+                          <text value="Date_time"/>
+                        </properties>
+                      </component>
+                      <component id="bf02b" class="javax.swing.JComboBox" binding="suffixDatetimecomboBox">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="6c028" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="8715e" class="javax.swing.JRadioButton" binding="suffixDateradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="175" height="19"/>
+                          <text value="Date"/>
+                        </properties>
+                      </component>
+                      <component id="213b9" class="javax.swing.JComboBox" binding="suffixDatecomboBox">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="509a8" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="908b6" class="javax.swing.JRadioButton" binding="suffixCameramodelradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="175" height="19"/>
+                          <text value="Camera model"/>
+                        </properties>
+                      </component>
+                      <component id="1e4ef" class="javax.swing.JLabel">
+                        <constraints/>
+                        <properties>
+                          <text value="${Exif:Model}"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="180c7" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="371b7" class="javax.swing.JRadioButton" binding="suffixOriginalFilenameradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="175" height="19"/>
+                          <text value="Original filename"/>
+                        </properties>
+                      </component>
+                      <component id="55b02" class="javax.swing.JLabel">
+                        <constraints/>
+                        <properties>
+                          <text value="${filename}"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="e6e8e" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="0" bottom="10" right="0"/>
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="bevel-raised"/>
+            <children>
+              <grid id="a2b05" binding="RenamingNumberingPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="cbe6d" class="javax.swing.JLabel" binding="RenamingDuplicateNames">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font/>
+                      <text value="RenamingDuplicateNames"/>
+                    </properties>
+                  </component>
+                  <grid id="88d87" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="1e433" class="javax.swing.JLabel">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="140" height="18"/>
+                          <text value="No. of digits"/>
+                        </properties>
+                      </component>
+                      <component id="85feb" class="javax.swing.JComboBox" binding="DigitscomboBox">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="e9d78" class="javax.swing.JComboBox" binding="StartOnImgcomboBox">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="3ef52" binding="RenamingFileExtPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="e97fc" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font style="1"/>
+                      <text value="File extension:"/>
+                    </properties>
+                  </component>
+                  <component id="8ee29" class="javax.swing.JRadioButton" binding="extLeaveradioButton">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="Leave as is"/>
+                    </properties>
+                  </component>
+                  <component id="e905c" class="javax.swing.JRadioButton" binding="makeLowerCaseRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Make lower case"/>
+                    </properties>
+                  </component>
+                  <component id="c7940" class="javax.swing.JRadioButton" binding="makeUpperCaseRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Make upper case"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="suffixbuttonGroup">
+      <member id="ca1c9"/>
+      <member id="359c0"/>
+      <member id="c04d"/>
+      <member id="8715e"/>
+      <member id="908b6"/>
+      <member id="371b7"/>
+    </group>
+    <group name="prefixbuttonGroup">
+      <member id="74c8"/>
+      <member id="fca2"/>
+      <member id="6449a"/>
+    </group>
+    <group name="extensionbuttonGroup">
+      <member id="8ee29"/>
+      <member id="e905c"/>
+      <member id="c7940"/>
+    </group>
+  </buttonGroups>
+</form>

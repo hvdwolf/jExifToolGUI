@@ -1,0 +1,7 @@
+= Download launch4j
+http://launch4j.sourceforge.net/
+
+= Create your executable from the jar with it. 
+= zip it together with the GPL3 license (either COPYING or LICENSE).
+= Done!
+

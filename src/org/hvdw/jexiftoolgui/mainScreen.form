@@ -1,0 +1,2398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.hvdw.jexiftoolgui.mainScreen">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="20" y="20" width="1280" height="800"/>
+    </constraints>
+    <properties>
+      <minimumSize width="1280" height="800"/>
+      <preferredSize width="1280" height="800"/>
+      <requestFocusEnabled value="true"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="2653b" binding="LeftPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="2" use-parent-layout="false">
+            <minimum-size width="220" height="-1"/>
+            <preferred-size width="320" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="ace9" binding="LeftbuttonBar" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="24c8f" class="javax.swing.JButton" binding="buttonLoadImages">
+                <constraints/>
+                <properties>
+                  <text value="Load Images"/>
+                  <toolTipText value="Load images for which you want to view or edit metadata"/>
+                </properties>
+              </component>
+              <hspacer id="1c0da">
+                <constraints/>
+              </hspacer>
+              <vspacer id="1ef31">
+                <constraints/>
+              </vspacer>
+              <component id="77737" class="javax.swing.JButton" binding="buttonShowImage">
+                <constraints/>
+                <properties>
+                  <enabled value="false"/>
+                  <text value="Display Image"/>
+                  <toolTipText value="Display the selected image in the default image viewer (if supported movies will play in the default movie player)"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <scrollpane id="f7ced" binding="Leftscrollpane">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="14186" class="javax.swing.JTable" binding="tableListfiles">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
+          <grid id="7aea9" binding="ThumbView" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="2" use-parent-layout="false">
+                <minimum-size width="200" height="200"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="184ba" class="javax.swing.JLabel" binding="iconLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <tabbedpane id="bdb0d" binding="tabbedPaneRight">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="6" use-parent-layout="false">
+            <minimum-size width="650" height="-1"/>
+            <preferred-size width="700" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="2f048" binding="ViewDatapanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="View Data"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="a9d9f" binding="ViewRadiobuttonpanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="2aa4d" class="javax.swing.JRadioButton" binding="radioButtonViewAll">
+                    <constraints/>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="All"/>
+                    </properties>
+                  </component>
+                  <component id="1833f" class="javax.swing.JRadioButton" binding="radioButtonViewExif">
+                    <constraints/>
+                    <properties>
+                      <text value="Exif"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="a3253" class="javax.swing.JRadioButton" binding="radioButtonViewXMP">
+                    <constraints/>
+                    <properties>
+                      <text value="xmp"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="6bd4" class="javax.swing.JRadioButton" binding="radioButtonViewIPTC">
+                    <constraints/>
+                    <properties>
+                      <text value="IPTC"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="455e3" class="javax.swing.JRadioButton" binding="radioButtonViewGPS">
+                    <constraints/>
+                    <properties>
+                      <text value="GPS/Location"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="e001d" class="javax.swing.JRadioButton" binding="radioButtonViewGPano">
+                    <constraints/>
+                    <properties>
+                      <text value="GPano"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="a7fcd" class="javax.swing.JRadioButton" binding="radioButtonViewICC">
+                    <constraints/>
+                    <properties>
+                      <text value="ICC_profile"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="1a365" class="javax.swing.JRadioButton" binding="radioButtonViewMakernotes">
+                    <constraints/>
+                    <properties>
+                      <text value="Makernotes"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="5955a" class="javax.swing.JRadioButton" binding="radioButtoncommonTags">
+                    <constraints/>
+                    <properties>
+                      <text value="Common Tags"/>
+                    </properties>
+                  </component>
+                  <component id="d472f" class="javax.swing.JComboBox" binding="comboBoxViewCommonTags">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="d5c45" class="javax.swing.JRadioButton" binding="radioButtonByTagName">
+                    <constraints/>
+                    <properties>
+                      <text value="All Tag Names:"/>
+                    </properties>
+                  </component>
+                  <component id="74af7" class="javax.swing.JComboBox" binding="comboBoxViewByTagName">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="fdf93" class="javax.swing.JRadioButton" binding="radioButtonCameraMakes">
+                    <constraints/>
+                    <properties>
+                      <text value="Camera make:"/>
+                    </properties>
+                  </component>
+                  <component id="47bf" class="javax.swing.JComboBox" binding="comboBoxViewCameraMake">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </grid>
+              <scrollpane id="aaf44" binding="ViewDatascrollpanel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="9c800" class="javax.swing.JTable" binding="ListexiftoolInfotable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="a0b9f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Edit Data"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <tabbedpane id="9e28f" binding="tabbedPaneEditfunctions">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="200"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="f072c" binding="ExifEditpanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="20" bottom="0" right="20"/>
+                    <constraints>
+                      <tabbedpane title="Exif"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="9b5ed" binding="Camera_Equipment" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="0" bottom="5" right="0"/>
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="6cf7c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="Make:"/>
+                            </properties>
+                          </component>
+                          <component id="eadad" class="javax.swing.JTextField" binding="ExifMaketextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="74ba6" class="javax.swing.JCheckBox" binding="ExifMakecheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="a06de" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="99790" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <preferredSize width="650" height="18"/>
+                              <text value="Camera/Equipment"/>
+                            </properties>
+                          </component>
+                          <component id="50f40" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="Model:"/>
+                            </properties>
+                          </component>
+                          <component id="c1ef9" class="javax.swing.JTextField" binding="ExifModeltextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="2df15" class="javax.swing.JCheckBox" binding="ExifModelcheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="be7a8" binding="DateTime" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="0" bottom="5" right="0"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="e8e06" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <preferredSize width="150" height="18"/>
+                              <text value="Date and Time"/>
+                            </properties>
+                          </component>
+                          <component id="6999a" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="18"/>
+                              <text value="YYYY:MM:DD hh:mm:ss (24Hrs); no checking done"/>
+                            </properties>
+                          </component>
+                          <component id="db6d2" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="ModifyDate:"/>
+                            </properties>
+                          </component>
+                          <component id="984b4" class="javax.swing.JTextField" binding="ExifModifyDatetextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="dd3d2" class="javax.swing.JCheckBox" binding="ExifModifyDatecheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="8c02c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="DateTimeOriginal:"/>
+                            </properties>
+                          </component>
+                          <component id="9d528" class="javax.swing.JTextField" binding="ExifDateTimeOriginaltextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="41cfb" class="javax.swing.JCheckBox" binding="ExifDateTimeOriginalcheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="7b8a" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="CreateDate:"/>
+                            </properties>
+                          </component>
+                          <component id="c574c" class="javax.swing.JTextField" binding="ExifCreateDatetextField">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="92424" class="javax.swing.JCheckBox" binding="ExifCreateDatecheckBox">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="208e4" binding="CreativeTags" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="0" bottom="5" right="0"/>
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="5656c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="Artist / Creator:"/>
+                            </properties>
+                          </component>
+                          <component id="a26d2" class="javax.swing.JTextField" binding="ExifArtistCreatortextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="3224e" class="javax.swing.JCheckBox" binding="ExifArtistCreatorcheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="1f0cc" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Creative Tags"/>
+                            </properties>
+                          </component>
+                          <component id="fa118" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="250" height="18"/>
+                              <preferredSize width="150" height="18"/>
+                              <text value="Copyright:"/>
+                            </properties>
+                          </component>
+                          <component id="e9fa7" class="javax.swing.JTextField" binding="ExifCopyrighttextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="80271" class="javax.swing.JCheckBox" binding="ExifCopyrightcheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="a34f4" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="User comment:"/>
+                            </properties>
+                          </component>
+                          <component id="c76fe" class="javax.swing.JTextField" binding="ExifUsercommenttextField">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="20296" class="javax.swing.JCheckBox" binding="ExifUsercommentcheckBox">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="cd2a0" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text value="Description:"/>
+                            </properties>
+                          </component>
+                          <component id="a2194" class="javax.swing.JTextArea" binding="ExifDescriptiontextArea">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="80"/>
+                            </properties>
+                          </component>
+                          <component id="c5452" class="javax.swing.JCheckBox" binding="ExifDescriptioncheckBox">
+                            <constraints>
+                              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="82e8f" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="a83ee" class="javax.swing.JButton" binding="ExifcopyFromButton">
+                            <constraints/>
+                            <properties>
+                              <text value="Copy from selected image"/>
+                            </properties>
+                          </component>
+                          <component id="453e0" class="javax.swing.JButton" binding="ExifsaveToButton">
+                            <constraints/>
+                            <properties>
+                              <text value="Save to selected image(s)"/>
+                            </properties>
+                          </component>
+                          <component id="27a16" class="javax.swing.JCheckBox" binding="ExifBackupOriginalscheckBox">
+                            <constraints/>
+                            <properties>
+                              <text value="Make backup of originals"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="fc630" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="c46e0" class="javax.swing.JButton" binding="ExifcopyDefaultsButton">
+                            <constraints/>
+                            <properties>
+                              <text value="Copy Defaults"/>
+                            </properties>
+                          </component>
+                          <component id="dba10" class="javax.swing.JButton" binding="resetFieldsButton" default-binding="true">
+                            <constraints/>
+                            <properties>
+                              <text value="Reset fields"/>
+                            </properties>
+                          </component>
+                          <component id="55c3f" class="javax.swing.JButton" binding="ExifhelpButton">
+                            <constraints/>
+                            <properties>
+                              <text value="Help"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                  <grid id="3e98c" layout-manager="GridLayoutManager" row-count="13" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="10" left="20" bottom="10" right="20"/>
+                    <constraints>
+                      <tabbedpane title="xmp"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="eb42c" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Creator:"/>
+                        </properties>
+                      </component>
+                      <component id="7b949" class="javax.swing.JTextField" binding="xmpCreatortextField">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="9969e" class="javax.swing.JCheckBox" binding="xmpCreatorcheckBox">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="fa6e5" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Rights:"/>
+                        </properties>
+                      </component>
+                      <component id="1aff8" class="javax.swing.JTextField" binding="xmpRightstextField">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="3094c" class="javax.swing.JCheckBox" binding="xmpRightscheckBox">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="66983" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Description:"/>
+                        </properties>
+                      </component>
+                      <component id="44d74" class="javax.swing.JTextArea" binding="xmpDescriptiontextArea">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="80"/>
+                        </properties>
+                      </component>
+                      <component id="767cd" class="javax.swing.JCheckBox" binding="xmpDescriptioncheckBox">
+                        <constraints>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="f1991" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font style="1"/>
+                          <text value="Save"/>
+                        </properties>
+                      </component>
+                      <component id="f9e14" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Label:"/>
+                        </properties>
+                      </component>
+                      <component id="5a21f" class="javax.swing.JTextField" binding="xmpLabeltextField">
+                        <constraints>
+                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="5cd2c" class="javax.swing.JCheckBox" binding="xmpLabelcheckBox">
+                        <constraints>
+                          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="5f1f3" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Subject:"/>
+                        </properties>
+                      </component>
+                      <component id="f35c9" class="javax.swing.JTextField" binding="xmpSubjecttextField">
+                        <constraints>
+                          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="66ad0" class="javax.swing.JCheckBox" binding="xmpSubjectcheckBox">
+                        <constraints>
+                          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="78230" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Title:"/>
+                        </properties>
+                      </component>
+                      <component id="1d8d2" class="javax.swing.JTextField" binding="xmpTitletextField">
+                        <constraints>
+                          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="e5f24" class="javax.swing.JCheckBox" binding="xmpTitlecheckBox">
+                        <constraints>
+                          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="542a4" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Person (in image):"/>
+                        </properties>
+                      </component>
+                      <component id="ace75" class="javax.swing.JTextField" binding="xmpPersontextField">
+                        <constraints>
+                          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="71f21" class="javax.swing.JCheckBox" binding="xmpPersoncheckBox">
+                        <constraints>
+                          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="f1b1e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Region Name:"/>
+                        </properties>
+                      </component>
+                      <component id="2a5f8" class="javax.swing.JTextField" binding="xmpRegionNametextField">
+                        <constraints>
+                          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="a85d6" class="javax.swing.JCheckBox" binding="xmpRegionNamecheckBox">
+                        <constraints>
+                          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="74490" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Region Type:"/>
+                        </properties>
+                      </component>
+                      <component id="28d81" class="javax.swing.JTextField" binding="xmpRegionTypetextField">
+                        <constraints>
+                          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="25"/>
+                        </properties>
+                      </component>
+                      <component id="9225c" class="javax.swing.JCheckBox" binding="xmpRegionTypecheckBox">
+                        <constraints>
+                          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="a7cca" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="150" height="18"/>
+                          <text value="Rating:"/>
+                        </properties>
+                      </component>
+                      <grid id="57649" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <preferredSize width="500" height="24"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <component id="99437" class="javax.swing.JRadioButton" binding="xmp1starradioButton">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <label value="*"/>
+                              <text value="*"/>
+                            </properties>
+                          </component>
+                          <component id="32ffb" class="javax.swing.JRadioButton" binding="xmp2starradioButton">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <label value="**"/>
+                              <text value="**"/>
+                            </properties>
+                          </component>
+                          <component id="667e2" class="javax.swing.JRadioButton" binding="xmp3starradioButton">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value="***"/>
+                            </properties>
+                          </component>
+                          <component id="60673" class="javax.swing.JRadioButton" binding="xmp4starradioButton">
+                            <constraints>
+                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="****"/>
+                            </properties>
+                          </component>
+                          <component id="1893e" class="javax.swing.JRadioButton" binding="xmp5starradioButton">
+                            <constraints>
+                              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <label value="*****"/>
+                              <text value="*****"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <component id="ebc5" class="javax.swing.JCheckBox" binding="xmpRatingcheckBox">
+                        <constraints>
+                          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <grid id="e2434" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="11" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="4918" class="javax.swing.JButton" binding="xmpCopyFrombutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Copy from selected image"/>
+                            </properties>
+                          </component>
+                          <component id="ee5b6" class="javax.swing.JButton" binding="xmpSaveTobutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Save to selected image(s)"/>
+                            </properties>
+                          </component>
+                          <component id="c6b4b" class="javax.swing.JCheckBox" binding="xmpBackupOriginalscheckBox">
+                            <constraints/>
+                            <properties>
+                              <text value="Make backup of originals"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="d7e70" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="12" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="e90e0" class="javax.swing.JButton" binding="xmpCopyDefaultsbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Copy Defaults"/>
+                            </properties>
+                          </component>
+                          <component id="f7175" class="javax.swing.JButton" binding="xmpResetFieldsbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Reset fields"/>
+                            </properties>
+                          </component>
+                          <component id="512a6" class="javax.swing.JButton" binding="xmpHelpbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Help"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                  <grid id="9f2e1" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="5" left="5" bottom="5" right="5"/>
+                    <constraints>
+                      <tabbedpane title="gps"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="a9935" binding="gpsDateTimePanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="line"/>
+                        <children>
+                          <component id="f02" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="120" height="18"/>
+                              <text value="GPS Version ID"/>
+                            </properties>
+                          </component>
+                          <component id="3bc4f" class="javax.swing.JTextField" binding="gpsVersionIDtextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="-1" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                              <preferredSize width="100" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="7bc4e" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <focusCycleRoot value="true"/>
+                              <maximumSize width="120" height="18"/>
+                              <preferredSize width="120" height="18"/>
+                              <text value="GPS Time Stamp"/>
+                            </properties>
+                          </component>
+                          <component id="575ea" class="javax.swing.JTextField" binding="gpsTimeStamptextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="-1" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="100" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="3649d" class="javax.swing.JCheckBox" binding="gpstimeStampcheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="b117e" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="120" height="18"/>
+                              <text value="GPS Date Stamp"/>
+                            </properties>
+                          </component>
+                          <component id="26cf6" class="javax.swing.JTextField" binding="gpsDateStamptextField">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="-1" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="100" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="e2533" class="javax.swing.JCheckBox" binding="gpsDateStampcheckBox">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="ac4e1" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="120" height="18"/>
+                              <text value="GPS Map Datum"/>
+                            </properties>
+                          </component>
+                          <component id="1a8c8" class="javax.swing.JTextField" binding="gpsMapDatumtextField">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="-1" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                              <preferredSize width="100" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="6cb28" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="873fb" binding="gpsLocationPanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="bevel-raised"/>
+                        <children>
+                          <component id="f513b" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="XMP/IPTC location"/>
+                            </properties>
+                          </component>
+                          <component id="5f6a2" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="(Where is/are the photo(s) taken)"/>
+                            </properties>
+                          </component>
+                          <component id="12c28" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="337c7" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="18"/>
+                              <text value="Location"/>
+                            </properties>
+                          </component>
+                          <component id="5d701" class="javax.swing.JTextField" binding="gpsLocationtextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="300" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="dc4f1" class="javax.swing.JCheckBox" binding="gpsLocationcheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="b5de" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Country"/>
+                            </properties>
+                          </component>
+                          <component id="dc24b" class="javax.swing.JTextField" binding="gpsCountrytextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="876f" class="javax.swing.JCheckBox" binding="gpsCountrycheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="a8bc7" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="State / Province"/>
+                            </properties>
+                          </component>
+                          <component id="fb2ec" class="javax.swing.JTextField" binding="gpsStateProvincetextField">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="4dc52" class="javax.swing.JCheckBox" binding="gpsStateProvincecheckBox">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="49aa6" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="City"/>
+                            </properties>
+                          </component>
+                          <component id="503eb" class="javax.swing.JTextField" binding="gpsCitytextField">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="d17d8" class="javax.swing.JCheckBox" binding="gpsCitycheckBox">
+                            <constraints>
+                              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="dbe50" binding="gpsButtonPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="639a" class="javax.swing.JButton" binding="gpsCopyFrombutton">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Copy from selected image"/>
+                            </properties>
+                          </component>
+                          <component id="22155" class="javax.swing.JButton" binding="gpsSaveTobutton">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save to selected image(s)"/>
+                            </properties>
+                          </component>
+                          <component id="69c67" class="javax.swing.JCheckBox" binding="gpsBackupOriginalscheckBox">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Backup original images"/>
+                            </properties>
+                          </component>
+                          <component id="c90b7" class="javax.swing.JButton" binding="gpsResetFieldsbutton">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Reset Fields"/>
+                            </properties>
+                          </component>
+                          <component id="35a54" class="javax.swing.JButton" binding="gpsMapcoordinatesbutton">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Open MapCoordinates.net"/>
+                            </properties>
+                          </component>
+                          <component id="a5b78" class="javax.swing.JButton" binding="gpsHelpbutton">
+                            <constraints>
+                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Help"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="2d4d9" binding="gpsLatLonAltPanel" layout-manager="GridLayoutManager" row-count="5" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="bevel-raised"/>
+                        <children>
+                          <component id="43c2d" class="javax.swing.JCheckBox" binding="SaveLatLonAltcheckBox">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value="Save Latitude/Longitude/Altitude"/>
+                            </properties>
+                          </component>
+                          <component id="b07bc" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="GPS"/>
+                            </properties>
+                          </component>
+                          <component id="e4641" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Decimal"/>
+                            </properties>
+                          </component>
+                          <component id="5ec3f" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="deg"/>
+                            </properties>
+                          </component>
+                          <component id="e8a13" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="min"/>
+                            </properties>
+                          </component>
+                          <component id="39a20" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="sec"/>
+                            </properties>
+                          </component>
+                          <component id="12b74" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Latitude"/>
+                            </properties>
+                          </component>
+                          <component id="b9ec5" class="javax.swing.JTextField" binding="gpsLatDecimaltextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="80" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="299e4" class="javax.swing.JTextField" binding="gpsLatdegtextField">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                            </properties>
+                          </component>
+                          <component id="3c970" class="javax.swing.JTextField" binding="gpsLatDegreestextField">
+                            <constraints>
+                              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                              <focusCycleRoot value="false"/>
+                            </properties>
+                          </component>
+                          <component id="21ce" class="javax.swing.JTextField" binding="gpsLatMinutestextField">
+                            <constraints>
+                              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                            </properties>
+                          </component>
+                          <component id="32aee" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Altitude"/>
+                            </properties>
+                          </component>
+                          <component id="23a6a" class="javax.swing.JCheckBox" binding="gpsAboveSealevelcheckBox">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="false"/>
+                              <text value="Above sea level"/>
+                            </properties>
+                          </component>
+                          <component id="98ded" class="javax.swing.JRadioButton" binding="gpsNorthradioButton">
+                            <constraints>
+                              <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <enabled value="false"/>
+                              <selected value="true"/>
+                              <text value="N"/>
+                            </properties>
+                          </component>
+                          <component id="67676" class="javax.swing.JRadioButton" binding="gpsSouthRadioButton">
+                            <constraints>
+                              <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <enabled value="false"/>
+                              <text value="S"/>
+                            </properties>
+                          </component>
+                          <component id="3f022" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Longitude"/>
+                            </properties>
+                          </component>
+                          <component id="90788" class="javax.swing.JTextField" binding="gpsLonDecimaltextField">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="80" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="90e6f" class="javax.swing.JTextField" binding="gpsLonDegreestextField">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                            </properties>
+                          </component>
+                          <component id="6cd75" class="javax.swing.JTextField" binding="gpsLonMinutestextField">
+                            <constraints>
+                              <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                            </properties>
+                          </component>
+                          <component id="a7dd3" class="javax.swing.JTextField" binding="gpsLonSecondstextField">
+                            <constraints>
+                              <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <editable value="false"/>
+                            </properties>
+                          </component>
+                          <component id="7d8c0" class="javax.swing.JRadioButton" binding="gpsEastradioButton">
+                            <constraints>
+                              <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <enabled value="false"/>
+                              <selected value="true"/>
+                              <text value="E"/>
+                            </properties>
+                          </component>
+                          <component id="4844c" class="javax.swing.JRadioButton" binding="gpsWestradioButton">
+                            <constraints>
+                              <grid row="3" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <enabled value="false"/>
+                              <text value="W"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="454cb" binding="gpsCalculationPanel" layout-manager="GridLayoutManager" row-count="4" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="bevel-raised"/>
+                        <children>
+                          <component id="7daeb" class="javax.swing.JLabel" binding="gpsCalculatorLabelText">
+                            <constraints>
+                              <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Label"/>
+                            </properties>
+                          </component>
+                          <component id="b38c8" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Calculator"/>
+                            </properties>
+                          </component>
+                          <component id="865f0" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Decimal"/>
+                            </properties>
+                          </component>
+                          <component id="24e54" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="deg"/>
+                            </properties>
+                          </component>
+                          <component id="b2ab2" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="min"/>
+                            </properties>
+                          </component>
+                          <component id="71263" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="sec"/>
+                            </properties>
+                          </component>
+                          <component id="ce02c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Latitude"/>
+                            </properties>
+                          </component>
+                          <component id="12b1b" class="javax.swing.JTextField" binding="CalcLatDecimaltextField">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="3e946" class="javax.swing.JTextField" binding="CalcLatDegtextField">
+                            <constraints>
+                              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="268ee" class="javax.swing.JTextField" binding="CalcLatMintextField">
+                            <constraints>
+                              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="851b" class="javax.swing.JTextField" binding="CalcLatSectextField">
+                            <constraints>
+                              <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="ef243" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Longitude"/>
+                            </properties>
+                          </component>
+                          <component id="e7c39" class="javax.swing.JTextField" binding="gpsCalcLonDecimaltextField">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="b1868" class="javax.swing.JTextField" binding="gpsCalcLondegtextField">
+                            <constraints>
+                              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="4d7f1" class="javax.swing.JTextField" binding="CalcLonMintextField">
+                            <constraints>
+                              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="1ff83" class="javax.swing.JTextField" binding="CalcLonSectextField">
+                            <constraints>
+                              <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="30" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="6a2a6" class="javax.swing.JRadioButton" binding="CalcNorthRadioButton">
+                            <constraints>
+                              <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value="N"/>
+                            </properties>
+                          </component>
+                          <component id="9470d" class="javax.swing.JRadioButton" binding="CalcSouthRadioButton">
+                            <constraints>
+                              <grid row="1" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="S"/>
+                            </properties>
+                          </component>
+                          <component id="c5470" class="javax.swing.JRadioButton" binding="CalcEastradioButton">
+                            <constraints>
+                              <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value="E"/>
+                            </properties>
+                          </component>
+                          <component id="4d83c" class="javax.swing.JRadioButton" binding="CalcWestRadioButton">
+                            <constraints>
+                              <grid row="2" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="W"/>
+                            </properties>
+                          </component>
+                          <component id="563e9" class="javax.swing.JButton" binding="decimalToMinutesSecondsButton" default-binding="true">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Decimal to minutes-seconds =&gt;"/>
+                            </properties>
+                          </component>
+                          <component id="93ce0" class="javax.swing.JButton" binding="minutesSecondsToDecimalButton" default-binding="true">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="&lt;= Minutes-seconds to decimal"/>
+                            </properties>
+                          </component>
+                          <component id="12440" class="javax.swing.JButton" binding="copyToInputFieldsButton" default-binding="true">
+                            <constraints>
+                              <grid row="3" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Copy to input fields"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                  <grid id="9ec6" binding="GeotaggingEditpanel" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="10" left="20" bottom="10" right="20"/>
+                    <constraints>
+                      <tabbedpane title="Geotagging"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="feffa" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="20" right="0"/>
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="a6b4a" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Folder containing the images"/>
+                            </properties>
+                          </component>
+                          <grid id="c3748" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="95e0" class="javax.swing.JTextField" binding="geotaggingImgFoldertextField">
+                                <constraints/>
+                                <properties>
+                                  <preferredSize width="500" height="25"/>
+                                </properties>
+                              </component>
+                              <component id="9b081" class="javax.swing.JButton" binding="geotaggingImgFolderbutton">
+                                <constraints/>
+                                <properties>
+                                  <text value="Browse"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <component id="1193d" class="javax.swing.JLabel" binding="GeotaggingLeaveFolderEmptyLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="650" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="GeotaggingLeaveFolderEmpty"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="87700" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="77573" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="GPS log file:"/>
+                            </properties>
+                          </component>
+                          <grid id="e0bc5" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="7f80" class="javax.swing.JTextField" binding="geotaggingGPSLogtextField">
+                                <constraints/>
+                                <properties>
+                                  <preferredSize width="500" height="25"/>
+                                </properties>
+                              </component>
+                              <component id="ce981" class="javax.swing.JButton" binding="geotaggingGPSLogbutton">
+                                <constraints/>
+                                <properties>
+                                  <text value="Browse"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                        </children>
+                      </grid>
+                      <grid id="bfc4b" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="ed018" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Geosync time:"/>
+                            </properties>
+                          </component>
+                          <grid id="b3b21" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="8935c" class="javax.swing.JTextField" binding="geotaggingGeosynctextField">
+                                <constraints/>
+                                <properties>
+                                  <preferredSize width="500" height="25"/>
+                                  <text value="0000:00:00 00:00:00"/>
+                                </properties>
+                              </component>
+                              <component id="28dbc" class="javax.swing.JLabel">
+                                <constraints/>
+                                <properties>
+                                  <text value="YYYY:MM:DD hh:mm:ss"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                        </children>
+                      </grid>
+                      <grid id="d0f5b" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="2">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="c01f8" class="javax.swing.JButton" binding="geotaggingWriteInfobutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Write geotag information to image(s)"/>
+                            </properties>
+                          </component>
+                          <component id="5f360" class="javax.swing.JButton" binding="geotaggingHelpbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Help"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <component id="ae313" class="javax.swing.JCheckBox" binding="geotaggingOverwriteOriginalscheckBox">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value="Overwrite Originals"/>
+                        </properties>
+                      </component>
+                      <grid id="233b0" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="bevel-raised"/>
+                        <children>
+                          <component id="67f80" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="XMP/IPTC location"/>
+                            </properties>
+                          </component>
+                          <component id="dcc5d" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="(Where is/are the photo(s) taken)"/>
+                            </properties>
+                          </component>
+                          <component id="a581c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="e1a55" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="18"/>
+                              <text value="Location"/>
+                            </properties>
+                          </component>
+                          <component id="22399" class="javax.swing.JTextField" binding="geotaggingLocationtextfield">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="300" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="17968" class="javax.swing.JCheckBox" binding="geotaggingLocationcheckbox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="false"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="5f724" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Country"/>
+                            </properties>
+                          </component>
+                          <component id="f42b0" class="javax.swing.JTextField" binding="geotaggingCountrytextfield">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="9c70a" class="javax.swing.JCheckBox" binding="geotaggingCountrycheckbox">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="false"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="32cf3" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="State / Province"/>
+                            </properties>
+                          </component>
+                          <component id="7966b" class="javax.swing.JTextField" binding="geotaggingStatetextfield">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="3cb62" class="javax.swing.JCheckBox" binding="geotaggingStatecheckbox">
+                            <constraints>
+                              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="false"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="e50cd" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="City"/>
+                            </properties>
+                          </component>
+                          <component id="67747" class="javax.swing.JTextField" binding="geotaggingCitytextfield">
+                            <constraints>
+                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="c18b1" class="javax.swing.JCheckBox" binding="geotaggingCitycheckbox">
+                            <constraints>
+                              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="false"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="2077e" class="javax.swing.JLabel" binding="GeotaggingLocationLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="GeotaggingLocationLabel"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                  <grid id="9035c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <tabbedpane title="Gpano"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="4207a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <tabbedpane title="IPTC"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </tabbedpane>
+            </children>
+          </grid>
+          <grid id="d419c" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="10" bottom="5" right="5"/>
+            <constraints>
+              <tabbedpane title="Copy Data"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="31e02" class="javax.swing.JRadioButton" binding="copyAllMetadataRadiobutton">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;Copy the values of all writable tags from the source image to the target image(s), writing the information to same-named tags in the preferred groups&lt;/html&gt;"/>
+                </properties>
+              </component>
+              <component id="6c211" class="javax.swing.JRadioButton" binding="copyAllMetadataSameGroupsRadiobutton">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;Copy the values of all writable tags from the source image to the target image(s), preserving the original tag groups&lt;/html&gt;"/>
+                </properties>
+              </component>
+              <component id="fc3fd" class="javax.swing.JRadioButton" binding="copySelectiveMetadataradioButton">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <selected value="true"/>
+                  <text value="Copy metadata using below mentioned selective group options"/>
+                </properties>
+              </component>
+              <grid id="d7a9e" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="10" left="0" bottom="15" right="0"/>
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="bevel-raised"/>
+                <children>
+                  <component id="1a10" class="javax.swing.JCheckBox" binding="CopyExifcheckBox">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Copy exif data (-exif:all)"/>
+                    </properties>
+                  </component>
+                  <component id="8f73c" class="javax.swing.JCheckBox" binding="CopyXmpcheckBox">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Copy xmp data (-xmp:all)"/>
+                    </properties>
+                  </component>
+                  <component id="a0ea9" class="javax.swing.JCheckBox" binding="CopyIptccheckBox">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Copy IPTC data (-iptc:all)"/>
+                    </properties>
+                  </component>
+                  <component id="787e3" class="javax.swing.JCheckBox" binding="CopyIcc_profileDataCheckBox">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <actionCommand value=""/>
+                      <text value="Copy ICC(_profile) data (-icc_profile:all)"/>
+                    </properties>
+                  </component>
+                  <component id="d0b44" class="javax.swing.JCheckBox" binding="CopyGpsCheckBox">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Copy gps data (-gps:all)"/>
+                    </properties>
+                  </component>
+                  <component id="79abf" class="javax.swing.JCheckBox" binding="CopyJfifcheckBox">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Copy JFIF data (from the jpeg JFIF header)"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="7fec4" class="javax.swing.JCheckBox" binding="BackupOriginalscheckBox">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Make backup of originals"/>
+                </properties>
+              </component>
+              <grid id="f756a" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="4c804" class="javax.swing.JButton" binding="UseDataFrombutton">
+                    <constraints/>
+                    <properties>
+                      <text value="Use data from selected image"/>
+                    </properties>
+                  </component>
+                  <component id="af514" class="javax.swing.JButton" binding="CopyDataCopyTobutton">
+                    <constraints/>
+                    <properties>
+                      <text value="Copy to selected image(s)"/>
+                    </properties>
+                  </component>
+                  <component id="d8e21" class="javax.swing.JButton" binding="CopyHelpbutton">
+                    <constraints/>
+                    <properties>
+                      <text value="Help"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="e08b" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="10" bottom="10" right="10"/>
+            <constraints>
+              <tabbedpane title="Your Commands"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="82967" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="48a2b" class="javax.swing.JTextField" binding="CommandsParameterstextField">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="3ed00" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font style="1"/>
+                      <text value="Parameters:"/>
+                    </properties>
+                  </component>
+                  <grid id="84329" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="538cc" class="javax.swing.JButton" binding="CommandsclearParameterSFieldButton">
+                        <constraints/>
+                        <properties>
+                          <text value="Clear parameter(s) field"/>
+                        </properties>
+                      </component>
+                      <component id="dd07f" class="javax.swing.JButton" binding="CommandsclearOutputFieldButton">
+                        <constraints/>
+                        <properties>
+                          <text value="Clear output field"/>
+                        </properties>
+                      </component>
+                      <component id="322b7" class="javax.swing.JButton" binding="CommandsgoButton">
+                        <constraints/>
+                        <properties>
+                          <text value="Go"/>
+                        </properties>
+                      </component>
+                      <component id="5c958" class="javax.swing.JButton" binding="CommandshelpButton">
+                        <constraints/>
+                        <properties>
+                          <text value="Help"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="e8f5c" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="dce01" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="The final output will be displayed below:"/>
+                          <verticalTextPosition value="1"/>
+                        </properties>
+                      </component>
+                      <scrollpane id="b67fe">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="a9f61" class="javax.swing.JTextArea" binding="YourCommandsOutputTextArea">
+                            <constraints/>
+                            <properties>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <grid id="23357" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="14177" class="javax.swing.JRadioButton" binding="UseNonPropFontradioButton">
+                            <constraints/>
+                            <properties>
+                              <selected value="true"/>
+                              <text value="Use a non-proportional &quot;monospaced&quot; font"/>
+                            </properties>
+                          </component>
+                          <component id="f8208" class="javax.swing.JRadioButton" binding="UsePropFontradioButton">
+                            <constraints/>
+                            <properties>
+                              <text value="Use a proportional font"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <component id="3ada8" class="javax.swing.JLabel" binding="MyCommandsText">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="MyCommandsText"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+      <grid id="b4327" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="5fca6" class="javax.swing.JLabel" binding="OutputLabel">
+            <constraints/>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="8b0c4" class="javax.swing.JProgressBar" binding="progressBar">
+            <constraints/>
+            <properties>
+              <indeterminate value="true"/>
+              <preferredSize width="150" height="10"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="xmpRatingbuttonGroup">
+      <member id="99437"/>
+      <member id="32ffb"/>
+      <member id="667e2"/>
+      <member id="60673"/>
+      <member id="1893e"/>
+    </group>
+    <group name="NorthSouthbuttonGroup">
+      <member id="98ded"/>
+      <member id="67676"/>
+    </group>
+    <group name="EastWestbuttonGroup">
+      <member id="7d8c0"/>
+      <member id="4844c"/>
+    </group>
+    <group name="CalcNSbuttonGroup">
+      <member id="6a2a6"/>
+      <member id="9470d"/>
+    </group>
+    <group name="CalcEWbuttonGroup">
+      <member id="c5470"/>
+      <member id="4d83c"/>
+    </group>
+    <group name="CopyMetadatabuttonGroup">
+      <member id="31e02"/>
+      <member id="6c211"/>
+      <member id="fc3fd"/>
+    </group>
+    <group name="YourComandsFontbuttonGroup">
+      <member id="14177"/>
+      <member id="f8208"/>
+    </group>
+    <group name="ViewDataRadiobuttonGroup">
+      <member id="2aa4d"/>
+      <member id="5955a"/>
+      <member id="d5c45"/>
+      <member id="fdf93"/>
+    </group>
+  </buttonGroups>
+</form>
