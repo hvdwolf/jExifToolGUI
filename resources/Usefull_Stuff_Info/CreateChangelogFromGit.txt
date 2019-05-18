@@ -1,0 +1,10 @@
+Use something like:
+git log --decorate
+or
+git log --oneline --decorate
+or
+git log --oneline --decorate --color
+
+
+pipe it to Changelog and correct it. A "raw" git log is not really useful.
+
