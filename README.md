@@ -4,7 +4,7 @@
 
 **ExifTool** is a platform-independent Perl command-line application and library for reading, writing and editing meta information in a wide variety of files.<br>
 [Exiftool](https://www.sno.phy.queensu.ca/~phil/exiftool/) is by far the best and most extensive metadata tool available!<br>
-It reads and writes metadata information from/to many files, but primarily focuses on photos/images. It reads/writes exif, gps, xmp, maker notes, specific camera make tags and many more.<br>
+It reads and writes metadata information from/to many files, but primarily focuses on photos/images. It reads/writes exif, gps, xmp, maker notes for many cameras, JFIF, GeoTIFF, ICC Profile, Photoshop IRB, FlashPix and many, many more tags.<br>
 It can use a "reference" image to write the tags to a multiple set of photos or a complete directory containing photos.<br>
 Author/creator/maintainer of ExifTool: **Phil Harvey**.
   
