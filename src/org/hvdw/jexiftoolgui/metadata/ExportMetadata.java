@@ -186,20 +186,27 @@ public class ExportMetadata extends JDialog {
                 for (int index: selectedFilenamesIndices) {
                     //System.out.println("index: " + index + "  image path:" + files[index].getPath());
                     if (isWindows) {
-                        params.add(files[index].getPath().replace("\\", "/"));
+                        if (csvRadioButton.isSelected()) {
+                            params.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
+                        } else {
+                            params.add(files[index].getPath().replace("\\", "/"));
+                        }
                     } else {
                         params.add(files[index].getPath());
                     }
-                    // Again for csv
+                    // Again necessary for csv
                     filepath = files[index].getParent();
                 }
 
+                // for csv we need the > character which we need to treat specially and differently on unixes and windows.
+                // We also really need the shell for it otherwise the > is seen as a file
                 if (csvRadioButton.isSelected()) {
                     if (isWindows) {
-                        params.add(" > " + filepath.replace("\\", "/") + "/out.csv");
-                        cmdparams = params;
+                        //params.add(" > " + filepath.replace("\\", "/") + "/out.csv");
+                        cmdparams.add("cmd");
+                        cmdparams.add("/c");
+                        cmdparams.add(params.toString().substring(1, params.toString().length()-1).replaceAll(", ", " ") + " > \"" + filepath.replace("\\", "/") + "/out.csv\" ");
                     } else {
-                        // for csv we need the > character which we need to treat differently on unixes
                         // System.out.println("params to string: " + params.toString());
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
@@ -208,6 +215,7 @@ public class ExportMetadata extends JDialog {
                 } else {
                     cmdparams = params;
                 }
+                System.out.println("cmdparams : " + cmdparams);
 
 
 
