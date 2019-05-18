@@ -18,7 +18,7 @@ public class DateTime {
         String tmpcmpstring = "";
         String[] options = {"No", "Yes"};
         //System.out.println("Set file date/time to DateTimeOriginal?");
-        int choice = JOptionPane.showOptionDialog(null, programTexts.setFileDatetoDateTimeOriginal,"Set file date/time to DateTimeOriginal?",
+        int choice = JOptionPane.showOptionDialog(null, String.format(programTexts.HTML, 600, programTexts.setFileDatetoDateTimeOriginal),"Set file date/time to DateTimeOriginal?",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something

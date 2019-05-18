@@ -81,7 +81,7 @@ public class CreateArgsFile extends JDialog {
 
     public void initDialog() {
         //exportMetaDataUiText.setContentType("text/html");
-        CreateArgsMetaDataUiText.setText(programTexts.CreateArgsMetaDataUiText);
+        CreateArgsMetaDataUiText.setText(String.format(programTexts.HTML, 270, programTexts.CreateArgsMetaDataUiText));
 
 
     }

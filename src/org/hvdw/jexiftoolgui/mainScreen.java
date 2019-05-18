@@ -497,10 +497,10 @@ public class mainScreen {
                     }
                     break;
                 case "About jExifToolGUI":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel,programTexts.aboutText,"About jExifToolGUI for ExifTool by Phil Harvey",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(programTexts.HTML, 450, programTexts.aboutText),"About jExifToolGUI for ExifTool by Phil Harvey",JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "About ExifTool":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel,programTexts.aboutExifToolText,"About ExifTool by Phil Harvey",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(programTexts.HTML, 450, programTexts.aboutExifToolText),"About ExifTool by Phil Harvey",JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "jExifToolGUI homepage":
                     myUtils.openBrowser(programTexts.ProjectWebSite);
@@ -570,7 +570,7 @@ public class mainScreen {
         CommandshelpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel,HelpTexts.YourCommandsHelp,"Help for the Your Commands panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(programTexts.HTML, 700, HelpTexts.YourCommandsHelp),"Help for the Your Commands panel",JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -606,7 +606,7 @@ public class mainScreen {
         ExifhelpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel,HelpTexts.ExifAndXmpHelp,"Help for the Exif edit panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(programTexts.HTML, 700, HelpTexts.ExifAndXmpHelp),"Help for the Exif edit panel",JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -643,7 +643,7 @@ public class mainScreen {
         xmpHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel,HelpTexts.ExifAndXmpHelp,"Help for the XMP edit panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(programTexts.HTML, 700, HelpTexts.ExifAndXmpHelp),"Help for the XMP edit panel",JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -684,7 +684,7 @@ public class mainScreen {
         geotaggingHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel,HelpTexts.GeotaggingHelp,"Help for the Geotagging edit panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel,String.format(programTexts.HTML, 700, HelpTexts.GeotaggingHelp),"Help for the Geotagging edit panel",JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -772,7 +772,7 @@ public class mainScreen {
         CopyHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel,HelpTexts.CopyMetaDataHelp,"Help for the Copy metadata panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(programTexts.HTML, 450, HelpTexts.CopyMetaDataHelp),"Help for the Copy metadata panel",JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -1136,8 +1136,8 @@ public class mainScreen {
         // Some texts
         MyCommandsText.setText(programTexts.MyCommandsText);
         GeotaggingLeaveFolderEmptyLabel.setText(programTexts.GeotaggingLeaveFolderEmpty);
-        GeotaggingLocationLabel.setText(programTexts.GeotaggingLocationLabel);
-        gpsCalculatorLabelText.setText(programTexts.gpsCalculatorLabelText);
+        GeotaggingLocationLabel.setText( String.format(programTexts.HTML, 600, programTexts.GeotaggingLocationLabel) );
+        gpsCalculatorLabelText.setText( String.format(programTexts.HTML, 110, programTexts.gpsCalculatorLabelText) );
 
         myUtils.CheckforNewVersion("startup");
 

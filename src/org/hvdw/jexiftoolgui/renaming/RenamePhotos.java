@@ -88,8 +88,8 @@ public class RenamePhotos extends JDialog {
 
     // Start of the methods
     public void initDialog() {
-        RenamingGeneralText.setText(programTexts.RenamingGeneralText);
-        RenamingDuplicateNames.setText(programTexts.RenamingDuplicateNames);
+        RenamingGeneralText.setText( String.format(programTexts.HTML, 650, programTexts.RenamingGeneralText) );
+        RenamingDuplicateNames.setText( String.format(programTexts.HTML, 370, programTexts.RenamingDuplicateNames) );
 
         for (String item: MyConstants.Dates_Times_Strings) {
             prefixDate_timecomboBox.addItem(item);

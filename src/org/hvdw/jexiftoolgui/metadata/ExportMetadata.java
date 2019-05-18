@@ -87,7 +87,7 @@ public class ExportMetadata extends JDialog {
 
     public void initDialog() {
         //exportMetaDataUiText.setContentType("text/html");
-        exportMetaDataUiText.setText(programTexts.exportMetaDataUiText);
+        exportMetaDataUiText.setText(String.format(programTexts.HTML, 320, programTexts.exportMetaDataUiText));
 
 
         ButtonGroup ExportRbBtns = new ButtonGroup();

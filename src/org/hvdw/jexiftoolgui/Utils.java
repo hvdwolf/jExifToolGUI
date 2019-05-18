@@ -263,7 +263,7 @@ public class Utils {
         String returnValue = "";
         String[] options = {"specify location", "Download", "Stop"};
         //JOptionPane.showOptionDialog(null,"I can not find exiftool in the preferences or I can not find exiftool at all","exiftool missing",JOptionPane.ERROR_MESSAGE);
-        int choice = JOptionPane.showOptionDialog(null,programTexts.noExifTool,"exiftool missing",
+        int choice = JOptionPane.showOptionDialog(null,String.format(programTexts.HTML, 450, programTexts.noExifTool),"exiftool missing",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         if (choice == 0) {
             // open file chooser
@@ -281,7 +281,7 @@ public class Utils {
                 prefs.put("exiftool", returnValue);
             }
         } else if (choice == 1) {
-            JOptionPane.showMessageDialog(myComponent, programTexts.downloadInstallET,"Download ExifTool",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(myComponent, String.format(programTexts.HTML, 450, programTexts.downloadInstallET),"Download ExifTool",JOptionPane.INFORMATION_MESSAGE);
             // open exiftool site
             openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
             System.exit(0);
@@ -324,7 +324,7 @@ public class Utils {
             System.out.println("Version: " + version);
             if (Float.valueOf(version) > Float.valueOf(programTexts.Version)) {
                 String[] options = {"No", "Yes"};
-                int choice = JOptionPane.showOptionDialog(null, programTexts.newVersionText, "New version found",
+                int choice = JOptionPane.showOptionDialog(null, String.format(programTexts.HTML, 400, programTexts.newVersionText), "New version found",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (choice == 1) { //Yes
                     // Do something

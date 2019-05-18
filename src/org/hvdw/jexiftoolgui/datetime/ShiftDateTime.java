@@ -61,7 +61,8 @@ public class ShiftDateTime extends JDialog {
     }
 
     public void initDialog() {
-        ShiftDateTimeLabel.setText(programTexts.ShiftDateTimeLabel);
+
+        ShiftDateTimeLabel.setText( String.format(programTexts.HTML, 320, programTexts.ShiftDateTimeLabel) );
     }
 
     public void writeInfo() {

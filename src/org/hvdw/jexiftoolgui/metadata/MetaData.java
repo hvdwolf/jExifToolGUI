@@ -67,7 +67,7 @@ public class MetaData {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
         System.out.println("Repair corrupted metadata in JPG(s)");
-        int choice = JOptionPane.showOptionDialog(null, programTexts.repairJPGmetadata,"Repair corrupted metadata in JPG(s)",
+        int choice = JOptionPane.showOptionDialog(null, String.format(programTexts.HTML, 450, programTexts.repairJPGmetadata),"Repair corrupted metadata in JPG(s)",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             //System.out.println("Yes");

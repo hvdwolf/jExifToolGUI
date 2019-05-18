@@ -67,7 +67,7 @@ public class ModifyDateTime extends JDialog {
 
     public void initDialog() {
 
-        ModifyDateTimeLabel.setText(programTexts.ModifyDateTimeLabel);
+        ModifyDateTimeLabel.setText( String.format(programTexts.HTML, 370, programTexts.ModifyDateTimeLabel) );
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
         Date date = new Date();

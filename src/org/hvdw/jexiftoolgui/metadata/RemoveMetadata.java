@@ -82,7 +82,7 @@ public class RemoveMetadata extends JDialog {
 
     public void initDialog() {
         //RemoveMetaDataUiText.setContentType("text/html");
-        RemoveMetaDataUiText.setText(programTexts.RemoveMetaData);
+        RemoveMetaDataUiText.setText(String.format(programTexts.HTML, 270, programTexts.RemoveMetaData));
 
 
     }
