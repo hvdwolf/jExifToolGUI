@@ -550,10 +550,10 @@ public class Utils {
         }
         BufferedImage img= ImageIO.read(new File(fpath));
         // resize it
-        BufferedImage resizedImg = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage resizedImg = new BufferedImage(300, 225, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(img, 0, 0, 300, 300, null);
+        g2.drawImage(img, 0, 0, 300, 225, null);
         g2.dispose();
         ImageIcon icon=new ImageIcon(resizedImg);
         ThumbView.setIcon(icon);
