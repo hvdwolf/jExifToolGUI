@@ -5,7 +5,7 @@ public class programTexts {
     All strings use "internal" tags, but not begin and end tags as we use the String.format(programTexts.HTML, <width>, helptext)
      */
     public static final String Author = "Harry van der Wolf";
-    public static final String ProjectWebSite = "http://hvdwolf.github.io/pyExifToolGUI";
+    public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
     public static final String Version = "1";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
     public static final String newVersionText = "<html><big>There is a new version available</big><br><br>"
