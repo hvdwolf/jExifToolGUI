@@ -308,8 +308,14 @@ public class mainScreen {
 
         if (exiftool_exists) {
             String exiftool_path = prefs.get("exiftool", "");
+            File tmpFile = new File(exiftool_path);
+            boolean exists = tmpFile.exists();
+            if (!exists) {
+                JOptionPane.showMessageDialog(rootPanel, programTexts.ETpreferenceIncorrect,"exiftool preference incorrect",JOptionPane.WARNING_MESSAGE);
+            }
+            System.out.println("exists is " + exists);
             System.out.println("preference exiftool returned: "+ exiftool_path);
-            if (exiftool_path  == null || exiftool_path.isEmpty()) {
+            if (exiftool_path  == null || exiftool_path.isEmpty() || !exists) {
                 res = exiftool_check();
             } else {
                 res = exiftool_path;

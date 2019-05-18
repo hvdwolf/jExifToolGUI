@@ -49,6 +49,7 @@ public class programTexts {
             +"<li>Windows: Download the latest version from Phil Harvey's exiftool website.</li>"
             +"<li>Mac OS/X: Install it via MacPorts or Homebrew (but this might be a (slightly) older version), or download the latest from Phil Harvey's exiftool website.</li></ul>"
             +"Use one of the below options.";
+    public static final String ETpreferenceIncorrect = "<html>The Exiftool specified in your preferences does not exist.<br>Did you move/rename/delete it?</html>";
     public static final String cancelledETlocatefromStartup = "<html>You cancelled providing the location of exiftool.<br>I will now exit jExifToolGUI.</html>";
     public static final String cancelledETlocatefromPrefs = "<html>You cancelled providing the location of exiftool.<br>I will leave the current preference for what it is.</html>";
     public static final String downloadInstallET = "I will now open the ExifTool website in your browser and then close jExifToolGUI.<br>"
