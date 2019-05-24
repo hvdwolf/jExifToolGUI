@@ -20,6 +20,7 @@ cat control >> $TEMP_DIR/debian/DEBIAN/control
  
 cp *.desktop $TEMP_DIR/debian/usr/share/applications/
 cp copyright $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME/ # results in no copyright warning
+cp copyright $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/
 #cp copyright $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/ # results in obsolete location warning
  
 cp *.jar $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
@@ -31,7 +32,7 @@ echo " -- Harry van der Wolf <hvdwolf@gmail.com>  `date -R`" >> changelog
 gzip -9c changelog > $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/changelog.gz
  
 cp jexiftoolgui-48x48.png $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
-chmod 0664 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*.png
+chmod 0644 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*.png
  
 PACKAGE_SIZE=`du -bs $TEMP_DIR/debian | cut -f 1`
 PACKAGE_SIZE=$((PACKAGE_SIZE/1024))
