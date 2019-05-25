@@ -12,6 +12,7 @@ import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,7 +52,6 @@ public class mainScreen {
     private JScrollPane Leftscrollpane;
     private JTable tableListfiles;
     private JTable ListexiftoolInfotable;
-    private JPanel ThumbView;
     private JLabel iconLabel;
     private JLabel MyCommandsText;
     private JTextField CommandsParameterstextField;
@@ -227,6 +227,7 @@ public class mainScreen {
     int[] selectedIndices;
     List<Integer> selectedIndicesList = new ArrayList<Integer>();
     public int SelectedRow;
+    public int SelectedCell;
     public int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
 
     private Preferences prefs;
@@ -311,6 +312,7 @@ public class mainScreen {
             File tmpFile = new File(exiftool_path);
             boolean exists = tmpFile.exists();
             if (!exists) {
+                exiftool_path  = null;
                 JOptionPane.showMessageDialog(rootPanel, programTexts.ETpreferenceIncorrect,"exiftool preference incorrect",JOptionPane.WARNING_MESSAGE);
             }
             System.out.println("exists is " + exists);
@@ -353,17 +355,27 @@ public class mainScreen {
     void LoadImages() {
         OutputLabel.setText("Loading images ....");
         files = myUtils.getFileNames(mainScreen.this.rootPanel);
+        myUtils.progressStatus(progressBar, true);
         if (files != null) {
+            /*SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    progressBar.repaint();
+                    myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
+                    myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
+
+                }
+            }); */
             myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
             myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
-            try {
+            /*try {
                 myUtils.DisplayImage(0, files, mainScreen.this.iconLabel);
             } catch(IOException ex) {
                 System.out.println("Error reading Image");
-            }
+            }*/
             mainScreen.this.buttonShowImage.setEnabled(true);
             OutputLabel.setText(" Images loaded ...");
         }
+        myUtils.progressStatus(progressBar, false);
     }
 
 
@@ -939,18 +951,50 @@ public class mainScreen {
         return params;
     }
 
+    // This is the general table listener that also enables multi row/column selection
+    // to handle further functions
+    // Not use anymore
+    class SharedListSelectionListener implements ListSelectionListener {
 
-    // This is the general table listener that also enables multi selection
+        public void valueChanged(ListSelectionEvent e) {
+            //int SelectedCell = 0;
+            int rowIndex = 0;
+            int colIndex = 0;
+            List<Integer> tmpselectedIndices = new ArrayList<Integer>();
+
+            int[] selectedRow = tableListfiles.getSelectedRows();
+            int[] selectedColumns = tableListfiles.getSelectedColumns();
+
+            for (int i = 0; i < selectedRow.length; i++) {
+                for (int j = 0; j < selectedColumns.length; j++) {
+                    rowIndex = tableListfiles.getSelectedRow();
+                    colIndex = tableListfiles.getSelectedColumn();
+                    tmpselectedIndices.add(new Integer ((i * 3) + j));
+                    System.out.println("Selected row: " + i + " Selected column: " + j + " Calculated index: " + String.valueOf((i * 3) + j));
+                    //SelectedCell = ((i *3) + j);
+                }
+            }
+
+            selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
+            selectedIndicesList = tmpselectedIndices;
+            System.out.println(Arrays.toString(selectedIndices));
+            myVars.setSelectedFilenamesIndices(selectedIndices);
+
+        }
+    }
+
+    // This is the general table listener that also enables multi row selection
     class SharedListSelectionHandler implements ListSelectionListener {
 
         public void valueChanged(ListSelectionEvent e) {
+            // Perfectly working row selection method of first program
             List<Integer> tmpselectedIndices = new ArrayList<Integer>();
             ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
             int firstIndex = e.getFirstIndex();
             int lastIndex = e.getLastIndex();
             boolean isAdjusting = e.getValueIsAdjusting();
-            //System.out.println("selected indexes:");
+            System.out.print("selected indexes:");
 
             if (lsm.isSelectionEmpty()) {
                 System.out.println("none selected");
@@ -960,51 +1004,42 @@ public class mainScreen {
                 int maxIndex = lsm.getMaxSelectionIndex();
                 for (int i = minIndex; i <= maxIndex; i++) {
                     if (lsm.isSelectedIndex(i)) {
-                        //System.out.println(" " + i);
+                        System.out.print(" " + i + ",");
                         tmpselectedIndices.add(i);
                         SelectedRow = i;
                     }
                 }
+                System.out.println("");
                 String[] params = whichRBselected();
                 myUtils.ImageInfo(params, SelectedRow, files, ListexiftoolInfotable);
-                try {
-                    myUtils.DisplayImage(SelectedRow, files, mainScreen.this.iconLabel);
-                } catch(IOException ex) {
-                    System.out.println("Error reading Image");
-                }
+
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;
                 //System.out.println(Arrays.toString(selectedIndices));
                 myVars.setSelectedFilenamesIndices(selectedIndices);
             }
-            //output.setCaretPosition(output.getDocument().getLength());
+
         }
     }
 
     void fileNamesTableMouseListener() {
-        // Use the mouse listener for the single selection for the left table with the file names
+        // Use the mouse listener for the single cell selection for the left table to be able to
+        // display the image info for the (last) selected cell
 
-        mainScreen.this.tableListfiles.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableListfiles.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = mainScreen.this.tableListfiles.rowAtPoint(evt.getPoint());
-
+                //int SelectedCell = 0;
+                int row = tableListfiles.rowAtPoint(evt.getPoint());
+                int col = tableListfiles.columnAtPoint(evt.getPoint());
                 if (row >= 0) {
-                    //myVars.setMySelectedRow(row);
-                    //myVars.setMySelectedColumn(col);
-                    //System.out.println("valueChanged loop: selected row: " + String.valueOf(SelectedRow)); // + " selected column: " + String.valueOf(myVars.getMySelectedColumn()));
-                    /*String[] params = whichRBselected();
-                    myUtils.ImageInfo(params, row, files, ListexiftoolInfotable);
-                    try {
-                        myUtils.DisplayImage(row, files, mainScreen.this.iconLabel);
-                    } catch(IOException ex) {
-                        System.out.println("Error reading Image");
-                    } */
+                    SelectedCell = (row * 3) + col;
+                    System.out.println("mouse listener; row : " + row + " column : " + col + " index : " + SelectedCell);
+                    String[] params = whichRBselected();
+                    myUtils.ImageInfo(params, SelectedCell, files, ListexiftoolInfotable);
                 }
-
             }
         });
-
     }
 
 
@@ -1104,19 +1139,19 @@ public class mainScreen {
         boolean preferences = false;
         Preferences prefs = Preferences.userRoot();
 
-        progressBar.setVisible(false);
-        //progressBar.setStringPainted(false);
+        myUtils.progressStatus(progressBar, false);
+
         createmyMenuBar(frame);
         ViewRadiobuttonListener();
-        /*FillViewCommonTagsCombobox();
-        FillViewCameraMakeComboBox();*/
         FillViewTagNamesComboboxes();
+        // Use the mouselistener for the selectedcell to display the image info
         //fileNamesTableMouseListener();
-        /////
+        //Use the table listener for theselection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
         tableListfiles.setRowSelectionAllowed(true);
         tableListfiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(new SharedListSelectionHandler());
+        //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
 
         // icon for my dialogs
         InputStream stream = getClass().getResourceAsStream("resources/jexiftoolgui-64.png");
@@ -1126,11 +1161,11 @@ public class mainScreen {
             System.out.println("Error executing command");
         }
 
-        try {
+        /*try {
             myUtils.DisplayLogo(mainScreen.this.iconLabel);
         } catch(IOException ex) {
             System.out.println("Error reading Logo");
-        }
+        }*/
 
         preferences = check_preferences();
         if (!preferences) {
@@ -1150,8 +1185,7 @@ public class mainScreen {
 
     }
 
-    public static void main(String[] args) {
-
+    public static void createAndShowGUI() {
         JFrame frame = new JFrame("jExifToolGUI V" + programTexts.Version + "   for ExifTool by Phil Harvey");
         frame.setContentPane(new mainScreen(frame).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1169,6 +1203,14 @@ public class mainScreen {
         //frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
-
+    }
+    public static void main(String[] args) {
+        //Schedule a job for the event-dispatching thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
     }
 }

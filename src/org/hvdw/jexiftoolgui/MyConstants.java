@@ -2,14 +2,14 @@ package org.hvdw.jexiftoolgui;
 
 public class MyConstants {
     // exiftool image info parameters
-    public static final String[] all_params = {"-a"};
-    public static final String[] exif_params = {"-exif:all"};
-    public static final String[] xmp_params = {"-xmp:all"};
-    public static final String[] iptc_params = {"-iptc:all"};
-    public static final String[] gps_loc_params = {"-a","-gps:all","-xmp:GPSLatitude","-xmp:GPSLongitude","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
+    public static final String[] all_params = {"-a","-G", "-tab"};
+    public static final String[] exif_params = {"-exif:all","-G", "-tab"};
+    public static final String[] xmp_params = {"-xmp:all","-G", "-tab"};
+    public static final String[] iptc_params = {"-iptc:all","-G", "-tab"};
+    public static final String[] gps_loc_params = {"-a","-G", "-tab","-gps:all","-xmp:GPSLatitude","-xmp:GPSLongitude","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
     public static final String[] gpano_params = {"-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:StitchingSoftware","-xmp:InitialHorizontalFOVDegrees"};
-    public static final String[] icc_params = {"-icc_profile:all"};
-    public static final String[] makernotes_params = {"-makernotes:all"};
+    public static final String[] icc_params = {"-icc_profile:all","-G", "-tab"};
+    public static final String[] makernotes_params = {"-makernotes:all","-G", "-tab"};
     public static final String[] RefImageDateTime = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
 
     // exiftool image modification parameters

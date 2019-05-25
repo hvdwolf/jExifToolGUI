@@ -1,7 +1,7 @@
-Section: utils
+Section: Graphics;Viewer;Utility
 Priority: optional
 Architecture: all
-Maintainer: Harry van der Wolf
+Maintainer: Harry van der Wolf <hvdwolf@gmail.com>
 Description: Java Swing graphical frontend for ExifTool
  jExifToolGUI is a graphical frontend for the excellent open source command 
  line tool ExifTool by Phil Harvey. jExifToolGUI is a cross-platform java Swing 
