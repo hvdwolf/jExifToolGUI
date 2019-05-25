@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -221,6 +222,18 @@ public class Utils {
         JOptionPane.showMessageDialog(myComponent, scrollPane,"GNU GENERAL PUBLIC LICENSE Version 3",JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public static void progressStatus(JProgressBar progressBar, Boolean show) {
+        if (show) {
+            progressBar.setVisible(true);
+            progressBar.setIndeterminate(true);
+            progressBar.setStringPainted(true);
+            progressBar.setBorderPainted(true);
+            progressBar.repaint();
+        } else {
+            progressBar.setVisible(false);
+        }
+    }
+
     /////////////////// Locate exiftool //////////////
     public String exiftoolLocator (JPanel myComponent) {
         String exiftool = "";
@@ -419,17 +432,78 @@ public class Utils {
 
         int selectedRow, selectedColumn;
         DefaultTableModel model = (DefaultTableModel)jTable_File_Names.getModel();
-        model.setColumnIdentifiers(new String[]{"File Name(s)"});
+        //model.setColumnIdentifiers(new String[]{"File Name(s)"});
+        //ListexiftoolInfotable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
+        jTable_File_Names.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            protected void setValue(Object value) {
+                if( value instanceof ImageIcon ) {
+                    setIcon((ImageIcon)value);
+                    setText("");
+                } else {
+                    setIcon(null);
+                    super.setValue(value);
+                }
+            }
+        });
+
+        //model.setColumnIdentifiers(new String[]{"A", "B", "C"});
+        model.setColumnIdentifiers(new String[]{"Photo", "Filename"});
         model.setRowCount(0);
         model.fireTableDataChanged();
         jTable_File_Names.clearSelection();
         jTable_File_Names.setCellSelectionEnabled(true);
         Object[] row = new Object[1];
+        Object[] ImgRow = new Object[3];
+        Object[] FilenameRow = new Object[3];
+        Object[] ImgFilenameRow = new Object[2];
+        String filename = "";
+        int trow = 0;
+        int tcolumn = 0;
+
 
         for(int i = 0; i < files.length; i++) {
-            row[0] = files[i].getName().replace("\\", "/");
-            model.addRow(row);
+                try {
+                    //System.out.println(files[i].getName().replace("\\", "/"));
+                    filename = files[i].getName().replace("\\", "/");
+                    //System.out.println(files[i].getPath().replace("\\", "/"));
+                    BufferedImage img = ImageIO.read(new File(files[i].getPath().replace("\\", "/")));
+                    // resize it
+                    BufferedImage resizedImg = new BufferedImage(160, 120, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g2 = resizedImg.createGraphics();
+                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2.drawImage(img, 0, 0, 160, 120, null);
+                    g2.dispose();
+                    ImageIcon icon=new ImageIcon(resizedImg);
+                    /*ImgRow[tcolumn] = icon;
+                    FilenameRow[tcolumn] = filename;*/
+                    ImgFilenameRow[0] = icon;
+                    ImgFilenameRow[1] = filename;
+                } catch(IOException ex) {
+                    System.out.println("Error loading image");
+                }
+
+                /*if (tcolumn == 2) {
+                    tcolumn = 0;
+                    //jTable_File_Names.setRowHeight(trow, 150);
+                    jTable_File_Names.setRowHeight(150);
+                    model.addRow(ImgRow);
+                    trow++;
+                } else {
+                    tcolumn++;
+                } */
+            jTable_File_Names.setRowHeight(150);
+            model.addRow(ImgFilenameRow);
         }
+        /*
+        // In case we do not have a manifold of 3 images
+        if (tcolumn == 1) {
+            ImgRow[1] = null;
+            ImgRow[2] = null;
+            model.addRow(ImgRow);
+        } else if (tcolumn == 2) {
+            ImgRow[2] = null;
+            model.addRow(ImgRow);
+        } */
         myVars.setMySelectedRow(0);
         myVars.setMySelectedColumn(0);
     }
@@ -473,16 +547,20 @@ public class Utils {
     public void ImageInfoByTagName(JComboBox comboBoxViewByTagName, int SelectedRow, File[] files, JTable ListexiftoolInfotable) {
 
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
-        String[] params = new String[1];
+        String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
+        params[1] = "-G";
+        params[2] = "-tab";
         ImageInfo(params, SelectedRow, files, ListexiftoolInfotable);
     }
 
     // This is for the "all tags" and "camera makes"
     public String[] WhichTagSelected(JComboBox comboBoxViewByTagName) {
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
-        String[] params = new String[1];
+        String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
+        params[1] = "-G";
+        params[2] = "-tab";
         return params;
     }
 
@@ -521,9 +599,13 @@ public class Utils {
     }
 
     public void DisplayInfo(String exiftoolInfo, JTable ListexiftoolInfotable) {
-        // This will display the exif info in theright panel
+        // This will display the exif info in the right panel
+
         DefaultTableModel model = (DefaultTableModel)ListexiftoolInfotable.getModel();
-        model.setColumnIdentifiers(new String[]{"Descriptor", "Description"});
+        model.setColumnIdentifiers(new String[]{"Group", "Tag", "Value"});
+        ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
+        ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
+        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(500);
         model.setRowCount(0);
 
         Object[] row = new Object[1];
@@ -532,14 +614,35 @@ public class Utils {
             String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
 
             for(int i = 0; i < lines.length; i++) {
-                String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
-                model.addRow(new Object[] { cells[0], cells[1] });
+                //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+                String[] cells = lines[i].split("\\t", 3);
+                model.addRow(new Object[] { cells[0], cells[1], cells[2] });
             }
         }
 
     }
 
     public void DisplayImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
+        String fpath = "";
+        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        if (isWindows) {
+            fpath = files[selectedRow].getPath().replace("\\", "/");
+            //System.out.println("fpath is now: " + fpath);
+        } else {
+            fpath = files[selectedRow].getPath();
+        }
+        BufferedImage img= ImageIO.read(new File(fpath));
+        // resize it
+        BufferedImage resizedImg = new BufferedImage(300, 225, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(img, 0, 0, 300, 225, null);
+        g2.dispose();
+        ImageIcon icon=new ImageIcon(resizedImg);
+        ThumbView.setIcon(icon);
+    }
+
+    public void DisplayTableImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         if (isWindows) {
