@@ -1866,6 +1866,12 @@
                               <text value="Write geotag information to image(s)"/>
                             </properties>
                           </component>
+                          <component id="5beec" class="javax.swing.JButton" binding="resetGeotaggingbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Reset fields"/>
+                            </properties>
+                          </component>
                           <component id="5f360" class="javax.swing.JButton" binding="geotaggingHelpbutton">
                             <constraints/>
                             <properties>

@@ -144,4 +144,13 @@ public class EditGeotaggingdata {
         progressBar.setVisible(false);
     }
 
+    public void ResetFields(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes) {
+        for (JTextField field: geotaggingFields) {
+            field.setText("");
+        }
+        for (JCheckBox checkBox: geotaggingBoxes) {
+            checkBox.setSelected(false);
+        }
+    }
+
 }

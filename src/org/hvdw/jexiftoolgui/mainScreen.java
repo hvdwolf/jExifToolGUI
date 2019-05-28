@@ -217,6 +217,7 @@ public class mainScreen {
     private JTextField geotaggingCitytextfield;
     private JCheckBox geotaggingCitycheckbox;
     private JLabel GeotaggingLocationLabel;
+    private JButton resetGeotaggingbutton;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
@@ -697,6 +698,12 @@ public class mainScreen {
                         EGd.WriteInfo(geotaggingFields, geotaggingBoxes, geotaggingOverwriteOriginalscheckBox.isSelected(), selectedIndices, files);
                     }
                 }
+            }
+        });
+        resetGeotaggingbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                EGd.ResetFields(geotaggingFields, geotaggingBoxes);
             }
         });
         geotaggingHelpbutton.addActionListener(new ActionListener() {
