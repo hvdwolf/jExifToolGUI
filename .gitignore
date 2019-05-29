@@ -31,3 +31,5 @@ out/*
 resources/**/*.csv
 resources/**/*.xml
 
+# Local workspace file
+.idea/workspace.xml
