@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.prefs.Preferences;
 
 import static org.hvdw.jexiftoolgui.Utils.runCommand;
@@ -111,7 +112,7 @@ public class EditXmpdata {
 
         }
         
-        public void writeXmpTags(JTextField[] xmpFields, JTextArea Description, JCheckBox[] xmpBoxes, int[] selectedIndices, File[] files) {
+        public void writeXmpTags(JTextField[] xmpFields, JTextArea Description, JCheckBox[] xmpBoxes, int[] selectedIndices, File[] files, JProgressBar progressBar) {
             List<String> cmdparams = new ArrayList<String>();
 
             cmdparams.add(myUtils.platformExiftool());
@@ -169,13 +170,28 @@ public class EditXmpdata {
                 }
             }
 
-            try {
-                String res = myUtils.runCommand(cmdparams);
-                //System.out.println(res);
-                myUtils.runCommandOutput(res);
-            } catch(IOException | InterruptedException ex) {
-                System.out.println("Error executing command");
-            }
+            // Create executor thread to be able to update my gui when longer methods run
+            Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String res = myUtils.runCommand(cmdparams);
+                        System.out.println(res);
+                        progressBar.setVisible(false);
+                        myUtils.runCommandOutput(res);
+                    } catch(IOException | InterruptedException ex) {
+                        System.out.println("Error executing command");
+                    }
+
+                }
+            });
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    progressBar.setVisible(true);
+                }
+            });
+
 
         }
 }

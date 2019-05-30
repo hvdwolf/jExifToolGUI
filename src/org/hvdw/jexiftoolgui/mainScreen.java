@@ -601,7 +601,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EEd.writeExifTags(exifFields, ExifDescriptiontextArea, exifBoxes, selectedIndices, files);
+                    EEd.writeExifTags(exifFields, ExifDescriptiontextArea, exifBoxes, selectedIndices, files, progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, programTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
                 }
@@ -638,7 +638,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EXd.writeXmpTags(xmpFields, xmpDescriptiontextArea, xmpBoxes, selectedIndices, files);
+                    EXd.writeXmpTags(xmpFields, xmpDescriptiontextArea, xmpBoxes, selectedIndices, files, progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, programTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
                 }

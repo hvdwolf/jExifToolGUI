@@ -131,16 +131,6 @@ public class EditGeotaggingdata {
         }
         // Create executor thread to be able to update my gui when longer methods run
         Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
-        /*progressBar.setVisible(true);
-        progressBar.setIndeterminate(true);
-        try {
-            String res = myUtils.runCommand(cmdparams);
-            System.out.println(res);
-            myUtils.runCommandOutput(res);
-        } catch(IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
-        }
-        progressBar.setVisible(false); */
         executor.execute(new Runnable() {
             @Override
             public void run() {
