@@ -5,7 +5,7 @@ PACKAGE_VERSION="0.1"
 SOURCE_DIR=$PWD
 TEMP_DIR="/tmp"
 
-cp ../../out/artifacts/jExifToolGUI_jar/jExifToolGUI.jar .
+cp ../../build/libs/jExifToolGUI.jar .
 
 mkdir -p $TEMP_DIR/debian/DEBIAN
 mkdir -p $TEMP_DIR/debian/usr/bin

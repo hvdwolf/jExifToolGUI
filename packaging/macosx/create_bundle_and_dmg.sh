@@ -8,8 +8,8 @@ jar2appPATH="../../../jar2app/jar2app"
 Version="0.1"
 
 # Create the app bundle
-#$jar2appPATH ../../out/artifacts/JEXIFTOOLGUI/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns -r Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk
-$jar2appPATH ../../out/artifacts/jExifToolGUI_jar/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns
+#$jar2appPATH ../../build/libs/JEXIFTOOLGUI/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns -r Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk
+$jar2appPATH ../../build/libs/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns
 
 # Create the dmg
 mkdir -p tmp/dmg
@@ -20,7 +20,7 @@ mkfs.hfsplus -v "jExifToolGUI $Version" tmp/jExifToolGUI.dmg
 
 sudo mount -o loop tmp/jExifToolGUI.dmg tmp/dmg
 sudo mv  jExifToolGUI.app tmp/dmg/
-sudo cp ../../src/org/hvdw/jexiftoolgui/resources/COPYING tmp/dmg/
+sudo cp ../../src/main/java/org/hvdw/jexiftoolgui/resources/COPYING tmp/dmg/
 
 sudo umount tmp/dmg
 mv tmp/jExifToolGUI.dmg ./"jExifToolGUI-$Version.dmg"
