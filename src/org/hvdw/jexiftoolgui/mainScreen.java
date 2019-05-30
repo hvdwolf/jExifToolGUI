@@ -12,7 +12,6 @@ import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -219,6 +218,7 @@ public class mainScreen {
     private JCheckBox geotaggingCitycheckbox;
     private JLabel GeotaggingLocationLabel;
     private JButton resetGeotaggingbutton;
+    private JLabel GeotaggingGeosyncExplainLabel;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
@@ -1187,6 +1187,7 @@ public class mainScreen {
         MyCommandsText.setText(programTexts.MyCommandsText);
         GeotaggingLeaveFolderEmptyLabel.setText(programTexts.GeotaggingLeaveFolderEmpty);
         GeotaggingLocationLabel.setText( String.format(programTexts.HTML, 600, programTexts.GeotaggingLocationLabel) );
+        GeotaggingGeosyncExplainLabel.setText( String.format(programTexts.HTML, 600, programTexts.GeotaggingGeosyncExplainLabel) );
         gpsCalculatorLabelText.setText( String.format(programTexts.HTML, 110, programTexts.gpsCalculatorLabelText) );
 
         myUtils.CheckforNewVersion("startup");

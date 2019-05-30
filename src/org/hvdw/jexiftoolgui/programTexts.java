@@ -83,6 +83,7 @@ public class programTexts {
             + " <b>Note:</b> You don\'t need (must not) provide the exiftool command itself. The Gui will take care of that.<br><br></html>"; // need 2 extra lines to create space
     public static final String GeotaggingLeaveFolderEmpty = "<html>Leave the \"Folder containing the images:\"  empty if you want to use (a selection of) the images in the left images pane.</html>";
     public static final String GeotaggingLocationLabel = "Geotagging will add the GPS coordinates to your images, but not the location. Using below textfields you can add that as well.";
+    public static final String GeotaggingGeosyncExplainLabel = "<html>A positive geosync time will add that time to your image(s), before comparing it to the track log.</html>";
     public static final String RenamingGeneralText = "If you want to autonumber your images, make sure you have them in the right alphabetical or date order."
             +" This is not a problem if you use the \"source folder\" here, but can be a problem if you use the images from the main screen "
             +"and if they are in \"random\"  order.";
