@@ -11,6 +11,7 @@ public class programTexts {
     public static final String newVersionText = "<html><big>There is a new version available</big><br><br>"
             +"I can open the releases webpage so you can download the new version.<br><br>"
             +"Open the website or not?";
+    public static final String LatestVersionText = "<html>You are already using the latest version.</html>";
     public static final String aboutText =
             "<big>jExifToolGUI</big><hr><hr>"
             +"<strong>jExifToolGui</strong> is a java/Swing program that functions as "

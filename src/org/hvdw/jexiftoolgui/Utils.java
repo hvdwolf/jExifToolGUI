@@ -329,13 +329,10 @@ public class Utils {
 
         if ((fromWhere == "menu") || versioncheck) {
             try {
-                URL url = new URL("https://raw.githubusercontent.com/hvdwolf/JoyingBinRepo/master/version.txt");
+                URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
                 String inputline;
-                /*while ((inputline = in.readLine()) != null)
-                    System.out.println(inputline);
-                version = inputline; */
                 version = in.readLine();
                 in.close();
             } catch (MalformedURLException ex) {
@@ -350,10 +347,14 @@ public class Utils {
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (choice == 1) { //Yes
                     // Do something
-                    openBrowser("https://github.com/hvdwolf/Joying-RootAssistant/releases");
+                    openBrowser("https://github.com/hvdwolf/jExifToolGUI/releases");
                     System.exit(0);
                 }
 
+            } else {
+                if (fromWhere == "menu") {
+                    JOptionPane.showMessageDialog(null, String.format(programTexts.HTML, 250, programTexts.LatestVersionText), "No newer version", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }
     }
