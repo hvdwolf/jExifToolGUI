@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.prefs.Preferences;
 
 
@@ -63,11 +64,10 @@ public class EditGeotaggingdata {
     }
 
 //    public void WriteInfo(String onFolder, String gpslogfile, String geosync, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
-    public void WriteInfo(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
+    public void WriteInfo(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files, JProgressBar progressBar) {
 
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
-        JProgressBar progressBar = new JProgressBar();
         String onFolder = geotaggingFields[0].getText().trim();
         String gpslogfile = geotaggingFields[1].getText().trim();
         String geosync = geotaggingFields[2].getText().trim();
@@ -129,10 +129,9 @@ public class EditGeotaggingdata {
                 cmdparams.add(onFolder);
             }
         }
-
-        //System.out.println("In geotagging before runCommand");
-        //System.out.println(cmdparams.toString());
-        progressBar.setVisible(true);
+        // Create executor thread to be able to update my gui when longer methods run
+        Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        /*progressBar.setVisible(true);
         progressBar.setIndeterminate(true);
         try {
             String res = myUtils.runCommand(cmdparams);
@@ -141,7 +140,26 @@ public class EditGeotaggingdata {
         } catch(IOException | InterruptedException ex) {
             System.out.println("Error executing command");
         }
-        progressBar.setVisible(false);
+        progressBar.setVisible(false); */
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String res = myUtils.runCommand(cmdparams);
+                    System.out.println(res);
+                    progressBar.setVisible(false);
+                    myUtils.runCommandOutput(res);
+                } catch(IOException | InterruptedException ex) {
+                    System.out.println("Error executing command");
+                }
+
+            }
+        });
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                progressBar.setVisible(true);
+            }
+        });
     }
 
     public void ResetFields(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes) {

@@ -247,6 +247,7 @@ public class mainScreen {
     EditGeotaggingdata EGd = new EditGeotaggingdata();
     YourCommands YourCmnds = new YourCommands();
 
+
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
     // creates way more code which doesn't make it clearer either.
@@ -365,7 +366,8 @@ public class mainScreen {
                     myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
                     myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
-                    OutputLabel.setText(" Images loaded ...");
+                    //OutputLabel.setText(" Images loaded ...");
+                    OutputLabel.setText("");
                     // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
                     myUtils.progressStatus(progressBar, false);
                 }
@@ -390,10 +392,6 @@ public class mainScreen {
             }
         }
         return compList;
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 
     void setCopyMetaDatacheckboxes(boolean state) {
@@ -694,9 +692,10 @@ public class mainScreen {
                     if ("".equals(geotaggingGPSLogtextField.getText())) {
                         JOptionPane.showMessageDialog(rootPanel, "No gps track log selected","No gps log",JOptionPane.WARNING_MESSAGE);
                     } else {
-                        EGd.WriteInfo(geotaggingFields, geotaggingBoxes, geotaggingOverwriteOriginalscheckBox.isSelected(), selectedIndices, files);
+                        EGd.WriteInfo(geotaggingFields, geotaggingBoxes, geotaggingOverwriteOriginalscheckBox.isSelected(), selectedIndices, files, progressBar);
                     }
                 }
+                OutputLabel.setText("");
             }
         });
         resetGeotaggingbutton.addActionListener(new ActionListener() {
