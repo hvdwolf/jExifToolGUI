@@ -1035,13 +1035,16 @@ public class mainScreen {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 //int SelectedCell = 0;
-                int row = tableListfiles.rowAtPoint(evt.getPoint());
+                /*int row = tableListfiles.rowAtPoint(evt.getPoint());
                 int col = tableListfiles.columnAtPoint(evt.getPoint());
                 if (row >= 0) {
                     SelectedCell = (row * 3) + col;
                     System.out.println("mouse listener; row : " + row + " column : " + col + " index : " + SelectedCell);
                     String[] params = whichRBselected();
                     myUtils.ImageInfo(params, SelectedCell, files, ListexiftoolInfotable);
+                }*/
+                if (evt.getClickCount() == 2) {
+                    myUtils.extDisplayImage();
                 }
             }
         });
@@ -1149,7 +1152,7 @@ public class mainScreen {
         createmyMenuBar(frame);
         ViewRadiobuttonListener();
         FillViewTagNamesComboboxes();
-        // Use the mouselistener for the selectedcell to display the image info
+        // Use the mouselistener for the double-click to display the image
         //fileNamesTableMouseListener();
         //Use the table listener for theselection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
@@ -1166,16 +1169,17 @@ public class mainScreen {
             System.out.println("Error executing command");
         }
 
-        /*try {
-            myUtils.DisplayLogo(mainScreen.this.iconLabel);
-        } catch(IOException ex) {
-            System.out.println("Error reading Logo");
-        }*/
-
         preferences = check_preferences();
         if (!preferences) {
             myUtils.checkExifTool(mainScreen.this.rootPanel);
         }
+
+        // Try to set the defaults for artist and copyrights in the edit exif/xmp panes if prefs available
+        String[] prefsArtistCopyRights = myUtils.checkPrefsArtistCopyRights();
+        ExifArtistCreatortextField.setText(prefsArtistCopyRights[0]);
+        xmpCreatortextField.setText(prefsArtistCopyRights[0]);
+        ExifCopyrighttextField.setText(prefsArtistCopyRights[1]);
+        xmpRightstextField.setText(prefsArtistCopyRights[1]);
 
         programButtonListeners();
 
@@ -1209,6 +1213,8 @@ public class mainScreen {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
     }
+
+
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

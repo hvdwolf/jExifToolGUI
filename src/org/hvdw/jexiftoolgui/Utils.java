@@ -62,14 +62,12 @@ public class Utils {
     }
 
     public static void runCommandOutput (String output) {
-
         JTextArea textArea = new JTextArea(output);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
         JOptionPane.showMessageDialog(null, scrollPane,"Output from the given command",JOptionPane.INFORMATION_MESSAGE);
-
     }
 
     public boolean containsIndices(int[] selectedIndices) {
@@ -201,6 +199,7 @@ public class Utils {
         }
     }
 
+    // Displays the license in an option pane
     public static void License (JPanel myComponent) {
         ImageIcon icon = null;
 
@@ -210,18 +209,10 @@ public class Utils {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
-        // icon for my dialogs
-        //InputStream stream = getClass().getResourceAsStream("resources/jexiftoolgui-64.png");
-        /*InputStream stream = ClassLoader.getSystemResourceAsStream("resources/jexiftoolgui-64.png");
-        try {
-            icon = new ImageIcon(ImageIO.read(stream));
-        } catch(IOException ex) {
-            System.out.println("Error executing command");
-        }
-        JOptionPane.showMessageDialog(myComponent, scrollPane,"GNU GENERAL PUBLIC LICENSE Version 3",JOptionPane.INFORMATION_MESSAGE, icon); */
         JOptionPane.showMessageDialog(myComponent, scrollPane,"GNU GENERAL PUBLIC LICENSE Version 3",JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Shows or hides the progressbar
     public static void progressStatus(JProgressBar progressBar, Boolean show) {
         if (show) {
             progressBar.setVisible(true);
@@ -231,6 +222,25 @@ public class Utils {
         } else {
             progressBar.setVisible(false);
         }
+    }
+
+    // Checks whether the artist (creator) and Copyright (rights) preference exists and uses these in the edit exif/xmp panes
+    public String[] checkPrefsArtistCopyRights() {
+        String[] ArtistCopyRights = new String[2];
+        Boolean prefArtistExists = prefs.get("artist", null) != null;
+        if (prefArtistExists) {
+            ArtistCopyRights[0] = prefs.get("artist", "");
+        } else {
+            ArtistCopyRights[0] = "";
+        }
+
+        Boolean prefCopyRightsExists = prefs.get("copyrights", null) != null;
+        if (prefCopyRightsExists) {
+            ArtistCopyRights[1] = prefs.get("copyrights", "");
+        } else {
+            ArtistCopyRights[1] = "";
+        }
+        return ArtistCopyRights;
     }
 
     /////////////////// Locate exiftool //////////////
@@ -395,7 +405,7 @@ public class Utils {
         boolean imageDefaultFolder_exists = false;
         String startFolder = "";
 
-        Preferences prefs = Preferences.userRoot();
+        //Preferences prefs = Preferences.userRoot();
 
         /*imageDefaultFolder_exists = prefs.get("defaultstartfolder", null) != null;
         if (imageDefaultFolder_exists) {
