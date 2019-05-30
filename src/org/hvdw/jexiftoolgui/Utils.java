@@ -226,7 +226,6 @@ public class Utils {
         if (show) {
             progressBar.setVisible(true);
             progressBar.setIndeterminate(true);
-            progressBar.setStringPainted(true);
             progressBar.setBorderPainted(true);
             progressBar.repaint();
         } else {

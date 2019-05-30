@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.prefs.Preferences;
 
 
@@ -356,27 +357,25 @@ public class mainScreen {
     void LoadImages() {
         OutputLabel.setText("Loading images ....");
         files = myUtils.getFileNames(mainScreen.this.rootPanel);
-        myUtils.progressStatus(progressBar, true);
         if (files != null) {
-            /*SwingUtilities.invokeLater(new Runnable() {
+            Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
                 public void run() {
-                    progressBar.repaint();
                     myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
                     myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
-
+                    mainScreen.this.buttonShowImage.setEnabled(true);
+                    OutputLabel.setText(" Images loaded ...");
+                    // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
+                    myUtils.progressStatus(progressBar, false);
                 }
-            }); */
-            myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
-            myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
-            /*try {
-                myUtils.DisplayImage(0, files, mainScreen.this.iconLabel);
-            } catch(IOException ex) {
-                System.out.println("Error reading Image");
-            }*/
-            mainScreen.this.buttonShowImage.setEnabled(true);
-            OutputLabel.setText(" Images loaded ...");
+            });
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    progressBar.setVisible(true);
+                }
+            });
         }
-        myUtils.progressStatus(progressBar, false);
     }
 
 
