@@ -34,6 +34,9 @@ public class Utils {
     myVariables myVars = new myVariables();
     Preferences prefs = Preferences.userRoot();
 
+    /*
+    * All exiftool commands go through this method
+    */
     public static String runCommand(List<String> cmdparams) throws InterruptedException, IOException {
 
         String res = "";
@@ -79,6 +82,7 @@ public class Utils {
         }
     }
 
+    // Gets the output from the exiftool command and returns it to the displaying method
     private static String output(InputStream inputStream) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader br = null;
@@ -94,16 +98,10 @@ public class Utils {
         return sb.toString();
     }
 
-/*    public static String readFully(InputStream is) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int length = 0;
-        while ((length = is.read(buffer)) != -1) {
-            baos.write(buffer, 0, length);
-        }
-        return baos.toString("UTF-8");
-    } */
-
+    /*
+    * Opens the default browser of the Operating System
+    * and displays the specified URL
+    */
     public static void openBrowser (String webUrl) {
         if(Desktop.isDesktopSupported()) { //probably windows, but could also be linux with Gnome
             try {
@@ -165,6 +163,7 @@ public class Utils {
         return totalText;
     }
 
+    // Reads a text file from resources
     public static String ResourceReader (String fileName) {
         String strFileContents = "";
 
@@ -186,6 +185,10 @@ public class Utils {
         return strFileContents;
     }
 
+    /*
+    * The ImageInfo method uses exiftool to read image info which is outputted as csv
+    * This method converts it to 3-column "tabular" data
+     */
     public static void ReadTagsCSV(String tagname) {
         List<List<String>> tagrecords = new ArrayList<>();
         String tags = ResourceReader("resources/tagxml/" + tagname + ".xml");
@@ -212,7 +215,7 @@ public class Utils {
         JOptionPane.showMessageDialog(myComponent, scrollPane,"GNU GENERAL PUBLIC LICENSE Version 3",JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Shows or hides the progressbar
+    // Shows or hides the progressbar when called from some (long) running method
     public static void progressStatus(JProgressBar progressBar, Boolean show) {
         if (show) {
             progressBar.setVisible(true);
@@ -224,7 +227,10 @@ public class Utils {
         }
     }
 
-    // Checks whether the artist (creator) and Copyright (rights) preference exists and uses these in the edit exif/xmp panes
+    /*
+    * Checks whether the artist (creator) and Copyright (rights) preference exists
+    * and uses these in the edit exif/xmp panes
+    */
     public String[] checkPrefsArtistCopyRights() {
         String[] ArtistCopyRights = new String[2];
         Boolean prefArtistExists = prefs.get("artist", null) != null;
@@ -244,6 +250,10 @@ public class Utils {
     }
 
     /////////////////// Locate exiftool //////////////
+    /*
+    * File chooser to locate exiftool when user comes from checkExifTool
+    * and selected "Specify Location"
+    */
     public String exiftoolLocator (JPanel myComponent) {
         String exiftool = "";
         String selectedBinary = "";
@@ -281,6 +291,11 @@ public class Utils {
         return exiftool;
     }
 
+    /*
+    * If no exiftool found in the path and neither in the preferences, ask the user
+    * where he/she installed it or offer to download it.
+    * Otherwise simply exit the program
+    */
     public void checkExifTool(JPanel myComponent) {
         String returnValue = "";
         String[] options = {"specify location", "Download", "Stop"};
@@ -314,6 +329,10 @@ public class Utils {
 
     }
 
+    /*
+    * This method checks for a new version on the repo.
+    * It can be called from startup (preferences setting) or from the Help menu
+    */
     public static void CheckforNewVersion( String fromWhere) {
         String version = "";
         boolean newversion_startupcheck_exists = false;
@@ -360,7 +379,9 @@ public class Utils {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // General check method which folder to open
+    /* General check method which folder to open
+    * Based on preference default folder, "always Use Last used folder" or home folder
+    */
     public String whichFolderToOpen() {
         boolean imageDefaultFolder_exists = false;
         boolean uselastopenedfolder_exists = false;
@@ -390,7 +411,7 @@ public class Utils {
 
         return startFolder;
     }
-    // Which exiftool platform
+    // Create correct exiftool command call depending on operating system
     public String platformExiftool() {
         // exiftool on windows or other
         String exiftool = prefs.get("exiftool", "");
@@ -401,19 +422,14 @@ public class Utils {
         return exiftool;
     }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
+    /*
+    * Get the files from the "Load images" command
+    */
     public File[] getFileNames (JPanel myComponent) {
         File[] files = null;
         boolean imageDefaultFolder_exists = false;
         String startFolder = "";
 
-        //Preferences prefs = Preferences.userRoot();
-
-        /*imageDefaultFolder_exists = prefs.get("defaultstartfolder", null) != null;
-        if (imageDefaultFolder_exists) {
-            startFolder = prefs.get("defaultstartfolder", "");
-        } else {
-            startFolder = System.getProperty("user.home");
-        }*/
         startFolder = whichFolderToOpen();
 
         final JFileChooser chooser = new JFileChooser(startFolder);
@@ -437,7 +453,9 @@ public class Utils {
         return files;
     }
 
-
+    /*
+    * Display the loaded files with icon and name
+    */
     public void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
 
         int selectedRow, selectedColumn;
@@ -492,34 +510,18 @@ public class Utils {
                     System.out.println("Error loading image");
                 }
 
-                /*if (tcolumn == 2) {
-                    tcolumn = 0;
-                    //jTable_File_Names.setRowHeight(trow, 150);
-                    jTable_File_Names.setRowHeight(150);
-                    model.addRow(ImgRow);
-                    trow++;
-                } else {
-                    tcolumn++;
-                } */
             jTable_File_Names.setRowHeight(150);
             model.addRow(ImgFilenameRow);
         }
-        /*
-        // In case we do not have a manifold of 3 images
-        if (tcolumn == 1) {
-            ImgRow[1] = null;
-            ImgRow[2] = null;
-            model.addRow(ImgRow);
-        } else if (tcolumn == 2) {
-            ImgRow[2] = null;
-            model.addRow(ImgRow);
-        } */
+
         myVars.setMySelectedRow(0);
         myVars.setMySelectedColumn(0);
     }
 
 
-    // This is the ImageInfo method that is called by all when displaying info
+    /*
+    * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
+    */
     public void ImageInfo(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
 
         String fpath ="";
@@ -589,6 +591,9 @@ public class Utils {
             case "iptc":
                 params = MyConstants.iptc_params;
                 break;
+            case "composite":
+                params = MyConstants.composite_params;
+                break;
             case "gps":
                 params[0] = "-gps:all";
                 break;
@@ -608,6 +613,9 @@ public class Utils {
         return params;
     }
 
+    /*
+    * This method displays the exiftool info in the right 3-column table
+    */
     public void DisplayInfo(String exiftoolInfo, JTable ListexiftoolInfotable) {
         // This will display the exif info in the right panel
 
@@ -632,6 +640,9 @@ public class Utils {
 
     }
 
+    /*
+    * This method displays the selected image in the default image viewer for the relevant mime-type (the extension mostly)
+    */
     public void DisplayImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
@@ -652,6 +663,10 @@ public class Utils {
         ThumbView.setIcon(icon);
     }
 
+    /*
+    * This method displays a preview of the image in the bottom left panel
+    * THIS METHOD IS NOT USED ANYMORE
+    */
     public void DisplayTableImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
@@ -672,7 +687,10 @@ public class Utils {
         ThumbView.setIcon(icon);
     }
 
-
+    /*
+    * This method displays the program logo
+    * * THIS METHOD IS NOT USED CURRENTLY
+    */
     public void DisplayLogo(JLabel ThumbView) throws IOException {
         BufferedImage img = ImageIO.read(getClass().getResource("resources/jexiftoolgui-splashlogo.jpg"));
         // resize it

@@ -1,6 +1,7 @@
 exif
 xmp
 iptc
+composite
 gps
 gps/location
 gpano

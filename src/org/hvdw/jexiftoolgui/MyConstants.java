@@ -10,6 +10,7 @@ public class MyConstants {
     public static final String[] gpano_params = {"-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:StitchingSoftware","-xmp:InitialHorizontalFOVDegrees"};
     public static final String[] icc_params = {"-icc_profile:all","-G", "-tab"};
     public static final String[] makernotes_params = {"-makernotes:all","-G", "-tab"};
+    public static final String[] composite_params = {"-composite:all","-G", "-tab"};
     public static final String[] RefImageDateTime = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
 
     // exiftool image modification parameters
