@@ -258,21 +258,35 @@ public class mainScreen {
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
     // creates way more code which doesn't make it clearer either.
-    JTextField[] exifFields = {ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField,ExifCreateDatetextField,
-        ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};
-    JTextArea[] exifAreas = {ExifDescriptiontextArea};
-    JCheckBox[] exifBoxes = {ExifMakecheckBox, ExifModelcheckBox, ExifModifyDatecheckBox, ExifDateTimeOriginalcheckBox,ExifCreateDatecheckBox,
-            ExifArtistCreatorcheckBox, ExifCopyrightcheckBox, ExifUsercommentcheckBox, ExifDescriptioncheckBox, ExifBackupOriginalscheckBox};
 
-    JTextField[] xmpFields = {xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};
-    JTextArea[] xmpAreas = {xmpDescriptiontextArea};
-    JCheckBox[] xmpBoxes = {xmpCreatorcheckBox, xmpRightscheckBox, xmpLabelcheckBox, xmpSubjectcheckBox, xmpTitlecheckBox, xmpPersoncheckBox, xmpRegionNamecheckBox, xmpRegionTypecheckBox, xmpDescriptioncheckBox, xmpBackupOriginalscheckBox};
+    private JTextField[] getExifFields() {
+        return new JTextField[]{ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField, ExifCreateDatetextField,
+                ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};
+    }
 
-    JTextField[] geotaggingFields = {geotaggingImgFoldertextField, geotaggingGPSLogtextField, geotaggingGeosynctextField, geotaggingLocationtextfield, geotaggingCountrytextfield, geotaggingStatetextfield, geotaggingCitytextfield};
-    JCheckBox[] geotaggingBoxes = {geotaggingLocationcheckbox, geotaggingCountrycheckbox, geotaggingStatecheckbox, geotaggingCitycheckbox};
+    private JTextArea[] getExifAreas() {
+        return new JTextArea[]{ExifDescriptiontextArea};
+    }
 
-    JRadioButton[] CopyMetaDataRadiobuttons = {copyAllMetadataRadiobutton, copyAllMetadataSameGroupsRadiobutton, copySelectiveMetadataradioButton};
-    JCheckBox[] CopyMetaDataCheckBoxes = {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, BackupOriginalscheckBox};
+    private JCheckBox[] getExifBoxes() {
+        return new JCheckBox[]{ExifMakecheckBox, ExifModelcheckBox, ExifModifyDatecheckBox, ExifDateTimeOriginalcheckBox, ExifCreateDatecheckBox,
+                ExifArtistCreatorcheckBox, ExifCopyrightcheckBox, ExifUsercommentcheckBox, ExifDescriptioncheckBox, ExifBackupOriginalscheckBox};
+    }
+    private JTextField[] getXmpFields() {
+    return new JTextField[] {xmpCreatortextField, xmpRightstextField, xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};
+    }
+    private JTextArea[] getXmpAreas() {
+        return new JTextArea[] {xmpDescriptiontextArea};
+    }
+
+    private JCheckBox[] getXmpBoxes() {        return new JCheckBox[]{xmpCreatorcheckBox, xmpRightscheckBox, xmpLabelcheckBox, xmpSubjectcheckBox, xmpTitlecheckBox, xmpPersoncheckBox, xmpRegionNamecheckBox, xmpRegionTypecheckBox, xmpDescriptioncheckBox, xmpBackupOriginalscheckBox}; }
+
+    private JTextField[] getGeotaggingFields() { return new JTextField[] {geotaggingImgFoldertextField, geotaggingGPSLogtextField, geotaggingGeosynctextField, geotaggingLocationtextfield, geotaggingCountrytextfield, geotaggingStatetextfield, geotaggingCitytextfield}; }
+
+    private JCheckBox[] getGeotaggingBoxes() {return new JCheckBox[] {geotaggingLocationcheckbox, geotaggingCountrycheckbox, geotaggingStatecheckbox, geotaggingCitycheckbox};}
+
+    private JRadioButton[] getCopyMetaDataRadiobuttons() {return new JRadioButton[] {copyAllMetadataRadiobutton, copyAllMetadataSameGroupsRadiobutton, copySelectiveMetadataradioButton}; }
+    private JCheckBox[] getCopyMetaDataCheckBoxes() {return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, BackupOriginalscheckBox}; }
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -296,7 +310,7 @@ public class mainScreen {
         try {
             Utils myUtils = new Utils();
             res = myUtils.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
-        } catch(IOException | InterruptedException ex) {
+        } catch (IOException | InterruptedException ex) {
             System.out.println("Error executing command");
             res = ex.getMessage();
         }
@@ -322,12 +336,12 @@ public class mainScreen {
             File tmpFile = new File(exiftool_path);
             boolean exists = tmpFile.exists();
             if (!exists) {
-                exiftool_path  = null;
-                JOptionPane.showMessageDialog(rootPanel, ProgramTexts.ETpreferenceIncorrect,"exiftool preference incorrect",JOptionPane.WARNING_MESSAGE);
+                exiftool_path = null;
+                JOptionPane.showMessageDialog(rootPanel, ProgramTexts.ETpreferenceIncorrect, "exiftool preference incorrect", JOptionPane.WARNING_MESSAGE);
             }
             System.out.println("exists is " + exists);
-            System.out.println("preference exiftool returned: "+ exiftool_path);
-            if (exiftool_path  == null || exiftool_path.isEmpty() || !exists) {
+            System.out.println("preference exiftool returned: " + exiftool_path);
+            if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
                 res = exiftool_check();
             } else {
                 res = exiftool_path;
@@ -337,7 +351,7 @@ public class mainScreen {
                 cmdparams.add("-ver");
                 try {
                     OutputLabel.setText("Exiftool available;  Version: " + myUtils.runCommand(cmdparams));
-                } catch(IOException | InterruptedException ex) {
+                } catch (IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }
 
@@ -346,17 +360,17 @@ public class mainScreen {
             res = exiftool_check();
         }
 
-            if (res == null || res.isEmpty() || res.toLowerCase().startsWith("info")) {
-                exiftool_found = false;
-            } else {
-                exiftool_found = true;
-                // We already checked that the node did not exist and that it is empty or null
-                // remove all possible line breaks
-                res = res.replace("\n", "").replace("\r", "");
-                if (!exiftool_exists) {
-                    prefs.put("exiftool", res);
-                }
+        if (res == null || res.isEmpty() || res.toLowerCase().startsWith("info")) {
+            exiftool_found = false;
+        } else {
+            exiftool_found = true;
+            // We already checked that the node did not exist and that it is empty or null
+            // remove all possible line breaks
+            res = res.replace("\n", "").replace("\r", "");
+            if (!exiftool_exists) {
+                prefs.put("exiftool", res);
             }
+        }
 
         return exiftool_found;
     }
@@ -464,6 +478,7 @@ public class mainScreen {
         buttonShowImage.setEnabled(false);
         buttonShowImage.setText("Display Image");
         buttonShowImage.setToolTipText("Display the selected image in the default image viewer (if supported movies will play in the default movie player)");
+        buttonShowImage.putClientProperty("hideActionText", Boolean.FALSE);
         LeftbuttonBar.add(buttonShowImage);
         Leftscrollpane = new JScrollPane();
         LeftPanel.add(Leftscrollpane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -1456,13 +1471,13 @@ public class mainScreen {
     ///////////////////////// Action Listeners ////////////////////////////////
     class MenuActionListener implements ActionListener {
 
-    // menuListener
-    public void actionPerformed(ActionEvent ev) {
+        // menuListener
+        public void actionPerformed(ActionEvent ev) {
             //MyVariables myVars = new MyVariables();
-        String[] dummy = null;
+            String[] dummy = null;
             System.out.println("Selected: " + ev.getActionCommand());
 
-            switch(ev.getActionCommand()) {
+            switch (ev.getActionCommand()) {
                 case "Load Images":
                     // identical to button "Load Images"
                     LoadImages();
@@ -1485,7 +1500,7 @@ public class mainScreen {
                         metaData.copytoxmp(selectedIndices, files);
                         OutputLabel.setText("Inactive ...");
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Repair JPG(s) with corrupted metadata":
@@ -1494,7 +1509,7 @@ public class mainScreen {
                         metaData.repairJPGmetadata(selectedIndices, files, progressBar);
                         OutputLabel.setText("Inactive ...");
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Export metadata":
@@ -1502,7 +1517,7 @@ public class mainScreen {
                         ExportMetadata expMetadata = new ExportMetadata();
                         expMetadata.showDialog(selectedIndices, files);
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Remove metadata":
@@ -1511,7 +1526,7 @@ public class mainScreen {
                         rmMetadata.showDialog(selectedIndices, files);
                         OutputLabel.setText("Inactive ...");
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Shift Date/time":
@@ -1520,7 +1535,7 @@ public class mainScreen {
                         SDT.showDialog(selectedIndices, files);
                         OutputLabel.setText("Inactive ...");
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Modify Date/time":
@@ -1529,14 +1544,14 @@ public class mainScreen {
                         MDT.showDialog(selectedIndices, files);
                         OutputLabel.setText("Inactive ...");
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Set file date to DateTimeOriginal":
                     if (selectedIndicesList.size() > 0) {
                         dateTime.setFileDatetoDateTimeOriginal(selectedIndices, files);
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Create args file(s)":
@@ -1544,14 +1559,14 @@ public class mainScreen {
                         CreateArgsFile CAF = new CreateArgsFile();
                         CAF.showDialog(selectedIndices, files);
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "About jExifToolGUI":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ProgramTexts.aboutText),"About jExifToolGUI for ExifTool by Phil Harvey",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ProgramTexts.aboutText), "About jExifToolGUI for ExifTool by Phil Harvey", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "About ExifTool":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ProgramTexts.aboutExifToolText),"About ExifTool by Phil Harvey",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ProgramTexts.aboutExifToolText), "About ExifTool by Phil Harvey", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "jExifToolGUI homepage":
                     myUtils.openBrowser(ProgramTexts.ProjectWebSite);
@@ -1608,20 +1623,20 @@ public class mainScreen {
                 if (selectedIndicesList.size() > 0) {
                     if (CommandsParameterstextField.getText().length() > 0) {
                         OutputLabel.setText("Now executing your commands ...");
-                        YourCmnds.ExecuteCommands(CommandsParameterstextField.getText(), YourCommandsOutputTextArea, UseNonPropFontradioButton, selectedIndices, files );
+                        YourCmnds.ExecuteCommands(CommandsParameterstextField.getText(), YourCommandsOutputTextArea, UseNonPropFontradioButton, selectedIndices, files);
                         OutputLabel.setText("The output should be displayed above ...");
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, "No command parameters given","No parameters",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, "No command parameters given", "No parameters", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
         CommandshelpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.YourCommandsHelp),"Help for the Your Commands panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.YourCommandsHelp), "Help for the Your Commands panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -1629,16 +1644,16 @@ public class mainScreen {
         ExifcopyFromButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EEd.copyexiffromselected(exifFields, ExifDescriptiontextArea, files, SelectedRow);
+                EEd.copyexiffromselected(getExifFields(), ExifDescriptiontextArea, files, SelectedRow);
             }
         });
         ExifsaveToButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EEd.writeExifTags(exifFields, ExifDescriptiontextArea, exifBoxes, selectedIndices, files, progressBar);
+                    EEd.writeExifTags(getExifFields(), ExifDescriptiontextArea, getExifBoxes(), selectedIndices, files, progressBar);
                 } else {
-                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -1651,13 +1666,13 @@ public class mainScreen {
         resetFieldsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EEd.resetfields(exifFields, ExifDescriptiontextArea);
+                EEd.resetfields(getExifFields(), ExifDescriptiontextArea);
             }
         });
         ExifhelpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifAndXmpHelp),"Help for the Exif edit panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifAndXmpHelp), "Help for the Exif edit panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -1666,16 +1681,16 @@ public class mainScreen {
         xmpCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EXd.copyxmpfromselected(xmpFields, xmpDescriptiontextArea, files, SelectedRow);
+                EXd.copyxmpfromselected(getXmpFields(), xmpDescriptiontextArea, files, SelectedRow);
             }
         });
         xmpSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EXd.writeXmpTags(xmpFields, xmpDescriptiontextArea, xmpBoxes, selectedIndices, files, progressBar);
+                    EXd.writeXmpTags(getXmpFields(), xmpDescriptiontextArea, getXmpBoxes(), selectedIndices, files, progressBar);
                 } else {
-                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected,"No images selected",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -1688,13 +1703,13 @@ public class mainScreen {
         xmpResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EXd.resetfields(xmpFields, xmpDescriptiontextArea);
+                EXd.resetfields(getXmpFields(), xmpDescriptiontextArea);
             }
         });
         xmpHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifAndXmpHelp),"Help for the XMP edit panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifAndXmpHelp), "Help for the XMP edit panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -1722,12 +1737,12 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (("".equals(geotaggingImgFoldertextField.getText())) && (selectedIndicesList.size() == 0)) {
-                    JOptionPane.showMessageDialog(rootPanel, "No images selected and no image folder path selected","No images, no path",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, "No images selected and no image folder path selected", "No images, no path", JOptionPane.WARNING_MESSAGE);
                 } else {
                     if ("".equals(geotaggingGPSLogtextField.getText())) {
-                        JOptionPane.showMessageDialog(rootPanel, "No gps track log selected","No gps log",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, "No gps track log selected", "No gps log", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        EGd.WriteInfo(geotaggingFields, geotaggingBoxes, geotaggingOverwriteOriginalscheckBox.isSelected(), selectedIndices, files, progressBar);
+                        EGd.WriteInfo(getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), selectedIndices, files, progressBar);
                     }
                 }
                 OutputLabel.setText("");
@@ -1736,13 +1751,13 @@ public class mainScreen {
         resetGeotaggingbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGd.ResetFields(geotaggingFields, geotaggingBoxes);
+                EGd.ResetFields(getGeotaggingFields(), getGeotaggingBoxes());
             }
         });
         geotaggingHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel,String.format(ProgramTexts.HTML, 700, HelpTexts.GeotaggingHelp),"Help for the Geotagging edit panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.GeotaggingHelp), "Help for the Geotagging edit panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -1824,13 +1839,13 @@ public class mainScreen {
         CopyDataCopyTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                metaData.CopyMetaData(CopyMetaDataRadiobuttons, CopyMetaDataCheckBoxes, SelectedCopyFromImageIndex, selectedIndices, files);
+                metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files);
             }
         });
         CopyHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.CopyMetaDataHelp),"Help for the Copy metadata panel",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.CopyMetaDataHelp), "Help for the Copy metadata panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -2009,7 +2024,7 @@ public class mainScreen {
                 for (int j = 0; j < selectedColumns.length; j++) {
                     rowIndex = tableListfiles.getSelectedRow();
                     colIndex = tableListfiles.getSelectedColumn();
-                    tmpselectedIndices.add(new Integer ((i * 3) + j));
+                    tmpselectedIndices.add(new Integer((i * 3) + j));
                     System.out.println("Selected row: " + i + " Selected column: " + j + " Calculated index: " + String.valueOf((i * 3) + j));
                     //SelectedCell = ((i *3) + j);
                 }
@@ -2029,7 +2044,7 @@ public class mainScreen {
         public void valueChanged(ListSelectionEvent e) {
             // Perfectly working row selection method of first program
             List<Integer> tmpselectedIndices = new ArrayList<Integer>();
-            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
             int firstIndex = e.getFirstIndex();
             int lastIndex = e.getLastIndex();
@@ -2177,7 +2192,7 @@ public class mainScreen {
         frame.setJMenuBar(menuBar);
     }
 
-////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
     public mainScreen(JFrame frame) {
         boolean preferences = false;
         Preferences prefs = Preferences.userRoot();
@@ -2200,7 +2215,7 @@ public class mainScreen {
         InputStream stream = Utils.getResourceAsStream("icons/jexiftoolgui-64.png");
         try {
             icon = new ImageIcon(ImageIO.read(stream));
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             System.out.println("Error executing command");
         }
 
@@ -2220,14 +2235,12 @@ public class mainScreen {
         // Some texts
         MyCommandsText.setText(ProgramTexts.MyCommandsText);
         GeotaggingLeaveFolderEmptyLabel.setText(ProgramTexts.GeotaggingLeaveFolderEmpty);
-        GeotaggingLocationLabel.setText( String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingLocationLabel) );
+        GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingLocationLabel));
 
-        GeotaggingGeosyncExplainLabel.setText( String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel) );
-        gpsCalculatorLabelText.setText( String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText) );
+        GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
+        gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
 
         Utils.CheckforNewVersion("startup");
-
-
     }
 
     public static void createAndShowGUI() {
@@ -2241,7 +2254,7 @@ public class mainScreen {
             // Significantly improves the look of the output in
             // terms of the folder/file icons and file names returned by FileSystemView!
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch(Exception weTried) {
+        } catch (Exception weTried) {
         }
 
         frame.pack();
@@ -2249,6 +2262,7 @@ public class mainScreen {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
     }
+
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

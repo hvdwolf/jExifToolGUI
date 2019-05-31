@@ -50,6 +50,9 @@
                   <text value="Display Image"/>
                   <toolTipText value="Display the selected image in the default image viewer (if supported movies will play in the default movie player)"/>
                 </properties>
+                <clientProperties>
+                  <hideActionText class="java.lang.Boolean" value="false"/>
+                </clientProperties>
               </component>
             </children>
           </grid>
