@@ -1896,55 +1896,6 @@ public class mainScreen {
             }
         });
 
-        /*radioButtonViewExif.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewExif.getText());
-                myUtils.ImageInfo(MyConstants.exif_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        });
-        radioButtonViewXMP.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewXMP.getText());
-                myUtils.ImageInfo(MyConstants.xmp_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        });
-        radioButtonViewIPTC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewIPTC.getText());
-                myUtils.ImageInfo(MyConstants.iptc_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        });
-        radioButtonViewGPS.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewGPS.getText());
-                myUtils.ImageInfo(MyConstants.gpc_loc_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        });
-        radioButtonViewGPano.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewGPano.getText());
-                myUtils.ImageInfo(MyConstants.gpano_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        });
-        radioButtonViewICC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewICC.getText());
-                myUtils.ImageInfo(MyConstants.icc_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        });
-        radioButtonViewMakernotes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewMakernotes.getText());
-                myUtils.ImageInfo(MyConstants.makernotes_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-            }
-        }); */
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1982,20 +1933,6 @@ public class mainScreen {
         // Very simple if list
         if (mainScreen.this.radioButtonViewAll.isSelected()) {
             params = MyConstants.all_params;
-        /*} else if (radioButtonViewExif.isSelected()) {
-            params = MyConstants.exif_params;
-        } else if (radioButtonViewXMP.isSelected()) {
-            params = MyConstants.xmp_params;
-        } else if (radioButtonViewIPTC.isSelected()) {
-            params = MyConstants.iptc_params;
-        } else if (radioButtonViewGPS.isSelected()) {
-            params = MyConstants.gpc_loc_params;
-        } else if (radioButtonViewGPano.isSelected()) {
-            params = MyConstants.gpano_params;
-        } else if (radioButtonViewICC.isSelected()) {
-            params = MyConstants.icc_params;
-        } else if (radioButtonViewMakernotes.isSelected()) {
-            params = MyConstants.makernotes_params; */
         } else if (radioButtoncommonTags.isSelected()) {
             params = myUtils.WhichCommonTagSelected(comboBoxViewCommonTags);
         } else if (radioButtonByTagName.isSelected()) {
@@ -2084,15 +2021,6 @@ public class mainScreen {
         tableListfiles.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                //int SelectedCell = 0;
-                /*int row = tableListfiles.rowAtPoint(evt.getPoint());
-                int col = tableListfiles.columnAtPoint(evt.getPoint());
-                if (row >= 0) {
-                    SelectedCell = (row * 3) + col;
-                    System.out.println("mouse listener; row : " + row + " column : " + col + " index : " + SelectedCell);
-                    String[] params = whichRBselected();
-                    myUtils.ImageInfo(params, SelectedCell, files, ListexiftoolInfotable);
-                }*/
                 if (evt.getClickCount() == 2) {
                     myUtils.extDisplayImage();
                 }
