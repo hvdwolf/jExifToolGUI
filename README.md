@@ -20,3 +20,6 @@ This jExifToolGUI program is free, Open Source software: you can redistribute it
 * I started programming in java because I wanted "things" on my Android car head unit that nobody else would make. And now I prefer java for "bigger things" over python.
 * Java comes with the builtin Swing gui. I don't need to package any dependencies. The user downloads java and jExiftoolGUI and that's all.
 * Java/Swing supports many more platforms than pySide/QT.
+
+## Developers
+The UI is designed with the GUI Designer from IntelliJ IDEA. Read [readme-intelliJ.md](readme-intellIJ.md)

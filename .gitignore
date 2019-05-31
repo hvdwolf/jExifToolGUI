@@ -1,35 +1,12 @@
-# Compiled class file
-*.class
+# Ignore Gradle project-specific cache directory
+.gradle
 
-# Log file
-*.log
+# Ignore gradle wrapper jar (will be downloaded on first use)
+gradle/wrapper/gradle-wrapper.jar
 
-# BlueJ files
-*.ctxt
+# Ignore Gradle build output directory
+build
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-*.deb
-*.tgz
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# IntelliJ output
-out/*
-
-# my temp stuff
-resources/**/*.csv
-resources/**/*.xml
-
-# Local workspace file
-.idea/workspace.xml
+# Ignore IntelliJ IDEA folders and project files because of using gradle
+.idea
+*.iml

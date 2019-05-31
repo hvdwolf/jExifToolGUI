@@ -11,9 +11,9 @@ Version="1"
 rm -rf jExifToolGUI.app tmp *.dmg
 # Create the app bundle
 # full bundle with jdk
-$jar2appPATH ../../out/artifacts/jExifToolGUI_jar/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns -r jdk1.8.0_212.jdk.zip
+$jar2appPATH ../../build/libs/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns -r jdk1.8.0_212.jdk.zip
 # default bundle without jdk
-#$jar2appPATH ../../out/artifacts/jExifToolGUI_jar/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns
+#$jar2appPATH ../../build/libs/ExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns
 
 # Create the dmg
 mkdir -p tmp/dmg
