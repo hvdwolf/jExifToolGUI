@@ -22,8 +22,8 @@ import java.util.stream.IntStream;
 
 public class Utils {
 
-    static MyVariables myVars = new MyVariables();
-    static Preferences prefs = Preferences.userRoot();
+    private static MyVariables myVars = new MyVariables();
+    private static Preferences prefs = Preferences.userRoot();
 
     /*
      * All exiftool commands go through this method
@@ -64,13 +64,9 @@ public class Utils {
         JOptionPane.showMessageDialog(null, scrollPane,"Output from the given command",JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public boolean containsIndices(int[] selectedIndices) {
+    public static boolean containsIndices(int[] selectedIndices) {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());
-        if (intList == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return intList.size() != 0;
     }
 
     // Gets the output from the exiftool command and returns it to the displaying method
@@ -93,7 +89,7 @@ public class Utils {
      * Opens the default browser of the Operating System
      * and displays the specified URL
      */
-    public static void openBrowser (String webUrl) {
+    static void openBrowser(String webUrl) {
         if(Desktop.isDesktopSupported()) { //probably windows, but could also be linux with Gnome
             try {
                 Desktop.getDesktop().browse(new URI(webUrl));
@@ -155,7 +151,7 @@ public class Utils {
     }
 
     // Reads a text file from resources
-    public static String ResourceReader (String fileName) {
+    static String ResourceReader(String fileName) {
         String strFileContents = "";
 
         try {
@@ -194,7 +190,7 @@ public class Utils {
     }
 
     // Displays the license in an option pane
-    public static void License (JPanel myComponent) {
+    static void License(JPanel myComponent) {
         ImageIcon icon = null;
 
         String license = ResourceReader("resources/COPYING");
@@ -207,7 +203,7 @@ public class Utils {
     }
 
     // Shows or hides the progressbar when called from some (long) running method
-    public static void progressStatus(JProgressBar progressBar, Boolean show) {
+    static void progressStatus(JProgressBar progressBar, Boolean show) {
         if (show) {
             progressBar.setVisible(true);
             progressBar.setIndeterminate(true);
@@ -222,7 +218,7 @@ public class Utils {
      * Checks whether the artist (creator) and Copyright (rights) preference exists
      * and uses these in the edit exif/xmp panes
      */
-    public static String[] checkPrefsArtistCopyRights() {
+    static String[] checkPrefsArtistCopyRights() {
         String[] ArtistCopyRights = new String[2];
         boolean prefArtistExists = prefs.get("artist", null) != null;
         if (prefArtistExists) {
@@ -245,7 +241,7 @@ public class Utils {
      * File chooser to locate exiftool when user comes from checkExifTool
      * and selected "Specify Location"
      */
-    public static String exiftoolLocator (JPanel myComponent) {
+    static String exiftoolLocator(JPanel myComponent) {
         String exiftool = "";
         String selectedBinary = "";
 
@@ -287,7 +283,7 @@ public class Utils {
      * where he/she installed it or offer to download it.
      * Otherwise simply exit the program
      */
-    public static void checkExifTool(JPanel myComponent) {
+    static void checkExifTool(JPanel myComponent) {
         String returnValue = "";
         String[] options = {"specify location", "Download", "Stop"};
         //JOptionPane.showOptionDialog(null,"I can not find exiftool in the preferences or I can not find exiftool at all","exiftool missing",JOptionPane.ERROR_MESSAGE);
@@ -324,7 +320,7 @@ public class Utils {
      * This method checks for a new version on the repo.
      * It can be called from startup (preferences setting) or from the Help menu
      */
-    public static void CheckforNewVersion( String fromWhere) {
+    static void CheckforNewVersion(String fromWhere) {
         String version = "";
         boolean newversion_startupcheck_exists = false;
         boolean versioncheck = false;
@@ -373,7 +369,7 @@ public class Utils {
     /* General check method which folder to open
      * Based on preference default folder, "always Use Last used folder" or home folder
      */
-    public String whichFolderToOpen() {
+    public static String whichFolderToOpen() {
         boolean imageDefaultFolder_exists = false;
         boolean uselastopenedfolder_exists = false;
         String startFolder = "";
@@ -416,7 +412,7 @@ public class Utils {
     /*
      * Get the files from the "Load images" command
      */
-    public File[] getFileNames (JPanel myComponent) {
+    File[] getFileNames(JPanel myComponent) {
         File[] files = null;
         boolean imageDefaultFolder_exists = false;
         String startFolder = "";
@@ -447,7 +443,7 @@ public class Utils {
     /*
      * Display the loaded files with icon and name
      */
-    public void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
+    static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
 
         int selectedRow, selectedColumn;
         DefaultTableModel model = (DefaultTableModel)jTable_File_Names.getModel();
@@ -480,24 +476,24 @@ public class Utils {
         int tcolumn = 0;
 
 
-        for(int i = 0; i < files.length; i++) {
+        for (File file : files) {
             try {
                 //System.out.println(files[i].getName().replace("\\", "/"));
-                filename = files[i].getName().replace("\\", "/");
+                filename = file.getName().replace("\\", "/");
                 //System.out.println(files[i].getPath().replace("\\", "/"));
-                BufferedImage img = ImageIO.read(new File(files[i].getPath().replace("\\", "/")));
+                BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
                 // resize it
                 BufferedImage resizedImg = new BufferedImage(160, 120, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2 = resizedImg.createGraphics();
                 g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                 g2.drawImage(img, 0, 0, 160, 120, null);
                 g2.dispose();
-                ImageIcon icon=new ImageIcon(resizedImg);
+                ImageIcon icon = new ImageIcon(resizedImg);
                     /*ImgRow[tcolumn] = icon;
                     FilenameRow[tcolumn] = filename;*/
                 ImgFilenameRow[0] = icon;
                 ImgFilenameRow[1] = filename;
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 System.out.println("Error loading image");
             }
 
@@ -513,7 +509,7 @@ public class Utils {
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    public void ImageInfo(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
+    static void ImageInfo(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
 
         String fpath ="";
         List<String> cmdparams = new ArrayList<String>();
@@ -547,7 +543,7 @@ public class Utils {
     }
 
     // This is the "pre-ImageInfo" that is called when the option is chosen to display for a specific Tag Name from the dropdown list without changing the selected image.
-    public void ImageInfoByTagName(JComboBox comboBoxViewByTagName, int SelectedRow, File[] files, JTable ListexiftoolInfotable) {
+    static void ImageInfoByTagName(JComboBox comboBoxViewByTagName, int SelectedRow, File[] files, JTable ListexiftoolInfotable) {
 
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
@@ -558,7 +554,7 @@ public class Utils {
     }
 
     // This is for the "all tags" and "camera makes"
-    public String[] WhichTagSelected(JComboBox comboBoxViewByTagName) {
+    static String[] WhichTagSelected(JComboBox comboBoxViewByTagName) {
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
@@ -568,7 +564,7 @@ public class Utils {
     }
 
     // This is for the Common Tags as they can contain combined info
-    public String[] WhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
+    static String[] WhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
         String[] params = {"-all"}; // We need to initialize with something
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
 
@@ -607,7 +603,7 @@ public class Utils {
     /*
      * This method displays the exiftool info in the right 3-column table
      */
-    public void DisplayInfo(String exiftoolInfo, JTable ListexiftoolInfotable) {
+    private static void DisplayInfo(String exiftoolInfo, JTable ListexiftoolInfotable) {
         // This will display the exif info in the right panel
 
         DefaultTableModel model = (DefaultTableModel)ListexiftoolInfotable.getModel();
@@ -622,10 +618,10 @@ public class Utils {
         if (exiftoolInfo.length() > 0) {
             String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
 
-            for(int i = 0; i < lines.length; i++) {
+            for (String line : lines) {
                 //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
-                String[] cells = lines[i].split("\\t", 3);
-                model.addRow(new Object[] { cells[0], cells[1], cells[2] });
+                String[] cells = line.split("\\t", 3);
+                model.addRow(new Object[]{cells[0], cells[1], cells[2]});
             }
         }
 
@@ -634,7 +630,7 @@ public class Utils {
     /*
      * This method displays the selected image in the default image viewer for the relevant mime-type (the extension mostly)
      */
-    public void DisplayImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
+    public static void DisplayImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         if (isWindows) {
@@ -694,7 +690,7 @@ public class Utils {
         ThumbView.setIcon(icon);
     }
 
-    public void extDisplayImage() {
+    static void extDisplayImage() {
         //myVariables myVars = new myVariables();
 
         //myVars.getMySelectedRow(), myVars.getSelectedImagePath()
@@ -732,7 +728,8 @@ public class Utils {
         return Utils.class.getClassLoader().getResourceAsStream(path);
     }
 
-    static URL getResource(String path) {
+    @SuppressWarnings("SameParameterValue")
+    private static URL getResource(String path) {
         return Utils.class.getClassLoader().getResource(path);
     }
 }
