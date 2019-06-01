@@ -13,7 +13,6 @@ import java.util.List;
 
 public class MetaData {
 
-    Utils myUtils = new Utils();
     progressDialog progdlg = new progressDialog();
 
     public void copytoxmp(int[] selectedIndices, File[] files) {
@@ -28,7 +27,7 @@ public class MetaData {
             // Do something
             boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-            String exiftool = myUtils.platformExiftool();
+            String exiftool = Utils.platformExiftool();
 
             //JDialog prgdlg = progdlg.displayProgressDialog();
             for (int index: selectedIndices) {
@@ -50,7 +49,7 @@ public class MetaData {
                     cmdparams.add(exiftool + " -TagsFromfile " + files[index].getPath() + " '-all:all>xmp:all' -overwrite_original  " + files[index].getPath());
                 }
                 try {
-                    String res = myUtils.runCommand(cmdparams);
+                    String res = Utils.runCommand(cmdparams);
                     System.out.println(res);
                     TotalOutput += res;
                 } catch(IOException | InterruptedException ex) {
@@ -58,7 +57,7 @@ public class MetaData {
                 }
             }
             //progdlg.closeProgressDialog(prgdlg);
-            myUtils.runCommandOutput(TotalOutput);
+            Utils.runCommandOutput(TotalOutput);
         }
 
     }
@@ -71,7 +70,7 @@ public class MetaData {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             //System.out.println("Yes");
-            cmdparams.add(myUtils.platformExiftool());
+            cmdparams.add(Utils.platformExiftool());
             cmdparams.add("-overwrite_original");
             for (String s : MyConstants.repairJPGmetadata) {
                 cmdparams.add(s);
@@ -88,9 +87,9 @@ public class MetaData {
             }
             // export metadata
             try {
-                String res = myUtils.runCommand(cmdparams);
+                String res = Utils.runCommand(cmdparams);
                 System.out.println(res);
-                myUtils.runCommandOutput(res);
+                Utils.runCommandOutput(res);
             } catch(IOException | InterruptedException ex) {
                 System.out.println("Error executing command");
             }
@@ -102,7 +101,7 @@ public class MetaData {
         String fpath ="";
 
         List<String> params = new ArrayList<String>();
-        params.add(myUtils.platformExiftool());
+        params.add(Utils.platformExiftool());
         params.add("-TagsFromfile");
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         if (isWindows) {
@@ -176,9 +175,9 @@ public class MetaData {
                 }
                 // export metadata
                 try {
-                    String res = myUtils.runCommand(params);
+                    String res = Utils.runCommand(params);
                     System.out.println(res);
-                    myUtils.runCommandOutput(res);
+                    Utils.runCommandOutput(res);
                 } catch(IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

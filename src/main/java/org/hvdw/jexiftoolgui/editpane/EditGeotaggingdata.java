@@ -25,12 +25,11 @@ public class EditGeotaggingdata {
     Preferences prefs = Preferences.userRoot();
 
     MyVariables myVars = new MyVariables();
-    Utils myUtils = new Utils();
 
     public String ImgPath(JPanel myComponent) {
         String SelectedFolder;
 
-        String startFolder = myUtils.whichFolderToOpen();
+        String startFolder = Utils.whichFolderToOpen();
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setDialogTitle("Locate the image folder ...");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -45,7 +44,7 @@ public class EditGeotaggingdata {
 
     public String gpsLogFile(JPanel myComponent) {
 
-        String startFolder = myUtils.whichFolderToOpen();
+        String startFolder = Utils.whichFolderToOpen();
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setMultiSelectionEnabled(false);
         String[] filexts = {"gpx", "gps", "log"};
@@ -81,7 +80,7 @@ public class EditGeotaggingdata {
             gpslogfile = gpslogfile.replace("\\", "/");
         }
 
-        cmdparams.add(myUtils.platformExiftool());
+        cmdparams.add(Utils.platformExiftool());
         if (OverwiteOriginals) {
             cmdparams.add("-overwrite_original_in_place");
         }
@@ -134,10 +133,10 @@ public class EditGeotaggingdata {
             @Override
             public void run() {
                 try {
-                    String res = myUtils.runCommand(cmdparams);
+                    String res = Utils.runCommand(cmdparams);
                     System.out.println(res);
                     progressBar.setVisible(false);
-                    myUtils.runCommandOutput(res);
+                    Utils.runCommandOutput(res);
                 } catch(IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

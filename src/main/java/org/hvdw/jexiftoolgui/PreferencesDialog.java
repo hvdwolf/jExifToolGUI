@@ -23,7 +23,6 @@ public class PreferencesDialog extends JDialog {
     JCheckBox CheckVersioncheckBox;
 
     // Initialize all the helper classes
-    Utils myUtils = new Utils();
     MyVariables myVars = new MyVariables();
     //AppPreferences AppPrefs = new AppPreferences();
     Preferences prefs = Preferences.userRoot();
@@ -50,7 +49,7 @@ public class PreferencesDialog extends JDialog {
         ExiftoolLocationbutton.addActionListener(actionEvent -> {
 
             String ETpath = "";
-            ETpath = myUtils.exiftoolLocator(contentPanel);
+            ETpath = Utils.exiftoolLocator(contentPanel);
             exiftoolpath(contentPanel, ExiftoolLocationtextField, ETpath, "preferences");
         });
         ImgStartFolderButton.addActionListener(actionEvent -> DefImgPath(contentPanel, ImgStartFoldertextField));

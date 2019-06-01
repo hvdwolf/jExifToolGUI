@@ -32,7 +32,6 @@ public class ModifyDateTime extends JDialog {
     private JCheckBox UpdateXmpcheckBox;
     private JCheckBox ShiftDateTimecheckBox;
 
-    Utils myUtils = new Utils();
     public int[] selectedFilenamesIndices;
     public File[] files;
 

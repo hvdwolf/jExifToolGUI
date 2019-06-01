@@ -27,7 +27,6 @@ public class ShiftDateTime extends JDialog {
     private JCheckBox BackupOfOriginalscheckBox;
     private JCheckBox UpdatexmpcheckBox;
 
-    Utils myUtils = new Utils();
     public int[] selectedFilenamesIndices;
     public File[] files;
 
@@ -76,7 +75,7 @@ public class ShiftDateTime extends JDialog {
         List<String> cmdparams = new ArrayList<String>();
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-        String exiftool = myUtils.platformExiftool();
+        String exiftool = Utils.platformExiftool();
         cmdparams.clear();
         cmdparams.add(exiftool);
         if (!BackupOfOriginalscheckBox.isSelected()) {
@@ -115,13 +114,13 @@ public class ShiftDateTime extends JDialog {
             }
         }
         try {
-            res = myUtils.runCommand(cmdparams);
+            res = Utils.runCommand(cmdparams);
             System.out.println(res);
         } catch (IOException | InterruptedException ex) {
             System.out.println("Error executing command");
         }
 
-        myUtils.runCommandOutput(res);
+        Utils.runCommandOutput(res);
     }
 
     private void onOK() {

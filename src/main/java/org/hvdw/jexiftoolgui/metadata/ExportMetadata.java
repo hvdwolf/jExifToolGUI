@@ -32,7 +32,6 @@ public class ExportMetadata extends JDialog {
     private JCheckBox exportIptcDataCheckBox;
     private JCheckBox exportICCDataCheckBox;
 
-    Utils myUtils = new Utils();
     public int[] selectedFilenamesIndices;
     public File[] files;
 
@@ -121,7 +120,7 @@ public class ExportMetadata extends JDialog {
 
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-        params.add(myUtils.platformExiftool());
+        params.add(Utils.platformExiftool());
         params.add("-a");
         // which options selected?
         StringBuilder Message = new StringBuilder("<html>You have selected to export:<br>");
@@ -224,9 +223,9 @@ public class ExportMetadata extends JDialog {
                 // Export metadata
                 //String[] etparams = params.toArray(new String[0]);
                 try {
-                    String res = myUtils.runCommand(cmdparams);
+                    String res = Utils.runCommand(cmdparams);
                     System.out.println(res);
-                    myUtils.runCommandOutput(res);
+                    Utils.runCommandOutput(res);
                 } catch (IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

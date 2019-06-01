@@ -15,7 +15,6 @@ import java.util.prefs.Preferences;
 import static org.hvdw.jexiftoolgui.Utils.runCommand;
 
 public class EditXmpdata {
-    Utils myUtils = new Utils();
 
     Preferences prefs = Preferences.userRoot();
     MyVariables myVars = new MyVariables();
@@ -110,7 +109,7 @@ public class EditXmpdata {
         public void writeXmpTags(JTextField[] xmpFields, JTextArea Description, JCheckBox[] xmpBoxes, int[] selectedIndices, File[] files, JProgressBar progressBar) {
             List<String> cmdparams = new ArrayList<String>();
 
-            cmdparams.add(myUtils.platformExiftool());
+            cmdparams.add(Utils.platformExiftool());
             if (!xmpBoxes[9].isSelected()) { // default overwrite originals, when set do not
                 cmdparams.add("-overwrite_original");
             }
@@ -171,10 +170,10 @@ public class EditXmpdata {
                 @Override
                 public void run() {
                     try {
-                        String res = myUtils.runCommand(cmdparams);
+                        String res = Utils.runCommand(cmdparams);
                         System.out.println(res);
                         progressBar.setVisible(false);
-                        myUtils.runCommandOutput(res);
+                        Utils.runCommandOutput(res);
                     } catch(IOException | InterruptedException ex) {
                         System.out.println("Error executing command");
                     }

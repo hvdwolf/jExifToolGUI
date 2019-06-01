@@ -237,7 +237,6 @@ public class mainScreen {
     ListSelectionModel listSelectionModel;
 
     // Initialize all the helper classes
-    //Utils myUtils = new Utils();
     MyVariables myVars = new MyVariables();
     PreferencesDialog prefsDialog = new PreferencesDialog();
     MetaData metaData = new MetaData();
@@ -301,7 +300,6 @@ public class mainScreen {
         }
 
         try {
-            //Utils myUtils = new Utils();
             res = Utils.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
         } catch (IOException | InterruptedException ex) {
             System.out.println("Error executing command");

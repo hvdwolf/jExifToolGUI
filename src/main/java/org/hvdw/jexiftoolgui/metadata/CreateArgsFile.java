@@ -29,7 +29,6 @@ public class CreateArgsFile extends JDialog {
     private JCheckBox exportICCDataCheckBox;
     private JCheckBox makeBackupOfOriginalsCheckBox;
 
-    Utils myUtils = new Utils();
     MyVariables myVars = new MyVariables();
     public int[] selectedFilenamesIndices;
     public File[] files;
@@ -112,7 +111,7 @@ public class CreateArgsFile extends JDialog {
 
 
         List<String> params = new ArrayList<String>();
-        params.add(myUtils.platformExiftool());
+        params.add(Utils.platformExiftool());
 
         // which options selected?
         StringBuilder Message = new StringBuilder("<html>You have selected to export:<br>");
@@ -170,9 +169,9 @@ public class CreateArgsFile extends JDialog {
                 }
                 // export metadata
                 try {
-                    String res = myUtils.runCommand(params);
+                    String res = Utils.runCommand(params);
                     System.out.println(res);
-                    myUtils.runCommandOutput(res);
+                    Utils.runCommandOutput(res);
                 } catch (IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

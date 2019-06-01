@@ -11,7 +11,6 @@ import java.util.List;
 
 public class DateTime {
 
-    Utils myUtils = new Utils();
 
     public void setFileDatetoDateTimeOriginal(int[] selectedIndices, File[] files) {
         List<String> cmdparams = new ArrayList<String>();
@@ -24,14 +23,14 @@ public class DateTime {
             // Do something
             boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
             if (isWindows) {
-                cmdparams.add(myUtils.platformExiftool());
+                cmdparams.add(Utils.platformExiftool());
                 cmdparams.add("-overwrite_original");
                 cmdparams.add("\"-FileModifyDate<DateTimeOriginal\"");
             } else {
                 // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                 cmdparams.add("/bin/sh");
                 cmdparams.add("-c");
-                tmpcmpstring = myUtils.platformExiftool() + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ";
+                tmpcmpstring = Utils.platformExiftool() + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ";
             }
             for (int index: selectedIndices) {
                 //System.out.println("index: " + index + "  image path:" + files[index].getPath());
@@ -46,9 +45,9 @@ public class DateTime {
                 cmdparams.add(tmpcmpstring);
             }
             try {
-                String res = myUtils.runCommand(cmdparams);
+                String res = Utils.runCommand(cmdparams);
                 System.out.println(res);
-                myUtils.runCommandOutput(res);
+                Utils.runCommandOutput(res);
             } catch(IOException | InterruptedException ex) {
                 System.out.println("Error executing command");
             }

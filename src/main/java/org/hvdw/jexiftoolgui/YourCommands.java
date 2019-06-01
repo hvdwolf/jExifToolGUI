@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YourCommands {
-    Utils myUtils = new Utils();
 
     public void ExecuteCommands(String Commands, JTextArea Output, JRadioButton UseNonPropFontradioButton, int[] selectedIndices, File[] files) {
     //public void ExecuteCommands(String Commands, JTextArea Output, int[] selectedIndices, File[] files) {
@@ -23,7 +22,7 @@ public class YourCommands {
         }
         Commands = Commands.trim();
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        String exiftool = myUtils.platformExiftool();
+        String exiftool = Utils.platformExiftool();
 
         //JDialog prgdlg = progdlg.displayProgressDialog();
         //Output.append("<html>");
@@ -48,7 +47,7 @@ public class YourCommands {
                 cmdparams.add(files[index].getPath());
             }
             try {
-                String res = myUtils.runCommand(cmdparams);
+                String res = Utils.runCommand(cmdparams);
                 //System.out.println(res);
                 Output.append("============= \"" + files[index].getPath() +  "\" =============\n");
                 //Output.setText( Output.getText() + "============= \"" + files[index].getPath() +  "\" =============<br>");

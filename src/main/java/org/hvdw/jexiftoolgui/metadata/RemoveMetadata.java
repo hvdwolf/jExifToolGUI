@@ -29,7 +29,6 @@ public class RemoveMetadata extends JDialog {
 
     public int[] selectedFilenamesIndices;
     public File[] files;
-    Utils myUtils = new Utils();
 
 
     public RemoveMetadata() {
@@ -106,7 +105,7 @@ public class RemoveMetadata extends JDialog {
         boolean atLeastOneSelected = false;
 
         List<String> params = new ArrayList<String>();
-        params.add(myUtils.platformExiftool());
+        params.add(Utils.platformExiftool());
         // which options selected?
         StringBuilder Message = new StringBuilder("<html>You have selected to remove:<br>");
         if (removeAllMetadataCheckBox.isSelected()) {
@@ -164,9 +163,9 @@ public class RemoveMetadata extends JDialog {
                 }
                 // remove metadata
                 try {
-                    String res = myUtils.runCommand(params);
+                    String res = Utils.runCommand(params);
                     System.out.println(res);
-                    myUtils.runCommandOutput(res);
+                    Utils.runCommandOutput(res);
                 } catch (IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

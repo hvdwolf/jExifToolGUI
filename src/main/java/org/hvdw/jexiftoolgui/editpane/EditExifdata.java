@@ -15,7 +15,6 @@ import java.util.prefs.Preferences;
 import static org.hvdw.jexiftoolgui.Utils.runCommand;
 
 public class EditExifdata {
-    Utils myUtils = new Utils();
 
     Preferences prefs = Preferences.userRoot();
     MyVariables myVars = new MyVariables();
@@ -49,7 +48,7 @@ public class EditExifdata {
         } else {
             fpath = files[SelectedRow].getPath();
         }
-        cmdparams.add(myUtils.platformExiftool());
+        cmdparams.add(Utils.platformExiftool());
         cmdparams.addAll( Arrays.asList(exifcopyparams));
         cmdparams.add(fpath);
         //System.out.print("before runCommand: " + cmdparams.toString());
@@ -108,7 +107,7 @@ public class EditExifdata {
 
         List<String> cmdparams = new ArrayList<String>();
 
-        cmdparams.add(myUtils.platformExiftool());
+        cmdparams.add(Utils.platformExiftool());
         if (!exifBoxes[9].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
@@ -157,10 +156,10 @@ public class EditExifdata {
             @Override
             public void run() {
                 try {
-                    String res = myUtils.runCommand(cmdparams);
+                    String res = Utils.runCommand(cmdparams);
                     System.out.println(res);
                     progressBar.setVisible(false);
-                    myUtils.runCommandOutput(res);
+                    Utils.runCommandOutput(res);
                 } catch(IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

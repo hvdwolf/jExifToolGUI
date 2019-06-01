@@ -399,7 +399,7 @@ public class Utils {
         return startFolder;
     }
     // Create correct exiftool command call depending on operating system
-    public String platformExiftool() {
+    public static String platformExiftool() {
         // exiftool on windows or other
         String exiftool = prefs.get("exiftool", "");
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
