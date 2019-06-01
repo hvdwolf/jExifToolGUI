@@ -191,7 +191,7 @@ public class Utils {
     // Displays the license in an option pane
     static void License(JPanel myComponent) {
 
-        String license = Utils.ResourceReader("COPYING");
+        String license = ResourceReader("COPYING");
         JTextArea textArea = new JTextArea(license);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
