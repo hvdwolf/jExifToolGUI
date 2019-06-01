@@ -2000,7 +2000,8 @@ public class mainScreen {
                     if (lsm.isSelectedIndex(i)) {
                         System.out.print(" " + i + ",");
                         tmpselectedIndices.add(i);
-                        SelectedRow = i;// Iḿ probably doing something enormously stupid
+                        SelectedRow = i;
+                        // I'm probably doing something enormously stupid
                         // but I don't see another way to set the setter.
                         // It simply doesn't work from this for/void/class
                         myUtils.SetTheSetterForTheSelectedRow(i);

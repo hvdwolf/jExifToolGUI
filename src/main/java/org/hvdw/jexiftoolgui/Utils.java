@@ -506,7 +506,7 @@ public class Utils {
     }
 
     // Only way to make this work?
-    // See lines 1989-1992 in mainScreen.java
+    // See lines 2004-2007 in mainScreen.java
     public void SetTheSetterForTheSelectedRow(int selectedRow) {
         myVars.setSelectedRow(selectedRow);
     }
