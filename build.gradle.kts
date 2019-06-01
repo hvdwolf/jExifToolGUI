@@ -33,7 +33,11 @@ repositories {
 
 dependencies {
 
-
+//    compile("org.slf4j", "slf4j-jdk14", "1.7.26")
+    compile("org.slf4j", "slf4j-api", "1.7.26")
+    compile("org.apache.logging.log4j", "log4j-slf4j-impl", "2.11.2")
+    compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.9.9")
+    compile("com.fasterxml.jackson.core", "jackson-databind", "2.9.9")
     // Add dependencies of forms
     compile(group = "com.intellij", name = "forms_rt", version = "7.0.3")
     testImplementation(group = "junit", name = "junit", version = "4.12")
@@ -44,7 +48,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 
 }
-
 
 val jar by tasks.getting(Jar::class) {
     manifest {

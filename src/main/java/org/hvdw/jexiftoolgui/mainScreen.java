@@ -18,6 +18,8 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -38,6 +40,8 @@ import java.util.prefs.Preferences;
 
 
 public class mainScreen {
+    private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
+
     //private JFrame rootFrame;
     private JMenuBar menuBar;
     private JMenu myMenu;
@@ -307,7 +311,7 @@ public class mainScreen {
         try {
             res = CommandRunner.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
         } catch (IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
+            logger.debug("Error executing command");
             res = ex.getMessage();
         }
 
@@ -324,7 +328,7 @@ public class mainScreen {
         Preferences prefs = Preferences.userRoot();
 
         exiftool_exists = prefs.get("exiftool", null) != null;
-        System.out.println("exiftool_exists reports: " + exiftool_exists);
+        logger.debug("exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
@@ -335,8 +339,8 @@ public class mainScreen {
                 exiftool_path = null;
                 JOptionPane.showMessageDialog(rootPanel, ProgramTexts.ETpreferenceIncorrect, "exiftool preference incorrect", JOptionPane.WARNING_MESSAGE);
             }
-            System.out.println("exists is " + exists);
-            System.out.println("preference exiftool returned: " + exiftool_path);
+            logger.debug("exists is {}", exists);
+            logger.debug("preference exiftool returned: {}",exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
                 res = exiftoolCheck();
             } else {
@@ -348,7 +352,7 @@ public class mainScreen {
                 try {
                     OutputLabel.setText("Exiftool available;  Version: " + CommandRunner.runCommand(cmdparams));
                 } catch (IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
+                    logger.debug("Error executing command");
                 }
 
             }
@@ -356,9 +360,7 @@ public class mainScreen {
             res = exiftoolCheck();
         }
 
-        if (res == null || res.isEmpty() || res.toLowerCase().startsWith("info")) {
-            exiftool_found = false;
-        } else {
+        if (res != null && !res.isEmpty() && !res.toLowerCase().startsWith("info")) {
             exiftool_found = true;
             // We already checked that the node did not exist and that it is empty or null
             // remove all possible line breaks
@@ -405,7 +407,7 @@ public class mainScreen {
         List<Component> compList = new ArrayList<Component>();
         for (Component comp : comps) {
             compList.add(comp);
-            //System.out.println(comp.toString());
+            //logger.debug(comp.toString());
             if (comp instanceof Container) {
                 compList.addAll(getAllComponents((Container) comp));
             }
@@ -1398,7 +1400,7 @@ public class mainScreen {
         // menuListener
         public void actionPerformed(ActionEvent ev) {
             String[] dummy = null;
-            System.out.println("Selected: " + ev.getActionCommand());
+            logger.debug("Selected: {}", ev.getActionCommand());
 
             switch (ev.getActionCommand()) {
                 case "Load Images":
@@ -1786,7 +1788,7 @@ public class mainScreen {
         radioButtonViewAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("button selected: " + radioButtonViewAll.getText());
+                //logger.debug("button selected: {}", radioButtonViewAll.getText());
                 Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
@@ -1874,15 +1876,15 @@ public class mainScreen {
                 for (int j = 0; j < selectedColumns.length; j++) {
                     rowIndex = tableListfiles.getSelectedRow();
                     colIndex = tableListfiles.getSelectedColumn();
-                    tmpselectedIndices.add(new Integer((i * 3) + j));
-                    System.out.println("Selected row: " + i + " Selected column: " + j + " Calculated index: " + String.valueOf((i * 3) + j));
-                    //SelectedCell = ((i *3) + j);
+                    tmpselectedIndices.add((i * 3) + j);
+                    logger.debug("Selected row: {} Selected column: {}  Calculated index: {}" ,i, j, ((i * 3) + j));
+
                 }
             }
 
             selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
             selectedIndicesList = tmpselectedIndices;
-            System.out.println(Arrays.toString(selectedIndices));
+            logger.debug(Arrays.toString(selectedIndices));
             MyVariables.setSelectedFilenamesIndices(selectedIndices);
 
         }
@@ -1902,20 +1904,18 @@ public class mainScreen {
             System.out.print("selected indexes:");
 
             if (lsm.isSelectionEmpty()) {
-                System.out.println("none selected");
+                logger.debug("no index selected");
             } else {
                 // Find out which indexes are selected.
                 int minIndex = lsm.getMinSelectionIndex();
                 int maxIndex = lsm.getMaxSelectionIndex();
                 for (int i = minIndex; i <= maxIndex; i++) {
                     if (lsm.isSelectedIndex(i)) {
-                        System.out.print(" " + i + ",");
                         tmpselectedIndices.add(i);
                         SelectedRow = i;
                         MyVariables.setSelectedRow(i);
                     }
                 }
-                System.out.println("");
                 String[] params = whichRBselected();
                 Utils.getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
 
@@ -2057,7 +2057,7 @@ public class mainScreen {
         try {
             icon = new ImageIcon(ImageIO.read(stream));
         } catch (IOException ex) {
-            System.out.println("Error executing command");
+            logger.debug("Error executing command");
         }
 
         preferences = checkPreferences();
@@ -2096,7 +2096,7 @@ public class mainScreen {
             // terms of the folder/file icons and file names returned by FileSystemView!
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception weTried) {
-            System.out.println(weTried.getMessage());
+           logger.error("Could nod start GUI.", weTried);
         }
 
         frame.pack();
@@ -2106,12 +2106,9 @@ public class mainScreen {
     }
 
     public static void main(String[] args) {
+        logger.debug("Start application");
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+        SwingUtilities.invokeLater(mainScreen::createAndShowGUI);
     }
 }
