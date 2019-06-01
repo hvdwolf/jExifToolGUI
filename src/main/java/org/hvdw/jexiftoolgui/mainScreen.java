@@ -237,7 +237,7 @@ public class mainScreen {
     ListSelectionModel listSelectionModel;
 
     // Initialize all the helper classes
-    Utils myUtils = new Utils();
+    //Utils myUtils = new Utils();
     MyVariables myVars = new MyVariables();
     PreferencesDialog prefsDialog = new PreferencesDialog();
     MetaData metaData = new MetaData();
@@ -301,8 +301,8 @@ public class mainScreen {
         }
 
         try {
-            Utils myUtils = new Utils();
-            res = myUtils.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
+            //Utils myUtils = new Utils();
+            res = Utils.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
         } catch (IOException | InterruptedException ex) {
             System.out.println("Error executing command");
             res = ex.getMessage();
@@ -343,7 +343,7 @@ public class mainScreen {
                 cmdparams.add(res);
                 cmdparams.add("-ver");
                 try {
-                    OutputLabel.setText("Exiftool available;  Version: " + myUtils.runCommand(cmdparams));
+                    OutputLabel.setText("Exiftool available;  Version: " + Utils.runCommand(cmdparams));
                 } catch (IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }
@@ -371,21 +371,21 @@ public class mainScreen {
 
     void LoadImages() {
         OutputLabel.setText("Loading images ....");
-        files = myUtils.getFileNames(mainScreen.this.rootPanel);
+        files = Utils.getFileNames(mainScreen.this.rootPanel);
         myVars.setSelectedFiles(files);
         if (files != null) {
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
+                    Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
                     myVars.setSelectedRow(0);
-                    myUtils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");
                     OutputLabel.setText("");
                     // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
-                    myUtils.progressStatus(progressBar, false);
+                    Utils.progressStatus(progressBar, false);
                 }
             });
             SwingUtilities.invokeLater(new Runnable() {
@@ -425,11 +425,11 @@ public class mainScreen {
         String[] Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = myUtils.ResourceReader("texts/CommonTags.txt");
+        TagNames = Utils.ResourceReader("texts/CommonTags.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = myUtils.ResourceReader("texts/CameraTagNames.txt");
+        TagNames = Utils.ResourceReader("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCameraMake.setModel(new DefaultComboBoxModel(Tags));
 
@@ -1536,16 +1536,16 @@ public class mainScreen {
                     JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ProgramTexts.aboutExifToolText), "About ExifTool by Phil Harvey", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "jExifToolGUI homepage":
-                    myUtils.openBrowser(ProgramTexts.ProjectWebSite);
+                    Utils.openBrowser(ProgramTexts.ProjectWebSite);
                     break;
                 case "ExifTool homepage":
-                    myUtils.openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
+                    Utils.openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
                     break;
                 case "License":
-                    myUtils.License(mainScreen.this.rootPanel);
+                    Utils.License(mainScreen.this.rootPanel);
                     break;
                 case "Check for new version":
-                    myUtils.CheckforNewVersion("menu");
+                    Utils.CheckforNewVersion("menu");
                     break;
                 default:
                     break;
@@ -1567,7 +1567,7 @@ public class mainScreen {
         buttonShowImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                myUtils.extDisplayImage();
+                Utils.extDisplayImage();
             }
         });
 
@@ -1750,7 +1750,7 @@ public class mainScreen {
         gpsMapcoordinatesbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                myUtils.openBrowser("https://www.mapcoordinates.net/en");
+                Utils.openBrowser("https://www.mapcoordinates.net/en");
             }
         });
         gpsHelpbutton.addActionListener(new ActionListener() {
@@ -1825,24 +1825,24 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("button selected: " + radioButtonViewAll.getText());
-                myUtils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String[] params = myUtils.WhichCommonTagSelected(comboBoxViewCommonTags);
-                //myUtils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                myUtils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
+                String[] params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
+                //Utils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtoncommonTags.isSelected()) {
-                    String[] params = myUtils.WhichCommonTagSelected(comboBoxViewCommonTags);
-                    //myUtils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                    myUtils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
+                    String[] params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
+                    //Utils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
@@ -1850,28 +1850,28 @@ public class mainScreen {
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myUtils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonByTagName.isSelected()) {
-                    myUtils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
         radioButtonCameraMakes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                myUtils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewCameraMake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonCameraMakes.isSelected()) {
-                    myUtils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
@@ -1885,11 +1885,11 @@ public class mainScreen {
         if (mainScreen.this.radioButtonViewAll.isSelected()) {
             params = MyConstants.all_params;
         } else if (radioButtoncommonTags.isSelected()) {
-            params = myUtils.WhichCommonTagSelected(comboBoxViewCommonTags);
+            params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
         } else if (radioButtonByTagName.isSelected()) {
-            params = myUtils.WhichTagSelected(comboBoxViewByTagName);
+            params = Utils.WhichTagSelected(comboBoxViewByTagName);
         } else if (radioButtonCameraMakes.isSelected()) {
-            params = myUtils.WhichTagSelected(comboBoxViewCameraMake);
+            params = Utils.WhichTagSelected(comboBoxViewCameraMake);
         }
         return params;
     }
@@ -1953,12 +1953,12 @@ public class mainScreen {
                         // I'm probably doing something enormously stupid
                         // but I don't see another way to set the setter.
                         // It simply doesn't work from this for/void/class
-                        myUtils.SetTheSetterForTheSelectedRow(i);
+                        Utils.SetTheSetterForTheSelectedRow(i);
                     }
                 }
                 System.out.println("");
                 String[] params = whichRBselected();
-                myUtils.ImageInfo(params, files, ListexiftoolInfotable);
+                Utils.ImageInfo(params, files, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;
@@ -1977,7 +1977,7 @@ public class mainScreen {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    myUtils.extDisplayImage();
+                    Utils.extDisplayImage();
                 }
             }
         });
@@ -2080,7 +2080,7 @@ public class mainScreen {
         boolean preferences = false;
         Preferences prefs = Preferences.userRoot();
 
-        myUtils.progressStatus(progressBar, false);
+        Utils.progressStatus(progressBar, false);
 
         createmyMenuBar(frame);
         ViewRadiobuttonListener();
@@ -2104,10 +2104,10 @@ public class mainScreen {
 
         preferences = check_preferences();
         if (!preferences) {
-            myUtils.checkExifTool(mainScreen.this.rootPanel);
+            Utils.checkExifTool(mainScreen.this.rootPanel);
         }
         // Try to set the defaults for artist and copyrights in the edit exif/xmp panes if prefs available
-        String[] prefsArtistCopyRights = myUtils.checkPrefsArtistCopyRights();
+        String[] prefsArtistCopyRights = Utils.checkPrefsArtistCopyRights();
         ExifArtistCreatortextField.setText(prefsArtistCopyRights[0]);
         xmpCreatortextField.setText(prefsArtistCopyRights[0]);
         ExifCopyrighttextField.setText(prefsArtistCopyRights[1]);

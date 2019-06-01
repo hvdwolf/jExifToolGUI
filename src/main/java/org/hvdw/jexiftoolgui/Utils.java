@@ -412,7 +412,7 @@ public class Utils {
     /*
      * Get the files from the "Load images" command
      */
-    File[] getFileNames(JPanel myComponent) {
+    static File[] getFileNames(JPanel myComponent) {
         File[] files = null;
         boolean imageDefaultFolder_exists = false;
         String startFolder = "";
@@ -509,7 +509,7 @@ public class Utils {
 
     // Only way to make this work?
     // See lines 2004-2007 in mainScreen.java
-    public void SetTheSetterForTheSelectedRow(int selectedRow) {
+    public static void SetTheSetterForTheSelectedRow(int selectedRow) {
         myVars.setSelectedRow(selectedRow);
     }
 
