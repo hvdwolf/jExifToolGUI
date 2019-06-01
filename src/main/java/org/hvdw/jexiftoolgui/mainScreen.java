@@ -7,6 +7,7 @@ import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
 import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
 import org.hvdw.jexiftoolgui.editpane.EditExifdata;
+import org.hvdw.jexiftoolgui.editpane.EditGPSdata;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
 import org.hvdw.jexiftoolgui.editpane.EditXmpdata;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
@@ -238,6 +239,7 @@ public class mainScreen {
     EditExifdata EEd = new EditExifdata();
     EditXmpdata EXd = new EditXmpdata();
     EditGeotaggingdata EGd = new EditGeotaggingdata();
+    EditGPSdata EGPSd = new EditGPSdata();
     YourCommands YourCmnds = new YourCommands();
 
 
@@ -274,6 +276,12 @@ public class mainScreen {
     private JRadioButton[] getCopyMetaDataRadiobuttons() {return new JRadioButton[] {copyAllMetadataRadiobutton, copyAllMetadataSameGroupsRadiobutton, copySelectiveMetadataradioButton}; }
     private JCheckBox[] getCopyMetaDataCheckBoxes() {return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, BackupOriginalscheckBox}; }
 
+    private JTextField[] getGPSFields() {
+        return new JTextField[] {gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField};
+    }
+    private JCheckBox[] getGpsBoxes() {
+        return new JCheckBox[] { SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox};
+    }
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -840,7 +848,7 @@ public class mainScreen {
         xmpHelpbutton.setText("Help");
         panel7.add(xmpHelpbutton);
         final JPanel panel8 = new JPanel();
-        panel8.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
+        panel8.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 10), -1, -1));
         tabbedPaneEditfunctions.addTab("gps", panel8);
         gpsLocationPanel = new JPanel();
         gpsLocationPanel.setLayout(new GridLayoutManager(5, 3, new Insets(5, 5, 5, 5), -1, -1));
@@ -920,7 +928,7 @@ public class mainScreen {
         gpsButtonPanel.add(gpsHelpbutton, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsLatLonAltPanel = new JPanel();
         gpsLatLonAltPanel.setLayout(new GridLayoutManager(5, 7, new Insets(5, 5, 5, 5), -1, -1));
-        panel8.add(gpsLatLonAltPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel8.add(gpsLatLonAltPanel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         gpsLatLonAltPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         SaveLatLonAltcheckBox = new JCheckBox();
         SaveLatLonAltcheckBox.setSelected(true);
@@ -945,7 +953,7 @@ public class mainScreen {
         label38.setText("Latitude");
         gpsLatLonAltPanel.add(label38, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsLatDecimaltextField = new JTextField();
-        gpsLatLonAltPanel.add(gpsLatDecimaltextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, 25), null, 0, false));
+        gpsLatLonAltPanel.add(gpsLatDecimaltextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(200, 25), null, 0, false));
         gpsLatdegtextField = new JTextField();
         gpsLatdegtextField.setEditable(false);
         gpsLatLonAltPanel.add(gpsLatdegtextField, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
@@ -972,7 +980,7 @@ public class mainScreen {
         label40.setText("Longitude");
         gpsLatLonAltPanel.add(label40, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsLonDecimaltextField = new JTextField();
-        gpsLatLonAltPanel.add(gpsLonDecimaltextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, 25), null, 0, false));
+        gpsLatLonAltPanel.add(gpsLonDecimaltextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(200, 25), null, 0, false));
         gpsLonDegreestextField = new JTextField();
         gpsLonDegreestextField.setEditable(false);
         gpsLatLonAltPanel.add(gpsLonDegreestextField, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
@@ -992,7 +1000,7 @@ public class mainScreen {
         gpsWestradioButton.setText("W");
         gpsLatLonAltPanel.add(gpsWestradioButton, new GridConstraints(3, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsAltDecimaltextField = new JTextField();
-        gpsLatLonAltPanel.add(gpsAltDecimaltextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, 25), null, 0, false));
+        gpsLatLonAltPanel.add(gpsAltDecimaltextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(200, 25), null, 0, false));
         gpsAboveSealevelcheckBox = new JCheckBox();
         gpsAboveSealevelcheckBox.setSelected(false);
         gpsAboveSealevelcheckBox.setText("Above sea level");
@@ -1678,19 +1686,24 @@ public class mainScreen {
         gpsCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                EGPSd.copygpsfromselected(getGPSFields(), getGpsBoxes(), files, SelectedRow);
             }
         });
         gpsSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                if (selectedIndicesList.size() > 0) {
+                    EGPSd.writeGPSTags(getGPSFields(), getGpsBoxes(), selectedIndices, files, progressBar);
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
+                }
             }
+
         });
         gpsResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                EGPSd.resetfields(getGPSFields());
             }
         });
         gpsMapcoordinatesbutton.addActionListener(new ActionListener() {
@@ -1702,7 +1715,7 @@ public class mainScreen {
         gpsHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, HelpTexts.GPSHelp), "Help for the GPS-Location edit panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         decimalToMinutesSecondsButton.addActionListener(new ActionListener() {

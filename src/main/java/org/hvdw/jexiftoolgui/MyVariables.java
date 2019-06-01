@@ -57,6 +57,14 @@ public class MyVariables {
         this.selectedFiles = new File[openedFiles.length];
         System.arraycopy(openedFiles, 0, this.selectedFiles, 0, openedFiles.length);
     }
+    /* Or ???
+    public void setSelectedFiles(File[] openedFiles) {
+        this.selectedFiles = Arrays.copyOf(openedFiles, openedFiles.length);
+    }
+    public File[] getSelectedFiles() {
+        return Arrays.copyOf(selectedFiles, selectedFiles.length);
+    }
+    */
 
     private int[] selectedFilenamesIndices;
     public int[] getSelectedFilenamesIndices() {

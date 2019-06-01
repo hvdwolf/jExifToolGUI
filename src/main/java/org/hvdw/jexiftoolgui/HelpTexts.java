@@ -29,6 +29,9 @@ public class HelpTexts {
             + "<p>In case of the first option you need to leave the folder empty. If the \"Folder containing the images:\" is not left empty, it will always be the first option used.<br><br>"
             + "The \"Overwrite Originals\" checkbox (default selected) makes that exiftool does an \"in place\" modification. When unselected new images will be created and the orignals get the extension \".original\"<br><br>"
             + "Note that jExifToolGUI will write both the EXIF GPS tags as well as the XMP GPS tags.";
+    public static final String GPSHelp = "This tab is used to add GPS data to your images. This tab works on a combination of exif, xmp and iptc gps data as latitude, longitude and altitude are covered in both the exif and in the xmp metadata structure.<br><br>"
+            + "The Location metadata details (Country, Province/State, city, Location) are covered by xmp and IPTC.<br><br>This tab therefore acts on multiple tag categories (exif, xmp and iptc) "
+            + "at once and simply tries to make your gps/location data as complete as possible in the several tag categories.";
     public static final String YourCommandsHelp = "On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
             + "<br>You can both specify read parameters as well as write parameters but not in one command: write actions take precedence. You can also combine several parameters. "
             + "<b>Note:</b> You don't need (must not) provide the exiftool command itself. The Gui will take care of that.<br>"
