@@ -1,0 +1,39 @@
+This is just a temporary Changelog to note down what is working while still building
+for a V1.0 release
+
+Main screen:
+= "View Data" panel				: Working
+= Edit Data panel
+  - Exif					: Working
+  - xmp						: Working
+  - gps						: Working (2019-06-01), calculator to be done (or to be removed?)
+  - Geotagging					: Working
+  - Gpano					: TO BE DONE
+  - IPTC					: nowadays hardly used anymore. To be removed?
+= Copy Data					: working
+= Your Commands					: Working
+
+Menu
+= File
+  - Load Images					: Working
+  - Preferences					: Working
+  - Exit					: Working
+= Extra		-> Does this need a better name?
+  - Rename photos				: TO BE DONE
+  - Export metadata				: Working
+  - Copy allmetadat to xmp format		: Working
+  - Remove metadata				: Working
+  - Shift date/time				: Working
+  - Modify Date/Time				: TO BE DONE
+  - Set filedate to DateTimeOriginal		: Working
+  - Repair JPG(s) with corrupted metada		: Working
+  - Create args file(s)				: Working
+= Help
+  - jExifToolGUI homepage			: Working
+  - ExifTool homepage				: Working
+  - Manual					: TO BE DONE? Or simply copy from https://hvdwolf.github.io/pyExifToolGUI/manual/pyexiftoolgui.html
+  - Donate					: TO BE DONE
+  - License					: Working
+  - Check for new version			: Working
+  - About ExifTool				: Working
+  - About jExifToolGUI				: Working 
