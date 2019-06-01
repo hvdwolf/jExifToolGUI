@@ -168,7 +168,6 @@ public class Utils {
         } catch(IOException ex) {
             System.out.println("Error reading file '" + fileName + "'");
         }
-        //strFileContents = "<html><table width='600'><tr><td>" + strFileContents + "</td></tr></html>";
         return strFileContents;
     }
 
@@ -191,9 +190,8 @@ public class Utils {
 
     // Displays the license in an option pane
     static void License(JPanel myComponent) {
-        ImageIcon icon = null;
 
-        String license = ResourceReader("resources/COPYING");
+        String license = Utils.ResourceReader("COPYING");
         JTextArea textArea = new JTextArea(license);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
