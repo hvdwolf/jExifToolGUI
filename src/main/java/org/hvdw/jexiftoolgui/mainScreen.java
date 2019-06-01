@@ -372,14 +372,14 @@ public class mainScreen {
     void LoadImages() {
         OutputLabel.setText("Loading images ....");
         files = myUtils.getFileNames(mainScreen.this.rootPanel);
+        myVars.setSelectedFiles(files);
         if (files != null) {
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
+                    myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
                     myVars.setSelectedRow(0);
-                    //myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
                     myUtils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");

@@ -35,13 +35,37 @@ public class MyVariables {
         this.SelectedImagePath = selImgPath;
     }
 
+    /* from: https://www.codejava.net/coding/java-getter-and-setter-tutorial-from-basics-to-best-practices
+    private int[] scores;
+    public int[] getScores() {
+        int[] copy = new int[this.scores.length];
+        System.arraycopy(this.scores, 0, copy, 0, copy.length);
+        return copy;
+    }
+    public void setScores(int[] scr) {
+        this.scores = new int[scr.length];
+        System.arraycopy(scr, 0, this.scores, 0, scr.length);
+    }*/
+
     private File[] selectedFiles;
     public File[] getSelectedFiles() {
-        return this.selectedFiles;
+        File[] copy = new File[this.selectedFiles.length];
+        System.arraycopy(this.selectedFiles, 0, copy, 0, copy.length);
+        return copy;
     }
-    public void setSelectedFiles(File[] openedFiles) { this.selectedFiles = openedFiles; }
+    public void setSelectedFiles(File[] openedFiles) {
+        this.selectedFiles = new File[openedFiles.length];
+        System.arraycopy(openedFiles, 0, this.selectedFiles, 0, openedFiles.length);
+    }
 
     private int[] selectedFilenamesIndices;
-    public int[] getSelectedFilenamesIndices() { return this.selectedFilenamesIndices; }
-    public void setSelectedFilenamesIndices(int[] selectedTableIndices) { this.selectedFilenamesIndices = selectedTableIndices; }
+    public int[] getSelectedFilenamesIndices() {
+        int[] copy = new int[this.selectedFilenamesIndices.length];
+        System.arraycopy(this.selectedFilenamesIndices, 0, copy, 0, copy.length);
+        return copy;
+    }
+    public void setSelectedFilenamesIndices(int[] selectedTableIndices) {
+        this.selectedFilenamesIndices = new int[selectedTableIndices.length];
+        System.arraycopy(selectedTableIndices, 0, this.selectedFilenamesIndices, 0, selectedTableIndices.length);
+    }
 }

@@ -443,9 +443,11 @@ public class Utils {
     /*
      * Display the loaded files with icon and name
      */
-    static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
+    //static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
+    static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
 
         int selectedRow, selectedColumn;
+        File[] files = myVars.getSelectedFiles();
         DefaultTableModel model = (DefaultTableModel)jTable_File_Names.getModel();
         //model.setColumnIdentifiers(new String[]{"File Name(s)"});
         //ListexiftoolInfotable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());

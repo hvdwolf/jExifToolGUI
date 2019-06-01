@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 
@@ -29,6 +30,7 @@ public class CreateArgsFile extends JDialog {
     private JCheckBox makeBackupOfOriginalsCheckBox;
 
     Utils myUtils = new Utils();
+    MyVariables myVars = new MyVariables();
     public int[] selectedFilenamesIndices;
     public File[] files;
 
@@ -187,6 +189,7 @@ public class CreateArgsFile extends JDialog {
         // first set the public variables I need
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
+        //files = myVars.getSelectedFiles();
 
         //Now do the gui
         pack();
