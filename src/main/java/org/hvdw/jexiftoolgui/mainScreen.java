@@ -219,6 +219,7 @@ public class mainScreen {
     private JLabel GeotaggingLocationLabel;
     private JButton resetGeotaggingbutton;
     private JLabel GeotaggingGeosyncExplainLabel;
+    private JTextField gpsAltDecimaltextField;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
@@ -1014,10 +1015,6 @@ public class mainScreen {
         final JLabel label44 = new JLabel();
         label44.setText("Altitude");
         gpsLatLonAltPanel.add(label44, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpsAboveSealevelcheckBox = new JCheckBox();
-        gpsAboveSealevelcheckBox.setSelected(false);
-        gpsAboveSealevelcheckBox.setText("Above sea level");
-        gpsLatLonAltPanel.add(gpsAboveSealevelcheckBox, new GridConstraints(4, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsNorthradioButton = new JRadioButton();
         gpsNorthradioButton.setEnabled(false);
         gpsNorthradioButton.setSelected(true);
@@ -1050,9 +1047,15 @@ public class mainScreen {
         gpsWestradioButton.setEnabled(false);
         gpsWestradioButton.setText("W");
         gpsLatLonAltPanel.add(gpsWestradioButton, new GridConstraints(3, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsAltDecimaltextField = new JTextField();
+        gpsLatLonAltPanel.add(gpsAltDecimaltextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, 25), null, 0, false));
+        gpsAboveSealevelcheckBox = new JCheckBox();
+        gpsAboveSealevelcheckBox.setSelected(false);
+        gpsAboveSealevelcheckBox.setText("Above sea level");
+        gpsLatLonAltPanel.add(gpsAboveSealevelcheckBox, new GridConstraints(4, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsCalculationPanel = new JPanel();
         gpsCalculationPanel.setLayout(new GridLayoutManager(4, 8, new Insets(5, 5, 5, 5), -1, -1));
-        panel8.add(gpsCalculationPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel8.add(gpsCalculationPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         gpsCalculationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         gpsCalculatorLabelText = new JLabel();
         gpsCalculatorLabelText.setText("Label");
