@@ -111,55 +111,6 @@
                       <text value="All"/>
                     </properties>
                   </component>
-                  <component id="1833f" class="javax.swing.JRadioButton" binding="radioButtonViewExif">
-                    <constraints/>
-                    <properties>
-                      <text value="Exif"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                  <component id="a3253" class="javax.swing.JRadioButton" binding="radioButtonViewXMP">
-                    <constraints/>
-                    <properties>
-                      <text value="xmp"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                  <component id="6bd4" class="javax.swing.JRadioButton" binding="radioButtonViewIPTC">
-                    <constraints/>
-                    <properties>
-                      <text value="IPTC"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                  <component id="455e3" class="javax.swing.JRadioButton" binding="radioButtonViewGPS">
-                    <constraints/>
-                    <properties>
-                      <text value="GPS/Location"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                  <component id="e001d" class="javax.swing.JRadioButton" binding="radioButtonViewGPano">
-                    <constraints/>
-                    <properties>
-                      <text value="GPano"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                  <component id="a7fcd" class="javax.swing.JRadioButton" binding="radioButtonViewICC">
-                    <constraints/>
-                    <properties>
-                      <text value="ICC_profile"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                  <component id="1a365" class="javax.swing.JRadioButton" binding="radioButtonViewMakernotes">
-                    <constraints/>
-                    <properties>
-                      <text value="Makernotes"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
                   <component id="5955a" class="javax.swing.JRadioButton" binding="radioButtoncommonTags">
                     <constraints/>
                     <properties>

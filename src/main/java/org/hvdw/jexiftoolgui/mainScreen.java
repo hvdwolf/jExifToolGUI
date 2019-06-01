@@ -45,13 +45,6 @@ public class mainScreen {
     private JPanel LeftPanel;
     private JPanel LeftbuttonBar;
     private JRadioButton radioButtonViewAll;
-    private JRadioButton radioButtonViewExif;
-    private JRadioButton radioButtonViewXMP;
-    private JRadioButton radioButtonViewGPS;
-    private JRadioButton radioButtonViewIPTC;
-    private JRadioButton radioButtonViewGPano;
-    private JRadioButton radioButtonViewICC;
-    private JRadioButton radioButtonViewMakernotes;
     private JPanel ViewRadiobuttonpanel;
     private JPanel ViewDatapanel;
     private JScrollPane ViewDatascrollpanel;
@@ -504,34 +497,6 @@ public class mainScreen {
         radioButtonViewAll.setSelected(true);
         radioButtonViewAll.setText("All");
         ViewRadiobuttonpanel.add(radioButtonViewAll);
-        radioButtonViewExif = new JRadioButton();
-        radioButtonViewExif.setText("Exif");
-        radioButtonViewExif.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewExif);
-        radioButtonViewXMP = new JRadioButton();
-        radioButtonViewXMP.setText("xmp");
-        radioButtonViewXMP.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewXMP);
-        radioButtonViewIPTC = new JRadioButton();
-        radioButtonViewIPTC.setText("IPTC");
-        radioButtonViewIPTC.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewIPTC);
-        radioButtonViewGPS = new JRadioButton();
-        radioButtonViewGPS.setText("GPS/Location");
-        radioButtonViewGPS.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewGPS);
-        radioButtonViewGPano = new JRadioButton();
-        radioButtonViewGPano.setText("GPano");
-        radioButtonViewGPano.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewGPano);
-        radioButtonViewICC = new JRadioButton();
-        radioButtonViewICC.setText("ICC_profile");
-        radioButtonViewICC.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewICC);
-        radioButtonViewMakernotes = new JRadioButton();
-        radioButtonViewMakernotes.setText("Makernotes");
-        radioButtonViewMakernotes.setVisible(false);
-        ViewRadiobuttonpanel.add(radioButtonViewMakernotes);
         radioButtoncommonTags = new JRadioButton();
         radioButtoncommonTags.setText("Common Tags");
         ViewRadiobuttonpanel.add(radioButtoncommonTags);
@@ -1854,22 +1819,6 @@ public class mainScreen {
     }
 
     void ViewRadiobuttonListener() {
-        //String[] params;
-        /*ButtonGroup ViewRbtns = new ButtonGroup();
-        ViewRbtns.add(mainScreen.this.radioButtonViewAll);
-        ViewRbtns.add(mainScreen.this.radioButtonByTagName);
-        ViewRbtns.add(mainScreen.this.radioButtoncommonTags);
-        ViewRbtns.add(mainScreen.this.radioButtonCameraMakes);
-        ViewRbtns.add(mainScreen.this.radioButtonViewExif);
-        ViewRbtns.add(mainScreen.this.radioButtonViewXMP);
-        ViewRbtns.add(mainScreen.this.radioButtonViewIPTC);
-        ViewRbtns.add(mainScreen.this.radioButtonViewGPS);
-        ViewRbtns.add(mainScreen.this.radioButtonViewGPano);
-        ViewRbtns.add(mainScreen.this.radioButtonViewICC);
-        ViewRbtns.add(mainScreen.this.radioButtonViewMakernotes); */
-
-
-        //MyVariables myVars = new MyVariables();
 
         //Add listeners
         radioButtonViewAll.addActionListener(new ActionListener() {
