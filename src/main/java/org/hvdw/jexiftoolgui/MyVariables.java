@@ -15,12 +15,16 @@ public class MyVariables {
         this.mySelectedRow = num;
     }
 
-    private int mySelectedColumn;
-    public int getMySelectedColumn() {
-        return this.mySelectedColumn;
+    private int SelectedRow;
+    public int getSelectedRow() { return this.SelectedRow;}
+    public void setSelectedRow(int index) {this.SelectedRow = index; }
+
+    private int SelectedColumn;
+    public int getSelectedColumn() {
+        return this.SelectedColumn;
     }
-    public void setMySelectedColumn(int num) {
-        this.mySelectedColumn = num;
+    public void setSelectedColumn(int num) {
+        this.SelectedColumn = num;
     }
 
     private String SelectedImagePath;

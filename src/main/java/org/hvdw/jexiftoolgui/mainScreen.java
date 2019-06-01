@@ -385,7 +385,9 @@ public class mainScreen {
                 @Override
                 public void run() {
                     myUtils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel, files);
-                    myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
+                    myVars.setSelectedRow(0);
+                    //myUtils.ImageInfo(MyConstants.all_params, 0, files, mainScreen.this.ListexiftoolInfotable);
+                    myUtils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");
                     OutputLabel.setText("");
@@ -1874,7 +1876,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("button selected: " + radioButtonViewAll.getText());
-                myUtils.ImageInfo(MyConstants.all_params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                myUtils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
@@ -1882,7 +1884,7 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 String[] params = myUtils.WhichCommonTagSelected(comboBoxViewCommonTags);
                 //myUtils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                myUtils.ImageInfo(params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                myUtils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
@@ -1891,7 +1893,7 @@ public class mainScreen {
                 if (radioButtoncommonTags.isSelected()) {
                     String[] params = myUtils.WhichCommonTagSelected(comboBoxViewCommonTags);
                     //myUtils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                    myUtils.ImageInfo(params, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                    myUtils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
@@ -1899,28 +1901,28 @@ public class mainScreen {
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myUtils.ImageInfoByTagName(comboBoxViewByTagName, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                myUtils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonByTagName.isSelected()) {
-                    myUtils.ImageInfoByTagName(comboBoxViewByTagName, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                    myUtils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
         radioButtonCameraMakes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                myUtils.ImageInfoByTagName(comboBoxViewCameraMake, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                myUtils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewCameraMake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonCameraMakes.isSelected()) {
-                    myUtils.ImageInfoByTagName(comboBoxViewCameraMake, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                    myUtils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
@@ -1998,12 +2000,15 @@ public class mainScreen {
                     if (lsm.isSelectedIndex(i)) {
                         System.out.print(" " + i + ",");
                         tmpselectedIndices.add(i);
-                        SelectedRow = i;
+                        SelectedRow = i;// Iḿ probably doing something enormously stupid
+                        // but I don't see another way to set the setter.
+                        // It simply doesn't work from this for/void/class
+                        myUtils.SetTheSetterForTheSelectedRow(i);
                     }
                 }
                 System.out.println("");
                 String[] params = whichRBselected();
-                myUtils.ImageInfo(params, SelectedRow, files, ListexiftoolInfotable);
+                myUtils.ImageInfo(params, files, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;

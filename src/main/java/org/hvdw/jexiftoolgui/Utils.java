@@ -501,18 +501,25 @@ public class Utils {
             model.addRow(ImgFilenameRow);
         }
 
-        myVars.setMySelectedRow(0);
-        myVars.setMySelectedColumn(0);
+        myVars.setSelectedRow(0);
+        myVars.setSelectedColumn(0);
     }
 
+    // Only way to make this work?
+    // See lines 1989-1992 in mainScreen.java
+    public void SetTheSetterForTheSelectedRow(int selectedRow) {
+        myVars.setSelectedRow(selectedRow);
+    }
 
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    static void ImageInfo(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
+    //static void ImageInfo(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
+    static void ImageInfo(String[] whichInfo, File[] files, JTable ListexiftoolInfotable) {
 
         String fpath ="";
         List<String> cmdparams = new ArrayList<String>();
+        int selectedRow = myVars.getSelectedRow();
 
         //System.out.println("selectedRow: " + String.valueOf(selectedRow));
         String exiftool = prefs.get("exiftool", "");
@@ -543,14 +550,14 @@ public class Utils {
     }
 
     // This is the "pre-ImageInfo" that is called when the option is chosen to display for a specific Tag Name from the dropdown list without changing the selected image.
-    static void ImageInfoByTagName(JComboBox comboBoxViewByTagName, int SelectedRow, File[] files, JTable ListexiftoolInfotable) {
+    static void ImageInfoByTagName(JComboBox comboBoxViewByTagName, File[] files, JTable ListexiftoolInfotable) {
 
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
         params[1] = "-G";
         params[2] = "-tab";
-        ImageInfo(params, SelectedRow, files, ListexiftoolInfotable);
+        ImageInfo(params, files, ListexiftoolInfotable);
     }
 
     // This is for the "all tags" and "camera makes"
