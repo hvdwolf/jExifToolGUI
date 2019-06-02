@@ -373,8 +373,8 @@ public class mainScreen {
     void LoadImages() {
         OutputLabel.setText("Loading images ....");
         files = Utils.getFileNames(mainScreen.this.rootPanel);
-        myVars.setSelectedFiles(files);
         if (files != null) {
+            myVars.setSelectedFiles(files);
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
