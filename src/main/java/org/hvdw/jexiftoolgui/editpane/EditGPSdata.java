@@ -30,6 +30,7 @@ public class EditGPSdata {
     }
 
     public void copygpsfromselected(JTextField[] gpsFields, JCheckBox[] gpsBoxes, File[] files, int SelectedRow) {
+        // Use "-n" for numerical values, like GPSAltitudeRef 0/1, instead of Above Sea Level/Below Sea Level
         String[] gpscopyparams = {"-e","-n","-exif:GPSLatitude","-exif:GPSLongitude","-exif:GPSAltitude","-exif:GPSAltitudeRef","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
         String fpath ="";
         String res = "";
