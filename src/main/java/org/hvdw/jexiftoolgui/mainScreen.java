@@ -381,7 +381,9 @@ public class mainScreen {
                 public void run() {
                     Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
                     myVars.setSelectedRow(0);
-                    Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
+                    String[] params = whichRBselected();
+                    //Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");
                     OutputLabel.setText("");
@@ -1429,6 +1431,7 @@ public class mainScreen {
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Repairing jpg data, please be patient ...");
                         metaData.repairJPGmetadata(selectedIndices, files, progressBar);
+                        //metaData.repairJPGmetadata( progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1857,7 +1860,7 @@ public class mainScreen {
     // This is the general table listener that also enables multi row/column selection
     // to handle further functions
     // Not use anymore
-    class SharedListSelectionListener implements ListSelectionListener {
+    /*class SharedListSelectionListener implements ListSelectionListener {
 
         public void valueChanged(ListSelectionEvent e) {
             //int SelectedCell = 0;
@@ -1884,7 +1887,7 @@ public class mainScreen {
             myVars.setSelectedFilenamesIndices(selectedIndices);
 
         }
-    }
+    } */
 
     // This is the general table listener that also enables multi row selection
     class SharedListSelectionHandler implements ListSelectionListener {
@@ -1923,7 +1926,8 @@ public class mainScreen {
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;
                 //System.out.println(Arrays.toString(selectedIndices));
-                myVars.setSelectedFilenamesIndices(selectedIndices);
+                Utils.SetTheSetterForTheSelectedFilenamesIndices(selectedIndices);
+                //myVars.setSelectedFilenamesIndices(selectedIndices);
             }
 
         }
