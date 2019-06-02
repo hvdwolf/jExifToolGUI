@@ -1,18 +1,18 @@
 package org.hvdw.jexiftoolgui.datetime;
 
+import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DateTime {
 
 
-    public void setFileDatetoDateTimeOriginal(int[] selectedIndices, File[] files) {
+    public void setFileDatetoDateTimeOriginal(int[] selectedIndices, File[] files, JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         String tmpcmpstring = "";
         String[] options = {"No", "Yes"};
@@ -44,13 +44,7 @@ public class DateTime {
             if (!isWindows) {
                 cmdparams.add(tmpcmpstring);
             }
-            try {
-                String res = Utils.runCommand(cmdparams);
-                System.out.println(res);
-                Utils.runCommandOutput(res);
-            } catch(IOException | InterruptedException ex) {
-                System.out.println("Error executing command");
-            }
+            CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
         }
      }
 

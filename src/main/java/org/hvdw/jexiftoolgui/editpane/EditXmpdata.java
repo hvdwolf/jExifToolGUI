@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.editpane;
 
+import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.MyVariables;
 
@@ -9,10 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.prefs.Preferences;
 
-import static org.hvdw.jexiftoolgui.Utils.runCommand;
 
 public class EditXmpdata {
 
@@ -54,9 +53,8 @@ public class EditXmpdata {
         cmdparams.add(exiftool);
         cmdparams.addAll(Arrays.asList(xmpcopyparams));
         cmdparams.add(fpath);
-        //System.out.print("before runCommand: " + cmdparams.toString());
         try {
-            res = runCommand(cmdparams);
+            res = CommandRunner.runCommand(cmdparams);
             System.out.println("res is\n" + res);
         } catch (IOException | InterruptedException ex) {
             System.out.println("Error executing command");
@@ -164,28 +162,6 @@ public class EditXmpdata {
                 }
             }
 
-            // Create executor thread to be able to update my gui when longer methods run
-            Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String res = Utils.runCommand(cmdparams);
-                        System.out.println(res);
-                        progressBar.setVisible(false);
-                        Utils.runCommandOutput(res);
-                    } catch(IOException | InterruptedException ex) {
-                        System.out.println("Error executing command");
-                    }
-
-                }
-            });
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    progressBar.setVisible(true);
-                }
-            });
-
-
+            CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
         }
 }

@@ -282,6 +282,7 @@ public class mainScreen {
     private JCheckBox[] getGpsBoxes() {
         return new JCheckBox[] { SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox};
     }
+
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -302,7 +303,7 @@ public class mainScreen {
         }
 
         try {
-            res = Utils.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
+            res = CommandRunner.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
         } catch (IOException | InterruptedException ex) {
             System.out.println("Error executing command");
             res = ex.getMessage();
@@ -343,7 +344,7 @@ public class mainScreen {
                 cmdparams.add(res);
                 cmdparams.add("-ver");
                 try {
-                    OutputLabel.setText("Exiftool available;  Version: " + Utils.runCommand(cmdparams));
+                    OutputLabel.setText("Exiftool available;  Version: " + CommandRunner.runCommand(cmdparams));
                 } catch (IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }
@@ -1419,7 +1420,7 @@ public class mainScreen {
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Copying all relevant data to its xmp variants, please be patient ...");
                         metaData.copytoxmp(selectedIndices, files);
-                        OutputLabel.setText("Inactive ...");
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1428,7 +1429,7 @@ public class mainScreen {
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Repairing jpg data, please be patient ...");
                         metaData.repairJPGmetadata(selectedIndices, files, progressBar);
-                        OutputLabel.setText("Inactive ...");
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1436,7 +1437,7 @@ public class mainScreen {
                 case "Export metadata":
                     if (selectedIndicesList.size() > 0) {
                         ExportMetadata expMetadata = new ExportMetadata();
-                        expMetadata.showDialog(selectedIndices, files);
+                        expMetadata.showDialog(selectedIndices, files, progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1444,8 +1445,8 @@ public class mainScreen {
                 case "Remove metadata":
                     if (selectedIndicesList.size() > 0) {
                         RemoveMetadata rmMetadata = new RemoveMetadata();
-                        rmMetadata.showDialog(selectedIndices, files);
-                        OutputLabel.setText("Inactive ...");
+                        rmMetadata.showDialog(selectedIndices, files, progressBar);
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1453,8 +1454,8 @@ public class mainScreen {
                 case "Shift Date/time":
                     if (selectedIndicesList.size() > 0) {
                         ShiftDateTime SDT = new ShiftDateTime();
-                        SDT.showDialog(selectedIndices, files);
-                        OutputLabel.setText("Inactive ...");
+                        SDT.showDialog(selectedIndices, files, progressBar);
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1463,14 +1464,14 @@ public class mainScreen {
                     if (selectedIndicesList.size() > 0) {
                         ModifyDateTime MDT = new ModifyDateTime();
                         MDT.showDialog(selectedIndices, files);
-                        OutputLabel.setText("Inactive ...");
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
                 case "Set file date to DateTimeOriginal":
                     if (selectedIndicesList.size() > 0) {
-                        dateTime.setFileDatetoDateTimeOriginal(selectedIndices, files);
+                        dateTime.setFileDatetoDateTimeOriginal(selectedIndices, files, progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1478,7 +1479,7 @@ public class mainScreen {
                 case "Create args file(s)":
                     if (selectedIndicesList.size() > 0) {
                         CreateArgsFile CAF = new CreateArgsFile();
-                        CAF.showDialog(selectedIndices, files);
+                        CAF.showDialog(selectedIndices, files, progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1765,7 +1766,7 @@ public class mainScreen {
         CopyDataCopyTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files);
+                metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files, progressBar);
             }
         });
         CopyHelpbutton.addActionListener(new ActionListener() {

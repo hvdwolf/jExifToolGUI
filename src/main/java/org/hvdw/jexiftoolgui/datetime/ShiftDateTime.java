@@ -3,8 +3,10 @@ package org.hvdw.jexiftoolgui.datetime;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.mainScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +31,7 @@ public class ShiftDateTime extends JDialog {
 
     public int[] selectedFilenamesIndices;
     public File[] files;
+    public JProgressBar progBar;
 
     public ShiftDateTime() {
         setContentPane(contentPane);
@@ -113,14 +116,8 @@ public class ShiftDateTime extends JDialog {
                 cmdparams.add(files[index].getPath());
             }
         }
-        try {
-            res = Utils.runCommand(cmdparams);
-            System.out.println(res);
-        } catch (IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
-        }
 
-        Utils.runCommandOutput(res);
+        CommandRunner.RunCommandWithProgress(cmdparams, progBar);
     }
 
     private void onOK() {
@@ -133,9 +130,10 @@ public class ShiftDateTime extends JDialog {
         dispose();
     }
 
-    public void showDialog(int[] selectedIndices, File[] openedfiles) {
+    public void showDialog(int[] selectedIndices, File[] openedfiles, JProgressBar progressBar) {
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
+        progBar = progressBar;
 
         pack();
         setLocationByPlatform(true);

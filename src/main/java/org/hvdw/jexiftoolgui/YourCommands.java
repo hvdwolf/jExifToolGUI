@@ -47,7 +47,7 @@ public class YourCommands {
                 cmdparams.add(files[index].getPath());
             }
             try {
-                String res = Utils.runCommand(cmdparams);
+                String res = CommandRunner.runCommand(cmdparams);
                 //System.out.println(res);
                 Output.append("============= \"" + files[index].getPath() +  "\" =============\n");
                 //Output.setText( Output.getText() + "============= \"" + files[index].getPath() +  "\" =============<br>");

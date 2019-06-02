@@ -1,9 +1,6 @@
 package org.hvdw.jexiftoolgui.metadata;
 
-import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.ProgramTexts;
-import org.hvdw.jexiftoolgui.Utils;
-import org.hvdw.jexiftoolgui.progressDialog;
+import org.hvdw.jexiftoolgui.*;
 
 import javax.swing.*;
 import java.io.File;
@@ -49,15 +46,14 @@ public class MetaData {
                     cmdparams.add(exiftool + " -TagsFromfile " + files[index].getPath() + " '-all:all>xmp:all' -overwrite_original  " + files[index].getPath());
                 }
                 try {
-                    String res = Utils.runCommand(cmdparams);
+                    String res = CommandRunner.runCommand(cmdparams);
                     System.out.println(res);
                     TotalOutput += res;
                 } catch(IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }
             }
-            //progdlg.closeProgressDialog(prgdlg);
-            Utils.runCommandOutput(TotalOutput);
+            CommandRunner.OutputAfterCommand(TotalOutput);
         }
 
     }
@@ -86,17 +82,18 @@ public class MetaData {
                 }
             }
             // export metadata
-            try {
+            /*try {
                 String res = Utils.runCommand(cmdparams);
                 System.out.println(res);
                 Utils.runCommandOutput(res);
             } catch(IOException | InterruptedException ex) {
                 System.out.println("Error executing command");
-            }
+            } */
+            CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
         }
     }
 
-    public void CopyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, int[] selectedIndices, File[] files) {
+    public void CopyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, int[] selectedIndices, File[] files, JProgressBar progressBar) {
         boolean atLeastOneSelected = false;
         String fpath ="";
 
@@ -174,13 +171,7 @@ public class MetaData {
                     }
                 }
                 // export metadata
-                try {
-                    String res = Utils.runCommand(params);
-                    System.out.println(res);
-                    Utils.runCommandOutput(res);
-                } catch(IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
-                }
+                CommandRunner.RunCommandWithProgress(params, progressBar);
             }
         } else {
             JOptionPane.showMessageDialog(null, ProgramTexts.NoOptionSelected,"No copy option selected",JOptionPane.WARNING_MESSAGE);

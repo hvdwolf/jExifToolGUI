@@ -25,65 +25,12 @@ public class Utils {
     private static MyVariables myVars = new MyVariables();
     private static Preferences prefs = Preferences.userRoot();
 
-    /*
-     * All exiftool commands go through this method
-     */
-    public static String runCommand(List<String> cmdparams) throws InterruptedException, IOException {
-
-        String res = "";
-        DataOutputStream outputStream = null;
-        InputStream response = null;
-        System.out.println(cmdparams.toString());
-
-        ProcessBuilder builder = new ProcessBuilder(cmdparams);
-        //System.out.println("Did ProcessBuilder builder = new ProcessBuilder(cmdparams);");
-        try {
-            builder.redirectErrorStream(true);
-            Process process = builder.start();
-            //Use a buffered reader to prevent hangs on Windows
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null)
-                res = res + line + System.lineSeparator();
-            //System.out.println("tasklist: " + line);
-            int errCode = process.waitFor();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            res = e.getMessage();
-        }
-        return res;
-    }
-
-    public static void runCommandOutput (String output) {
-        JTextArea textArea = new JTextArea(output);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
-        JOptionPane.showMessageDialog(null, scrollPane,"Output from the given command",JOptionPane.INFORMATION_MESSAGE);
-    }
 
     public static boolean containsIndices(int[] selectedIndices) {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());
         return intList.size() != 0;
     }
 
-    // Gets the output from the exiftool command and returns it to the displaying method
-    private static String output(InputStream inputStream) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                sb.append(line + System.getProperty("line.separator"));
-            }
-        } finally {
-            br.close();
-        }
-        return sb.toString();
-    }
 
     /*
      * Opens the default browser of the Operating System
@@ -540,7 +487,7 @@ public class Utils {
         cmdparams.add(myVars.getSelectedImagePath());
         //System.out.print("before runCommand: " + cmdparams.toString());
         try {
-            String res = runCommand(cmdparams);
+            String res = CommandRunner.runCommand(cmdparams);
             //System.out.println("res is " + res);
             DisplayInfo(res, ListexiftoolInfotable);
         } catch(IOException | InterruptedException ex) {

@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.metadata;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 
@@ -34,6 +35,7 @@ public class ExportMetadata extends JDialog {
 
     public int[] selectedFilenamesIndices;
     public File[] files;
+    public JProgressBar progBar;
 
     public ExportMetadata() {
         setContentPane(contentPane);
@@ -221,14 +223,7 @@ public class ExportMetadata extends JDialog {
 
 
                 // Export metadata
-                //String[] etparams = params.toArray(new String[0]);
-                try {
-                    String res = Utils.runCommand(cmdparams);
-                    System.out.println(res);
-                    Utils.runCommandOutput(res);
-                } catch (IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
-                }
+                CommandRunner.RunCommandWithProgress(params, progBar);
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No export option selected", JOptionPane.WARNING_MESSAGE);
@@ -236,9 +231,10 @@ public class ExportMetadata extends JDialog {
     }
 
 
-    public void showDialog(int[] selectedIndices, File[] openedfiles) {
+    public void showDialog(int[] selectedIndices, File[] openedfiles, JProgressBar progressBar) {
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
+        progBar = progressBar;
 
         pack();
         //setLocationRelativeTo(null);

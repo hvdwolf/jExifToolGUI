@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.editpane;
 
+import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
@@ -8,10 +9,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.prefs.Preferences;
 
 
@@ -127,27 +126,8 @@ public class EditGeotaggingdata {
                 cmdparams.add(onFolder);
             }
         }
-        // Create executor thread to be able to update my gui when longer methods run
-        Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String res = Utils.runCommand(cmdparams);
-                    System.out.println(res);
-                    progressBar.setVisible(false);
-                    Utils.runCommandOutput(res);
-                } catch(IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
-                }
 
-            }
-        });
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                progressBar.setVisible(true);
-            }
-        });
+        CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
     }
 
     public void ResetFields(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes) {

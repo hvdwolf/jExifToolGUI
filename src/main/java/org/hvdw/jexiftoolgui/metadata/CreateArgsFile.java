@@ -3,10 +3,7 @@ package org.hvdw.jexiftoolgui.metadata;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.ProgramTexts;
-import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +29,7 @@ public class CreateArgsFile extends JDialog {
     MyVariables myVars = new MyVariables();
     public int[] selectedFilenamesIndices;
     public File[] files;
+    public JProgressBar progBar;
 
     public CreateArgsFile() {
         setContentPane(contentPane);
@@ -168,13 +166,7 @@ public class CreateArgsFile extends JDialog {
                     }
                 }
                 // export metadata
-                try {
-                    String res = Utils.runCommand(params);
-                    System.out.println(res);
-                    Utils.runCommandOutput(res);
-                } catch (IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
-                }
+                CommandRunner.RunCommandWithProgress(params, progBar);
 
             }
         } else {
@@ -182,12 +174,13 @@ public class CreateArgsFile extends JDialog {
         }
     }
 
-    public void showDialog(int[] selectedIndices, File[] openedfiles) {
+    public void showDialog(int[] selectedIndices, File[] openedfiles, JProgressBar progressBar) {
         //ExportMetadata dialog = new ExportMetadata();
         //setSize(400, 250);
         // first set the public variables I need
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
+        progBar = progressBar;
         //files = myVars.getSelectedFiles();
 
         //Now do the gui

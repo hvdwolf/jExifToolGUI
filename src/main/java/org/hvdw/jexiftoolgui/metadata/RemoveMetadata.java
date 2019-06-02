@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.metadata;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 
@@ -29,6 +30,7 @@ public class RemoveMetadata extends JDialog {
 
     public int[] selectedFilenamesIndices;
     public File[] files;
+    public JProgressBar progBar;
 
 
     public RemoveMetadata() {
@@ -162,24 +164,19 @@ public class RemoveMetadata extends JDialog {
                     }
                 }
                 // remove metadata
-                try {
-                    String res = Utils.runCommand(params);
-                    System.out.println(res);
-                    Utils.runCommandOutput(res);
-                } catch (IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
-                }
+                CommandRunner.RunCommandWithProgress(params, progBar);
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No removal option selected", JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    public void showDialog(int[] selectedIndices, File[] openedfiles) {
+    public void showDialog(int[] selectedIndices, File[] openedfiles, JProgressBar progressBar) {
         //ExportMetadata dialog = new ExportMetadata();
         //setSize(400, 250);
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
+        progBar = progressBar;
 
         pack();
         //setLocationRelativeTo(null);
