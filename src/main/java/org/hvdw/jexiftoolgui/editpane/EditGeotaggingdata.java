@@ -1,8 +1,6 @@
 package org.hvdw.jexiftoolgui.editpane;
 
 import org.hvdw.jexiftoolgui.CommandRunner;
-import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
@@ -22,8 +20,6 @@ public class EditGeotaggingdata {
 
     private String ImageFolder;
     Preferences prefs = Preferences.userRoot();
-
-    MyVariables myVars = new MyVariables();
 
     public String ImgPath(JPanel myComponent) {
         String SelectedFolder;

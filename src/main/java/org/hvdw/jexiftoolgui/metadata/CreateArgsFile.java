@@ -3,13 +3,15 @@ package org.hvdw.jexiftoolgui.metadata;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.*;
+import org.hvdw.jexiftoolgui.CommandRunner;
+import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.ProgramTexts;
+import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,6 @@ public class CreateArgsFile extends JDialog {
     private JCheckBox exportICCDataCheckBox;
     private JCheckBox makeBackupOfOriginalsCheckBox;
 
-    MyVariables myVars = new MyVariables();
     public int[] selectedFilenamesIndices;
     public File[] files;
     public JProgressBar progBar;
@@ -181,7 +182,7 @@ public class CreateArgsFile extends JDialog {
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
         progBar = progressBar;
-        //files = myVars.getSelectedFiles();
+        //files = MyVariables.getSelectedFiles();
 
         //Now do the gui
         pack();

@@ -1,7 +1,6 @@
 package org.hvdw.jexiftoolgui.editpane;
 
 import org.hvdw.jexiftoolgui.CommandRunner;
-import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
@@ -16,7 +15,6 @@ import java.util.prefs.Preferences;
 public class EditExifdata {
 
     Preferences prefs = Preferences.userRoot();
-    MyVariables myVars = new MyVariables();
     // I had specified for the arrays:
     //JTextField[] exifFields = {ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField,ExifCreateDatetextField,
     //        ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};

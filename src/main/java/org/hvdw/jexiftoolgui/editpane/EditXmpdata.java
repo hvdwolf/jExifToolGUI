@@ -2,7 +2,6 @@ package org.hvdw.jexiftoolgui.editpane;
 
 import org.hvdw.jexiftoolgui.CommandRunner;
 import org.hvdw.jexiftoolgui.Utils;
-import org.hvdw.jexiftoolgui.MyVariables;
 
 import javax.swing.*;
 import java.io.File;
@@ -16,7 +15,6 @@ import java.util.prefs.Preferences;
 public class EditXmpdata {
 
     Preferences prefs = Preferences.userRoot();
-    MyVariables myVars = new MyVariables();
 
     // I had specified for the arrays:
     //JTextField[] xmpFields = {xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};

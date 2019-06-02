@@ -4,35 +4,56 @@ package org.hvdw.jexiftoolgui;
 // The only option I know is to drag these variables through all methods
 
 import java.io.File;
+import java.util.Arrays;
 
 public class MyVariables {
 
-    private int mySelectedRow;
-    public int getMySelectedRow() {
-        return mySelectedRow;
-    }
-    public void setMySelectedRow(int num) {
-        this.mySelectedRow = num;
+    private final static MyVariables myVariables = new MyVariables();
+
+    private MyVariables() {
     }
 
+    private int mySelectedRow;
     private int SelectedRow;
-    public int getSelectedRow() { return this.SelectedRow;}
-    public void setSelectedRow(int index) {this.SelectedRow = index; }
 
     private int SelectedColumn;
-    public int getSelectedColumn() {
-        return this.SelectedColumn;
-    }
-    public void setSelectedColumn(int num) {
-        this.SelectedColumn = num;
-    }
 
     private String SelectedImagePath;
-    public String getSelectedImagePath() {
-        return this.SelectedImagePath;
+
+    private File[] selectedFiles;
+
+    private int[] selectedFilenamesIndices;
+
+    public static int getMySelectedRow() {
+        return myVariables.mySelectedRow;
     }
-    public void setSelectedImagePath(String selImgPath) {
-        this.SelectedImagePath = selImgPath;
+
+    public static void setMySelectedRow(int num) {
+        myVariables.mySelectedRow = num;
+    }
+
+    static int getSelectedRow() {
+        return myVariables.SelectedRow;
+    }
+
+    static void setSelectedRow(int index) {
+        myVariables.SelectedRow = index;
+    }
+
+    public static int getSelectedColumn() {
+        return myVariables.SelectedColumn;
+    }
+
+    public static void setSelectedColumn(int num) {
+        myVariables.SelectedColumn = num;
+    }
+
+    public static String getSelectedImagePath() {
+        return myVariables.SelectedImagePath;
+    }
+
+    public static void setSelectedImagePath(String selImgPath) {
+        myVariables.SelectedImagePath = selImgPath;
     }
 
     /* from: https://www.codejava.net/coding/java-getter-and-setter-tutorial-from-basics-to-best-practices
@@ -47,33 +68,21 @@ public class MyVariables {
         System.arraycopy(scr, 0, this.scores, 0, scr.length);
     }*/
 
-    private File[] selectedFiles;
-    public File[] getSelectedFiles() {
-        File[] copy = new File[this.selectedFiles.length];
-        System.arraycopy(this.selectedFiles, 0, copy, 0, copy.length);
-        return copy;
-    }
-    public void setSelectedFiles(File[] openedFiles) {
-        this.selectedFiles = new File[openedFiles.length];
-        System.arraycopy(openedFiles, 0, this.selectedFiles, 0, openedFiles.length);
-    }
-    /* Or ???
-    public void setSelectedFiles(File[] openedFiles) {
-        this.selectedFiles = Arrays.copyOf(openedFiles, openedFiles.length);
-    }
-    public File[] getSelectedFiles() {
-        return Arrays.copyOf(selectedFiles, selectedFiles.length);
-    }
-    */
 
-    private int[] selectedFilenamesIndices;
-    public int[] getSelectedFilenamesIndices() {
-        int[] copy = new int[this.selectedFilenamesIndices.length];
-        System.arraycopy(this.selectedFilenamesIndices, 0, copy, 0, copy.length);
-        return copy;
+    static File[] getSelectedFiles() {
+        return Arrays.copyOf(myVariables.selectedFiles, myVariables.selectedFiles.length);
     }
-    public void setSelectedFilenamesIndices(int[] selectedTableIndices) {
-        this.selectedFilenamesIndices = new int[selectedTableIndices.length];
-        System.arraycopy(selectedTableIndices, 0, this.selectedFilenamesIndices, 0, selectedTableIndices.length);
+
+    static void setSelectedFiles(File[] openedFiles) {
+        myVariables.selectedFiles = Arrays.copyOf(openedFiles, openedFiles.length);
+    }
+
+
+    public static int[] getSelectedFilenamesIndices() {
+        return Arrays.copyOf(myVariables.selectedFilenamesIndices, myVariables.selectedFilenamesIndices.length);
+    }
+
+    public static void setSelectedFilenamesIndices(int[] selectedTableIndices) {
+        myVariables.selectedFilenamesIndices = Arrays.copyOf(selectedTableIndices, selectedTableIndices.length);
     }
 }

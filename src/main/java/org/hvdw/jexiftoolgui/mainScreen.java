@@ -232,7 +232,6 @@ public class mainScreen {
     ListSelectionModel listSelectionModel;
 
     // Initialize all the helper classes
-    MyVariables myVars = new MyVariables();
     PreferencesDialog prefsDialog = new PreferencesDialog();
     MetaData metaData = new MetaData();
     DateTime dateTime = new DateTime();
@@ -374,13 +373,13 @@ public class mainScreen {
         OutputLabel.setText("Loading images ....");
         files = Utils.getFileNames(mainScreen.this.rootPanel);
         if (files != null) {
-            myVars.setSelectedFiles(files);
+            MyVariables.setSelectedFiles(files);
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
-                    myVars.setSelectedRow(0);
+                    MyVariables.setSelectedRow(0);
                     String[] params = whichRBselected();
                     //Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
                     Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
