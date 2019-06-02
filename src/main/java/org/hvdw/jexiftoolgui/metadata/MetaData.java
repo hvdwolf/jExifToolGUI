@@ -10,8 +10,6 @@ import java.util.List;
 
 public class MetaData {
 
-    progressDialog progdlg = new progressDialog();
-
     public void copytoxmp(int[] selectedIndices, File[] files) {
         String fpath ="";
         String TotalOutput = "";
