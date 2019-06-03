@@ -15,7 +15,7 @@ import java.util.prefs.Preferences;
 
 public class EditXmpdata {
 
-    Preferences prefs = Preferences.userRoot();
+    private Preferences prefs = Preferences.userRoot();
 
     // I had specified for the arrays:
     //JTextField[] xmpFields = {xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};
@@ -67,8 +67,8 @@ public class EditXmpdata {
 
         public void DisplayCopiedInfo(JTextField[] xmpFields, JTextArea Description, String exiftoolInfo) {
             String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
-            for(int i = 0; i < lines.length; i++) {
-                String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+            for (String line : lines) {
+                String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
                 String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
                 //With ALL spaces removed from the tag we als need to use identiefiers without spaces
                 //System.out.print(SpaceStripped+ " ; value: " + cells[1] + "\n");

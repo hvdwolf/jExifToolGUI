@@ -15,7 +15,7 @@ import java.util.prefs.Preferences;
 
 public class EditExifdata {
 
-    Preferences prefs = Preferences.userRoot();
+    private Preferences prefs = Preferences.userRoot();
     // I had specified for the arrays:
     //JTextField[] exifFields = {ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField,ExifCreateDatetextField,
     //        ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};
@@ -61,10 +61,11 @@ public class EditExifdata {
         }
     }
 
-    public void DisplayCopiedInfo(JTextField[] exifFields, JTextArea exiftextArea, String exiftoolInfo) {
+    private void DisplayCopiedInfo(JTextField[] exifFields, JTextArea exiftextArea, String exiftoolInfo) {
         String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
-        for(int i = 0; i < lines.length; i++) {
-            String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+        //for(int i = 0; i < lines.length; i++) {
+        for (String line : lines) {
+            String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
             String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
             System.out.print(SpaceStripped+ " ; value: " + cells[1] + "\n");

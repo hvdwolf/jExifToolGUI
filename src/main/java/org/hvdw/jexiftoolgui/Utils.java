@@ -187,10 +187,10 @@ public class Utils {
             // open file chooser
             // Do this from the PreferencesDialog class as it atually belongs there
             returnValue = exiftoolLocator(myComponent);
-            if (returnValue == "cancelled") {
+            if (returnValue.equals("cancelled")) {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup,"Cancelled locate ExifTool",JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
-            } else if (returnValue == "no exiftool binary") {
+            } else if (returnValue.equals("no exiftool binary")) {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup,"Wrong executable",JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else { // Yes. It looks like we have a correct exiftool selected
@@ -219,7 +219,7 @@ public class Utils {
         boolean newversion_startupcheck_exists = false;
         boolean versioncheck = false;
 
-        if (fromWhere == "startup") {
+        if (fromWhere.equals("startup")) {
             Preferences prefs = Preferences.userRoot();
             newversion_startupcheck_exists = prefs.get("versioncheck", null) != null;
             if (newversion_startupcheck_exists) {
@@ -227,7 +227,7 @@ public class Utils {
             }
         }
 
-        if ((fromWhere == "menu") || versioncheck) {
+        if ((fromWhere.equals("menu")) || versioncheck) {
             try {
                 URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
 
@@ -235,8 +235,6 @@ public class Utils {
                 String inputline;
                 version = in.readLine();
                 in.close();
-            } catch (MalformedURLException ex) {
-                ex.printStackTrace();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -252,7 +250,7 @@ public class Utils {
                 }
 
             } else {
-                if (fromWhere == "menu") {
+                if (fromWhere.equals("menu")) {
                     JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ProgramTexts.LatestVersionText), "No newer version", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

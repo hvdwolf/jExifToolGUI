@@ -17,7 +17,7 @@ public class StandardFileIO {
     public static String TextFileReader (String fileName) {
         // This will reference one line at a time
         String line = null;
-        String totalText = "";
+        StringBuilder totalText = new StringBuilder("");
 
         try {
             // FileReader reads text files in the default encoding.
@@ -30,7 +30,7 @@ public class StandardFileIO {
 
             while((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
-                totalText = totalText + line;
+                totalText.append(line);
             }
 
             // Always close files.
@@ -43,7 +43,7 @@ public class StandardFileIO {
             System.out.println("Error reading file '" + fileName + "'");
         }
 
-        return totalText;
+        return totalText.toString();
     }
 
 
@@ -130,8 +130,6 @@ public class StandardFileIO {
             MyVariables.setSelectedFiles(files);
             prefs.node("lastopenedfolder");
             prefs.put("lastopenedfolder", chooser.getSelectedFile().getAbsolutePath());
-        } else if (status == JFileChooser.CANCEL_OPTION) {
-            files = null;;
         }
         return files;
     }

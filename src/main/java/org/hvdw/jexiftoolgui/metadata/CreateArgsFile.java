@@ -83,7 +83,7 @@ public class CreateArgsFile extends JDialog {
         });
     }
 
-    public void initDialog() {
+    private void initDialog() {
         //exportMetaDataUiText.setContentType("text/html");
         CreateArgsMetaDataUiText.setText(String.format(ProgramTexts.HTML, 270, ProgramTexts.CreateArgsMetaDataUiText));
 
@@ -103,7 +103,7 @@ public class CreateArgsFile extends JDialog {
     }
 
     //public void createfile(int[] selectedFilenamesIndices, File[] files){
-    public void createfile() {
+    private void createfile() {
         boolean atLeastOneSelected = false;
 
         String[] CAparams = MyConstants.CREATE_ARGS_FILE_STRINGS;

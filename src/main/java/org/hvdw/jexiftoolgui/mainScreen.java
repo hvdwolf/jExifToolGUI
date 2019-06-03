@@ -224,25 +224,25 @@ public class mainScreen {
 
 
     public File[] files;
-    int[] selectedIndices;
-    List<Integer> selectedIndicesList = new ArrayList<Integer>();
-    public int SelectedRow;
+    private int[] selectedIndices;
+    private List<Integer> selectedIndicesList = new ArrayList<Integer>();
+    private int SelectedRow;
     public int SelectedCell;
-    public int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
+    private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
 
     private Preferences prefs;
     public String exiftool_path = "";
-    ListSelectionModel listSelectionModel;
+    private ListSelectionModel listSelectionModel;
 
     // Initialize all the helper classes
     PreferencesDialog prefsDialog = new PreferencesDialog();
-    MetaData metaData = new MetaData();
-    DateTime dateTime = new DateTime();
-    EditExifdata EEd = new EditExifdata();
-    EditXmpdata EXd = new EditXmpdata();
-    EditGeotaggingdata EGd = new EditGeotaggingdata();
-    EditGPSdata EGPSd = new EditGPSdata();
-    YourCommands YourCmnds = new YourCommands();
+    private MetaData metaData = new MetaData();
+    private DateTime dateTime = new DateTime();
+    private EditExifdata EEd = new EditExifdata();
+    private EditXmpdata EXd = new EditXmpdata();
+    private EditGeotaggingdata EGd = new EditGeotaggingdata();
+    private EditGPSdata EGPSd = new EditGPSdata();
+    private YourCommands YourCmnds = new YourCommands();
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -290,7 +290,7 @@ public class mainScreen {
 
     /////////////////////// Startup checks /////////////////
 // where is exiftool, if available
-    static String exiftool_check() {
+    private static String exiftool_check() {
         String res = "";
         List<String> cmdparams = new ArrayList<String>();
 
@@ -315,7 +315,7 @@ public class mainScreen {
     }
 
     //check preferences (a.o. exiftool)
-    boolean check_preferences() {
+    private boolean check_preferences() {
         boolean exiftool_exists = false;
         boolean exiftool_found = false;
         String res = "";
@@ -372,7 +372,7 @@ public class mainScreen {
     }
 /////////////////////////// End of Startup checks //////////////////////////
 
-    void LoadImages() {
+    private void LoadImages() {
         OutputLabel.setText("Loading images ....");
         files = StandardFileIO.getFileNames(mainScreen.this.rootPanel);
         if (files != null) {
@@ -401,7 +401,7 @@ public class mainScreen {
     }
 
 
-    public static List<Component> getAllComponents(final Container c) {
+    private static List<Component> getAllComponents(final Container c) {
         Component[] comps = c.getComponents();
         List<Component> compList = new ArrayList<Component>();
         for (Component comp : comps) {
@@ -414,7 +414,7 @@ public class mainScreen {
         return compList;
     }
 
-    void setCopyMetaDatacheckboxes(boolean state) {
+    private void setCopyMetaDatacheckboxes(boolean state) {
         CopyExifcheckBox.setEnabled(state);
         CopyXmpcheckBox.setEnabled(state);
         CopyIptccheckBox.setEnabled(state);
@@ -423,7 +423,7 @@ public class mainScreen {
         CopyJfifcheckBox.setEnabled(state);
     }
 
-    void FillViewTagNamesComboboxes() {
+    private void FillViewTagNamesComboboxes() {
         // Fill all combo boxes in the View panel
         String TagNames = StandardFileIO.ResourceReader("texts/ExifToolTagNames.txt");
         String[] Tags = TagNames.split("\\r?\\n"); // split on new lines
@@ -1781,7 +1781,7 @@ public class mainScreen {
 
     }
 
-    void ViewRadiobuttonListener() {
+    private void ViewRadiobuttonListener() {
 
         //Add listeners
         radioButtonViewAll.addActionListener(new ActionListener() {
@@ -1841,7 +1841,7 @@ public class mainScreen {
     }
 
 
-    public String[] whichRBselected() {
+    private String[] whichRBselected() {
         // just to make sure anything is returned we defaultly return all
         String[] params = MyConstants.ALL_PARAMS;
         // Very simple if list
@@ -2085,7 +2085,7 @@ public class mainScreen {
         Utils.CheckforNewVersion("startup");
     }
 
-    public static void createAndShowGUI() {
+    private static void createAndShowGUI() {
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + "   for ExifTool by Phil Harvey");
         frame.setContentPane(new mainScreen(frame).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -2097,6 +2097,7 @@ public class mainScreen {
             // terms of the folder/file icons and file names returned by FileSystemView!
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception weTried) {
+            System.out.println(weTried.getMessage());
         }
 
         frame.pack();

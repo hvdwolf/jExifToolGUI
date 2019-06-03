@@ -65,12 +65,12 @@ public class ShiftDateTime extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public void initDialog() {
+    private void initDialog() {
 
         ShiftDateTimeLabel.setText(String.format(ProgramTexts.HTML, 320, ProgramTexts.ShiftDateTimeLabel));
     }
 
-    public void writeInfo() {
+    private void writeInfo() {
         String fpath = "";
         String shiftOption = "";
         String res = "";

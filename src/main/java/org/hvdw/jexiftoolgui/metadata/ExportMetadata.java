@@ -88,7 +88,7 @@ public class ExportMetadata extends JDialog {
         });
     }
 
-    public void initDialog() {
+    private void initDialog() {
         //exportMetaDataUiText.setContentType("text/html");
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 320, ProgramTexts.exportMetaDataUiText));
 
@@ -113,7 +113,7 @@ public class ExportMetadata extends JDialog {
         dispose();
     }
 
-    public void Export() {
+    private void Export() {
         boolean atLeastOneSelected = false;
         List<String> params = new ArrayList<String>();
         List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option

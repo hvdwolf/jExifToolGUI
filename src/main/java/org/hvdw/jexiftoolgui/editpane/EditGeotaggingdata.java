@@ -21,7 +21,7 @@ import java.util.prefs.Preferences;
 public class EditGeotaggingdata {
 
     private String ImageFolder;
-    Preferences prefs = Preferences.userRoot();
+    private Preferences prefs = Preferences.userRoot();
 
     public String ImgPath(JPanel myComponent) {
         String SelectedFolder;
@@ -61,7 +61,7 @@ public class EditGeotaggingdata {
 //    public void WriteInfo(String onFolder, String gpslogfile, String geosync, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
     public void WriteInfo(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
 
-        int selectedFilenamesIndices[] = MyVariables.getSelectedFilenamesIndices();
+        int[] selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();

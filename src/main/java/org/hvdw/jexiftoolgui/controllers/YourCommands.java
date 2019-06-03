@@ -40,6 +40,7 @@ public class YourCommands {
                 for (String Command: splitCommands) {
                     cmdparams.add(Command);
                 }
+                //cmdparams.addAll(splitCommands);
             } else {
                 cmdparams.add(Commands);
             }
@@ -51,8 +52,7 @@ public class YourCommands {
             }
             try {
                 String res = CommandRunner.runCommand(cmdparams);
-                //System.out.println(res);
-                Output.append("============= \"" + files[index].getPath() +  "\" =============\n");
+                //System.out.println(res);Output.append("============= \"" + files[index].getPath() +  "\" =============\n");
                 //Output.setText( Output.getText() + "============= \"" + files[index].getPath() +  "\" =============<br>");
                 Output.append(res);
                 //Output.setText( Output.getText() + res + "<br><br>");
@@ -61,7 +61,5 @@ public class YourCommands {
                 System.out.println("Error executing command");
             }
         }
-        //Output.append("</html>");
-        //Output.setText(Output.getText() + "</html>");
     }
 }
