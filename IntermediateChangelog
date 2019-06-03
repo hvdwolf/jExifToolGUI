@@ -37,3 +37,7 @@ Menu
   - Check for new version			: Working
   - About ExifTool				: Working
   - About jExifToolGUI				: Working 
+
+Other ToDo:
+- Add composite:all, file:all and makernotes:all to ExportMetadata. RemoveMetadata and CreateArgsFile
+- ExportMetadata. RemoveMetadata and CreateArgsFile actually use the same model: Make it into MVC pattern/design.
