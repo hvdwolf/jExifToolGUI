@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui;
 
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,7 +32,6 @@ public class Utils {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());
         return intList.size() != 0;
     }
-
 
     /*
      * Opens the default browser of the Operating System
@@ -66,58 +66,6 @@ public class Utils {
         }
     }
 
-    public static String TextFileReader (String fileName) {
-        // This will reference one line at a time
-        String line = null;
-        String totalText = "";
-
-        try {
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader =
-                    new FileReader(fileName);
-
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader =
-                    new BufferedReader(fileReader);
-
-            while((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
-                totalText = totalText + line;
-            }
-
-            // Always close files.
-            bufferedReader.close();
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
-        }
-        catch(IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
-        }
-
-        return totalText;
-    }
-
-    // Reads a text file from resources
-    static String ResourceReader(String fileName) {
-        String strFileContents = "";
-
-        try {
-            InputStream is = Utils.getResourceAsStream(fileName);
-            byte[] contents = new byte[1024];
-
-            int bytesRead = 0;
-            while((bytesRead = is.read(contents)) != -1) {
-                strFileContents += new String(contents, 0, bytesRead);
-            }
-
-        } catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
-        } catch(IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
-        }
-        return strFileContents;
-    }
 
     /*
      * The ImageInfo method uses exiftool to read image info which is outputted as csv
@@ -125,7 +73,7 @@ public class Utils {
      */
     public static void readTagsCSV(String tagname) {
         List<List<String>> tagrecords = new ArrayList<>();
-        String tags = ResourceReader("resources/tagxml/" + tagname + ".xml");
+        String tags = StandardFileIO.ResourceReader("resources/tagxml/" + tagname + ".xml");
         if (tags.length() > 0) {
             String[] lines = tags.split(System.getProperty("line.separator"));
 
@@ -139,7 +87,7 @@ public class Utils {
     // Displays the license in an option pane
     static void License(JPanel myComponent) {
 
-        String license = ResourceReader("COPYING");
+        String license = StandardFileIO.ResourceReader("COPYING");
         JTextArea textArea = new JTextArea(license);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
@@ -312,38 +260,7 @@ public class Utils {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /* General check method which folder to open
-     * Based on preference default folder, "always Use Last used folder" or home folder
-     */
-    public static String whichFolderToOpen() {
-        boolean imageDefaultFolder_exists = false;
-        boolean uselastopenedfolder_exists = false;
-        String startFolder = "";
-        Boolean uselastopenedfolder = false;
 
-        uselastopenedfolder_exists = prefs.getBoolean("uselastopenedfolder", false) != false;
-        if (uselastopenedfolder_exists) {
-            if (prefs.getBoolean("uselastopenedfolder", false)) {
-                startFolder = prefs.get("lastopenedfolder", System.getProperty("user.home"));
-            } else {
-                imageDefaultFolder_exists = prefs.get("defaultstartfolder", null) != null;
-                if (imageDefaultFolder_exists) {
-                    startFolder = prefs.get("defaultstartfolder", "");
-                } else {
-                    startFolder = System.getProperty("user.home");
-                }
-            }
-        } else { // The uselastfolder settings is not made yet
-            imageDefaultFolder_exists = prefs.get("defaultstartfolder", null) != null;
-            if (imageDefaultFolder_exists) {
-                startFolder = prefs.get("defaultstartfolder", "");
-            } else {
-                startFolder = System.getProperty("user.home");
-            }
-        }
-
-        return startFolder;
-    }
     // Create correct exiftool command call depending on operating system
     public static String platformExiftool() {
         // exiftool on windows or other
@@ -355,36 +272,7 @@ public class Utils {
         return exiftool;
     }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
-    /*
-     * Get the files from the "Load images" command
-     */
-    static File[] getFileNames(JPanel myComponent) {
-        File[] files = null;
-        boolean imageDefaultFolder_exists = false;
-        String startFolder = "";
 
-        startFolder = whichFolderToOpen();
-
-        final JFileChooser chooser = new JFileChooser(startFolder);
-        //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
-        FileFilter imgFilter = new FileNameExtensionFilter("(images)", MyConstants.SUPPORTED_IMAGES);
-        FileFilter supFormats = new FileNameExtensionFilter("(supported formats)", MyConstants.SUPPORTED_FORMATS);
-        chooser.setMultiSelectionEnabled(true);
-        chooser.setDialogTitle("Load Image(s)...");
-        chooser.setFileFilter(imgFilter);
-        chooser.addChoosableFileFilter(supFormats);
-        //chooser.showOpenDialog(mainScreen.this.rootPanel);
-        int status = chooser.showOpenDialog(myComponent);
-        if (status == JFileChooser.APPROVE_OPTION) {
-            files = chooser.getSelectedFiles();
-            MyVariables.setSelectedFiles(files);
-            prefs.node("lastopenedfolder");
-            prefs.put("lastopenedfolder", chooser.getSelectedFile().getAbsolutePath());
-        } else if (status == JFileChooser.CANCEL_OPTION) {
-            files = null;;
-        }
-        return files;
-    }
 
     /*
      * Display the loaded files with icon and name
@@ -673,9 +561,6 @@ public class Utils {
 
     }
 
-    static InputStream getResourceAsStream(String path) {
-        return Utils.class.getClassLoader().getResourceAsStream(path);
-    }
 
     @SuppressWarnings("SameParameterValue")
     private static URL getResource(String path) {

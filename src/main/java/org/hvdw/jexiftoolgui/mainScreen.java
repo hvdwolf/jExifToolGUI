@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.controllers.YourCommands;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
@@ -373,7 +374,7 @@ public class mainScreen {
 
     void LoadImages() {
         OutputLabel.setText("Loading images ....");
-        files = Utils.getFileNames(mainScreen.this.rootPanel);
+        files = StandardFileIO.getFileNames(mainScreen.this.rootPanel);
         if (files != null) {
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -424,15 +425,15 @@ public class mainScreen {
 
     void FillViewTagNamesComboboxes() {
         // Fill all combo boxes in the View panel
-        String TagNames = Utils.ResourceReader("texts/ExifToolTagNames.txt");
+        String TagNames = StandardFileIO.ResourceReader("texts/ExifToolTagNames.txt");
         String[] Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = Utils.ResourceReader("texts/CommonTags.txt");
+        TagNames = StandardFileIO.ResourceReader("texts/CommonTags.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = Utils.ResourceReader("texts/CameraTagNames.txt");
+        TagNames = StandardFileIO.ResourceReader("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCameraMake.setModel(new DefaultComboBoxModel(Tags));
 
@@ -2053,7 +2054,7 @@ public class mainScreen {
         //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
 
         // icon for my dialogs
-        InputStream stream = Utils.getResourceAsStream("icons/jexiftoolgui-64.png");
+        InputStream stream = StandardFileIO.getResourceAsStream("icons/jexiftoolgui-64.png");
         try {
             icon = new ImageIcon(ImageIO.read(stream));
         } catch (IOException ex) {

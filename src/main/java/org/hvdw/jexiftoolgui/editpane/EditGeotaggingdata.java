@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.editpane;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -25,7 +26,7 @@ public class EditGeotaggingdata {
     public String ImgPath(JPanel myComponent) {
         String SelectedFolder;
 
-        String startFolder = Utils.whichFolderToOpen();
+        String startFolder = StandardFileIO.whichFolderToOpen();
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setDialogTitle("Locate the image folder ...");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -40,7 +41,7 @@ public class EditGeotaggingdata {
 
     public String gpsLogFile(JPanel myComponent) {
 
-        String startFolder = Utils.whichFolderToOpen();
+        String startFolder = StandardFileIO.whichFolderToOpen();
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setMultiSelectionEnabled(false);
         String[] filexts = {"gpx", "gps", "log"};
