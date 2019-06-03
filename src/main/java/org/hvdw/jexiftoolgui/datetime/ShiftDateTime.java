@@ -3,7 +3,10 @@ package org.hvdw.jexiftoolgui.datetime;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.*;
+import org.hvdw.jexiftoolgui.CommandRunner;
+import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.ProgramTexts;
+import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
 import java.awt.*;

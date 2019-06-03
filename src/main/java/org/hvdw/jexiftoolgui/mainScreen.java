@@ -373,7 +373,6 @@ public class mainScreen {
         OutputLabel.setText("Loading images ....");
         files = Utils.getFileNames(mainScreen.this.rootPanel);
         if (files != null) {
-            //myVars.setSelectedFiles(files);
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
@@ -1911,9 +1910,6 @@ public class mainScreen {
                         System.out.print(" " + i + ",");
                         tmpselectedIndices.add(i);
                         SelectedRow = i;
-                        // I'm probably doing something enormously stupid
-                        // but I don't see another way to set the setter.
-                        // It simply doesn't work from this for/void/class
                         MyVariables.setSelectedRow(i);
                     }
                 }
@@ -1923,8 +1919,6 @@ public class mainScreen {
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;
-                //System.out.println(Arrays.toString(selectedIndices));
-                // Same as above setter
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
             }
 
