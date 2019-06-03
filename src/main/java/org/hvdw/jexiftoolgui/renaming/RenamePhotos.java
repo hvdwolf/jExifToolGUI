@@ -95,11 +95,11 @@ public class RenamePhotos extends JDialog {
         RenamingGeneralText.setText(String.format(ProgramTexts.HTML, 650, ProgramTexts.RenamingGeneralText));
         RenamingDuplicateNames.setText(String.format(ProgramTexts.HTML, 370, ProgramTexts.RenamingDuplicateNames));
 
-        for (String item : MyConstants.Dates_Times_Strings) {
+        for (String item : MyConstants.DATES_TIMES_STRINGS) {
             prefixDate_timecomboBox.addItem(item);
             suffixDatetimecomboBox.addItem(item);
         }
-        for (String item : MyConstants.Dates_Strings) {
+        for (String item : MyConstants.DATES_STRINGS) {
             prefixDatecomboBox.addItem(item);
             suffixDatecomboBox.addItem(item);
         }

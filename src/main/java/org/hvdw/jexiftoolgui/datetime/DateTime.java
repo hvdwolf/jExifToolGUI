@@ -13,14 +13,14 @@ import java.util.List;
 public class DateTime {
 
 
-    public void setFileDatetoDateTimeOriginal( JProgressBar progressBar) {
+    public void SET_FILEDATETIME_TO_DATETIMEORIGINAL( JProgressBar progressBar) {
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
         List<String> cmdparams = new ArrayList<String>();
         String tmpcmpstring = "";
         String[] options = {"No", "Yes"};
         //System.out.println("Set file date/time to DateTimeOriginal?");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 600, ProgramTexts.setFileDatetoDateTimeOriginal),"Set file date/time to DateTimeOriginal?",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 600, ProgramTexts.SET_FILEDATETIME_TO_DATETIMEORIGINAL),"Set file date/time to DateTimeOriginal?",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something

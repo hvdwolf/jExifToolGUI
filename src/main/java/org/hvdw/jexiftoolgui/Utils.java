@@ -365,8 +365,8 @@ public class Utils {
 
         final JFileChooser chooser = new JFileChooser(startFolder);
         //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
-        FileFilter imgFilter = new FileNameExtensionFilter("(images)", MyConstants.supportedImages);
-        FileFilter supFormats = new FileNameExtensionFilter("(supported formats)", MyConstants.supportedFormats);
+        FileFilter imgFilter = new FileNameExtensionFilter("(images)", MyConstants.SUPPORTED_IMAGES);
+        FileFilter supFormats = new FileNameExtensionFilter("(supported formats)", MyConstants.SUPPORTED_FORMATS);
         chooser.setMultiSelectionEnabled(true);
         chooser.setDialogTitle("Load Image(s)...");
         chooser.setFileFilter(imgFilter);
@@ -517,31 +517,31 @@ public class Utils {
 
         switch (SelectedTagName) {
             case "exif":
-                params = MyConstants.exif_params;
+                params = MyConstants.EXIF_PARAMS;
                 break;
             case "xmp":
-                params = MyConstants.xmp_params;
+                params = MyConstants.XMP_PARAMS;
                 break;
             case "iptc":
-                params = MyConstants.iptc_params;
+                params = MyConstants.IPTC_PARAMS;
                 break;
             case "composite":
-                params = MyConstants.composite_params;
+                params = MyConstants.COMPOSITE_PARAMS;
                 break;
             case "gps":
                 params[0] = "-gps:all";
                 break;
             case "gps/location":
-                params = MyConstants.gps_loc_params;
+                params = MyConstants.GPS_LOC__PARAMS;
                 break;
             case "gpano":
-                params = MyConstants.gpano_params;
+                params = MyConstants.GPANO_PARAMS;
                 break;
             case "icc_profile":
-                params = MyConstants.icc_params;
+                params = MyConstants.ICC_PARAMS;
                 break;
             case "makernotes":
-                params = MyConstants.makernotes_params;
+                params = MyConstants.MAKERNOTES_PARAMS;
                 break;
         }
         return params;

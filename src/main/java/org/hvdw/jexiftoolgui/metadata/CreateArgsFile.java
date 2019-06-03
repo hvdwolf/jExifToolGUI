@@ -106,7 +106,7 @@ public class CreateArgsFile extends JDialog {
     public void createfile() {
         boolean atLeastOneSelected = false;
 
-        String[] CAparams = MyConstants.createArgsfilestrings;
+        String[] CAparams = MyConstants.CREATE_ARGS_FILE_STRINGS;
 
 
         List<String> params = new ArrayList<String>();
@@ -153,7 +153,7 @@ public class CreateArgsFile extends JDialog {
             int choice = JOptionPane.showOptionDialog(null, Message, "You want to export metadata",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
-                for (String s : MyConstants.createArgsfilestrings) {
+                for (String s : MyConstants.CREATE_ARGS_FILE_STRINGS) {
                     params.add(s);
                 }
                 // images selected

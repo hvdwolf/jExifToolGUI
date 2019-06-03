@@ -58,20 +58,20 @@ public class MetaData {
 
     }
 
-    public void repairJPGmetadata( JProgressBar progressBar) {
+    public void REPAIR_JPG_METADATA( JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
         System.out.println("Repair corrupted metadata in JPG(s)");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.repairJPGmetadata),"Repair corrupted metadata in JPG(s)",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.REPAIR_JPG_METADATA),"Repair corrupted metadata in JPG(s)",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             //System.out.println("Yes");
             cmdparams.add(Utils.platformExiftool());
             cmdparams.add("-overwrite_original");
-            for (String s : MyConstants.repairJPGmetadata) {
+            for (String s : MyConstants.REPAIR_JPG_METADATA) {
                 cmdparams.add(s);
             }
             boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");

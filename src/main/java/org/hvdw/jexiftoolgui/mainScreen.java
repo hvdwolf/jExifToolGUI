@@ -380,7 +380,7 @@ public class mainScreen {
                     Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
                     MyVariables.setSelectedRow(0);
                     String[] params = whichRBselected();
-                    //Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
+                    //Utils.ImageInfo(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
                     Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");
@@ -1427,7 +1427,7 @@ public class mainScreen {
                 case "Repair JPG(s) with corrupted metadata":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Repairing jpg data, please be patient ...");
-                        metaData.repairJPGmetadata( progressBar);
+                        metaData.REPAIR_JPG_METADATA( progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1470,7 +1470,7 @@ public class mainScreen {
                     break;
                 case "Set file date to DateTimeOriginal":
                     if (selectedIndicesList.size() > 0) {
-                        dateTime.setFileDatetoDateTimeOriginal(progressBar);
+                        dateTime.SET_FILEDATETIME_TO_DATETIMEORIGINAL(progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1785,7 +1785,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("button selected: " + radioButtonViewAll.getText());
-                Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.ImageInfo(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
@@ -1840,10 +1840,10 @@ public class mainScreen {
 
     public String[] whichRBselected() {
         // just to make sure anything is returned we defaultly return all
-        String[] params = MyConstants.all_params;
+        String[] params = MyConstants.ALL_PARAMS;
         // Very simple if list
         if (mainScreen.this.radioButtonViewAll.isSelected()) {
-            params = MyConstants.all_params;
+            params = MyConstants.ALL_PARAMS;
         } else if (radioButtoncommonTags.isSelected()) {
             params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
         } else if (radioButtonByTagName.isSelected()) {

@@ -63,11 +63,11 @@ public class ProgramTexts {
     public static final String copymetadatatoxmp = "<html>This function will copy all possible information from exif and other tags into XMP format.<br>"
             +"This is an internal \"same image to same image\" copy, for all the selected images.<br><br>"
             +"Do you want to continue?</html>";
-    public static final String repairJPGmetadata = "If exiftool can't write to your photo it might be due to corrupted metadata. Exiftool can fix this but only "
+    public static final String REPAIR_JPG_METADATA = "If exiftool can't write to your photo it might be due to corrupted metadata. Exiftool can fix this but only "
         +"for the tags that are still readible.<br>In a jpeg the image data is separated from the meta data. If your "
         +"photo can't be displayed in an image viewer, your image data itself is corrupt. Exiftool can't repair that.<br><br>"
         +"Do you want to continue and repair as much metadata as possible?";
-    public static final String setFileDatetoDateTimeOriginal = "If you have modified your images in a \"sloppy\" image editor or copied them around or whatever other action(s), the file "
+    public static final String SET_FILEDATETIME_TO_DATETIMEORIGINAL = "If you have modified your images in a \"sloppy\" image editor or copied them around or whatever other action(s), the file "
         +"date/time of your images might have changed to the date your did the action/modification on the image "
         +"where as the real file date (= creation date) of your images is most certainly (much) older.<br>"
         +"This function will take the original date/time when the photo was taken from the exif:DateTimeOriginal "
