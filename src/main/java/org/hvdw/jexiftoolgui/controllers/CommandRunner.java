@@ -13,9 +13,7 @@ public class CommandRunner {
      */
     public static String runCommand(List<String> cmdparams) throws InterruptedException, IOException {
 
-        // Can't get the stringbuilder to add a new line inbetween
-        //StringBuilder res = new StringBuilder("");
-        String res = "";
+        StringBuilder res = new StringBuilder("");
         DataOutputStream outputStream = null;
         InputStream response = null;
         System.out.println(cmdparams.toString());
@@ -29,21 +27,17 @@ public class CommandRunner {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null)
-                //res.append(line);
-                //res.append(System.getProperty(line.separator));
-                res = res + line + System.lineSeparator();
+                res.append(line + System.lineSeparator());
             //System.out.println("tasklist: " + line);
             int errCode = process.waitFor();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            /*res.append("IOException error");
-            res.append(System.getProperty("line.separator"));
+            res.append("IOException error" + System.lineSeparator());
             res.append(e.getMessage());
-            //res = e.getMessage(); */
         }
-        //return res.toString();
-        return res;
+        return res.toString();
+        //return res;
     }
 
     /*
