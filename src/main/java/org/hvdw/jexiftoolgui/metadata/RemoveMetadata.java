@@ -4,14 +4,14 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.CommandRunner;
-import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
+import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,11 +171,11 @@ public class RemoveMetadata extends JDialog {
         }
     }
 
-    public void showDialog(int[] selectedIndices, File[] openedfiles, JProgressBar progressBar) {
+    public void showDialog(JProgressBar progressBar) {
         //ExportMetadata dialog = new ExportMetadata();
         //setSize(400, 250);
-        selectedFilenamesIndices = selectedIndices;
-        files = openedfiles;
+        selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
+        files = MyVariables.getSelectedFiles();
         progBar = progressBar;
 
         pack();

@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui.datetime;
 
 import org.hvdw.jexiftoolgui.CommandRunner;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 
@@ -12,7 +13,9 @@ import java.util.List;
 public class DateTime {
 
 
-    public void setFileDatetoDateTimeOriginal(int[] selectedIndices, File[] files, JProgressBar progressBar) {
+    public void setFileDatetoDateTimeOriginal( JProgressBar progressBar) {
+        int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
         List<String> cmdparams = new ArrayList<String>();
         String tmpcmpstring = "";
         String[] options = {"No", "Yes"};

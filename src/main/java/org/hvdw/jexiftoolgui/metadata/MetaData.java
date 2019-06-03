@@ -10,9 +10,12 @@ import java.util.List;
 
 public class MetaData {
 
-    public void copytoxmp(int[] selectedIndices, File[] files) {
+    public void copytoxmp() {
         String fpath ="";
         String TotalOutput = "";
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
+
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
         System.out.println("Copy all metadata to xmp format");
@@ -24,7 +27,6 @@ public class MetaData {
 
             String exiftool = Utils.platformExiftool();
 
-            //JDialog prgdlg = progdlg.displayProgressDialog();
             for (int index: selectedIndices) {
                 // Unfortunately we need to do this file by file. It also means we need to initialize everything again and again
                 //System.out.println("index: " + index + "  image path:" + files[index].getPath());
@@ -56,9 +58,12 @@ public class MetaData {
 
     }
 
-    public void repairJPGmetadata(int[] selectedIndices, File[] files, JProgressBar progressBar) {
+    public void repairJPGmetadata( JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
+
         System.out.println("Repair corrupted metadata in JPG(s)");
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.repairJPGmetadata),"Repair corrupted metadata in JPG(s)",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -80,18 +85,15 @@ public class MetaData {
                 }
             }
             // export metadata
-            /*try {
-                String res = Utils.runCommand(cmdparams);
-                System.out.println(res);
-                Utils.runCommandOutput(res);
-            } catch(IOException | InterruptedException ex) {
-                System.out.println("Error executing command");
-            } */
             CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
         }
     }
 
-    public void CopyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, int[] selectedIndices, File[] files, JProgressBar progressBar) {
+    public void CopyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
+        //int selectedRow = MyVariables.getSelectedRow();
+        int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
+
         boolean atLeastOneSelected = false;
         String fpath ="";
 

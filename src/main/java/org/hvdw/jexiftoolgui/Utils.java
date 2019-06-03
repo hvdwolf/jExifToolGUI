@@ -22,7 +22,6 @@ import java.util.stream.IntStream;
 
 public class Utils {
 
-    private static MyVariables myVars = new MyVariables();
     private static Preferences prefs = Preferences.userRoot();
 
 
@@ -376,7 +375,7 @@ public class Utils {
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
             files = chooser.getSelectedFiles();
-            myVars.setSelectedFiles(files);
+            MyVariables.setSelectedFiles(files);
             prefs.node("lastopenedfolder");
             prefs.put("lastopenedfolder", chooser.getSelectedFile().getAbsolutePath());
         } else if (status == JFileChooser.CANCEL_OPTION) {
@@ -392,7 +391,7 @@ public class Utils {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
 
         int selectedRow, selectedColumn;
-        File[] files = myVars.getSelectedFiles();
+        File[] files = MyVariables.getSelectedFiles();
         DefaultTableModel model = (DefaultTableModel)jTable_File_Names.getModel();
         //model.setColumnIdentifiers(new String[]{"File Name(s)"});
         //ListexiftoolInfotable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
@@ -448,14 +447,8 @@ public class Utils {
             model.addRow(ImgFilenameRow);
         }
 
-        myVars.setSelectedRow(0);
-        myVars.setSelectedColumn(0);
-    }
-
-    // Only way to make this work?
-    // See lines 2004-2007 in mainScreen.java
-    public static void SetTheSetterForTheSelectedRow(int selectedRow) {
-        myVars.setSelectedRow(selectedRow);
+        MyVariables.setSelectedRow(0);
+        MyVariables.setSelectedColumn(0);
     }
 
     /*
@@ -466,7 +459,7 @@ public class Utils {
 
         String fpath ="";
         List<String> cmdparams = new ArrayList<String>();
-        int selectedRow = myVars.getSelectedRow();
+        int selectedRow = MyVariables.getSelectedRow();
 
         //System.out.println("selectedRow: " + String.valueOf(selectedRow));
         String exiftool = prefs.get("exiftool", "");
@@ -479,12 +472,12 @@ public class Utils {
             fpath = files[selectedRow].getPath();
         }
         // Need to build exiftool prefs check
-        myVars.setSelectedImagePath(fpath);
+        MyVariables.setSelectedImagePath(fpath);
         cmdparams.add(exiftool);
         cmdparams.addAll( Arrays.asList(whichInfo) );
         //System.out.println("image file path: " + fpath);
-        //myVars.setSelectedImagePath(fpath);
-        cmdparams.add(myVars.getSelectedImagePath());
+        //MyVariables.setSelectedImagePath(fpath);
+        cmdparams.add(MyVariables.getSelectedImagePath());
         //System.out.print("before runCommand: " + cmdparams.toString());
         try {
             String res = CommandRunner.runCommand(cmdparams);
@@ -647,18 +640,18 @@ public class Utils {
     static void extDisplayImage() {
         //myVariables myVars = new myVariables();
 
-        //myVars.getMySelectedRow(), myVars.getSelectedImagePath()
+        //MyVariables.getMySelectedRow(), MyVariables.getSelectedImagePath()
         String OS = System.getProperty("os.name").toLowerCase();
         Runtime runtime = Runtime.getRuntime();
         if (OS.contains("mac")) { //Apple
             try {
-                runtime.exec("open /Applications/Preview.app " + myVars.getSelectedImagePath());
+                runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else if (OS.contains("windows")) {
-            String convImg = myVars.getSelectedImagePath().replace("/", "\\");
+            String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
             String[] commands = { "cmd.exe", "/c", "start", "\"DummyTitle\"", "\"" + convImg + "\"" };
             try {
                 runtime.exec(commands);
@@ -668,8 +661,8 @@ public class Utils {
             }
         } else { //Linux, or "something else"
             try {
-                //System.out.println("xdg-open " +  myVars.getSelectedImagePath().replace(" ", "\\ "));
-                runtime.exec("xdg-open " +  myVars.getSelectedImagePath().replace(" ", "\\ "));
+                //System.out.println("xdg-open " +  MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                runtime.exec("xdg-open " +  MyVariables.getSelectedImagePath().replace(" ", "\\ "));
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

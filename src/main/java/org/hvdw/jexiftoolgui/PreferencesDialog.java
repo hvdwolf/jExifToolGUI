@@ -23,7 +23,6 @@ public class PreferencesDialog extends JDialog {
     JCheckBox CheckVersioncheckBox;
 
     // Initialize all the helper classes
-    MyVariables myVars = new MyVariables();
     //AppPreferences AppPrefs = new AppPreferences();
     Preferences prefs = Preferences.userRoot();
 

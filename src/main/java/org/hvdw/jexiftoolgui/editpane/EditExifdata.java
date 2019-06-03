@@ -16,7 +16,6 @@ import java.util.prefs.Preferences;
 public class EditExifdata {
 
     Preferences prefs = Preferences.userRoot();
-    MyVariables myVars = new MyVariables();
     // I had specified for the arrays:
     //JTextField[] exifFields = {ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField,ExifCreateDatetextField,
     //        ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};
@@ -31,9 +30,10 @@ public class EditExifdata {
         exiftextArea.setText("");
     }
 
-    public void copyexiffromselected(JTextField[] exifFields, JTextArea exiftextArea, File[] files, int SelectedRow) {
+    public void copyexiffromselected(JTextField[] exifFields, JTextArea exiftextArea) {
         String[] exifcopyparams = {"-e","-n","-exif:Make","-exif:Model","-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate","-exif:Artist","-exif:Copyright","-exif:UserComment","-exif:ImageDescription"};
-        String fpath ="";
+        File[] files = MyVariables.getSelectedFiles();
+        int SelectedRow = MyVariables.getSelectedRow();        String fpath ="";
         String res = "";
         List<String> cmdparams = new ArrayList<String>();
 
@@ -101,9 +101,11 @@ public class EditExifdata {
     }
 
 
-    public void writeExifTags(JTextField[] exifFields, JTextArea Description, JCheckBox[] exifBoxes, int[] selectedIndices, File[] files, JProgressBar progressBar) {
+    public void writeExifTags(JTextField[] exifFields, JTextArea Description, JCheckBox[] exifBoxes, JProgressBar progressBar) {
 
         List<String> cmdparams = new ArrayList<String>();
+        File[] files = MyVariables.getSelectedFiles();
+        int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
 
         cmdparams.add(Utils.platformExiftool());
         if (!exifBoxes[9].isSelected()) { // default overwrite originals, when set do not

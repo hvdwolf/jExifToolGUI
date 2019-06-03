@@ -16,7 +16,6 @@ import java.util.prefs.Preferences;
 public class EditXmpdata {
 
     Preferences prefs = Preferences.userRoot();
-    MyVariables myVars = new MyVariables();
 
     // I had specified for the arrays:
     //JTextField[] xmpFields = {xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};
@@ -32,7 +31,9 @@ public class EditXmpdata {
     }
 
 
-    public void copyxmpfromselected(JTextField[] xmpFields, JTextArea Description, File[] files, int SelectedRow) {
+    public void copyxmpfromselected(JTextField[] xmpFields, JTextArea Description) {
+        File[] files = MyVariables.getSelectedFiles();
+        int SelectedRow = MyVariables.getSelectedRow();
         String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Rights", "-xmp:Label", "-xmp:Subject", "-xmp:Title", "-xmp:Rating", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage", "-xmp:RegionName" , "-xmp:RegionType"};
         String fpath = "";
         String res = "";
@@ -104,8 +105,10 @@ public class EditXmpdata {
 
         }
         
-        public void writeXmpTags(JTextField[] xmpFields, JTextArea Description, JCheckBox[] xmpBoxes, int[] selectedIndices, File[] files, JProgressBar progressBar) {
+        public void writeXmpTags(JTextField[] xmpFields, JTextArea Description, JCheckBox[] xmpBoxes, JProgressBar progressBar) {
             List<String> cmdparams = new ArrayList<String>();
+            int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
+            File[] files = MyVariables.getSelectedFiles();
 
             cmdparams.add(Utils.platformExiftool());
             if (!xmpBoxes[9].isSelected()) { // default overwrite originals, when set do not

@@ -232,7 +232,6 @@ public class mainScreen {
     ListSelectionModel listSelectionModel;
 
     // Initialize all the helper classes
-    MyVariables myVars = new MyVariables();
     PreferencesDialog prefsDialog = new PreferencesDialog();
     MetaData metaData = new MetaData();
     DateTime dateTime = new DateTime();
@@ -374,13 +373,13 @@ public class mainScreen {
         OutputLabel.setText("Loading images ....");
         files = Utils.getFileNames(mainScreen.this.rootPanel);
         if (files != null) {
-            myVars.setSelectedFiles(files);
+            //myVars.setSelectedFiles(files);
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
-                    myVars.setSelectedRow(0);
+                    MyVariables.setSelectedRow(0);
                     String[] params = whichRBselected();
                     //Utils.ImageInfo(MyConstants.all_params, files, mainScreen.this.ListexiftoolInfotable);
                     Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
@@ -1397,7 +1396,6 @@ public class mainScreen {
 
         // menuListener
         public void actionPerformed(ActionEvent ev) {
-            //MyVariables myVars = new MyVariables();
             String[] dummy = null;
             System.out.println("Selected: " + ev.getActionCommand());
 
@@ -1421,7 +1419,7 @@ public class mainScreen {
                 case "Copy all metadata to xmp format":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Copying all relevant data to its xmp variants, please be patient ...");
-                        metaData.copytoxmp(selectedIndices, files);
+                        metaData.copytoxmp();
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1430,8 +1428,7 @@ public class mainScreen {
                 case "Repair JPG(s) with corrupted metadata":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Repairing jpg data, please be patient ...");
-                        metaData.repairJPGmetadata(selectedIndices, files, progressBar);
-                        //metaData.repairJPGmetadata( progressBar);
+                        metaData.repairJPGmetadata( progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1448,7 +1445,7 @@ public class mainScreen {
                 case "Remove metadata":
                     if (selectedIndicesList.size() > 0) {
                         RemoveMetadata rmMetadata = new RemoveMetadata();
-                        rmMetadata.showDialog(selectedIndices, files, progressBar);
+                        rmMetadata.showDialog(progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1457,7 +1454,7 @@ public class mainScreen {
                 case "Shift Date/time":
                     if (selectedIndicesList.size() > 0) {
                         ShiftDateTime SDT = new ShiftDateTime();
-                        SDT.showDialog(selectedIndices, files, progressBar);
+                        SDT.showDialog(progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1474,7 +1471,7 @@ public class mainScreen {
                     break;
                 case "Set file date to DateTimeOriginal":
                     if (selectedIndicesList.size() > 0) {
-                        dateTime.setFileDatetoDateTimeOriginal(selectedIndices, files, progressBar);
+                        dateTime.setFileDatetoDateTimeOriginal(progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1569,14 +1566,14 @@ public class mainScreen {
         ExifcopyFromButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EEd.copyexiffromselected(getExifFields(), ExifDescriptiontextArea, files, SelectedRow);
+                EEd.copyexiffromselected(getExifFields(), ExifDescriptiontextArea);
             }
         });
         ExifsaveToButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EEd.writeExifTags(getExifFields(), ExifDescriptiontextArea, getExifBoxes(), selectedIndices, files, progressBar);
+                    EEd.writeExifTags(getExifFields(), ExifDescriptiontextArea, getExifBoxes(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                 }
@@ -1606,14 +1603,14 @@ public class mainScreen {
         xmpCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EXd.copyxmpfromselected(getXmpFields(), xmpDescriptiontextArea, files, SelectedRow);
+                EXd.copyxmpfromselected(getXmpFields(), xmpDescriptiontextArea);
             }
         });
         xmpSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EXd.writeXmpTags(getXmpFields(), xmpDescriptiontextArea, getXmpBoxes(), selectedIndices, files, progressBar);
+                    EXd.writeXmpTags(getXmpFields(), xmpDescriptiontextArea, getXmpBoxes(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                 }
@@ -1667,7 +1664,7 @@ public class mainScreen {
                     if ("".equals(geotaggingGPSLogtextField.getText())) {
                         JOptionPane.showMessageDialog(rootPanel, "No gps track log selected", "No gps log", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        EGd.WriteInfo(getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), selectedIndices, files, progressBar);
+                        EGd.WriteInfo(getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
                     }
                 }
                 OutputLabel.setText("");
@@ -1690,14 +1687,14 @@ public class mainScreen {
         gpsCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGPSd.copygpsfromselected(getGPSFields(), getGpsBoxes(), files, SelectedRow);
+                EGPSd.copygpsfromselected(getGPSFields(), getGpsBoxes());
             }
         });
         gpsSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EGPSd.writeGPSTags(getGPSFields(), getGpsBoxes(), selectedIndices, files, progressBar);
+                    EGPSd.writeGPSTags(getGPSFields(), getGpsBoxes(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                 }
@@ -1769,7 +1766,8 @@ public class mainScreen {
         CopyDataCopyTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files, progressBar);
+                //metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files, progressBar);
+                metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, progressBar);
             }
         });
         CopyHelpbutton.addActionListener(new ActionListener() {
@@ -1884,7 +1882,7 @@ public class mainScreen {
             selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
             selectedIndicesList = tmpselectedIndices;
             System.out.println(Arrays.toString(selectedIndices));
-            myVars.setSelectedFilenamesIndices(selectedIndices);
+            MyVariables.setSelectedFilenamesIndices(selectedIndices);
 
         }
     } */
@@ -1916,7 +1914,7 @@ public class mainScreen {
                         // I'm probably doing something enormously stupid
                         // but I don't see another way to set the setter.
                         // It simply doesn't work from this for/void/class
-                        Utils.SetTheSetterForTheSelectedRow(i);
+                        MyVariables.setSelectedRow(i);
                     }
                 }
                 System.out.println("");
@@ -1926,8 +1924,8 @@ public class mainScreen {
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;
                 //System.out.println(Arrays.toString(selectedIndices));
-                Utils.SetTheSetterForTheSelectedFilenamesIndices(selectedIndices);
-                //myVars.setSelectedFilenamesIndices(selectedIndices);
+                // Same as above setter
+                MyVariables.setSelectedFilenamesIndices(selectedIndices);
             }
 
         }

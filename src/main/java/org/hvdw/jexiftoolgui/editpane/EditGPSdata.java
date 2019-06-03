@@ -16,7 +16,6 @@ import java.util.prefs.Preferences;
 public class EditGPSdata {
 
     Preferences prefs = Preferences.userRoot();
-    MyVariables myVars = new MyVariables();
     // I had specified for the arrays:
     //textfields:  gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField
     //checkboxes:  SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox
@@ -28,7 +27,9 @@ public class EditGPSdata {
         }
     }
 
-    public void copygpsfromselected(JTextField[] gpsFields, JCheckBox[] gpsBoxes, File[] files, int SelectedRow) {
+    public void copygpsfromselected(JTextField[] gpsFields, JCheckBox[] gpsBoxes) {
+        File[] files = MyVariables.getSelectedFiles();
+        int SelectedRow = MyVariables.getSelectedRow();
         // Use "-n" for numerical values, like GPSAltitudeRef 0/1, instead of Above Sea Level/Below Sea Level
         String[] gpscopyparams = {"-e","-n","-exif:GPSLatitude","-exif:GPSLongitude","-exif:GPSAltitude","-exif:GPSAltitudeRef","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
         String fpath ="";
@@ -99,8 +100,10 @@ public class EditGPSdata {
     }
 
 
-    public void writeGPSTags(JTextField[] gpsFields, JCheckBox[] gpsBoxes, int[] selectedIndices, File[] files, JProgressBar progressBar) {
+    public void writeGPSTags(JTextField[] gpsFields, JCheckBox[] gpsBoxes, JProgressBar progressBar) {
 
+        int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
         List<String> cmdparams = new ArrayList<String>();
 
         cmdparams.add(Utils.platformExiftool());

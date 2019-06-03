@@ -3,10 +3,7 @@ package org.hvdw.jexiftoolgui.datetime;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.CommandRunner;
-import org.hvdw.jexiftoolgui.ProgramTexts;
-import org.hvdw.jexiftoolgui.Utils;
-import org.hvdw.jexiftoolgui.mainScreen;
+import org.hvdw.jexiftoolgui.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -130,9 +127,9 @@ public class ShiftDateTime extends JDialog {
         dispose();
     }
 
-    public void showDialog(int[] selectedIndices, File[] openedfiles, JProgressBar progressBar) {
-        selectedFilenamesIndices = selectedIndices;
-        files = openedfiles;
+    public void showDialog(JProgressBar progressBar) {
+        selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
+        files = MyVariables.getSelectedFiles();
         progBar = progressBar;
 
         pack();
