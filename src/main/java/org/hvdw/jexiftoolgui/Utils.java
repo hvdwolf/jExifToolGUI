@@ -1,5 +1,7 @@
 package org.hvdw.jexiftoolgui;
 
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;

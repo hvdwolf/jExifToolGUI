@@ -1,4 +1,7 @@
-package org.hvdw.jexiftoolgui;
+package org.hvdw.jexiftoolgui.controllers;
+
+import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui.metadata;
 
 import org.hvdw.jexiftoolgui.*;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 
 import javax.swing.*;
 import java.io.File;
