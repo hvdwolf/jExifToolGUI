@@ -7,3 +7,5 @@ build
 # Ignore IntelliJ IDEA folders and project files because of using gradle
 .idea
 *.iml
+
+*.log
