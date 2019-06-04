@@ -2101,11 +2101,4 @@ public class mainScreen {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        logger.debug("Start application");
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(mainScreen::createAndShowGUI);
-    }
 }

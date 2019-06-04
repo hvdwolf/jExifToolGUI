@@ -20,7 +20,7 @@ plugins {
 }
 
 project.ext {
-    set("mainClassName", "org.hvdw.jexiftoolgui.mainScreen")
+    set("mainClassName", "org.hvdw.jexiftoolgui.Application")
 }
 
 repositories {
