@@ -23,10 +23,10 @@ public class EditGeotaggingdata {
     private String ImageFolder;
     private Preferences prefs = Preferences.userRoot();
 
-    public String ImgPath(JPanel myComponent) {
+    public String getImagePath(JPanel myComponent) {
         String SelectedFolder;
 
-        String startFolder = StandardFileIO.whichFolderToOpen();
+        String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setDialogTitle("Locate the image folder ...");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -41,7 +41,7 @@ public class EditGeotaggingdata {
 
     public String gpsLogFile(JPanel myComponent) {
 
-        String startFolder = StandardFileIO.whichFolderToOpen();
+        String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setMultiSelectionEnabled(false);
         String[] filexts = {"gpx", "gps", "log"};
@@ -58,8 +58,8 @@ public class EditGeotaggingdata {
         }
     }
 
-//    public void WriteInfo(String onFolder, String gpslogfile, String geosync, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
-    public void WriteInfo(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
+//    public void writeInfo(String onFolder, String gpslogfile, String geosync, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
+    public void writeInfo(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
 
         int[] selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
@@ -127,7 +127,7 @@ public class EditGeotaggingdata {
             }
         }
 
-        CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+        CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
     }
 
     public void ResetFields(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes) {

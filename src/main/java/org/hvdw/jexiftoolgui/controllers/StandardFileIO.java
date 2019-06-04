@@ -14,7 +14,7 @@ public class StandardFileIO {
 
     private static Preferences prefs = Preferences.userRoot();
 
-    public static String TextFileReader (String fileName) {
+    public static String readTextFileAsString (String fileName) {
         // This will reference one line at a time
         String line = null;
         StringBuilder totalText = new StringBuilder("");
@@ -52,7 +52,7 @@ public class StandardFileIO {
     }
 
     // Reads a text file from resources
-    public static String ResourceReader(String fileName) {
+    public static String readTextFileAsStringFromResource(String fileName) {
         String strFileContents = "";
 
         try {
@@ -75,7 +75,7 @@ public class StandardFileIO {
     /* General check method which folder to open
      * Based on preference default folder, "always Use Last used folder" or home folder
      */
-    public static String whichFolderToOpen() {
+    public static String getFolderPathToOpenBasedOnPreferences() {
         boolean imageDefaultFolder_exists = false;
         boolean uselastopenedfolder_exists = false;
         String startFolder = "";
@@ -113,7 +113,7 @@ public class StandardFileIO {
         boolean imageDefaultFolder_exists = false;
         String startFolder = "";
 
-        startFolder = whichFolderToOpen();
+        startFolder = getFolderPathToOpenBasedOnPreferences();
 
         final JFileChooser chooser = new JFileChooser(startFolder);
         //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");

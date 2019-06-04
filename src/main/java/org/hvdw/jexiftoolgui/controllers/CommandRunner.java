@@ -43,7 +43,7 @@ public class CommandRunner {
     /*
     * This shows the output of exiftool after it has run
      */
-    public static void OutputAfterCommand (String output) {
+    public static void outputAfterCommand (String output) {
         JTextArea textArea = new JTextArea(output);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
@@ -55,7 +55,7 @@ public class CommandRunner {
     /*
     * This executes the commands via runCommand and shows/hides the progress bar
      */
-    public static void RunCommandWithProgress (List<String> cmdparams, JProgressBar progressBar) {
+    public static void runCommandWithProgressBarBar (List<String> cmdparams, JProgressBar progressBar) {
         // Create executor thread to be able to update my gui when longer methods run
         Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
@@ -65,7 +65,7 @@ public class CommandRunner {
                     String res = runCommand(cmdparams);
                     System.out.println(res);
                     progressBar.setVisible(false);
-                    OutputAfterCommand(res);
+                    outputAfterCommand(res);
                 } catch(IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }

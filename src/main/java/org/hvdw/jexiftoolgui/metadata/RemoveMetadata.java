@@ -94,7 +94,7 @@ public class RemoveMetadata extends JDialog {
 
     private void onOK() {
         // add your code here
-        Remove();
+        removeMetadatafromImage();
         dispose();
     }
 
@@ -103,7 +103,7 @@ public class RemoveMetadata extends JDialog {
         dispose();
     }
 
-    private void Remove() {
+    private void removeMetadatafromImage() {
         boolean atLeastOneSelected = false;
 
         List<String> params = new ArrayList<String>();
@@ -164,7 +164,7 @@ public class RemoveMetadata extends JDialog {
                     }
                 }
                 // remove metadata
-                CommandRunner.RunCommandWithProgress(params, progBar);
+                CommandRunner.runCommandWithProgressBarBar(params, progBar);
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No removal option selected", JOptionPane.WARNING_MESSAGE);

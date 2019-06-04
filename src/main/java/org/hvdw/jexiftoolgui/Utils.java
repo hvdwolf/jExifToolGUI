@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -73,7 +72,7 @@ public class Utils {
      */
     public static void readTagsCSV(String tagname) {
         List<List<String>> tagrecords = new ArrayList<>();
-        String tags = StandardFileIO.ResourceReader("resources/tagxml/" + tagname + ".xml");
+        String tags = StandardFileIO.readTextFileAsStringFromResource("resources/tagxml/" + tagname + ".xml");
         if (tags.length() > 0) {
             String[] lines = tags.split(System.getProperty("line.separator"));
 
@@ -85,9 +84,9 @@ public class Utils {
     }
 
     // Displays the license in an option pane
-    static void License(JPanel myComponent) {
+    static void showLicense(JPanel myComponent) {
 
-        String license = StandardFileIO.ResourceReader("COPYING");
+        String license = StandardFileIO.readTextFileAsStringFromResource("COPYING");
         JTextArea textArea = new JTextArea(license);
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
@@ -135,7 +134,7 @@ public class Utils {
      * File chooser to locate exiftool when user comes from checkExifTool
      * and selected "Specify Location"
      */
-    static String exiftoolLocator(JPanel myComponent) {
+    static String whereIsExiftool(JPanel myComponent) {
         String exiftool = "";
         String selectedBinary = "";
 
@@ -186,7 +185,7 @@ public class Utils {
         if (choice == 0) {
             // open file chooser
             // Do this from the PreferencesDialog class as it atually belongs there
-            returnValue = exiftoolLocator(myComponent);
+            returnValue = whereIsExiftool(myComponent);
             if (returnValue.equals("cancelled")) {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup,"Cancelled locate ExifTool",JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
@@ -214,7 +213,7 @@ public class Utils {
      * This method checks for a new version on the repo.
      * It can be called from startup (preferences setting) or from the Help menu
      */
-    static void CheckforNewVersion(String fromWhere) {
+    static void checkforNewVersion(String fromWhere) {
         String version = "";
         boolean newversion_startupcheck_exists = false;
         boolean versioncheck = false;
@@ -342,8 +341,8 @@ public class Utils {
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    //static void ImageInfo(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
-    static void ImageInfo(String[] whichInfo, File[] files, JTable ListexiftoolInfotable) {
+    //static void getImageInfoFromSelectedFile(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
+    static void getImageInfoFromSelectedFile(String[] whichInfo, File[] files, JTable ListexiftoolInfotable) {
 
         String fpath ="";
         List<String> cmdparams = new ArrayList<String>();
@@ -370,7 +369,7 @@ public class Utils {
         try {
             String res = CommandRunner.runCommand(cmdparams);
             //System.out.println("res is " + res);
-            DisplayInfo(res, ListexiftoolInfotable);
+            displayInfoForSelectedImage(res, ListexiftoolInfotable);
         } catch(IOException | InterruptedException ex) {
             System.out.println("Error executing command");
         }
@@ -378,18 +377,18 @@ public class Utils {
     }
 
     // This is the "pre-ImageInfo" that is called when the option is chosen to display for a specific Tag Name from the dropdown list without changing the selected image.
-    static void ImageInfoByTagName(JComboBox comboBoxViewByTagName, File[] files, JTable ListexiftoolInfotable) {
+    static void selectImageInfoByTagName(JComboBox comboBoxViewByTagName, File[] files, JTable ListexiftoolInfotable) {
 
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
         params[1] = "-G";
         params[2] = "-tab";
-        ImageInfo(params, files, ListexiftoolInfotable);
+        getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
     }
 
     // This is for the "all tags" and "camera makes"
-    static String[] WhichTagSelected(JComboBox comboBoxViewByTagName) {
+    static String[] getWhichTagSelected(JComboBox comboBoxViewByTagName) {
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
@@ -399,7 +398,7 @@ public class Utils {
     }
 
     // This is for the Common Tags as they can contain combined info
-    static String[] WhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
+    static String[] getWhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
         String[] params = {"-all"}; // We need to initialize with something
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
 
@@ -438,7 +437,7 @@ public class Utils {
     /*
      * This method displays the exiftool info in the right 3-column table
      */
-    private static void DisplayInfo(String exiftoolInfo, JTable ListexiftoolInfotable) {
+    private static void displayInfoForSelectedImage(String exiftoolInfo, JTable ListexiftoolInfotable) {
         // This will display the exif info in the right panel
 
         DefaultTableModel model = (DefaultTableModel)ListexiftoolInfotable.getModel();
@@ -465,7 +464,7 @@ public class Utils {
     /*
      * This method displays the selected image in the default image viewer for the relevant mime-type (the extension mostly)
      */
-    public static void DisplayImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
+    public static void displaySelectedImageInDefaultViewer(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         if (isWindows) {
@@ -489,7 +488,7 @@ public class Utils {
      * This method displays a preview of the image in the bottom left panel
      * THIS METHOD IS NOT USED ANYMORE
      */
-    public void DisplayTableImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
+    public void displayTableImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         if (isWindows) {
@@ -513,7 +512,7 @@ public class Utils {
      * This method displays the program logo
      * * THIS METHOD IS NOT USED CURRENTLY
      */
-    public void DisplayLogo(JLabel ThumbView) throws IOException {
+    public void displayLogo(JLabel ThumbView) throws IOException {
         BufferedImage img = ImageIO.read(Utils.getResource("icons/jexiftoolgui-splashlogo.jpg"));
         // resize it
         BufferedImage resizedImg = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
@@ -525,7 +524,7 @@ public class Utils {
         ThumbView.setIcon(icon);
     }
 
-    static void extDisplayImage() {
+    static void extdisplaySelectedImageInDefaultViewer() {
         //myVariables myVars = new myVariables();
 
         //MyVariables.getMySelectedRow(), MyVariables.getSelectedImagePath()

@@ -13,7 +13,7 @@ import java.util.List;
 public class DateTime {
 
 
-    public void SET_FILEDATETIME_TO_DATETIMEORIGINAL( JProgressBar progressBar) {
+    public void SetFileDateTimeToDateTimeOriginal( JProgressBar progressBar) {
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
         List<String> cmdparams = new ArrayList<String>();
@@ -47,7 +47,7 @@ public class DateTime {
             if (!isWindows) {
                 cmdparams.add(tmpcmpstring);
             }
-            CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+            CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
         }
      }
 

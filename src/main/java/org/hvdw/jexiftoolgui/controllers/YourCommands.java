@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 
 public class YourCommands {
 
-    public void ExecuteCommands(String Commands, JTextArea Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar) {
-    //public void ExecuteCommands(String Commands, JTextArea Output, int[] selectedIndices, File[] files) {
+    public void executeCommands(String Commands, JTextArea Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar) {
+    //public void executeCommands(String Commands, JTextArea Output, int[] selectedIndices, File[] files) {
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
         String fpath ="";
@@ -57,7 +57,7 @@ public class YourCommands {
             }
             /*try {
                 String res = CommandRunner.runCommand(cmdparams);
-                //String res = CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+                //String res = CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
                 Output.append("============= \"");
                 Output.append(files[index].getPath());
                 Output.append("\" =============" + System.lineSeparator());
@@ -73,7 +73,7 @@ public class YourCommands {
                 public void run() {
                     try {
                         String res = CommandRunner.runCommand(cmdparams);
-                        //String res = CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+                        //String res = CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
                         Output.append("============= \"");
                         Output.append(files[index].getPath());
                         Output.append("\" =============" + System.lineSeparator());

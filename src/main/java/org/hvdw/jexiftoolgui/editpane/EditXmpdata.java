@@ -22,7 +22,7 @@ public class EditXmpdata {
     //    JTextArea[] xmpAreas = {xmpDescriptiontextArea};
     //    JCheckBox[] xmpBoxes = {xmpCreatorcheckBox, xmpRightscheckBox, xmpDescriptioncheckBox, xmpLabelcheckBox, xmpSubjectcheckBox, xmpTitlecheckBox, xmpPersoncheckBox};
 
-    public void resetfields(JTextField[] xmpFields, JTextArea Description) {
+    public void resetFields(JTextField[] xmpFields, JTextArea Description) {
 
         for (JTextField field: xmpFields) {
             field.setText("");
@@ -31,7 +31,7 @@ public class EditXmpdata {
     }
 
 
-    public void copyxmpfromselected(JTextField[] xmpFields, JTextArea Description) {
+    public void copyXmpFromSelected(JTextField[] xmpFields, JTextArea Description) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Rights", "-xmp:Label", "-xmp:Subject", "-xmp:Title", "-xmp:Rating", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage", "-xmp:RegionName" , "-xmp:RegionType"};
@@ -40,7 +40,7 @@ public class EditXmpdata {
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetfields(xmpFields, Description);
+        resetFields(xmpFields, Description);
 
         String exiftool = prefs.get("exiftool", "");
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
@@ -61,11 +61,11 @@ public class EditXmpdata {
             System.out.println("Error executing command");
         }
         if (res.length() > 0) {
-            DisplayCopiedInfo(xmpFields, Description, res);
+            displayCopiedInfo(xmpFields, Description, res);
         }
     }
 
-        public void DisplayCopiedInfo(JTextField[] xmpFields, JTextArea Description, String exiftoolInfo) {
+        public void displayCopiedInfo(JTextField[] xmpFields, JTextArea Description, String exiftoolInfo) {
             String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
             for (String line : lines) {
                 String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
@@ -165,6 +165,6 @@ public class EditXmpdata {
                 }
             }
 
-            CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+            CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
         }
 }

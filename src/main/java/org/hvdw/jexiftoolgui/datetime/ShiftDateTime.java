@@ -116,7 +116,7 @@ public class ShiftDateTime extends JDialog {
             }
         }
 
-        CommandRunner.RunCommandWithProgress(cmdparams, progBar);
+        CommandRunner.runCommandWithProgressBarBar(cmdparams, progBar);
     }
 
     private void onOK() {

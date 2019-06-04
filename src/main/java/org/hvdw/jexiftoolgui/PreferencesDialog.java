@@ -48,10 +48,10 @@ public class PreferencesDialog extends JDialog {
         ExiftoolLocationbutton.addActionListener(actionEvent -> {
 
             String ETpath = "";
-            ETpath = Utils.exiftoolLocator(contentPanel);
-            exiftoolpath(contentPanel, ExiftoolLocationtextField, ETpath, "preferences");
+            ETpath = Utils.whereIsExiftool(contentPanel);
+            getExiftoolPath(contentPanel, ExiftoolLocationtextField, ETpath, "preferences");
         });
-        ImgStartFolderButton.addActionListener(actionEvent -> DefImgPath(contentPanel, ImgStartFoldertextField));
+        ImgStartFolderButton.addActionListener(actionEvent -> DefgetImagePath(contentPanel, ImgStartFoldertextField));
     }
 
     private void onSave() {
@@ -69,7 +69,7 @@ public class PreferencesDialog extends JDialog {
     // As the exiftoolLocator is already created in the Utils as startup check we simply leave it there
     // although you can discuss that it can also be a preference if we deviate from the standard one
     // of course we do need the return value which we will get from the listener
-    public void exiftoolpath(JPanel myComponent, JTextField myExiftoolTextfield, String ePath, String fromWhere) {
+    public void getExiftoolPath(JPanel myComponent, JTextField myExiftoolTextfield, String ePath, String fromWhere) {
         if (ePath == "cancelled") {
             if (fromWhere == "startup") {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
@@ -93,7 +93,7 @@ public class PreferencesDialog extends JDialog {
     }
 
     // Locate the default image path, if the user wants it
-    public void DefImgPath(JPanel myComponent, JTextField defImgFolder) {
+    public void DefgetImagePath(JPanel myComponent, JTextField defImgFolder) {
         String SelectedFolder;
 
         final JFileChooser chooser = new JFileChooser();

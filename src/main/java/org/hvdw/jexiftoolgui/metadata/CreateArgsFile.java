@@ -93,7 +93,7 @@ public class CreateArgsFile extends JDialog {
     private void onOK() {
         // add your code here
         //createfile(selectedFilenamesIndices, files);
-        createfile();
+        writeFile();
         dispose();
     }
 
@@ -103,7 +103,7 @@ public class CreateArgsFile extends JDialog {
     }
 
     //public void createfile(int[] selectedFilenamesIndices, File[] files){
-    private void createfile() {
+    private void writeFile() {
         boolean atLeastOneSelected = false;
 
         String[] CAparams = MyConstants.CREATE_ARGS_FILE_STRINGS;
@@ -167,7 +167,7 @@ public class CreateArgsFile extends JDialog {
                     }
                 }
                 // export metadata
-                CommandRunner.RunCommandWithProgress(params, progBar);
+                CommandRunner.runCommandWithProgressBarBar(params, progBar);
 
             }
         } else {

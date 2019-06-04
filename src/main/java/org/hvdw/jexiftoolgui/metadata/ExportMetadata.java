@@ -104,7 +104,7 @@ public class ExportMetadata extends JDialog {
 
     private void onOK() {
         // add your code here
-        Export();
+        writeExport();
         dispose();
     }
 
@@ -113,7 +113,7 @@ public class ExportMetadata extends JDialog {
         dispose();
     }
 
-    private void Export() {
+    private void writeExport() {
         boolean atLeastOneSelected = false;
         List<String> params = new ArrayList<String>();
         List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option
@@ -222,7 +222,7 @@ public class ExportMetadata extends JDialog {
 
 
                 // Export metadata
-                CommandRunner.RunCommandWithProgress(params, progBar);
+                CommandRunner.runCommandWithProgressBarBar(params, progBar);
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No export option selected", JOptionPane.WARNING_MESSAGE);

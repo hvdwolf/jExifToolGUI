@@ -290,7 +290,7 @@ public class mainScreen {
 
     /////////////////////// Startup checks /////////////////
 // where is exiftool, if available
-    private static String exiftool_check() {
+    private static String exiftoolCheck() {
         String res = "";
         List<String> cmdparams = new ArrayList<String>();
 
@@ -315,7 +315,7 @@ public class mainScreen {
     }
 
     //check preferences (a.o. exiftool)
-    private boolean check_preferences() {
+    private boolean checkPreferences() {
         boolean exiftool_exists = false;
         boolean exiftool_found = false;
         String res = "";
@@ -338,7 +338,7 @@ public class mainScreen {
             System.out.println("exists is " + exists);
             System.out.println("preference exiftool returned: " + exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
-                res = exiftool_check();
+                res = exiftoolCheck();
             } else {
                 res = exiftool_path;
                 //String[] cmdparams = {res, "-ver"};
@@ -353,7 +353,7 @@ public class mainScreen {
 
             }
         } else { // does not exist
-            res = exiftool_check();
+            res = exiftoolCheck();
         }
 
         if (res == null || res.isEmpty() || res.toLowerCase().startsWith("info")) {
@@ -372,7 +372,7 @@ public class mainScreen {
     }
 /////////////////////////// End of Startup checks //////////////////////////
 
-    private void LoadImages() {
+    private void loadImages() {
         OutputLabel.setText("Loading images ....");
         files = StandardFileIO.getFileNames(mainScreen.this.rootPanel);
         if (files != null) {
@@ -383,8 +383,7 @@ public class mainScreen {
                     Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
                     MyVariables.setSelectedRow(0);
                     String[] params = whichRBselected();
-                    //Utils.ImageInfo(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
-                    Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.getImageInfoFromSelectedFile(params, files, mainScreen.this.ListexiftoolInfotable);
                     mainScreen.this.buttonShowImage.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");
                     OutputLabel.setText("");
@@ -423,17 +422,17 @@ public class mainScreen {
         CopyJfifcheckBox.setEnabled(state);
     }
 
-    private void FillViewTagNamesComboboxes() {
+    private void fillViewTagNamesComboboxes() {
         // Fill all combo boxes in the View panel
-        String TagNames = StandardFileIO.ResourceReader("texts/ExifToolTagNames.txt");
+        String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/ExifToolTagNames.txt");
         String[] Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = StandardFileIO.ResourceReader("texts/CommonTags.txt");
+        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = StandardFileIO.ResourceReader("texts/CameraTagNames.txt");
+        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCameraMake.setModel(new DefaultComboBoxModel(Tags));
 
@@ -1404,7 +1403,7 @@ public class mainScreen {
             switch (ev.getActionCommand()) {
                 case "Load Images":
                     // identical to button "Load Images"
-                    LoadImages();
+                    loadImages();
                     break;
                 case "Preferences":
                     PreferencesDialog prefdialog = new PreferencesDialog();
@@ -1421,7 +1420,7 @@ public class mainScreen {
                 case "Copy all metadata to xmp format":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Copying all relevant data to its xmp variants, please be patient ...");
-                        metaData.copytoxmp();
+                        metaData.copyToXmp();
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1430,7 +1429,7 @@ public class mainScreen {
                 case "Repair JPG(s) with corrupted metadata":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Repairing jpg data, please be patient ...");
-                        metaData.REPAIR_JPG_METADATA( progressBar);
+                        metaData.repairJPGMetadata( progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
@@ -1473,7 +1472,7 @@ public class mainScreen {
                     break;
                 case "Set file date to DateTimeOriginal":
                     if (selectedIndicesList.size() > 0) {
-                        dateTime.SET_FILEDATETIME_TO_DATETIMEORIGINAL(progressBar);
+                        dateTime.SetFileDateTimeToDateTimeOriginal(progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1499,10 +1498,10 @@ public class mainScreen {
                     Utils.openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
                     break;
                 case "License":
-                    Utils.License(mainScreen.this.rootPanel);
+                    Utils.showLicense(mainScreen.this.rootPanel);
                     break;
                 case "Check for new version":
-                    Utils.CheckforNewVersion("menu");
+                    Utils.checkforNewVersion("menu");
                     break;
                 default:
                     break;
@@ -1518,13 +1517,13 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //File opener: Load the images; identical to Menu option Load Images.
-                LoadImages();
+                loadImages();
             }
         });
         buttonShowImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Utils.extDisplayImage();
+                Utils.extdisplaySelectedImageInDefaultViewer();
             }
         });
 
@@ -1547,7 +1546,7 @@ public class mainScreen {
                 if (selectedIndicesList.size() > 0) {
                     if (CommandsParameterstextField.getText().length() > 0) {
                         OutputLabel.setText("Now executing your commands ...");
-                        YourCmnds.ExecuteCommands(CommandsParameterstextField.getText(), YourCommandsOutputTextArea, UseNonPropFontradioButton, progressBar);
+                        YourCmnds.executeCommands(CommandsParameterstextField.getText(), YourCommandsOutputTextArea, UseNonPropFontradioButton, progressBar);
                         OutputLabel.setText("The output should be displayed above ...");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, "No command parameters given", "No parameters", JOptionPane.WARNING_MESSAGE);
@@ -1568,7 +1567,7 @@ public class mainScreen {
         ExifcopyFromButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EEd.copyexiffromselected(getExifFields(), ExifDescriptiontextArea);
+                EEd.copyExifFromSelected(getExifFields(), ExifDescriptiontextArea);
             }
         });
         ExifsaveToButton.addActionListener(new ActionListener() {
@@ -1590,7 +1589,7 @@ public class mainScreen {
         resetFieldsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EEd.resetfields(getExifFields(), ExifDescriptiontextArea);
+                EEd.resetFields(getExifFields(), ExifDescriptiontextArea);
             }
         });
         ExifhelpButton.addActionListener(new ActionListener() {
@@ -1605,7 +1604,7 @@ public class mainScreen {
         xmpCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EXd.copyxmpfromselected(getXmpFields(), xmpDescriptiontextArea);
+                EXd.copyXmpFromSelected(getXmpFields(), xmpDescriptiontextArea);
             }
         });
         xmpSaveTobutton.addActionListener(new ActionListener() {
@@ -1627,7 +1626,7 @@ public class mainScreen {
         xmpResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EXd.resetfields(getXmpFields(), xmpDescriptiontextArea);
+                EXd.resetFields(getXmpFields(), xmpDescriptiontextArea);
             }
         });
         xmpHelpbutton.addActionListener(new ActionListener() {
@@ -1642,7 +1641,7 @@ public class mainScreen {
         geotaggingImgFolderbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String ImgPath = EGd.ImgPath(rootPanel);
+                String ImgPath = EGd.getImagePath(rootPanel);
                 if (!"".equals(ImgPath)) {
                     geotaggingImgFoldertextField.setText(ImgPath);
                 }
@@ -1666,7 +1665,7 @@ public class mainScreen {
                     if ("".equals(geotaggingGPSLogtextField.getText())) {
                         JOptionPane.showMessageDialog(rootPanel, "No gps track log selected", "No gps log", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        EGd.WriteInfo(getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
+                        EGd.writeInfo(getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
                     }
                 }
                 OutputLabel.setText("");
@@ -1689,7 +1688,7 @@ public class mainScreen {
         gpsCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGPSd.copygpsfromselected(getGPSFields(), getGpsBoxes());
+                EGPSd.copyGPSFromSelected(getGPSFields(), getGpsBoxes());
             }
         });
         gpsSaveTobutton.addActionListener(new ActionListener() {
@@ -1706,7 +1705,7 @@ public class mainScreen {
         gpsResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGPSd.resetfields(getGPSFields());
+                EGPSd.resetFields(getGPSFields());
             }
         });
         gpsMapcoordinatesbutton.addActionListener(new ActionListener() {
@@ -1768,8 +1767,8 @@ public class mainScreen {
         CopyDataCopyTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files, progressBar);
-                metaData.CopyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, progressBar);
+                //metaData.copyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files, progressBar);
+                metaData.copyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, progressBar);
             }
         });
         CopyHelpbutton.addActionListener(new ActionListener() {
@@ -1788,24 +1787,24 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("button selected: " + radioButtonViewAll.getText());
-                Utils.ImageInfo(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String[] params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
-                //Utils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
+                String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
+                //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.getImageInfoFromSelectedFile(params, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtoncommonTags.isSelected()) {
-                    String[] params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
-                    //Utils.ImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                    Utils.ImageInfo(params, files, mainScreen.this.ListexiftoolInfotable);
+                    String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
+                    //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.getImageInfoFromSelectedFile(params, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
@@ -1813,28 +1812,28 @@ public class mainScreen {
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Utils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.selectImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonByTagName.isSelected()) {
-                    Utils.ImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.selectImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
         radioButtonCameraMakes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Utils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
+                Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
         comboBoxViewCameraMake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonCameraMakes.isSelected()) {
-                    Utils.ImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
+                    Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
                 }
             }
         });
@@ -1848,11 +1847,11 @@ public class mainScreen {
         if (mainScreen.this.radioButtonViewAll.isSelected()) {
             params = MyConstants.ALL_PARAMS;
         } else if (radioButtoncommonTags.isSelected()) {
-            params = Utils.WhichCommonTagSelected(comboBoxViewCommonTags);
+            params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
         } else if (radioButtonByTagName.isSelected()) {
-            params = Utils.WhichTagSelected(comboBoxViewByTagName);
+            params = Utils.getWhichTagSelected(comboBoxViewByTagName);
         } else if (radioButtonCameraMakes.isSelected()) {
-            params = Utils.WhichTagSelected(comboBoxViewCameraMake);
+            params = Utils.getWhichTagSelected(comboBoxViewCameraMake);
         }
         return params;
     }
@@ -1918,7 +1917,7 @@ public class mainScreen {
                 }
                 System.out.println("");
                 String[] params = whichRBselected();
-                Utils.ImageInfo(params, files, ListexiftoolInfotable);
+                Utils.getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 selectedIndicesList = tmpselectedIndices;
@@ -1936,7 +1935,7 @@ public class mainScreen {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    Utils.extDisplayImage();
+                    Utils.extdisplaySelectedImageInDefaultViewer();
                 }
             }
         });
@@ -2043,7 +2042,7 @@ public class mainScreen {
 
         createmyMenuBar(frame);
         ViewRadiobuttonListener();
-        FillViewTagNamesComboboxes();
+        fillViewTagNamesComboboxes();
         // Use the mouselistener for the double-click to display the image
         //fileNamesTableMouseListener();
         //Use the table listener for theselection of multiple cells
@@ -2061,7 +2060,7 @@ public class mainScreen {
             System.out.println("Error executing command");
         }
 
-        preferences = check_preferences();
+        preferences = checkPreferences();
         if (!preferences) {
             Utils.checkExifTool(mainScreen.this.rootPanel);
         }
@@ -2082,7 +2081,7 @@ public class mainScreen {
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
         gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
 
-        Utils.CheckforNewVersion("startup");
+        Utils.checkforNewVersion("startup");
     }
 
     private static void createAndShowGUI() {

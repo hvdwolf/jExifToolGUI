@@ -20,14 +20,14 @@ public class EditGPSdata {
     //textfields:  gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField
     //checkboxes:  SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox
 
-    public void resetfields(JTextField[] gpsFields) {
+    public void resetFields(JTextField[] gpsFields) {
 
         for (JTextField field: gpsFields) {
             field.setText("");
         }
     }
 
-    public void copygpsfromselected(JTextField[] gpsFields, JCheckBox[] gpsBoxes) {
+    public void copyGPSFromSelected(JTextField[] gpsFields, JCheckBox[] gpsBoxes) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         // Use "-n" for numerical values, like GPSAltitudeRef 0/1, instead of Above Sea Level/Below Sea Level
@@ -37,7 +37,7 @@ public class EditGPSdata {
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetfields(gpsFields);
+        resetFields(gpsFields);
 
         String exiftool = prefs.get("exiftool", "");
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
@@ -56,11 +56,11 @@ public class EditGPSdata {
             System.out.println("Error executing command");
         }
         if (res.length() > 0) {
-            DisplayCopiedInfo(gpsFields, gpsBoxes, res);
+            displayCopiedInfo(gpsFields, gpsBoxes, res);
         }
     }
 
-    public void DisplayCopiedInfo(JTextField[] gpsFields, JCheckBox[] gpsBoxes, String exiftoolInfo) {
+    public void displayCopiedInfo(JTextField[] gpsFields, JCheckBox[] gpsBoxes, String exiftoolInfo) {
         String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
         for (String line : lines) {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
@@ -157,7 +157,7 @@ public class EditGPSdata {
         }
 
 
-        CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+        CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
 
 
     }

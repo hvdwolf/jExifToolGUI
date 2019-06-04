@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MetaData {
 
-    public void copytoxmp() {
+    public void copyToXmp() {
         String fpath ="";
         String TotalOutput = "";
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
@@ -54,12 +54,12 @@ public class MetaData {
                     System.out.println("Error executing command");
                 }
             }
-            CommandRunner.OutputAfterCommand(TotalOutput);
+            CommandRunner.outputAfterCommand(TotalOutput);
         }
 
     }
 
-    public void REPAIR_JPG_METADATA( JProgressBar progressBar) {
+    public void repairJPGMetadata( JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
@@ -86,11 +86,11 @@ public class MetaData {
                 }
             }
             // export metadata
-            CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+            CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
         }
     }
 
-    public void CopyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
+    public void copyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
         //int selectedRow = MyVariables.getSelectedRow();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
@@ -172,7 +172,7 @@ public class MetaData {
                     }
                 }
                 // export metadata
-                CommandRunner.RunCommandWithProgress(params, progressBar);
+                CommandRunner.runCommandWithProgressBarBar(params, progressBar);
             }
         } else {
             JOptionPane.showMessageDialog(null, ProgramTexts.NoOptionSelected,"No copy option selected",JOptionPane.WARNING_MESSAGE);

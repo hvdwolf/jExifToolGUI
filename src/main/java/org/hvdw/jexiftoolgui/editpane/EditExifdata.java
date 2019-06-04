@@ -22,7 +22,7 @@ public class EditExifdata {
     //    JCheckBox[] exifBoxes = {ExifMakecheckBox, ExifModelcheckBox, ExifModifyDatecheckBox, ExifDateTimeOriginalcheckBox,ExifCreateDatecheckBox,
     //            ExifArtistCreatorcheckBox, ExifCopyrightcheckBox, ExifUsercommentcheckBox, ExifDescriptioncheckBox};
 
-    public void resetfields(JTextField[] exifFields, JTextArea exiftextArea) {
+    public void resetFields(JTextField[] exifFields, JTextArea exiftextArea) {
 
         for (JTextField field: exifFields) {
             field.setText("");
@@ -30,7 +30,7 @@ public class EditExifdata {
         exiftextArea.setText("");
     }
 
-    public void copyexiffromselected(JTextField[] exifFields, JTextArea exiftextArea) {
+    public void copyExifFromSelected(JTextField[] exifFields, JTextArea exiftextArea) {
         String[] exifcopyparams = {"-e","-n","-exif:Make","-exif:Model","-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate","-exif:Artist","-exif:Copyright","-exif:UserComment","-exif:ImageDescription"};
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();        String fpath ="";
@@ -38,7 +38,7 @@ public class EditExifdata {
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetfields(exifFields, exiftextArea);
+        resetFields(exifFields, exiftextArea);
 
         String exiftool = prefs.get("exiftool", "");
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
@@ -57,11 +57,11 @@ public class EditExifdata {
             System.out.println("Error executing command");
         }
         if (res.length() > 0) {
-            DisplayCopiedInfo(exifFields, exiftextArea, res);
+            displayCopiedInfo(exifFields, exiftextArea, res);
         }
     }
 
-    private void DisplayCopiedInfo(JTextField[] exifFields, JTextArea exiftextArea, String exiftoolInfo) {
+    private void displayCopiedInfo(JTextField[] exifFields, JTextArea exiftextArea, String exiftoolInfo) {
         String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
         //for(int i = 0; i < lines.length; i++) {
         for (String line : lines) {
@@ -151,7 +151,7 @@ public class EditExifdata {
             }
         }
 
-        CommandRunner.RunCommandWithProgress(cmdparams, progressBar);
+        CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
 
     }
 }
