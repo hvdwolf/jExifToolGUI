@@ -57,7 +57,7 @@ public class YourCommands {
             }
             /*try {
                 String res = CommandRunner.runCommand(cmdparams);
-                //String res = CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+                //String res = CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
                 Output.append("============= \"");
                 Output.append(files[index].getPath());
                 Output.append("\" =============" + System.lineSeparator());
@@ -73,7 +73,7 @@ public class YourCommands {
                 public void run() {
                     try {
                         String res = CommandRunner.runCommand(cmdparams);
-                        //String res = CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+                        //String res = CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
                         Output.append("============= \"");
                         Output.append(files[index].getPath());
                         Output.append("\" =============" + System.lineSeparator());

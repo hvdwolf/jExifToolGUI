@@ -167,7 +167,7 @@ public class CreateArgsFile extends JDialog {
                     }
                 }
                 // export metadata
-                CommandRunner.runCommandWithProgressBarBar(params, progBar);
+                CommandRunner.runCommandWithProgressBar(params, progBar);
 
             }
         } else {

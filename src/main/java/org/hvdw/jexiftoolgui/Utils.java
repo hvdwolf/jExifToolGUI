@@ -213,7 +213,7 @@ public class Utils {
      * This method checks for a new version on the repo.
      * It can be called from startup (preferences setting) or from the Help menu
      */
-    static void checkforNewVersion(String fromWhere) {
+    static void checkForNewVersion(String fromWhere) {
         String version = "";
         boolean newversion_startupcheck_exists = false;
         boolean versioncheck = false;

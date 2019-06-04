@@ -55,7 +55,7 @@ public class CommandRunner {
     /*
     * This executes the commands via runCommand and shows/hides the progress bar
      */
-    public static void runCommandWithProgressBarBar (List<String> cmdparams, JProgressBar progressBar) {
+    public static void runCommandWithProgressBar (List<String> cmdparams, JProgressBar progressBar) {
         // Create executor thread to be able to update my gui when longer methods run
         Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {

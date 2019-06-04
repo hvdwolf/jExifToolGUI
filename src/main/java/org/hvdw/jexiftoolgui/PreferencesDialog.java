@@ -51,7 +51,7 @@ public class PreferencesDialog extends JDialog {
             ETpath = Utils.whereIsExiftool(contentPanel);
             getExiftoolPath(contentPanel, ExiftoolLocationtextField, ETpath, "preferences");
         });
-        ImgStartFolderButton.addActionListener(actionEvent -> DefgetImagePath(contentPanel, ImgStartFoldertextField));
+        ImgStartFolderButton.addActionListener(actionEvent -> getDefaultImagePath(contentPanel, ImgStartFoldertextField));
     }
 
     private void onSave() {
@@ -93,7 +93,7 @@ public class PreferencesDialog extends JDialog {
     }
 
     // Locate the default image path, if the user wants it
-    public void DefgetImagePath(JPanel myComponent, JTextField defImgFolder) {
+    public void getDefaultImagePath(JPanel myComponent, JTextField defImgFolder) {
         String SelectedFolder;
 
         final JFileChooser chooser = new JFileChooser();

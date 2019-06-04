@@ -164,7 +164,7 @@ public class RemoveMetadata extends JDialog {
                     }
                 }
                 // remove metadata
-                CommandRunner.runCommandWithProgressBarBar(params, progBar);
+                CommandRunner.runCommandWithProgressBar(params, progBar);
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No removal option selected", JOptionPane.WARNING_MESSAGE);

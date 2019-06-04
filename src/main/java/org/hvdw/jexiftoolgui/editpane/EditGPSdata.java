@@ -157,7 +157,7 @@ public class EditGPSdata {
         }
 
 
-        CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+        CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
 
 
     }

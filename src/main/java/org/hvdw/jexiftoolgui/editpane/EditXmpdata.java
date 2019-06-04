@@ -165,6 +165,6 @@ public class EditXmpdata {
                 }
             }
 
-            CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+            CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
         }
 }

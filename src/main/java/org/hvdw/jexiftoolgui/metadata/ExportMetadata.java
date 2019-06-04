@@ -222,7 +222,7 @@ public class ExportMetadata extends JDialog {
 
 
                 // Export metadata
-                CommandRunner.runCommandWithProgressBarBar(params, progBar);
+                CommandRunner.runCommandWithProgressBar(params, progBar);
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No export option selected", JOptionPane.WARNING_MESSAGE);

@@ -1472,7 +1472,7 @@ public class mainScreen {
                     break;
                 case "Set file date to DateTimeOriginal":
                     if (selectedIndicesList.size() > 0) {
-                        dateTime.SetFileDateTimeToDateTimeOriginal(progressBar);
+                        dateTime.setFileDateTimeToDateTimeOriginal(progressBar);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -1501,7 +1501,7 @@ public class mainScreen {
                     Utils.showLicense(mainScreen.this.rootPanel);
                     break;
                 case "Check for new version":
-                    Utils.checkforNewVersion("menu");
+                    Utils.checkForNewVersion("menu");
                     break;
                 default:
                     break;
@@ -2081,7 +2081,7 @@ public class mainScreen {
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
         gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
 
-        Utils.checkforNewVersion("startup");
+        Utils.checkForNewVersion("startup");
     }
 
     private static void createAndShowGUI() {

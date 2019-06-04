@@ -127,7 +127,7 @@ public class EditGeotaggingdata {
             }
         }
 
-        CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+        CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
     }
 
     public void ResetFields(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes) {

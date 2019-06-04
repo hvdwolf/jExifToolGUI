@@ -151,7 +151,7 @@ public class EditExifdata {
             }
         }
 
-        CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+        CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
 
     }
 }

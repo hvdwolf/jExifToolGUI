@@ -86,7 +86,7 @@ public class MetaData {
                 }
             }
             // export metadata
-            CommandRunner.runCommandWithProgressBarBar(cmdparams, progressBar);
+            CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
         }
     }
 
@@ -172,7 +172,7 @@ public class MetaData {
                     }
                 }
                 // export metadata
-                CommandRunner.runCommandWithProgressBarBar(params, progressBar);
+                CommandRunner.runCommandWithProgressBar(params, progressBar);
             }
         } else {
             JOptionPane.showMessageDialog(null, ProgramTexts.NoOptionSelected,"No copy option selected",JOptionPane.WARNING_MESSAGE);
