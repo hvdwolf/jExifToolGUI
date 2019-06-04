@@ -224,7 +224,7 @@ public class mainScreen {
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
-    public ImageIcon icon;
+    private ImageIcon icon;
 
 
     public File[] files;
@@ -1899,13 +1899,8 @@ public class mainScreen {
 
         public void valueChanged(ListSelectionEvent e) {
             // Perfectly working row selection method of first program
-            List<Integer> tmpselectedIndices = new ArrayList<Integer>();
+            List<Integer> tmpselectedIndices = new ArrayList<>();
             ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-
-            int firstIndex = e.getFirstIndex();
-            int lastIndex = e.getLastIndex();
-            boolean isAdjusting = e.getValueIsAdjusting();
-            System.out.print("selected indexes:");
 
             if (lsm.isSelectionEmpty()) {
                 logger.debug("no index selected");
