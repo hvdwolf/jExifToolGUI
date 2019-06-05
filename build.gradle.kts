@@ -55,6 +55,7 @@ val jar by tasks.getting(Jar::class) {
         attributes["Build-Timestamp"] = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(Date())
         attributes["Created-By"] = "Gradle ${gradle.gradleVersion}"
     }
+    from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
 }
 
 application {
