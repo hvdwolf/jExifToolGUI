@@ -3,7 +3,7 @@ This version is using gradle as build system. Import the project as gradle proje
 All IntelliJ specific files must not be within the source base.
 
 # GUI Builder settings
-Currently, you must define that the GUID Desinger outputs the form to Java Code. Otherwise, it would not create a propper UI and would not be able to build without IntelliJ IDEA.
+Currently, you must define that the GUID Desinger outputs the form to Java Code. Otherwise, it would not create a proper UI and would not be able to build without IntelliJ IDEA.
 
 **Goto:** *Settings -> Editor -> GUI Designer* and set **Generate GUI into: Java source code**
 

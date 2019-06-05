@@ -1928,14 +1928,17 @@ public class mainScreen {
     }
 
     void fileNamesTableMouseListener() {
-        // Use the mouse listener for the single cell selection for the left table to be able to
-        // display the image info for the (last) selected cell
+        // Use the mouse listener for the single cell double-click selection for the left table to be able to
+        // display the image in the default viewer
 
         tableListfiles.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                if (evt.getClickCount() == 2) {
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table =(JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
                     Utils.extdisplaySelectedImageInDefaultViewer();
+                    logger.debug("double-click registered");
                 }
             }
         });
@@ -2041,7 +2044,7 @@ public class mainScreen {
         ViewRadiobuttonListener();
         fillViewTagNamesComboboxes();
         // Use the mouselistener for the double-click to display the image
-        //fileNamesTableMouseListener();
+        fileNamesTableMouseListener();
         //Use the table listener for theselection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
         tableListfiles.setRowSelectionAllowed(true);
