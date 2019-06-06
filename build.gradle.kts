@@ -17,6 +17,9 @@ plugins {
     idea
     // Apply the application plugin to add support for building an application
     application
+
+    //Shadow plugin for fatJar
+    id("com.github.johnrengelman.shadow") version ("5.0.0")
 }
 
 project.ext {
@@ -33,7 +36,7 @@ repositories {
 
 dependencies {
 
-//    compile("org.slf4j", "slf4j-jdk14", "1.7.26")
+    // Log4J and SLF4J configuration dependencies.
     compile("org.slf4j", "slf4j-api", "1.7.26")
     compile("org.apache.logging.log4j", "log4j-slf4j-impl", "2.11.2")
     compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.9.9")
@@ -55,7 +58,6 @@ val jar by tasks.getting(Jar::class) {
         attributes["Build-Timestamp"] = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(Date())
         attributes["Created-By"] = "Gradle ${gradle.gradleVersion}"
     }
-    from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
 }
 
 application {
