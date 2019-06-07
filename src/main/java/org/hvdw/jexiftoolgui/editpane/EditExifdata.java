@@ -41,8 +41,7 @@ public class EditExifdata {
         resetFields(exifFields, exiftextArea);
 
         String exiftool = prefs.get("exiftool", "");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
         } else {
             fpath = files[SelectedRow].getPath();
@@ -141,10 +140,9 @@ public class EditExifdata {
             cmdparams.add("-exif:ImageDescription=" + Description.getText().trim());
         }
 
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         for (int index: selectedIndices) {
             //System.out.println("index: " + index + "  image path:" + files[index].getPath());
-            if (isWindows) {
+            if (Utils.isOsFromMicrosoft()) {
                 cmdparams.add(files[index].getPath().replace("\\", "/"));
             } else {
                 cmdparams.add(files[index].getPath());

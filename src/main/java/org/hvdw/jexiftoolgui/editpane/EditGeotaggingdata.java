@@ -73,7 +73,7 @@ public class EditGeotaggingdata {
 
         // exiftool on windows or other
         String exiftool = prefs.get("exiftool", "");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        boolean isWindows = Utils.isOsFromMicrosoft();
         if (isWindows) {
             exiftool = exiftool.replace("\\", "/");
             gpslogfile = gpslogfile.replace("\\", "/");

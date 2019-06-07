@@ -13,7 +13,7 @@ public class MetaData {
 
     public void copyToXmp() {
         String fpath ="";
-        String TotalOutput = "";
+        StringBuilder TotalOutput = new StringBuilder();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
@@ -24,7 +24,7 @@ public class MetaData {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something
-            boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+            boolean isWindows = Utils.isOsFromMicrosoft();
 
             String exiftool = Utils.platformExiftool();
 
@@ -49,12 +49,12 @@ public class MetaData {
                 try {
                     String res = CommandRunner.runCommand(cmdparams);
                     System.out.println(res);
-                    TotalOutput += res;
+                    TotalOutput.append(res);
                 } catch(IOException | InterruptedException ex) {
                     System.out.println("Error executing command");
                 }
             }
-            CommandRunner.outputAfterCommand(TotalOutput);
+            CommandRunner.outputAfterCommand(TotalOutput.toString());
         }
 
     }
@@ -75,7 +75,7 @@ public class MetaData {
             for (String s : MyConstants.REPAIR_JPG_METADATA) {
                 cmdparams.add(s);
             }
-            boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+            boolean isWindows = Utils.isOsFromMicrosoft();
 
             for (int index: selectedIndices) {
                 //System.out.println("index: " + index + "  image path:" + files[index].getPath());
@@ -101,7 +101,7 @@ public class MetaData {
         List<String> params = new ArrayList<String>();
         params.add(Utils.platformExiftool());
         params.add("-TagsFromfile");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        boolean isWindows = Utils.isOsFromMicrosoft();
         if (isWindows) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
         } else {

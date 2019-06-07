@@ -3,16 +3,18 @@ package org.hvdw.jexiftoolgui.datetime;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ShiftDateTime extends JDialog {
@@ -28,26 +30,18 @@ public class ShiftDateTime extends JDialog {
     private JCheckBox BackupOfOriginalscheckBox;
     private JCheckBox UpdatexmpcheckBox;
 
-    public int[] selectedFilenamesIndices;
+    private int[] selectedFilenamesIndices;
     public File[] files;
-    public JProgressBar progBar;
+    private JProgressBar progBar;
 
     public ShiftDateTime() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -56,13 +50,8 @@ public class ShiftDateTime extends JDialog {
                 onCancel();
             }
         });
-
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void initDialog() {
@@ -71,14 +60,10 @@ public class ShiftDateTime extends JDialog {
     }
 
     private void writeInfo() {
-        String fpath = "";
-        String shiftOption = "";
-        String res = "";
-        List<String> cmdparams = new ArrayList<String>();
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        String shiftOption;
+        List<String> cmdparams = new LinkedList<>();
 
         String exiftool = Utils.platformExiftool();
-        cmdparams.clear();
         cmdparams.add(exiftool);
         if (!BackupOfOriginalscheckBox.isSelected()) {
             cmdparams.add("-overwrite_original");
@@ -109,7 +94,7 @@ public class ShiftDateTime extends JDialog {
         }
 
         for (int index : selectedFilenamesIndices) {
-            if (isWindows) {
+            if (Utils.isOsFromMicrosoft()) {
                 cmdparams.add(files[index].getPath().replace("\\", "/"));
             } else {
                 cmdparams.add(files[index].getPath());

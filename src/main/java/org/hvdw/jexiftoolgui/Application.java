@@ -22,4 +22,8 @@ public class Application {
         //creating and showing this application's GUI.
         SwingUtilities.invokeLater(mainScreen::createAndShowGUI);
     }
+
+    public static enum OS_NAMES {
+        APPLE, MICROSOFT, LINUX
+    }
 }
