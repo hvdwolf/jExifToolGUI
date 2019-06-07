@@ -119,7 +119,7 @@ public class ExportMetadata extends JDialog {
         List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option
         String filepath = ""; // Again: we need this for the csv option
 
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        boolean isWindows = Utils.isOsFromMicrosoft();
 
         params.add(Utils.platformExiftool());
         params.add("-a");

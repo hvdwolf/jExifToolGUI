@@ -40,8 +40,7 @@ public class EditGPSdata {
         resetFields(gpsFields);
 
         String exiftool = prefs.get("exiftool", "");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
         } else {
             fpath = files[SelectedRow].getPath();
@@ -145,8 +144,7 @@ public class EditGPSdata {
         }
 
 
-
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        boolean isWindows = Utils.isOsFromMicrosoft();
         for (int index: selectedIndices) {
             //System.out.println("index: " + index + "  image path:" + files[index].getPath());
             if (isWindows) {

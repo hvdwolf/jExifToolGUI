@@ -13,7 +13,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 public class CreateArgsFile extends JDialog {
     private JPanel contentPane;
@@ -153,11 +156,10 @@ public class CreateArgsFile extends JDialog {
             int choice = JOptionPane.showOptionDialog(null, Message, "You want to export metadata",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
-                for (String s : MyConstants.CREATE_ARGS_FILE_STRINGS) {
-                    params.add(s);
-                }
+                params.addAll(Arrays.asList(MyConstants.CREATE_ARGS_FILE_STRINGS));
                 // images selected
-                boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+                boolean isWindows = Utils.isOsFromMicrosoft();
+
                 for (int index : selectedFilenamesIndices) {
                     //System.out.println("index: " + index + "  image path:" + files[index].getPath());
                     if (isWindows) {

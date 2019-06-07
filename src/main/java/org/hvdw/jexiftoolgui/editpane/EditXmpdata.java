@@ -43,8 +43,7 @@ public class EditXmpdata {
         resetFields(xmpFields, Description);
 
         String exiftool = prefs.get("exiftool", "");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
             exiftool = exiftool.replace("\\", "/");
         } else {
@@ -155,7 +154,7 @@ public class EditXmpdata {
                 cmdparams.add("-xmp:Description=" + Description.getText().trim());
             }
 
-            boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+            boolean isWindows = Utils.isOsFromMicrosoft();
             for (int index: selectedIndices) {
                 //System.out.println("index: " + index + "  image path:" + files[index].getPath());
                 if (isWindows) {

@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -292,38 +291,11 @@ public class mainScreen {
 //////////////////////////////////////////////////////////////////////////////////
 
 
-    /////////////////////// Startup checks /////////////////
-// where is exiftool, if available
-    private static String exiftoolCheck() {
-        String res = "";
-        List<String> cmdparams = new ArrayList<String>();
-
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-
-        if (isWindows) {
-            String[] params = {"where", "exiftool"};
-            cmdparams.addAll(Arrays.asList(params));
-        } else {
-            String[] params = {"which", "exiftool"};
-            cmdparams.addAll(Arrays.asList(params));
-        }
-
-        try {
-            res = CommandRunner.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
-        } catch (IOException | InterruptedException ex) {
-            logger.debug("Error executing command");
-            res = ex.getMessage();
-        }
-
-        return res;
-    }
-
     //check preferences (a.o. exiftool)
     private boolean checkPreferences() {
-        boolean exiftool_exists = false;
+        boolean exiftool_exists;
         boolean exiftool_found = false;
-        String res = "";
-        boolean newversion_startupcheck_exists = false;
+        String res;
 
         Preferences prefs = Preferences.userRoot();
 
@@ -342,11 +314,11 @@ public class mainScreen {
             logger.debug("exists is {}", exists);
             logger.debug("preference exiftool returned: {}",exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
-                res = exiftoolCheck();
+                res = Utils.getExiftoolPath();
             } else {
                 res = exiftool_path;
                 //String[] cmdparams = {res, "-ver"};
-                List<String> cmdparams = new ArrayList<String>();
+                List<String> cmdparams = new ArrayList<>();
                 cmdparams.add(res);
                 cmdparams.add("-ver");
                 try {
@@ -357,7 +329,7 @@ public class mainScreen {
 
             }
         } else { // does not exist
-            res = exiftoolCheck();
+            res = Utils.getExiftoolPath();
         }
 
         if (res != null && !res.isEmpty() && !res.toLowerCase().startsWith("info")) {

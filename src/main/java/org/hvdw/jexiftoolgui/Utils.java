@@ -2,6 +2,8 @@ package org.hvdw.jexiftoolgui;
 
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,18 +15,19 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Utils {
 
-    private static Preferences prefs = Preferences.userRoot();
+    private final static Preferences prefs = Preferences.userRoot();
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
 
     public static boolean containsIndices(int[] selectedIndices) {
@@ -37,31 +40,29 @@ public class Utils {
      * and displays the specified URL
      */
     static void openBrowser(String webUrl) {
-        if(Desktop.isDesktopSupported()) { //probably windows, but could also be linux with Gnome
-            try {
-                Desktop.getDesktop().browse(new URI(webUrl));
-            } catch (IOException | URISyntaxException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(URI.create(webUrl));
+                return;
             }
-        } else {
-            String OS = System.getProperty("os.name").toLowerCase();
+            Application.OS_NAMES os = Utils.getCurrentOsName();
+
+            // Such calls are extremely difficult to mock and test. In a future release, we should think about dependency injection and such stuff ;-)
             Runtime runtime = Runtime.getRuntime();
-            if (OS.contains("mac")) { //Apple
-                try {
+            switch (os) {
+                case APPLE:
                     runtime.exec("open " + webUrl);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else { //Linux, or "something else"
-                try {
+                    return;
+                case LINUX:
                     runtime.exec("xdg-open " + webUrl);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                    return;
+                case MICROSOFT:
+                    runtime.exec("explorer " + webUrl);
+
             }
+        }
+        catch (IOException | IllegalArgumentException e) {
+            logger.error("Could not open browser", e);
         }
     }
 
@@ -76,7 +77,7 @@ public class Utils {
         if (tags.length() > 0) {
             String[] lines = tags.split(System.getProperty("line.separator"));
 
-            for(int i = 0; i < lines.length; i++) {
+            for (int i = 0; i < lines.length; i++) {
                 String[] tagvalues = lines[i].split(",");
                 tagrecords.add(Arrays.asList(tagvalues));
             }
@@ -91,8 +92,8 @@ public class Utils {
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
-        JOptionPane.showMessageDialog(myComponent, scrollPane,"GNU GENERAL PUBLIC LICENSE Version 3",JOptionPane.INFORMATION_MESSAGE);
+        scrollPane.setPreferredSize(new Dimension(500, 500));
+        JOptionPane.showMessageDialog(myComponent, scrollPane, "GNU GENERAL PUBLIC LICENSE Version 3", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Shows or hides the progressbar when called from some (long) running method
@@ -138,7 +139,7 @@ public class Utils {
         String exiftool = "";
         String selectedBinary = "";
 
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+        boolean isWindows = isOsFromMicrosoft();
 
         final JFileChooser chooser = new JFileChooser();
         if (isWindows) {
@@ -153,7 +154,7 @@ public class Utils {
             selectedBinary = chooser.getSelectedFile().getPath();
             String tmpstr = selectedBinary.toLowerCase();
             if (isWindows) {
-                if (tmpstr.contains("exiftool.exe")){
+                if (tmpstr.contains("exiftool.exe")) {
                     exiftool = selectedBinary;
                 } else if (tmpstr.contains("exiftool(-k).exe")) {
                     exiftool = "-k version";
@@ -164,7 +165,7 @@ public class Utils {
                 exiftool = "no exiftool binary";
             }
         } else if (status == JFileChooser.CANCEL_OPTION) {
-            exiftool =  "cancelled";
+            exiftool = "cancelled";
             //JOptionPane.showMessageDialog(myComponent,ProgramTexts.CanETlocation,"Locate ExifTool",JOptionPane.INFORMATION_MESSAGE);
             //System.exit(0);
         }
@@ -180,17 +181,17 @@ public class Utils {
         String returnValue = "";
         String[] options = {"specify location", "Download", "Stop"};
         //JOptionPane.showOptionDialog(null,"I can not find exiftool in the preferences or I can not find exiftool at all","exiftool missing",JOptionPane.ERROR_MESSAGE);
-        int choice = JOptionPane.showOptionDialog(null,String.format(ProgramTexts.HTML, 450, ProgramTexts.noExifTool),"exiftool missing",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.noExifTool), "exiftool missing",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         if (choice == 0) {
             // open file chooser
             // Do this from the PreferencesDialog class as it atually belongs there
             returnValue = whereIsExiftool(myComponent);
             if (returnValue.equals("cancelled")) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup,"Cancelled locate ExifTool",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else if (returnValue.equals("no exiftool binary")) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup,"Wrong executable",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, "Wrong executable", JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else { // Yes. It looks like we have a correct exiftool selected
                 // remove all possible line breaks
@@ -198,7 +199,7 @@ public class Utils {
                 prefs.put("exiftool", returnValue);
             }
         } else if (choice == 1) {
-            JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ProgramTexts.downloadInstallET),"Download ExifTool",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ProgramTexts.downloadInstallET), "Download ExifTool", JOptionPane.INFORMATION_MESSAGE);
             // open exiftool site
             openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
             System.exit(0);
@@ -215,7 +216,7 @@ public class Utils {
      */
     static void checkForNewVersion(String fromWhere) {
         String version = "";
-        boolean newversion_startupcheck_exists = false;
+        boolean newversion_startupcheck_exists;
         boolean versioncheck = false;
 
         if (fromWhere.equals("startup")) {
@@ -226,18 +227,17 @@ public class Utils {
             }
         }
 
-        if ((fromWhere.equals("menu")) || versioncheck) {
+        if (fromWhere.equals("menu") || versioncheck) {
             try {
                 URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                String inputline;
                 version = in.readLine();
                 in.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            System.out.println("Version: " + version);
+            logger.debug("Version: " + version);
             if (Float.valueOf(version) > Float.valueOf(ProgramTexts.Version)) {
                 String[] options = {"No", "Yes"};
                 int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ProgramTexts.newVersionText), "New version found",
@@ -262,8 +262,7 @@ public class Utils {
     public static String platformExiftool() {
         // exiftool on windows or other
         String exiftool = prefs.get("exiftool", "");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (isOsFromMicrosoft()) {
             exiftool = exiftool.replace("\\", "/");
         }
         return exiftool;
@@ -279,13 +278,13 @@ public class Utils {
 
         int selectedRow, selectedColumn;
         File[] files = MyVariables.getSelectedFiles();
-        DefaultTableModel model = (DefaultTableModel)jTable_File_Names.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable_File_Names.getModel();
         //model.setColumnIdentifiers(new String[]{"File Name(s)"});
         //ListexiftoolInfotable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
         jTable_File_Names.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             protected void setValue(Object value) {
-                if( value instanceof ImageIcon ) {
-                    setIcon((ImageIcon)value);
+                if (value instanceof ImageIcon) {
+                    setIcon((ImageIcon) value);
                     setText("");
                 } else {
                     setIcon(null);
@@ -311,9 +310,9 @@ public class Utils {
 
         for (File file : files) {
             try {
-                //System.out.println(files[i].getName().replace("\\", "/"));
+                logger.trace(file.getName().replace("\\", "/"));
                 filename = file.getName().replace("\\", "/");
-                //System.out.println(files[i].getPath().replace("\\", "/"));
+                logger.trace(file.getPath().replace("\\", "/"));
                 BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
                 // resize it
                 BufferedImage resizedImg = new BufferedImage(160, 120, BufferedImage.TYPE_INT_ARGB);
@@ -327,7 +326,7 @@ public class Utils {
                 ImgFilenameRow[0] = icon;
                 ImgFilenameRow[1] = filename;
             } catch (IOException ex) {
-                System.out.println("Error loading image");
+                logger.error("Error loading image", ex);
             }
 
             jTable_File_Names.setRowHeight(150);
@@ -344,16 +343,15 @@ public class Utils {
     //static void getImageInfoFromSelectedFile(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
     static void getImageInfoFromSelectedFile(String[] whichInfo, File[] files, JTable ListexiftoolInfotable) {
 
-        String fpath ="";
+        String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
         int selectedRow = MyVariables.getSelectedRow();
 
-        //System.out.println("selectedRow: " + String.valueOf(selectedRow));
+        //logger.debug("selectedRow: {}", String.valueOf(selectedRow));
         String exiftool = prefs.get("exiftool", "");
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
-            //System.out.println("fpath is now: " + fpath);
+            //logger.debug("fpath is now: " + fpath);
             exiftool = exiftool.replace("\\", "/");
         } else {
             fpath = files[selectedRow].getPath();
@@ -361,17 +359,17 @@ public class Utils {
         // Need to build exiftool prefs check
         MyVariables.setSelectedImagePath(fpath);
         cmdparams.add(exiftool);
-        cmdparams.addAll( Arrays.asList(whichInfo) );
-        //System.out.println("image file path: " + fpath);
-        //MyVariables.setSelectedImagePath(fpath);
+        cmdparams.addAll(Arrays.asList(whichInfo));
+        logger.trace("image file path: {}", fpath);
         cmdparams.add(MyVariables.getSelectedImagePath());
-        //System.out.print("before runCommand: " + cmdparams.toString());
+
+        logger.trace("before runCommand: {}", cmdparams);
         try {
             String res = CommandRunner.runCommand(cmdparams);
-            //System.out.println("res is " + res);
+            logger.trace("res is {}", res);
             displayInfoForSelectedImage(res, ListexiftoolInfotable);
-        } catch(IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
+        } catch (IOException | InterruptedException ex) {
+            logger.error("Error executing command", ex);
         }
 
     }
@@ -440,7 +438,7 @@ public class Utils {
     private static void displayInfoForSelectedImage(String exiftoolInfo, JTable ListexiftoolInfotable) {
         // This will display the exif info in the right panel
 
-        DefaultTableModel model = (DefaultTableModel)ListexiftoolInfotable.getModel();
+        DefaultTableModel model = (DefaultTableModel) ListexiftoolInfotable.getModel();
         model.setColumnIdentifiers(new String[]{"Group", "Tag", "Value"});
         ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
         ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
@@ -466,22 +464,45 @@ public class Utils {
      */
     public static void displaySelectedImageInDefaultViewer(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
-            //System.out.println("fpath is now: " + fpath);
+            logger.trace("fpath is now: {}", fpath);
         } else {
             fpath = files[selectedRow].getPath();
         }
-        BufferedImage img= ImageIO.read(new File(fpath));
+        BufferedImage img = ImageIO.read(new File(fpath));
         // resize it
         BufferedImage resizedImg = new BufferedImage(300, 225, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(img, 0, 0, 300, 225, null);
         g2.dispose();
-        ImageIcon icon=new ImageIcon(resizedImg);
+        ImageIcon icon = new ImageIcon(resizedImg);
         ThumbView.setIcon(icon);
+    }
+
+
+    static String getExiftoolPath() {
+        String res;
+        List<String> cmdparams;
+        Application.OS_NAMES currentOs = getCurrentOsName();
+
+        if (currentOs == Application.OS_NAMES.MICROSOFT) {
+            String[] params = {"where", "exiftool"};
+            cmdparams = Arrays.asList(params);
+        } else {
+            String[] params = {"which", "exiftool"};
+            cmdparams = Arrays.asList(params);
+        }
+
+        try {
+            res = CommandRunner.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing command");
+            res = ex.getMessage();
+        }
+
+        return res;
     }
 
     /*
@@ -490,21 +511,20 @@ public class Utils {
      */
     public void displayTableImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        if (isWindows) {
+        if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
-            //System.out.println("fpath is now: " + fpath);
+            logger.trace("fpath is now: {}", fpath);
         } else {
             fpath = files[selectedRow].getPath();
         }
-        BufferedImage img= ImageIO.read(new File(fpath));
+        BufferedImage img = ImageIO.read(new File(fpath));
         // resize it
         BufferedImage resizedImg = new BufferedImage(300, 225, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(img, 0, 0, 300, 225, null);
         g2.dispose();
-        ImageIcon icon=new ImageIcon(resizedImg);
+        ImageIcon icon = new ImageIcon(resizedImg);
         ThumbView.setIcon(icon);
     }
 
@@ -520,7 +540,7 @@ public class Utils {
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(img, 0, 0, 300, 300, null);
         g2.dispose();
-        ImageIcon icon=new ImageIcon(resizedImg);
+        ImageIcon icon = new ImageIcon(resizedImg);
         ThumbView.setIcon(icon);
     }
 
@@ -528,34 +548,38 @@ public class Utils {
         //myVariables myVars = new myVariables();
 
         //MyVariables.getMySelectedRow(), MyVariables.getSelectedImagePath()
-        String OS = System.getProperty("os.name").toLowerCase();
         Runtime runtime = Runtime.getRuntime();
-        if (OS.contains("mac")) { //Apple
-            try {
-                runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        try {
+            Application.OS_NAMES currentOsName = getCurrentOsName();
+            switch (currentOsName) {
+                case APPLE:
+                    runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                    return;
+                case MICROSOFT:
+                    String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
+                    String[] commands = {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
+                    runtime.exec(commands);
+                    return;
+                case LINUX:
+                    String selectedImagePath = MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    logger.trace("xdg-open {}", selectedImagePath);
+                    runtime.exec("xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                    return;
             }
-        } else if (OS.contains("windows")) {
-            String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
-            String[] commands = { "cmd.exe", "/c", "start", "\"DummyTitle\"", "\"" + convImg + "\"" };
-            try {
-                runtime.exec(commands);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else { //Linux, or "something else"
-            try {
-                //System.out.println("xdg-open " +  MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                runtime.exec("xdg-open " +  MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            logger.error("Could not open image app.", e);
         }
+    }
 
+    public static Application.OS_NAMES getCurrentOsName() {
+        String OS = System.getProperty("os.name").toLowerCase();
+        if (OS.contains("mac")) return Application.OS_NAMES.APPLE;
+        if (OS.contains("windows")) return Application.OS_NAMES.MICROSOFT;
+        return Application.OS_NAMES.LINUX;
+    }
+
+    public static boolean isOsFromMicrosoft() {
+        return getCurrentOsName() == Application.OS_NAMES.MICROSOFT;
     }
 
 

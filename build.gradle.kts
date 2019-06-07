@@ -37,13 +37,16 @@ repositories {
 dependencies {
 
     // Log4J and SLF4J configuration dependencies.
-    compile("org.slf4j", "slf4j-api", "1.7.26")
-    compile("org.apache.logging.log4j", "log4j-slf4j-impl", "2.11.2")
-    compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.9.9")
-    compile("com.fasterxml.jackson.core", "jackson-databind", "2.9.9")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.26")
+    implementation(group = "org.apache.logging.log4j", name = "log4j-slf4j-impl", version = "2.11.2")
+    implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = "2.9.9")
+    implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.9.9")
     // Add dependencies of forms
-    compile(group = "com.intellij", name = "forms_rt", version = "7.0.3")
+    implementation(group = "com.intellij", name = "forms_rt", version = "7.0.3")
+
+    // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")
+    testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
 }
 
 java {
