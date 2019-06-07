@@ -26,6 +26,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -2051,6 +2052,11 @@ public class mainScreen {
         tableListfiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(new SharedListSelectionHandler());
         //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
+
+        // Make left "tableListfiles" and right "ListexiftoolInfotable" tables read-only (un-editable)
+        // This also fixex the double-click bug on the image where it retrieves the object name of the images on double-click
+        tableListfiles.setDefaultEditor(Object.class, null);
+        ListexiftoolInfotable.setDefaultEditor(Object.class, null);
 
         // icon for my dialogs
         InputStream stream = StandardFileIO.getResourceAsStream("icons/jexiftoolgui-64.png");
