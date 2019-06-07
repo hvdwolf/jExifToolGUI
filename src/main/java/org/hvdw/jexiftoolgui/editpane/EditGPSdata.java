@@ -144,10 +144,10 @@ public class EditGPSdata {
         }
 
 
-
+        boolean isWindows = Utils.isOsFromMicrosoft();
         for (int index: selectedIndices) {
             //System.out.println("index: " + index + "  image path:" + files[index].getPath());
-            if (Utils.isOsFromMicrosoft()) {
+            if (isWindows) {
                 cmdparams.add(files[index].getPath().replace("\\", "/"));
             } else {
                 cmdparams.add(files[index].getPath());
