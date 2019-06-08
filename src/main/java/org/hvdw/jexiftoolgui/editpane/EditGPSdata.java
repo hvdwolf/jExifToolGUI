@@ -1,8 +1,9 @@
 package org.hvdw.jexiftoolgui.editpane;
 
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 
 import javax.swing.*;
@@ -11,14 +12,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditGPSdata {
 
-    private Preferences prefs = Preferences.userRoot();
+    private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     // I had specified for the arrays:
     //textfields:  gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField
     //checkboxes:  SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox
@@ -42,7 +42,6 @@ public class EditGPSdata {
         //First clean the fields
         resetFields(gpsFields);
 
-        String exiftool = prefs.get("exiftool", "");
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
         } else {

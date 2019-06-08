@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.prefs.Preferences;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
@@ -2011,7 +2010,6 @@ public class mainScreen {
 
     private mainScreen(JFrame frame) {
         boolean preferences = false;
-        Preferences prefs = Preferences.userRoot();
 
         Utils.progressStatus(progressBar, false);
 
