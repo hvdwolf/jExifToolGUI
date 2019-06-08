@@ -1,7 +1,11 @@
 package org.hvdw.jexiftoolgui;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,20 +17,24 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.*;
+
 public class Utils {
 
-    private final static Preferences prefs = Preferences.userRoot();
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
 
@@ -75,7 +83,7 @@ public class Utils {
         List<List<String>> tagrecords = new ArrayList<>();
         String tags = StandardFileIO.readTextFileAsStringFromResource("resources/tagxml/" + tagname + ".xml");
         if (tags.length() > 0) {
-            String[] lines = tags.split(System.getProperty("line.separator"));
+            String[] lines = tags.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 
             for (int i = 0; i < lines.length; i++) {
                 String[] tagvalues = lines[i].split(",");
@@ -112,22 +120,8 @@ public class Utils {
      * Checks whether the artist (creator) and Copyright (rights) preference exists
      * and uses these in the edit exif/xmp panes
      */
-    static String[] checkPrefsArtistCopyRights() {
-        String[] ArtistCopyRights = new String[2];
-        boolean prefArtistExists = prefs.get("artist", null) != null;
-        if (prefArtistExists) {
-            ArtistCopyRights[0] = prefs.get("artist", "");
-        } else {
-            ArtistCopyRights[0] = "";
-        }
-
-        boolean prefCopyRightsExists = prefs.get("copyrights", null) != null;
-        if (prefCopyRightsExists) {
-            ArtistCopyRights[1] = prefs.get("copyrights", "");
-        } else {
-            ArtistCopyRights[1] = "";
-        }
-        return ArtistCopyRights;
+    static Pair<String, String> checkPrefsArtistCopyRights() {
+        return ImmutablePair.of(prefs.getByKey(ARTIST, ""), prefs.getByKey(COPYRIGHTS, ""));
     }
 
     /////////////////// Locate exiftool //////////////
@@ -196,7 +190,7 @@ public class Utils {
             } else { // Yes. It looks like we have a correct exiftool selected
                 // remove all possible line breaks
                 returnValue = returnValue.replace("\n", "").replace("\r", "");
-                prefs.put("exiftool", returnValue);
+                prefs.storeByKey(EXIFTOOL_PATH, returnValue);
             }
         } else if (choice == 1) {
             JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ProgramTexts.downloadInstallET), "Download ExifTool", JOptionPane.INFORMATION_MESSAGE);
@@ -216,16 +210,8 @@ public class Utils {
      */
     static void checkForNewVersion(String fromWhere) {
         String version = "";
-        boolean newversion_startupcheck_exists;
-        boolean versioncheck = false;
+        boolean versioncheck = prefs.getByKey(VERSION_CHECK, false);
 
-        if (fromWhere.equals("startup")) {
-            Preferences prefs = Preferences.userRoot();
-            newversion_startupcheck_exists = prefs.get("versioncheck", null) != null;
-            if (newversion_startupcheck_exists) {
-                versioncheck = prefs.getBoolean("versioncheck", false);
-            }
-        }
 
         if (fromWhere.equals("menu") || versioncheck) {
             try {
@@ -261,7 +247,7 @@ public class Utils {
     // Create correct exiftool command call depending on operating system
     public static String platformExiftool() {
         // exiftool on windows or other
-        String exiftool = prefs.get("exiftool", "");
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (isOsFromMicrosoft()) {
             exiftool = exiftool.replace("\\", "/");
         }
@@ -348,7 +334,7 @@ public class Utils {
         int selectedRow = MyVariables.getSelectedRow();
 
         //logger.debug("selectedRow: {}", String.valueOf(selectedRow));
-        String exiftool = prefs.get("exiftool", "");
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
             //logger.debug("fpath is now: " + fpath);
@@ -448,7 +434,7 @@ public class Utils {
         Object[] row = new Object[1];
 
         if (exiftoolInfo.length() > 0) {
-            String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
+            String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 
             for (String line : lines) {
                 //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
@@ -572,7 +558,7 @@ public class Utils {
     }
 
     public static Application.OS_NAMES getCurrentOsName() {
-        String OS = System.getProperty("os.name").toLowerCase();
+        String OS = SystemPropertyFacade.getPropertyByKey(OS_NAME).toLowerCase();
         if (OS.contains("mac")) return Application.OS_NAMES.APPLE;
         if (OS.contains("windows")) return Application.OS_NAMES.MICROSOFT;
         return Application.OS_NAMES.LINUX;

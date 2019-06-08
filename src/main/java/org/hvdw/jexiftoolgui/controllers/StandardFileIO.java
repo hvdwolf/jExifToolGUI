@@ -3,16 +3,21 @@ package org.hvdw.jexiftoolgui.controllers;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
-import java.util.prefs.Preferences;
+
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.LAST_OPENED_FOLDER;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class StandardFileIO {
 
-    private static Preferences prefs = Preferences.userRoot();
+    private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public static String readTextFileAsString (String fileName) {
         // This will reference one line at a time
@@ -76,32 +81,18 @@ public class StandardFileIO {
      * Based on preference default folder, "always Use Last used folder" or home folder
      */
     public static String getFolderPathToOpenBasedOnPreferences() {
-        boolean imageDefaultFolder_exists = false;
-        boolean uselastopenedfolder_exists = false;
-        String startFolder = "";
-        Boolean uselastopenedfolder = false;
 
-        uselastopenedfolder_exists = prefs.getBoolean("uselastopenedfolder", false) != false;
-        if (uselastopenedfolder_exists) {
-            if (prefs.getBoolean("uselastopenedfolder", false)) {
-                startFolder = prefs.get("lastopenedfolder", System.getProperty("user.home"));
-            } else {
-                imageDefaultFolder_exists = prefs.get("defaultstartfolder", null) != null;
-                if (imageDefaultFolder_exists) {
-                    startFolder = prefs.get("defaultstartfolder", "");
-                } else {
-                    startFolder = System.getProperty("user.home");
-                }
-            }
-        } else { // The uselastfolder settings is not made yet
-            imageDefaultFolder_exists = prefs.get("defaultstartfolder", null) != null;
-            if (imageDefaultFolder_exists) {
-                startFolder = prefs.get("defaultstartfolder", "");
-            } else {
-                startFolder = System.getProperty("user.home");
-            }
+        boolean useLastOpenedFolder = prefs.getByKey(USE_LAST_OPENED_FOLDER, false);
+        String lastOpenedFolder = prefs.getByKey(LAST_OPENED_FOLDER, "");
+        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+
+        String defaultStartFolder = prefs.getByKey(DEFAULT_START_FOLDER, "");
+
+        String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
+
+        if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
+            startFolder = lastOpenedFolder;
         }
-
         return startFolder;
     }
 
@@ -110,10 +101,8 @@ public class StandardFileIO {
      */
     public static File[] getFileNames(JPanel myComponent) {
         File[] files = null;
-        boolean imageDefaultFolder_exists = false;
-        String startFolder = "";
 
-        startFolder = getFolderPathToOpenBasedOnPreferences();
+        String startFolder = getFolderPathToOpenBasedOnPreferences();
 
         final JFileChooser chooser = new JFileChooser(startFolder);
         //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
@@ -128,8 +117,7 @@ public class StandardFileIO {
         if (status == JFileChooser.APPROVE_OPTION) {
             files = chooser.getSelectedFiles();
             MyVariables.setSelectedFiles(files);
-            prefs.node("lastopenedfolder");
-            prefs.put("lastopenedfolder", chooser.getSelectedFile().getAbsolutePath());
+            prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getSelectedFile().getAbsolutePath());
         }
         return files;
     }

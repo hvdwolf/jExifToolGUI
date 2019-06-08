@@ -3,11 +3,15 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.prefs.Preferences;
+
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
 public class PreferencesDialog extends JDialog {
     JPanel contentPanel;
@@ -24,7 +28,8 @@ public class PreferencesDialog extends JDialog {
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
-    Preferences prefs = Preferences.userRoot();
+    private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+    private static final Logger logger = LoggerFactory.getLogger(PreferencesDialog.class);
 
     PreferencesDialog() {
         setContentPane(contentPanel);
@@ -70,15 +75,15 @@ public class PreferencesDialog extends JDialog {
     // although you can discuss that it can also be a preference if we deviate from the standard one
     // of course we do need the return value which we will get from the listener
     public void getExiftoolPath(JPanel myComponent, JTextField myExiftoolTextfield, String ePath, String fromWhere) {
-        if (ePath == "cancelled") {
-            if (fromWhere == "startup") {
+        if ("cancelled".equals(ePath)) {
+            if ("startup".equals(fromWhere)) {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromPrefs, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
             }
-        } else if (ePath == "no exiftool binary") {
-            if (fromWhere == "startup") {
+        } else if ("no exiftool binary".equals(ePath)) {
+            if ("startup".equals(fromWhere)) {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, "Wrong executable", JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else {
@@ -106,89 +111,55 @@ public class PreferencesDialog extends JDialog {
         }
     }
 
-    void savePrefs() {
-        System.out.println("Saving the preferences");
-        System.out.println("artist " + ArtisttextField.getText());
-        System.out.println("copyrights " + CopyrightstextField.getText());
-        System.out.println("exiftool " + ExiftoolLocationtextField.getText());
-        System.out.println("defaultstartfolder " + ImgStartFoldertextField.getText());
-        System.out.println("uselastopenedfolder " + UseLastOpenedFoldercheckBox.isSelected());
-        System.out.println("Check for new version on startup " + CheckVersioncheckBox.isSelected());
+    private void savePrefs() {
+        logger.debug("Saving the preferences");
+        logger.debug("artist {}", ArtisttextField.getText());
+        logger.debug("copyrights {}", CopyrightstextField.getText());
+        logger.debug("exiftool {}", ExiftoolLocationtextField.getText());
+        logger.debug("defaultstartfolder {}", ImgStartFoldertextField.getText());
+        logger.debug("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
+        logger.debug("Check for new version on startup {}", CheckVersioncheckBox.isSelected());
 
         if (!ArtisttextField.getText().isEmpty()) {
-            prefs.node("artist");
-            System.out.println("artist " + ArtisttextField.getText());
-            prefs.put("artist", ArtisttextField.getText());
+            logger.trace("{}: {}", ARTIST.key, ArtisttextField.getText());
+            prefs.storeByKey(ARTIST, ArtisttextField.getText());
         }
         if (!CopyrightstextField.getText().isEmpty()) {
-            prefs.node("copyrights");
-            System.out.println("copyrights " + CopyrightstextField.getText());
-            prefs.put("copyrights", CopyrightstextField.getText());
+            logger.trace("{}: {}", COPYRIGHTS.key, CopyrightstextField.getText());
+            prefs.storeByKey(COPYRIGHTS, CopyrightstextField.getText());
         }
         if (!ExiftoolLocationtextField.getText().isEmpty()) {
-            prefs.node("exiftool");
-            System.out.println("exiftool " + ExiftoolLocationtextField.getText());
-            prefs.put("exiftool", ExiftoolLocationtextField.getText());
+            logger.trace("{}: {}", EXIFTOOL_PATH.key, ExiftoolLocationtextField.getText());
+            prefs.storeByKey(EXIFTOOL_PATH, ExiftoolLocationtextField.getText());
         }
         if (!ImgStartFoldertextField.getText().isEmpty()) {
-            prefs.node("defaultstartfolder");
-            System.out.println("defaultstartfolder " + ImgStartFoldertextField.getText());
-            prefs.put("defaultstartfolder", ImgStartFoldertextField.getText());
-        }
-        if (UseLastOpenedFoldercheckBox.isSelected()) {
-            prefs.node("uselastopenedfolder");
-            prefs.putBoolean("uselastopenedfolder", true);
-            System.out.println("uselastopenedfolder" + UseLastOpenedFoldercheckBox.isSelected());
-        } else {
-            prefs.node("uselastopenedfolder");
-            prefs.putBoolean("uselastopenedfolder", false);
+            logger.trace("{}: {}", DEFAULT_START_FOLDER.key, ExiftoolLocationtextField.getText());
+            prefs.storeByKey(DEFAULT_START_FOLDER, ExiftoolLocationtextField.getText());
         }
 
-        if (CheckVersioncheckBox.isSelected()) {
-            prefs.node("versioncheck");
-            prefs.putBoolean("versioncheck", true);
-        } else {
-            prefs.node("versioncheck");
-            prefs.putBoolean("versioncheck", false);
-        }
+        logger.trace("{}: {}", USE_LAST_OPENED_FOLDER.key, UseLastOpenedFoldercheckBox.isSelected());
+        prefs.storeByKey(USE_LAST_OPENED_FOLDER, UseLastOpenedFoldercheckBox.isSelected());
+
+
+        logger.trace("{}: {}", VERSION_CHECK.key, CheckVersioncheckBox.isSelected());
+        prefs.storeByKey(VERSION_CHECK, CheckVersioncheckBox.isSelected());
 
         JOptionPane.showMessageDialog(contentPanel, "Settings saved", "Settings saved", JOptionPane.INFORMATION_MESSAGE);
-
     }
 
 
-    void retrievePreferences() {
+    private void retrievePreferences() {
         // get current preferences
-        // exiftool must exist otherwise the app would not start at all
-        String exiftool_path = prefs.get("exiftool", "");
-        ExiftoolLocationtextField.setText(prefs.get("exiftool", ""));
-        // check other settings before retrieving
-        boolean defaultstartfolder = prefs.get("defaultstartfolder", null) != null;
-        if (defaultstartfolder) {
-            ImgStartFoldertextField.setText(prefs.get("defaultstartfolder", ""));
-        }
-        boolean lastusedfolderset = prefs.getBoolean("uselastopenedfolder", false) != false;
-        if (lastusedfolderset) {
-            UseLastOpenedFoldercheckBox.setSelected(prefs.getBoolean("uselastopenedfolder", false));
-        }
-
-        boolean artist = prefs.get("artist", null) != null;
-        if (artist) {
-            ArtisttextField.setText(prefs.get("artist", ""));
-        }
-        boolean copyrights = prefs.get("copyrights", null) != null;
-        if (copyrights) {
-            CopyrightstextField.setText(prefs.get("copyrights", ""));
-        }
-        boolean versioncheckset = prefs.getBoolean("versioncheck", false) != false;
-        if (versioncheckset) {
-            CheckVersioncheckBox.setSelected(prefs.getBoolean("versioncheck", false));
-        }
-
+        ExiftoolLocationtextField.setText(prefs.getByKey(EXIFTOOL_PATH, ""));
+        ImgStartFoldertextField.setText(prefs.getByKey(DEFAULT_START_FOLDER, ""));
+        ArtisttextField.setText(prefs.getByKey(ARTIST, ""));
+        CopyrightstextField.setText(prefs.getByKey(COPYRIGHTS, ""));
+        UseLastOpenedFoldercheckBox.setSelected(prefs.getByKey(USE_LAST_OPENED_FOLDER, false));
+        CheckVersioncheckBox.setSelected(prefs.getByKey(VERSION_CHECK, false));
     }
 
     // The  main" function of this class
-    public void showDialog() {
+    void showDialog() {
         setSize(700, 400);
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();

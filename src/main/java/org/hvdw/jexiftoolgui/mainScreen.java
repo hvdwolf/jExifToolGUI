@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.apache.commons.lang3.tuple.Pair;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.controllers.YourCommands;
@@ -13,6 +14,7 @@ import org.hvdw.jexiftoolgui.editpane.EditExifdata;
 import org.hvdw.jexiftoolgui.editpane.EditGPSdata;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
 import org.hvdw.jexiftoolgui.editpane.EditXmpdata;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
 import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
@@ -37,10 +39,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.prefs.Preferences;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+
 
 public class mainScreen {
     private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
 
+    private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
     private JMenuBar menuBar;
     private JMenu myMenu;
@@ -233,7 +238,6 @@ public class mainScreen {
     public int SelectedCell;
     private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
 
-    private Preferences prefs;
     public String exiftool_path = "";
     private ListSelectionModel listSelectionModel;
 
@@ -297,14 +301,13 @@ public class mainScreen {
         boolean exiftool_found = false;
         String res;
 
-        Preferences prefs = Preferences.userRoot();
 
-        exiftool_exists = prefs.get("exiftool", null) != null;
+        exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
         logger.debug("exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
-            String exiftool_path = prefs.get("exiftool", "");
+            String exiftool_path = prefs.getByKey(EXIFTOOL_PATH, "");
             File tmpFile = new File(exiftool_path);
             boolean exists = tmpFile.exists();
             if (!exists) {
@@ -338,7 +341,7 @@ public class mainScreen {
             // remove all possible line breaks
             res = res.replace("\n", "").replace("\r", "");
             if (!exiftool_exists) {
-                prefs.put("exiftool", res);
+                prefs.storeByKey(EXIFTOOL_PATH, res);
             }
         }
 
@@ -2042,11 +2045,11 @@ public class mainScreen {
             Utils.checkExifTool(mainScreen.this.rootPanel);
         }
         // Try to set the defaults for artist and copyrights in the edit exif/xmp panes if prefs available
-        String[] prefsArtistCopyRights = Utils.checkPrefsArtistCopyRights();
-        ExifArtistCreatortextField.setText(prefsArtistCopyRights[0]);
-        xmpCreatortextField.setText(prefsArtistCopyRights[0]);
-        ExifCopyrighttextField.setText(prefsArtistCopyRights[1]);
-        xmpRightstextField.setText(prefsArtistCopyRights[1]);
+        Pair<String, String> prefsArtistCopyRights = Utils.checkPrefsArtistCopyRights();
+        ExifArtistCreatortextField.setText(prefsArtistCopyRights.getLeft());
+        xmpCreatortextField.setText(prefsArtistCopyRights.getLeft());
+        ExifCopyrighttextField.setText(prefsArtistCopyRights.getRight());
+        xmpRightstextField.setText(prefsArtistCopyRights.getRight());
 
         programButtonListeners();
 
