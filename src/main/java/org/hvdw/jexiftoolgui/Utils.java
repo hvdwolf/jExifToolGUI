@@ -25,6 +25,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -80,13 +81,13 @@ public class Utils {
      * This method converts it to 3-column "tabular" data
      */
     public static void readTagsCSV(String tagname) {
-        List<List<String>> tagrecords = new ArrayList<>();
+        List<List<String>> tagrecords = new LinkedList<>();
         String tags = StandardFileIO.readTextFileAsStringFromResource("resources/tagxml/" + tagname + ".xml");
         if (tags.length() > 0) {
             String[] lines = tags.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 
-            for (int i = 0; i < lines.length; i++) {
-                String[] tagvalues = lines[i].split(",");
+            for (String line : lines) {
+                String[] tagvalues = line.split(",");
                 tagrecords.add(Arrays.asList(tagvalues));
             }
         }
