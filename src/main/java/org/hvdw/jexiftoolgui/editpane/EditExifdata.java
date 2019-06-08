@@ -1,21 +1,25 @@
 package org.hvdw.jexiftoolgui.editpane;
 
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.prefs.Preferences;
+
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditExifdata {
 
-    private Preferences prefs = Preferences.userRoot();
+    private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     // I had specified for the arrays:
     //JTextField[] exifFields = {ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField,ExifCreateDatetextField,
     //        ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};
@@ -33,14 +37,15 @@ public class EditExifdata {
     public void copyExifFromSelected(JTextField[] exifFields, JTextArea exiftextArea) {
         String[] exifcopyparams = {"-e","-n","-exif:Make","-exif:Model","-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate","-exif:Artist","-exif:Copyright","-exif:UserComment","-exif:ImageDescription"};
         File[] files = MyVariables.getSelectedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();        String fpath ="";
+        int SelectedRow = MyVariables.getSelectedRow();
+        String fpath;
         String res = "";
-        List<String> cmdparams = new ArrayList<String>();
+        List<String> cmdparams = new LinkedList<>();
 
         //First clean the fields
         resetFields(exifFields, exiftextArea);
 
-        String exiftool = prefs.get("exiftool", "");
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
         } else {
@@ -61,7 +66,7 @@ public class EditExifdata {
     }
 
     private void displayCopiedInfo(JTextField[] exifFields, JTextArea exiftextArea, String exiftoolInfo) {
-        String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
+        String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
         //for(int i = 0; i < lines.length; i++) {
         for (String line : lines) {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
@@ -103,7 +108,7 @@ public class EditExifdata {
 
     public void writeExifTags(JTextField[] exifFields, JTextArea Description, JCheckBox[] exifBoxes, JProgressBar progressBar) {
 
-        List<String> cmdparams = new ArrayList<String>();
+        List<String> cmdparams = new LinkedList<>();
         File[] files = MyVariables.getSelectedFiles();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
 

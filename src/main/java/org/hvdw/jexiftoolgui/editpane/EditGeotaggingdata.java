@@ -1,9 +1,11 @@
 package org.hvdw.jexiftoolgui.editpane;
 
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.PreferencesFacade;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -11,7 +13,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.Preferences;
+
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
 
 // I had specified for the array in mainScreen:
@@ -21,7 +24,7 @@ import java.util.prefs.Preferences;
 public class EditGeotaggingdata {
 
     private String ImageFolder;
-    private Preferences prefs = Preferences.userRoot();
+    private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
 
     public String getImagePath(JPanel myComponent) {
         String SelectedFolder;
@@ -72,7 +75,7 @@ public class EditGeotaggingdata {
         //System.out.println("folder: " + onFolder + " gpslogfile: " + gpslogfile + " geosync: " + geosync + "OverwiteOriginals: " + OverwiteOriginals);
 
         // exiftool on windows or other
-        String exiftool = prefs.get("exiftool", "");
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         boolean isWindows = Utils.isOsFromMicrosoft();
         if (isWindows) {
             exiftool = exiftool.replace("\\", "/");

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.util.prefs.Preferences;
 
 /**
  * Simple but important application class.
@@ -17,17 +16,6 @@ import java.util.prefs.Preferences;
 public class Application {
     private final static Logger logger = LoggerFactory.getLogger(Application.class);
 
-    /* The user preferences from the model */
-    private static ProgramPreferences myPrefs;
-
-    public static ProgramPreferences getPrefs() {
-        if (myPrefs == null) {
-            myPrefs = new ProgramPreferences();
-        }
-        return myPrefs;
-    }
-
-
     public static void main(String[] args) {
         logger.debug("Start application");
         //Schedule a job for the event-dispatching thread:
@@ -35,7 +23,7 @@ public class Application {
         SwingUtilities.invokeLater(mainScreen::createAndShowGUI);
     }
 
-    public static enum OS_NAMES {
+    public enum OS_NAMES {
         APPLE, MICROSOFT, LINUX
     }
 }

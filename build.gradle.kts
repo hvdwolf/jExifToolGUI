@@ -44,6 +44,8 @@ dependencies {
     // Add dependencies of forms
     implementation(group = "com.intellij", name = "forms_rt", version = "7.0.3")
 
+    // Missing helpers and common utils in java
+    implementation(group="org.apache.commons", name="commons-lang3", version="3.9")
     // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")
     testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")

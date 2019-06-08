@@ -1,8 +1,10 @@
 package org.hvdw.jexiftoolgui.editpane;
 
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
-import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 
 import javax.swing.*;
 import java.io.File;
@@ -10,12 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.prefs.Preferences;
+
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditXmpdata {
 
-    private Preferences prefs = Preferences.userRoot();
+    private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     // I had specified for the arrays:
     //JTextField[] xmpFields = {xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};
@@ -42,7 +46,7 @@ public class EditXmpdata {
         //First clean the fields
         resetFields(xmpFields, Description);
 
-        String exiftool = prefs.get("exiftool", "");
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
             exiftool = exiftool.replace("\\", "/");
@@ -65,7 +69,7 @@ public class EditXmpdata {
     }
 
         public void displayCopiedInfo(JTextField[] xmpFields, JTextArea Description, String exiftoolInfo) {
-            String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
+            String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
             for (String line : lines) {
                 String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
                 String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
