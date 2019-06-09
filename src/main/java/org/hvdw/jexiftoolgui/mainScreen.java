@@ -13,6 +13,7 @@ import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
 import org.hvdw.jexiftoolgui.editpane.EditExifdata;
 import org.hvdw.jexiftoolgui.editpane.EditGPSdata;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
+import org.hvdw.jexiftoolgui.editpane.EditGpanodata;
 import org.hvdw.jexiftoolgui.editpane.EditXmpdata;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
@@ -232,7 +233,7 @@ public class mainScreen {
     private JTextField gpanoStitchingSoftwaretextField;
     private JTextField gpanoFPHPtextField;
     private JTextField gpanoFPWPtextField;
-    private JComboBox comboBox1;
+    private JComboBox gpanoPTcomboBox;
     private JCheckBox checkBox1;
     private JTextField gpanoPHDtextField;
     private JTextField gpanoIVHDtextField;
@@ -275,7 +276,7 @@ public class mainScreen {
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
     private EditGPSdata EGPSd = new EditGPSdata();
     private YourCommands YourCmnds = new YourCommands();
-
+    private EditGpanodata EGpanod = new EditGpanodata();
 
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
@@ -496,6 +497,7 @@ public class mainScreen {
         tableListfiles.setPreferredScrollableViewportSize(new Dimension(400, 400));
         tableListfiles.setShowHorizontalLines(true);
         tableListfiles.setShowVerticalLines(false);
+        tableListfiles.setToolTipText("Double-clicking the thumbnail or filename will open the image in the default viewer");
         Leftscrollpane.setViewportView(tableListfiles);
         tabbedPaneRight = new JTabbedPane();
         rootPanel.add(tabbedPaneRight, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, -1), new Dimension(700, -1), null, 6, false));
@@ -1276,8 +1278,8 @@ public class mainScreen {
         final JLabel label65 = new JLabel();
         label65.setText("Projection Type *");
         panel18.add(label65, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        comboBox1 = new JComboBox();
-        panel18.add(comboBox1, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpanoPTcomboBox = new JComboBox();
+        panel18.add(gpanoPTcomboBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label66 = new JLabel();
         label66.setText("Use panorama viewer *");
         panel18.add(label66, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1927,6 +1929,32 @@ public class mainScreen {
             }
         });
 
+        // The buttons from the Gpano edit tab
+        gpanoCopyFrombutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        gpanoCopyTobutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        gpanoResetFieldsbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                EGpanod.resetFields(getGpanoFields(), getGpanoCheckBoxes());
+            }
+        });
+        gpanoHelpbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.GpanoHelp), "Help for the Edit Gpano metadata panel", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
     }
 
     private void ViewRadiobuttonListener() {
@@ -2229,6 +2257,11 @@ public class mainScreen {
         gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
         gPanoTopText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GPanoTopText));
         gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText));
+
+        //Combobox on Gpano edit tab
+        for (String item : MyConstants.GPANO_PROJECTIONS) {
+            gpanoPTcomboBox.addItem(item);
+        }
 
         Utils.checkForNewVersion("startup");
     }
