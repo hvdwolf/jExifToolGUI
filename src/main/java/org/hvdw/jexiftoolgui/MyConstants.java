@@ -12,6 +12,7 @@ public class MyConstants {
     public static final String[] MAKERNOTES_PARAMS = {"-makernotes:all","-G", "-tab"};
     public static final String[] COMPOSITE_PARAMS = {"-composite:all","-G", "-tab"};
     public static final String[] REF_IMAGE_DATETIME = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
+    public static final String[] GPANO_PROJECTIONS = {"equirectangular", "cylindrical", "rectilinear"};
 
     // exiftool image modification parameters
     public static final String[] SET_FILEDATETIME_TO_DATETIMEORIGINAL = {"-FileModifyDate<DateTimeOriginal"};
