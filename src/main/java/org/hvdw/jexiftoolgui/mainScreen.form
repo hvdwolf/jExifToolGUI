@@ -1891,14 +1891,391 @@
                       </grid>
                     </children>
                   </grid>
-                  <grid id="9035c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
+                  <grid id="9035c" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="10" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="Gpano"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="773ac" class="javax.swing.JLabel" binding="gPanoTopText">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="gPanoTopText"/>
+                        </properties>
+                      </component>
+                      <grid id="6ec44" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="bevel-raised"/>
+                        <children>
+                          <component id="e8bd4" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="200" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="Cropped Area Image Height pixels *"/>
+                            </properties>
+                          </component>
+                          <component id="8f95" class="javax.swing.JTextField" binding="gpanoCAIHPtextField">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="1cf19" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text value="Cropped Area Image Width pixels *"/>
+                            </properties>
+                          </component>
+                          <component id="26f7a" class="javax.swing.JTextField" binding="gpanoCAIWPtextField">
+                            <constraints>
+                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="a6717" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text value="Cropped Area Left Pixels *"/>
+                            </properties>
+                          </component>
+                          <component id="dc1f7" class="javax.swing.JTextField" binding="gpanoCALPtextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="44dd1" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text value="Cropped Area Top Pixels *"/>
+                            </properties>
+                          </component>
+                          <component id="6c27f" class="javax.swing.JTextField" binding="gpanoCATPtextField">
+                            <constraints>
+                              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="f3bd6" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text value="Full Pano Height Pixels *"/>
+                            </properties>
+                          </component>
+                          <component id="35731" class="javax.swing.JTextField" binding="gpanoFPHPtextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="1791a" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text value="Full Pano Width Pixels *"/>
+                            </properties>
+                          </component>
+                          <component id="40e91" class="javax.swing.JTextField" binding="gpanoFPWPtextField">
+                            <constraints>
+                              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="92859" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Projection Type *"/>
+                            </properties>
+                          </component>
+                          <component id="98dc" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="599a0" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Use panorama viewer *"/>
+                            </properties>
+                          </component>
+                          <component id="ff11b" class="javax.swing.JCheckBox" binding="checkBox1" default-binding="true">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <enabled value="false"/>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="c8381" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Pose Heading Degrees **"/>
+                            </properties>
+                          </component>
+                          <component id="7edac" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="(Necessary for Google Maps)"/>
+                            </properties>
+                          </component>
+                          <component id="d8867" class="javax.swing.JTextField" binding="gpanoPHDtextField">
+                            <constraints>
+                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="f3576" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="5" left="5" bottom="5" right="5"/>
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="bevel-raised"/>
+                        <children>
+                          <component id="1d1d9" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="200" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <text value="Initial View Heading Degrees ***"/>
+                            </properties>
+                          </component>
+                          <component id="bb7cb" class="javax.swing.JTextField" binding="gpanoIVHDtextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="4bb6e" class="javax.swing.JCheckBox" binding="gpanoIVHDCheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="2f85c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Initial View Pitch Degrees ***"/>
+                            </properties>
+                          </component>
+                          <component id="1cf4d" class="javax.swing.JTextField" binding="gpanoIVPDtextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="200d9" class="javax.swing.JCheckBox" binding="gpanoIVPDCheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="8db21" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Initial View Roll Degrees ***"/>
+                            </properties>
+                          </component>
+                          <component id="4cfd2" class="javax.swing.JTextField" binding="gpanoIVRDtextField">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="f15a0" class="javax.swing.JCheckBox" binding="gpanoIVRDCheckBox">
+                            <constraints>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="5a7bf" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Initial Horizontal FOV Degrees ***"/>
+                            </properties>
+                          </component>
+                          <component id="ebb33" class="javax.swing.JTextField" binding="gpanoIHFOVDtextField">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="bfa20" class="javax.swing.JCheckBox" binding="gpanoIHFOVDtextFieldCheckBox">
+                            <constraints>
+                              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="8b186" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="200" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text value="Stitching Software ***"/>
+                            </properties>
+                          </component>
+                          <component id="e3406" class="javax.swing.JTextField" binding="gpanoStitchingSoftwaretextField">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="400" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="450" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="c70b2" class="javax.swing.JCheckBox" binding="gpanoStitchingSoftwarecheckBox">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="5ef53" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="7f386" class="javax.swing.JButton" binding="gpanoCopyFrombutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Copy from selected image"/>
+                            </properties>
+                          </component>
+                          <component id="42f85" class="javax.swing.JButton" binding="gpanoCopyTobutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Save to selected image(s)"/>
+                            </properties>
+                          </component>
+                          <component id="7769c" class="javax.swing.JButton" binding="gpanoResetFieldsbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Reset Fields"/>
+                            </properties>
+                          </component>
+                          <component id="dd9eb" class="javax.swing.JButton" binding="gpanoHelpbutton">
+                            <constraints/>
+                            <properties>
+                              <label value="Help"/>
+                              <text value="Help"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <component id="46785" class="javax.swing.JCheckBox" binding="gpanoOverwriteOriginalscheckBox">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Make backup of originals"/>
+                        </properties>
+                      </component>
+                      <component id="b8eef" class="javax.swing.JLabel" binding="gpanoMinVersionText">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="gpanoMinVersionText"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                   <grid id="4207a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
