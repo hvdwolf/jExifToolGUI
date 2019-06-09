@@ -51,7 +51,10 @@ public class HelpTexts {
             +"<li>all info from all tag groups to same tag groups</li>"
             +"<li>selected group to same group</li></ul><br>"
             +"This is NOT an internal \"same image to same image\" copy to the xmp tag group; See menu \"Extra -> Copy all metadata to xmp format\" for that option.<br><br>";
-
+    public static final String GpanoHelp = "This tab is used to add GPano Google PhotoSphere data to your selected image(s).<br><br>"
+            + "The Google PhotoSphere functionality has been added in November 2012 to enable the use of auto-rotating panoramic photos inside Google products."
+            +" For more info see the Google page: https://developers.google.com/streetview/spherical-metadata<br><br>"
+            +"The fields marked with an asterisk are mandatory. The \"Use panorama viewer\" is also mandatory, but prefilled. It is here to show you that \"it is not forgotten\".";
     /*
     */
 }
