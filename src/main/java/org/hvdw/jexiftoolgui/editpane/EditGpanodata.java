@@ -20,17 +20,14 @@ public class EditGpanodata {
     // I had specified for the arrays:
 
 
-    public void resetFields(JTextField[] gpanoFields, JCheckBox[] gpanoBoxes) {
+    public void resetFields(JTextField[] gpanoFields) {
 
         for (JTextField field: gpanoFields) {
             field.setText("");
         }
-        for (JCheckBox checkbox: gpanoBoxes) {
-            checkbox.setSelected(false);
-        }
     }
 
-    public void copyGpanoFromSelected(JTextField[] gpanoFields, JCheckBox[] gpanoBoxes) {
+    public void copyGpanoFromSelected(JTextField[] gpanoFields, boolean usePanoViewer) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String fpath ="";
@@ -38,7 +35,7 @@ public class EditGpanodata {
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetFields(gpanoFields, gpanoBoxes);
+        resetFields(gpanoFields);
 
         String exiftool = prefs.get("exiftool", "");
         if (Utils.isOsFromMicrosoft()) {
@@ -58,11 +55,11 @@ public class EditGpanodata {
             System.out.println("Error executing command");
         }
         if (res.length() > 0) {
-            displayCopiedInfo(gpanoFields, res);
+            displayCopiedInfo(gpanoFields, usePanoViewer, res);
         }
     }
 
-    private void displayCopiedInfo(JTextField[] gpanoFields, String exiftoolInfo) {
+    private void displayCopiedInfo(JTextField[] gpanoFields, boolean usePanoViewer, String exiftoolInfo) {
         String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
         //for(int i = 0; i < lines.length; i++) {
         for (String line : lines) {
@@ -90,6 +87,9 @@ public class EditGpanodata {
             }
             if (SpaceStripped.contains("ProjectionType")) {
                 //gpanoFields[6].setText(cells[1]);
+            }
+            if (usePanoViewer) {
+                //usePanoViewer.setSelected(true);
             }
             if (SpaceStripped.contains("PoseHeadingDegrees")) {
                 gpanoFields[6].setText(cells[1]);
