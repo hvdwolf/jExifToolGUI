@@ -72,8 +72,6 @@ public class EditGeotaggingdata {
         String gpslogfile = geotaggingFields[1].getText().trim();
         String geosync = geotaggingFields[2].getText().trim();
 
-        //System.out.println("folder: " + onFolder + " gpslogfile: " + gpslogfile + " geosync: " + geosync + "OverwiteOriginals: " + OverwiteOriginals);
-
         // exiftool on windows or other
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         boolean isWindows = Utils.isOsFromMicrosoft();
@@ -110,11 +108,10 @@ public class EditGeotaggingdata {
             cmdparams.add("-xmp:City=" + geotaggingFields[6].getText());
             cmdparams.add("-iptc:City=" + geotaggingFields[6].getText());
         }
-        //System.out.println("indices: " + Arrays.toString(selectedFilenamesIndices));
 
         if ("".equals(onFolder)) { // Empty folder string which means we use selected files
             for (int index: selectedFilenamesIndices) {
-                //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {

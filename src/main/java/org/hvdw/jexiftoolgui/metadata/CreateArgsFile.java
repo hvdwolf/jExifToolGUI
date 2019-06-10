@@ -7,6 +7,8 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,8 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 public class CreateArgsFile extends JDialog {
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -161,7 +165,7 @@ public class CreateArgsFile extends JDialog {
                 boolean isWindows = Utils.isOsFromMicrosoft();
 
                 for (int index : selectedFilenamesIndices) {
-                    //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                    //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         params.add(files[index].getPath().replace("\\", "/"));
                     } else {

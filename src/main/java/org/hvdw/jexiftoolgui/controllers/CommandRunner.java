@@ -18,7 +18,7 @@ public class CommandRunner {
     public static String runCommand(List<String> cmdparams) throws InterruptedException, IOException {
 
         StringBuilder res = new StringBuilder();
-        System.out.println(cmdparams.toString());
+        logger.debug(cmdparams.toString());
 
         ProcessBuilder builder = new ProcessBuilder(cmdparams);
         logger.trace("Did ProcessBuilder builder = new ProcessBuilder(cmdparams);");
@@ -65,11 +65,11 @@ public class CommandRunner {
             public void run() {
                 try {
                     String res = runCommand(cmdparams);
-                    System.out.println(res);
+                    logger.debug("res is\n{}", res);
                     progressBar.setVisible(false);
                     outputAfterCommand(res);
                 } catch (IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
+                    logger.debug("Error executing command");
                 }
 
             }

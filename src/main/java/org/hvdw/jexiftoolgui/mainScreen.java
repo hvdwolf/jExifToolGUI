@@ -2050,38 +2050,7 @@ public class mainScreen {
         }
         return params;
     }
-
-    // This is the general table listener that also enables multi row/column selection
-    // to handle further functions
-    // Not use anymore
-    /*class SharedListSelectionListener implements ListSelectionListener {
-
-        public void valueChanged(ListSelectionEvent e) {
-            //int SelectedCell = 0;
-            int rowIndex = 0;
-            int colIndex = 0;
-            List<Integer> tmpselectedIndices = new ArrayList<Integer>();
-
-            int[] selectedRow = tableListfiles.getSelectedRows();
-            int[] selectedColumns = tableListfiles.getSelectedColumns();
-
-            for (int i = 0; i < selectedRow.length; i++) {
-                for (int j = 0; j < selectedColumns.length; j++) {
-                    rowIndex = tableListfiles.getSelectedRow();
-                    colIndex = tableListfiles.getSelectedColumn();
-                    tmpselectedIndices.add((i * 3) + j);
-                    logger.debug("Selected row: {} Selected column: {}  Calculated index: {}" ,i, j, ((i * 3) + j));
-
-                }
-            }
-
-            selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
-            selectedIndicesList = tmpselectedIndices;
-            logger.debug(Arrays.toString(selectedIndices));
-            MyVariables.setSelectedFilenamesIndices(selectedIndices);
-
-        }
-    } */
+    
 
     // This is the general table listener that also enables multi row selection
     class SharedListSelectionHandler implements ListSelectionListener {

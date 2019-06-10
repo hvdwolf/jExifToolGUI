@@ -1,9 +1,9 @@
 package org.hvdw.jexiftoolgui.editpane;
 
-import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.prefs.Preferences;
+
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditGpanodata {
@@ -65,9 +66,9 @@ public class EditGpanodata {
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
-            System.out.println("res is\n" + res);
+            logger.debug("res is\n{}", res);
         } catch(IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
+            logger.debug("Error executing command");
         }
         if (res.length() > 0) {
             displayCopiedInfo(gpanoFields, gpanoStitchingSoftwaretextField, gpanoPTCombobox, res);
@@ -75,7 +76,7 @@ public class EditGpanodata {
     }
 
     private void displayCopiedInfo(JFormattedTextField[] gpanoFields, JTextField gpanoStitchingSoftwaretextField, JComboBox gpanoPTCombobox, String exiftoolInfo) {
-        String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
+        String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
         //for(int i = 0; i < lines.length; i++) {
         for (String line : lines) {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
@@ -168,7 +169,7 @@ public class EditGpanodata {
         }
 
         for (int index: selectedIndices) {
-            //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+            //logger.debug("index: {}  image path: {}", index, files[index].getPath());
             if (Utils.isOsFromMicrosoft()) {
                 cmdparams.add(files[index].getPath().replace("\\", "/"));
             } else {

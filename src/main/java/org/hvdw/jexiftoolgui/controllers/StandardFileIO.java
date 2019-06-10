@@ -5,6 +5,8 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -18,6 +20,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class StandardFileIO {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     public static String readTextFileAsString (String fileName) {
         // This will reference one line at a time
@@ -34,7 +37,7 @@ public class StandardFileIO {
                     new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                logger.debug(line);
                 totalText.append(line);
             }
 
@@ -42,10 +45,10 @@ public class StandardFileIO {
             bufferedReader.close();
         }
         catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            logger.debug("Unable to open file '{}'", fileName);
         }
         catch(IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            logger.debug("Error reading file '{}'", fileName);
         }
 
         return totalText.toString();
@@ -70,9 +73,9 @@ public class StandardFileIO {
             }
 
         } catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            logger.debug("Unable to open file '{}'", fileName);
         } catch(IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            logger.debug("Error reading file '{}'", fileName);
         }
         return strFileContents;
     }

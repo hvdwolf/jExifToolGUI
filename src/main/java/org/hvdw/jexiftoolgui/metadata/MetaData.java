@@ -2,6 +2,8 @@ package org.hvdw.jexiftoolgui.metadata;
 
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MetaData {
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     public void copyToXmp() {
         String fpath ="";
@@ -19,7 +22,7 @@ public class MetaData {
 
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
-        System.out.println("Copy all metadata to xmp format");
+        logger.debug("Copy all metadata to xmp format");
         int choice = JOptionPane.showOptionDialog(null, ProgramTexts.copymetadatatoxmp,"Copy all metadata to xmp format",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
@@ -30,7 +33,7 @@ public class MetaData {
 
             for (int index: selectedIndices) {
                 // Unfortunately we need to do this file by file. It also means we need to initialize everything again and again
-                //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                 cmdparams.clear();
                 //cmdparams.add(exiftool);
                 //cmdparams.add("-TagsFromfile" );
@@ -48,10 +51,10 @@ public class MetaData {
                 }
                 try {
                     String res = CommandRunner.runCommand(cmdparams);
-                    System.out.println(res);
+                    logger.debug("res is\n{}", res);
                     TotalOutput.append(res);
                 } catch(IOException | InterruptedException ex) {
-                    System.out.println("Error executing command");
+                    logger.debug("Error executing command");
                 }
             }
             CommandRunner.outputAfterCommand(TotalOutput.toString());
@@ -65,11 +68,10 @@ public class MetaData {
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
-        System.out.println("Repair corrupted metadata in JPG(s)");
+        logger.debug("Repair corrupted metadata in JPG(s)");
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.REPAIR_JPG_METADATA),"Repair corrupted metadata in JPG(s)",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
-            //System.out.println("Yes");
             cmdparams.add(Utils.platformExiftool());
             cmdparams.add("-overwrite_original");
             for (String s : MyConstants.REPAIR_JPG_METADATA) {
@@ -78,7 +80,7 @@ public class MetaData {
             boolean isWindows = Utils.isOsFromMicrosoft();
 
             for (int index: selectedIndices) {
-                //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
@@ -164,7 +166,7 @@ public class MetaData {
                 // Copy metadata
                 String[] etparams = params.toArray(new String[0]);
                 for (int index: selectedIndices) {
-                    //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                    //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         params.add(files[index].getPath().replace("\\", "/"));
                     } else {

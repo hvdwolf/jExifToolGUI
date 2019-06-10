@@ -5,6 +5,8 @@ import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
@@ -20,6 +22,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class EditExifdata {
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
     // I had specified for the arrays:
     //JTextField[] exifFields = {ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField,ExifCreateDatetextField,
     //        ExifArtistCreatortextField, ExifCopyrighttextField, ExifUsercommenttextField};
@@ -56,9 +59,9 @@ public class EditExifdata {
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
-            System.out.println("res is\n" + res);
+            logger.debug("res is\n{}", res);
         } catch(IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
+            logger.debug("Error executing command");
         }
         if (res.length() > 0) {
             displayCopiedInfo(exifFields, exiftextArea, res);
@@ -72,9 +75,8 @@ public class EditExifdata {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
             String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
-            System.out.print(SpaceStripped+ " ; value: " + cells[1] + "\n");
+            logger.debug(SpaceStripped, " ; value: ", cells[1], "\n");
             if (SpaceStripped.contains("Make")) {
-                System.out.print(" in if-Make; ");
                 exifFields[0].setText(cells[1]);
             }
             if (SpaceStripped.contains("CameraModelName")) {
@@ -146,7 +148,7 @@ public class EditExifdata {
         }
 
         for (int index: selectedIndices) {
-            //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+            //logger.debug("index: {}  image path: {}", index, files[index].getPath());
             if (Utils.isOsFromMicrosoft()) {
                 cmdparams.add(files[index].getPath().replace("\\", "/"));
             } else {

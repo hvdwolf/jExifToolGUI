@@ -5,6 +5,8 @@ import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
@@ -20,6 +22,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class EditXmpdata {
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     // I had specified for the arrays:
     //JTextField[] xmpFields = {xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField};
@@ -53,15 +56,15 @@ public class EditXmpdata {
         } else {
             fpath = files[SelectedRow].getPath();
         }
-        System.out.println(fpath);
+        logger.debug(fpath);
         cmdparams.add(exiftool);
         cmdparams.addAll(Arrays.asList(xmpcopyparams));
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
-            System.out.println("res is\n" + res);
+            logger.debug("res is\n{}", res);
         } catch (IOException | InterruptedException ex) {
-            System.out.println("Error executing command");
+            logger.debug("Error executing command");
         }
         if (res.length() > 0) {
             displayCopiedInfo(xmpFields, Description, res);
@@ -74,10 +77,8 @@ public class EditXmpdata {
                 String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
                 String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
                 //With ALL spaces removed from the tag we als need to use identiefiers without spaces
-                //System.out.print(SpaceStripped+ " ; value: " + cells[1] + "\n");
                 //xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField
                 if (SpaceStripped.contains("Creator")) {
-                    //System.out.print(" in if-Creator; ");
                     xmpFields[0].setText(cells[1]);
                 }
                 if (SpaceStripped.contains("Rights")) {
@@ -160,7 +161,7 @@ public class EditXmpdata {
 
             boolean isWindows = Utils.isOsFromMicrosoft();
             for (int index: selectedIndices) {
-                //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {

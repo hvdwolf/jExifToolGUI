@@ -36,9 +36,6 @@ public class YourCommands {
         Commands = Commands.trim();
         String exiftool = Utils.platformExiftool();
 
-        //JDialog prgdlg = progdlg.displayProgressDialog();
-        //Output.append("<html>");
-        //Output.setText("<html");
         for (int index: selectedIndices) {
             // we do this image by image to get proper output
             cmdparams.clear();
@@ -56,18 +53,7 @@ public class YourCommands {
             } else {
                 cmdparams.add(files[index].getPath());
             }
-            /*try {
-                String res = CommandRunner.runCommand(cmdparams);
-                //String res = CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
-                Output.append("============= \"");
-                Output.append(files[index].getPath());
-                Output.append("\" =============" + System.lineSeparator());
-                Output.append(res);
-                //Output.setText( Output.getText() + res + "<br><br>");
-                Output.append(System.lineSeparator() + System.lineSeparator());
-            } catch(IOException | InterruptedException ex) {
-                System.out.println("Error executing command");
-            }*/
+
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(() -> {
                 try {

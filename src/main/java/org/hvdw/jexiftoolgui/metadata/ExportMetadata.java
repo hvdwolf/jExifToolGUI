@@ -6,6 +6,8 @@ import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExportMetadata extends JDialog {
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -187,7 +191,7 @@ public class ExportMetadata extends JDialog {
                 }
 
                 for (int index : selectedFilenamesIndices) {
-                    //System.out.println("index: " + index + "  image path:" + files[index].getPath());
+                    //logger.debug("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         if (csvRadioButton.isSelected()) {
                             params.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
@@ -210,7 +214,7 @@ public class ExportMetadata extends JDialog {
                         cmdparams.add("/c");
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > \"" + filepath.replace("\\", "/") + "/out.csv\" ");
                     } else {
-                        // System.out.println("params to string: " + params.toString());
+                        // logger.debug("params to string: {}", params.toString());
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > " + filepath + "/out.csv ");
@@ -218,7 +222,7 @@ public class ExportMetadata extends JDialog {
                 } else {
                     cmdparams = params;
                 }
-                System.out.println("cmdparams : " + cmdparams);
+                logger.debug("cmdparams : {}", cmdparams);
 
 
                 // Export metadata
