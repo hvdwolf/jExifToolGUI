@@ -133,8 +133,8 @@ public class PreferencesDialog extends JDialog {
             prefs.storeByKey(EXIFTOOL_PATH, ExiftoolLocationtextField.getText());
         }
         if (!ImgStartFoldertextField.getText().isEmpty()) {
-            logger.trace("{}: {}", DEFAULT_START_FOLDER.key, ExiftoolLocationtextField.getText());
-            prefs.storeByKey(DEFAULT_START_FOLDER, ExiftoolLocationtextField.getText());
+            logger.trace("{}: {}", DEFAULT_START_FOLDER.key, ImgStartFoldertextField.getText());
+            prefs.storeByKey(DEFAULT_START_FOLDER, ImgStartFoldertextField.getText());
         }
 
         logger.trace("{}: {}", USE_LAST_OPENED_FOLDER.key, UseLastOpenedFoldercheckBox.isSelected());
