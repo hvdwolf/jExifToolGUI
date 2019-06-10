@@ -85,8 +85,9 @@ public class ProgramTexts {
     public static final String GeotaggingLeaveFolderEmpty = "<html>Leave the \"Folder containing the images:\"  empty if you want to use (a selection of) the images in the left images pane.</html>";
     public static final String GeotaggingLocationLabel = "Geotagging will add the GPS coordinates to your images, but not the location. Using below textfields you can add that as well.";
     public static final String GeotaggingGeosyncExplainLabel = "<html>A positive geosync time will add that time to your image(s), before comparing it/them to the track log.</html>";
-    public static final String GPanoTopText = "Tags marked with * are obligatory. \"Pose Heading Degrees\" (**) is necessary to make it also function in Google Maps.";
-    public static final String GpanoMinVersionText = "The below mentioned tags marked with *** are only writable with exiftool >= 9.09";
+    public static final String GPanoTopText = "Tags marked with * are mandatory. They have no \"Save\" checkbox as they need to be populated anyway";
+    public static final String GpanoMinVersionText = "\"Pose Heading Degrees\" (**) is necessary to make it function in Google Maps.<br>The below mentioned tags marked with *** are only writable with exiftool >= 9.09";
+    public static final String GpanoSetSaveCheckboxes = "Do not forget to set the \"Save\" checkboxes\n upon saving, when relevant.";
     public static final String RenamingGeneralText = "If you want to autonumber your images, make sure you have them in the right alphabetical or date order."
             +" This is not a problem if you use the \"source folder\" here, but can be a problem if you use the images from the main screen "
             +"and if they are in \"random\"  order.";
@@ -102,4 +103,5 @@ public class ProgramTexts {
             +"The corresponfing xmp values can be updated at the same time.";
     public static final String ShiftDateTimeLabel = "Sometimes your camera's clock is 1-2 hours behind or ahead because you are "
             +"\"suddenly\" in another time zone, or forgot to adjust for summer/winter time. This allows you to shift a bunch of photos all with the same time shift.";
+    public static final String NotAllMandatoryFields = "<html>At least one of the manadatory fields is not complete.<br>Please complete the missing mandatory data.<br><br>I can't continue without it.</html>";
 }

@@ -7,7 +7,7 @@ public class MyConstants {
     public static final String[] XMP_PARAMS = {"-xmp:all","-G", "-tab"};
     public static final String[] IPTC_PARAMS = {"-iptc:all","-G", "-tab"};
     public static final String[] GPS_LOC__PARAMS = {"-a","-G", "-tab","-gps:all","-xmp:GPSLatitude","-xmp:GPSLongitude","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
-    public static final String[] GPANO_PARAMS = {"-xmp:StitchingSoftware","-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:InitialHorizontalFOVDegrees"};
+    public static final String[] GPANO_PARAMS = {"-G", "-tab", "-xmp:StitchingSoftware","-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:InitialHorizontalFOVDegrees"};
     public static final String[] ICC_PARAMS = {"-icc_profile:all","-G", "-tab"};
     public static final String[] MAKERNOTES_PARAMS = {"-makernotes:all","-G", "-tab"};
     public static final String[] COMPOSITE_PARAMS = {"-composite:all","-G", "-tab"};

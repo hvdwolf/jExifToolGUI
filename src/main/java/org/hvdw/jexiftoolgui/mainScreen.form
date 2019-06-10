@@ -1908,7 +1908,7 @@
                           <text value="gPanoTopText"/>
                         </properties>
                       </component>
-                      <grid id="6ec44" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="6ec44" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="5" left="5" bottom="5" right="5"/>
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
@@ -2064,33 +2064,9 @@
                               <text value=""/>
                             </properties>
                           </component>
-                          <component id="c8381" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="Pose Heading Degrees **"/>
-                            </properties>
-                          </component>
-                          <component id="7edac" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="(Necessary for Google Maps)"/>
-                            </properties>
-                          </component>
-                          <component id="cf9dc" class="javax.swing.JFormattedTextField" binding="gpanoPHDtextField">
-                            <constraints>
-                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                                <preferred-size width="75" height="25"/>
-                              </grid>
-                            </constraints>
-                            <properties/>
-                          </component>
                         </children>
                       </grid>
-                      <grid id="f3576" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="f3576" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="5" left="5" bottom="5" right="5"/>
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
@@ -2100,7 +2076,7 @@
                         <children>
                           <component id="1d1d9" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
                               </grid>
                             </constraints>
@@ -2110,7 +2086,7 @@
                           </component>
                           <component id="cd11d" class="javax.swing.JFormattedTextField" binding="gpanoIVHDtextField">
                             <constraints>
-                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -2118,7 +2094,7 @@
                           </component>
                           <component id="4bb6e" class="javax.swing.JCheckBox" binding="gpanoIVHDCheckBox">
                             <constraints>
-                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Save"/>
@@ -2126,7 +2102,7 @@
                           </component>
                           <component id="2f85c" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Initial View Pitch Degrees ***"/>
@@ -2134,7 +2110,7 @@
                           </component>
                           <component id="fc7b6" class="javax.swing.JFormattedTextField" binding="gpanoIVPDtextField">
                             <constraints>
-                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -2142,7 +2118,7 @@
                           </component>
                           <component id="200d9" class="javax.swing.JCheckBox" binding="gpanoIVPDCheckBox">
                             <constraints>
-                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Save"/>
@@ -2150,7 +2126,7 @@
                           </component>
                           <component id="8db21" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Initial View Roll Degrees ***"/>
@@ -2158,7 +2134,7 @@
                           </component>
                           <component id="84783" class="javax.swing.JFormattedTextField" binding="gpanoIVRDtextField">
                             <constraints>
-                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -2166,7 +2142,7 @@
                           </component>
                           <component id="f15a0" class="javax.swing.JCheckBox" binding="gpanoIVRDCheckBox">
                             <constraints>
-                              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Save"/>
@@ -2174,7 +2150,7 @@
                           </component>
                           <component id="5a7bf" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Initial Horizontal FOV Degrees ***"/>
@@ -2182,7 +2158,7 @@
                           </component>
                           <component id="625c" class="javax.swing.JFormattedTextField" binding="gpanoIHFOVDtextField">
                             <constraints>
-                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -2190,7 +2166,7 @@
                           </component>
                           <component id="bfa20" class="javax.swing.JCheckBox" binding="gpanoIHFOVDtextFieldCheckBox">
                             <constraints>
-                              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Save"/>
@@ -2198,7 +2174,7 @@
                           </component>
                           <component id="8b186" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
                               </grid>
                             </constraints>
@@ -2209,7 +2185,7 @@
                           </component>
                           <component id="e3406" class="javax.swing.JTextField" binding="gpanoStitchingSoftwaretextField">
                             <constraints>
-                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="400" height="25"/>
                               </grid>
                             </constraints>
@@ -2218,6 +2194,30 @@
                             </properties>
                           </component>
                           <component id="c70b2" class="javax.swing.JCheckBox" binding="gpanoStitchingSoftwarecheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Save"/>
+                            </properties>
+                          </component>
+                          <component id="c8381" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Pose Heading Degrees **"/>
+                            </properties>
+                          </component>
+                          <component id="cf9dc" class="javax.swing.JFormattedTextField" binding="gpanoPHDtextField">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="f1aa5" class="javax.swing.JCheckBox" binding="gpanoPHDcheckBox">
                             <constraints>
                               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
