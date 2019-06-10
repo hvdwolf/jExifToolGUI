@@ -29,13 +29,17 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -226,23 +230,23 @@ public class mainScreen {
     private JLabel GeotaggingGeosyncExplainLabel;
     private JTextField gpsAltDecimaltextField;
     private JLabel gPanoTopText;
-    private JTextField gpanoCAIHPtextField;
-    private JTextField gpanoCAIWPtextField;
-    private JTextField gpanoCALPtextField;
-    private JTextField gpanoCATPtextField;
+    private JFormattedTextField gpanoCAIHPtextField;
+    private JFormattedTextField gpanoCAIWPtextField;
+    private JFormattedTextField gpanoCALPtextField;
+    private JFormattedTextField gpanoCATPtextField;
     private JTextField gpanoStitchingSoftwaretextField;
-    private JTextField gpanoFPHPtextField;
-    private JTextField gpanoFPWPtextField;
+    private JFormattedTextField gpanoFPHPtextField;
+    private JFormattedTextField gpanoFPWPtextField;
     private JComboBox gpanoPTcomboBox;
     private JCheckBox checkBox1;
-    private JTextField gpanoPHDtextField;
-    private JTextField gpanoIVHDtextField;
+    private JFormattedTextField gpanoPHDtextField;
+    private JFormattedTextField gpanoIVHDtextField;
     private JCheckBox gpanoIVHDCheckBox;
-    private JTextField gpanoIVPDtextField;
+    private JFormattedTextField gpanoIVPDtextField;
     private JCheckBox gpanoIVPDCheckBox;
-    private JTextField gpanoIVRDtextField;
+    private JFormattedTextField gpanoIVRDtextField;
     private JCheckBox gpanoIVRDCheckBox;
-    private JTextField gpanoIHFOVDtextField;
+    private JFormattedTextField gpanoIHFOVDtextField;
     private JCheckBox gpanoIHFOVDtextFieldCheckBox;
     private JButton gpanoResetFieldsbutton;
     private JButton gpanoHelpbutton;
@@ -318,8 +322,8 @@ public class mainScreen {
         return new JCheckBox[] {SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox};
     }
 
-    private JTextField[] getGpanoFields() {
-        return new JTextField[] {gpanoCAIHPtextField, gpanoCAIWPtextField, gpanoCALPtextField, gpanoCATPtextField, gpanoFPHPtextField, gpanoFPWPtextField, gpanoStitchingSoftwaretextField, gpanoPHDtextField, gpanoIVHDtextField, gpanoIVPDtextField, gpanoIVRDtextField, gpanoIHFOVDtextField};
+    private JFormattedTextField[] getGpanoFields() {
+        return new JFormattedTextField[] {gpanoCAIHPtextField, gpanoCAIWPtextField, gpanoCALPtextField, gpanoCATPtextField, gpanoFPHPtextField, gpanoFPWPtextField, gpanoPHDtextField, gpanoIVHDtextField, gpanoIVPDtextField, gpanoIVRDtextField, gpanoIHFOVDtextField};
     }
     private JCheckBox[] getGpanoCheckBoxes() {
         return new JCheckBox[] {gpanoStitchingSoftwarecheckBox, gpanoIVHDCheckBox, gpanoIVPDCheckBox, gpanoIVRDCheckBox, gpanoIHFOVDtextFieldCheckBox, gpanoOverwriteOriginalscheckBox};
@@ -1237,42 +1241,43 @@ public class mainScreen {
         final JLabel label59 = new JLabel();
         label59.setText("Cropped Area Image Height pixels *");
         panel18.add(label59, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, -1), null, 0, false));
-        gpanoCAIHPtextField = new JTextField();
+        gpanoCAIHPtextField = new JFormattedTextField();
+        gpanoCAIHPtextField.setColumns(0);
         gpanoCAIHPtextField.setPreferredSize(new Dimension(75, 30));
         panel18.add(gpanoCAIHPtextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JLabel label60 = new JLabel();
         label60.setPreferredSize(new Dimension(200, 18));
         label60.setText("Cropped Area Image Width pixels *");
         panel18.add(label60, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gpanoCAIWPtextField = new JTextField();
+        gpanoCAIWPtextField = new JFormattedTextField();
         gpanoCAIWPtextField.setPreferredSize(new Dimension(75, 30));
         panel18.add(gpanoCAIWPtextField, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JLabel label61 = new JLabel();
         label61.setPreferredSize(new Dimension(200, 18));
         label61.setText("Cropped Area Left Pixels *");
         panel18.add(label61, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gpanoCALPtextField = new JTextField();
+        gpanoCALPtextField = new JFormattedTextField();
         gpanoCALPtextField.setPreferredSize(new Dimension(75, 30));
         panel18.add(gpanoCALPtextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JLabel label62 = new JLabel();
         label62.setPreferredSize(new Dimension(200, 18));
         label62.setText("Cropped Area Top Pixels *");
         panel18.add(label62, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gpanoCATPtextField = new JTextField();
+        gpanoCATPtextField = new JFormattedTextField();
         gpanoCATPtextField.setPreferredSize(new Dimension(75, 30));
         panel18.add(gpanoCATPtextField, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JLabel label63 = new JLabel();
         label63.setPreferredSize(new Dimension(200, 18));
         label63.setText("Full Pano Height Pixels *");
         panel18.add(label63, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gpanoFPHPtextField = new JTextField();
+        gpanoFPHPtextField = new JFormattedTextField();
         gpanoFPHPtextField.setPreferredSize(new Dimension(75, 30));
         panel18.add(gpanoFPHPtextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JLabel label64 = new JLabel();
         label64.setPreferredSize(new Dimension(200, 18));
         label64.setText("Full Pano Width Pixels *");
         panel18.add(label64, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gpanoFPWPtextField = new JTextField();
+        gpanoFPWPtextField = new JFormattedTextField();
         gpanoFPWPtextField.setPreferredSize(new Dimension(75, 30));
         panel18.add(gpanoFPWPtextField, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JLabel label65 = new JLabel();
@@ -1294,7 +1299,7 @@ public class mainScreen {
         final JLabel label68 = new JLabel();
         label68.setText("(Necessary for Google Maps)");
         panel18.add(label68, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpanoPHDtextField = new JTextField();
+        gpanoPHDtextField = new JFormattedTextField();
         panel18.add(gpanoPHDtextField, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         final JPanel panel19 = new JPanel();
         panel19.setLayout(new GridLayoutManager(5, 3, new Insets(5, 5, 5, 5), -1, -1));
@@ -1303,7 +1308,7 @@ public class mainScreen {
         final JLabel label69 = new JLabel();
         label69.setText("Initial View Heading Degrees ***");
         panel19.add(label69, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(200, -1), null, 0, false));
-        gpanoIVHDtextField = new JTextField();
+        gpanoIVHDtextField = new JFormattedTextField();
         panel19.add(gpanoIVHDtextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         gpanoIVHDCheckBox = new JCheckBox();
         gpanoIVHDCheckBox.setText("Save");
@@ -1311,7 +1316,7 @@ public class mainScreen {
         final JLabel label70 = new JLabel();
         label70.setText("Initial View Pitch Degrees ***");
         panel19.add(label70, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpanoIVPDtextField = new JTextField();
+        gpanoIVPDtextField = new JFormattedTextField();
         panel19.add(gpanoIVPDtextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         gpanoIVPDCheckBox = new JCheckBox();
         gpanoIVPDCheckBox.setText("Save");
@@ -1319,7 +1324,7 @@ public class mainScreen {
         final JLabel label71 = new JLabel();
         label71.setText("Initial View Roll Degrees ***");
         panel19.add(label71, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpanoIVRDtextField = new JTextField();
+        gpanoIVRDtextField = new JFormattedTextField();
         panel19.add(gpanoIVRDtextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         gpanoIVRDCheckBox = new JCheckBox();
         gpanoIVRDCheckBox.setText("Save");
@@ -1327,7 +1332,7 @@ public class mainScreen {
         final JLabel label72 = new JLabel();
         label72.setText("Initial Horizontal FOV Degrees ***");
         panel19.add(label72, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpanoIHFOVDtextField = new JTextField();
+        gpanoIHFOVDtextField = new JFormattedTextField();
         panel19.add(gpanoIHFOVDtextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         gpanoIHFOVDtextFieldCheckBox = new JCheckBox();
         gpanoIHFOVDtextFieldCheckBox.setText("Save");
@@ -2206,6 +2211,26 @@ public class mainScreen {
         frame.setJMenuBar(menuBar);
     }
 
+    // Sets the necessary screen texts. This might later be transformed in some i18n option.
+    private void setProgramScreenTexts() {
+        MyCommandsText.setText(ProgramTexts.MyCommandsText);
+        GeotaggingLeaveFolderEmptyLabel.setText(ProgramTexts.GeotaggingLeaveFolderEmpty);
+        GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingLocationLabel));
+        GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
+        gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
+        gPanoTopText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GPanoTopText));
+        gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText));
+    }
+
+    private void setFormattedFieldFormats(JFormattedTextField[] theFields) {
+        Locale currentLocale = Locale.getDefault();
+        NumberFormat formatter = NumberFormat.getNumberInstance(currentLocale );
+        formatter.setMaximumFractionDigits(4);
+        for (JFormattedTextField field : theFields) {
+            field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(formatter)));
+        }
+    }
+
     private mainScreen(JFrame frame) {
         boolean preferences = false;
 
@@ -2247,21 +2272,16 @@ public class mainScreen {
         ExifCopyrighttextField.setText(prefsArtistCopyRights.getRight());
         xmpRightstextField.setText(prefsArtistCopyRights.getRight());
 
-        programButtonListeners();
-
-        // Some texts
-        MyCommandsText.setText(ProgramTexts.MyCommandsText);
-        GeotaggingLeaveFolderEmptyLabel.setText(ProgramTexts.GeotaggingLeaveFolderEmpty);
-        GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingLocationLabel));
-        GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
-        gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
-        gPanoTopText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GPanoTopText));
-        gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText));
-
         //Combobox on Gpano edit tab
         for (String item : MyConstants.GPANO_PROJECTIONS) {
             gpanoPTcomboBox.addItem(item);
         }
+
+        programButtonListeners();
+        // Some texts
+        setProgramScreenTexts();
+        // Set formatting for the JFormatted textFields
+        setFormattedFieldFormats(getGpanoFields());
 
         Utils.checkForNewVersion("startup");
     }
