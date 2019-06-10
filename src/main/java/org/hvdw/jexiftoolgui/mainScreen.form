@@ -1926,13 +1926,14 @@
                               <text value="Cropped Area Image Height pixels *"/>
                             </properties>
                           </component>
-                          <component id="8f95" class="javax.swing.JTextField" binding="gpanoCAIHPtextField">
+                          <component id="1084c" class="javax.swing.JFormattedTextField" binding="gpanoCAIHPtextField">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
                             <properties>
+                              <columns value="0"/>
                               <preferredSize width="75" height="30"/>
                             </properties>
                           </component>
@@ -1945,7 +1946,7 @@
                               <text value="Cropped Area Image Width pixels *"/>
                             </properties>
                           </component>
-                          <component id="26f7a" class="javax.swing.JTextField" binding="gpanoCAIWPtextField">
+                          <component id="aa196" class="javax.swing.JFormattedTextField" binding="gpanoCAIWPtextField">
                             <constraints>
                               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -1964,7 +1965,7 @@
                               <text value="Cropped Area Left Pixels *"/>
                             </properties>
                           </component>
-                          <component id="dc1f7" class="javax.swing.JTextField" binding="gpanoCALPtextField">
+                          <component id="154ea" class="javax.swing.JFormattedTextField" binding="gpanoCALPtextField">
                             <constraints>
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -1983,7 +1984,7 @@
                               <text value="Cropped Area Top Pixels *"/>
                             </properties>
                           </component>
-                          <component id="6c27f" class="javax.swing.JTextField" binding="gpanoCATPtextField">
+                          <component id="4fdc8" class="javax.swing.JFormattedTextField" binding="gpanoCATPtextField">
                             <constraints>
                               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2002,7 +2003,7 @@
                               <text value="Full Pano Height Pixels *"/>
                             </properties>
                           </component>
-                          <component id="35731" class="javax.swing.JTextField" binding="gpanoFPHPtextField">
+                          <component id="27e86" class="javax.swing.JFormattedTextField" binding="gpanoFPHPtextField">
                             <constraints>
                               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2021,7 +2022,7 @@
                               <text value="Full Pano Width Pixels *"/>
                             </properties>
                           </component>
-                          <component id="40e91" class="javax.swing.JTextField" binding="gpanoFPWPtextField">
+                          <component id="5c5df" class="javax.swing.JFormattedTextField" binding="gpanoFPWPtextField">
                             <constraints>
                               <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2079,7 +2080,7 @@
                               <text value="(Necessary for Google Maps)"/>
                             </properties>
                           </component>
-                          <component id="d8867" class="javax.swing.JTextField" binding="gpanoPHDtextField">
+                          <component id="cf9dc" class="javax.swing.JFormattedTextField" binding="gpanoPHDtextField">
                             <constraints>
                               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2107,7 +2108,7 @@
                               <text value="Initial View Heading Degrees ***"/>
                             </properties>
                           </component>
-                          <component id="bb7cb" class="javax.swing.JTextField" binding="gpanoIVHDtextField">
+                          <component id="cd11d" class="javax.swing.JFormattedTextField" binding="gpanoIVHDtextField">
                             <constraints>
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2131,7 +2132,7 @@
                               <text value="Initial View Pitch Degrees ***"/>
                             </properties>
                           </component>
-                          <component id="1cf4d" class="javax.swing.JTextField" binding="gpanoIVPDtextField">
+                          <component id="fc7b6" class="javax.swing.JFormattedTextField" binding="gpanoIVPDtextField">
                             <constraints>
                               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2155,7 +2156,7 @@
                               <text value="Initial View Roll Degrees ***"/>
                             </properties>
                           </component>
-                          <component id="4cfd2" class="javax.swing.JTextField" binding="gpanoIVRDtextField">
+                          <component id="84783" class="javax.swing.JFormattedTextField" binding="gpanoIVRDtextField">
                             <constraints>
                               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2179,7 +2180,7 @@
                               <text value="Initial Horizontal FOV Degrees ***"/>
                             </properties>
                           </component>
-                          <component id="ebb33" class="javax.swing.JTextField" binding="gpanoIHFOVDtextField">
+                          <component id="625c" class="javax.swing.JFormattedTextField" binding="gpanoIHFOVDtextField">
                             <constraints>
                               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>

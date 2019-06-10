@@ -20,7 +20,7 @@ public class EditGpanodata {
     // I had specified for the arrays:
 
 
-    public void resetFields(JTextField[] gpanoFields, JCheckBox[] gpanoBoxes) {
+    public void resetFields(JFormattedTextField[] gpanoFields, JCheckBox[] gpanoBoxes) {
 
         for (JTextField field: gpanoFields) {
             field.setText("");
@@ -30,7 +30,7 @@ public class EditGpanodata {
         }
     }
 
-    public void copyGpanoFromSelected(JTextField[] gpanoFields, JCheckBox[] gpanoBoxes) {
+    public void copyGpanoFromSelected(JFormattedTextField[] gpanoFields, JCheckBox[] gpanoBoxes) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String fpath ="";
@@ -62,7 +62,7 @@ public class EditGpanodata {
         }
     }
 
-    private void displayCopiedInfo(JTextField[] gpanoFields, String exiftoolInfo) {
+    private void displayCopiedInfo(JFormattedTextField[] gpanoFields, String exiftoolInfo) {
         String[] lines = exiftoolInfo.split(System.getProperty("line.separator"));
         //for(int i = 0; i < lines.length; i++) {
         for (String line : lines) {
@@ -113,7 +113,7 @@ public class EditGpanodata {
     }
 
 
-    public void writeGpanoTags(JTextField[] gpanoFields, JCheckBox[] gpanoBoxes, JCheckBox usePanoViewer, JProgressBar progressBar) {
+    public void writeGpanoTags(JFormattedTextField[] gpanoFields, JCheckBox[] gpanoBoxes, JCheckBox usePanoViewer, JProgressBar progressBar) {
 
         List<String> cmdparams = new ArrayList<String>();
         File[] files = MyVariables.getSelectedFiles();
