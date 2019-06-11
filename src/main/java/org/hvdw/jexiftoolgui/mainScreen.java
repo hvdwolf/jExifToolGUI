@@ -2194,6 +2194,7 @@ public class mainScreen {
 
     // Sets the necessary screen texts. This might later be transformed in some i18n option.
     private void setProgramScreenTexts() {
+        String version = "";
         MyCommandsText.setText(ProgramTexts.MyCommandsText);
         GeotaggingLeaveFolderEmptyLabel.setText(ProgramTexts.GeotaggingLeaveFolderEmpty);
         GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingLocationLabel));
@@ -2205,11 +2206,14 @@ public class mainScreen {
         List<String> cmdparams = new ArrayList<>();
         cmdparams.add(exiftool);
         cmdparams.add("-ver");
+
         try {
-            gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText + CommandRunner.runCommand(cmdparams)));
+            version = CommandRunner.runCommand(cmdparams);
         } catch (IOException | InterruptedException ex) {
             logger.debug("Error executing command");
+            version = "I cannot determine the exiftool version";
         }
+        gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText + version));
     }
 
     private void setFormattedFieldFormats(JFormattedTextField[] theFields) {
