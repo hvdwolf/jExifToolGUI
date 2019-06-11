@@ -3,7 +3,7 @@
 DIR="xml-dir"
 rm -rf "$DIR"
 mkdir -p "$DIR"
-exiftoolpath="/media/harryvanderwolf/64GB/software/Image-ExifTool-11.30"
+exiftoolpath="/media/harryvanderwolf/64GB/software/Image-ExifTool-11.44"
 
 $exiftoolpath/exiftool -listx -Adobe:all > "$DIR"/Adobe.xml
 #$exiftoolpath/exiftool -listx -AdobeAPP14:all > "$DIR"/AdobeAPP14.xml
