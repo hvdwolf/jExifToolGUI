@@ -338,6 +338,7 @@ public class mainScreen {
         boolean exiftool_exists;
         boolean exiftool_found = false;
         String res;
+        List<String> cmdparams = new ArrayList<>();
 
 
         exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
@@ -359,7 +360,6 @@ public class mainScreen {
             } else {
                 res = exiftool_path;
                 //String[] cmdparams = {res, "-ver"};
-                List<String> cmdparams = new ArrayList<>();
                 cmdparams.add(res);
                 cmdparams.add("-ver");
                 try {
@@ -2200,7 +2200,16 @@ public class mainScreen {
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
         gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
         gPanoTopText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GPanoTopText));
-        gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText));
+        // Special dynamic version string
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
+        List<String> cmdparams = new ArrayList<>();
+        cmdparams.add(exiftool);
+        cmdparams.add("-ver");
+        try {
+            gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GpanoMinVersionText + CommandRunner.runCommand(cmdparams)));
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing command");
+        }
     }
 
     private void setFormattedFieldFormats(JFormattedTextField[] theFields) {
@@ -2220,6 +2229,13 @@ public class mainScreen {
         createmyMenuBar(frame);
         ViewRadiobuttonListener();
         fillViewTagNamesComboboxes();
+
+        // Now check the preferences
+        preferences = checkPreferences();
+        if (!preferences) {
+            Utils.checkExifTool(mainScreen.this.rootPanel);
+        }
+
         // Use the mouselistener for the double-click to display the image
         fileNamesTableMouseListener();
         //Use the table listener for theselection of multiple cells
@@ -2242,10 +2258,7 @@ public class mainScreen {
             logger.debug("Error executing command");
         }
 
-        preferences = checkPreferences();
-        if (!preferences) {
-            Utils.checkExifTool(mainScreen.this.rootPanel);
-        }
+
         // Try to set the defaults for artist and copyrights in the edit exif/xmp panes if prefs available
         Pair<String, String> prefsArtistCopyRights = Utils.checkPrefsArtistCopyRights();
         ExifArtistCreatortextField.setText(prefsArtistCopyRights.getLeft());

@@ -86,7 +86,8 @@ public class ProgramTexts {
     public static final String GeotaggingLocationLabel = "Geotagging will add the GPS coordinates to your images, but not the location. Using below textfields you can add that as well.";
     public static final String GeotaggingGeosyncExplainLabel = "<html>A positive geosync time will add that time to your image(s), before comparing it/them to the track log.</html>";
     public static final String GPanoTopText = "Tags marked with * are mandatory. They have no \"Save\" checkbox as they need to be populated anyway";
-    public static final String GpanoMinVersionText = "\"Pose Heading Degrees\" (**) is necessary to make it function in Google Maps.<br>The below mentioned tags marked with *** are only writable with exiftool >= 9.09";
+    public static final String GpanoMinVersionText = "\"Pose Heading Degrees\" (**) is necessary to make it function in Google Maps.<br>"
+            +"The below mentioned tags marked with *** are only writable with exiftool >= 9.09<br>Your version is: ";
     public static final String GpanoSetSaveCheckboxes = "Do not forget to set the \"Save\" checkboxes\n upon saving, when relevant.";
     public static final String RenamingGeneralText = "If you want to autonumber your images, make sure you have them in the right alphabetical or date order."
             +" This is not a problem if you use the \"source folder\" here, but can be a problem if you use the images from the main screen "
