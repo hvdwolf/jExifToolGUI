@@ -41,7 +41,7 @@ public class EditXmpdata {
     public void copyXmpFromSelected(JTextField[] xmpFields, JTextArea Description) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
-        String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Rights", "-xmp:Label", "-xmp:Subject", "-xmp:Title", "-xmp:Rating", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage", "-xmp:RegionName" , "-xmp:RegionType"};
+        String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Credit", "-xmp:Rights", "-xmp:Label", "-xmp:Subject", "-xmp:Title", "-xmp:Rating", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage", "-xmp:RegionName" , "-xmp:RegionType"};
         String fpath = "";
         String res = "";
         List<String> cmdparams = new ArrayList<String>();
@@ -81,26 +81,29 @@ public class EditXmpdata {
                 if (SpaceStripped.contains("Creator")) {
                     xmpFields[0].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("Rights")) {
+                if (SpaceStripped.contains("Credit")) {
                     xmpFields[1].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("Label")) {
+                if (SpaceStripped.contains("Rights")) {
                     xmpFields[2].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("Subject")) {  /// Date/timeOriginal: / gives issues with contains????
+                if (SpaceStripped.contains("Label")) {
                     xmpFields[3].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("Title")) {
+                if (SpaceStripped.contains("Subject")) {
                     xmpFields[4].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("PersonInImage")) {
+                if (SpaceStripped.contains("Title")) {
                     xmpFields[5].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("RegionName")) {
+                if (SpaceStripped.contains("PersonInImage")) {
                     xmpFields[6].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("RegionType")) {
+                if (SpaceStripped.contains("RegionName")) {
                     xmpFields[7].setText(cells[1]);
+                }
+                if (SpaceStripped.contains("RegionType")) {
+                    xmpFields[8].setText(cells[1]);
                 }
                 if (SpaceStripped.contains("Description")) { // Our text area
                     Description.setText(cells[1]);
@@ -122,16 +125,19 @@ public class EditXmpdata {
                 cmdparams.add("-xmp:Creator=" + xmpFields[0].getText().trim());
             }
             if (xmpBoxes[1].isSelected()) {
-                cmdparams.add("-xmp:Rights=" + xmpFields[1].getText().trim());
+                cmdparams.add("-xmp:Credit=" + xmpFields[1].getText().trim());
             }
             if (xmpBoxes[2].isSelected()) {
-                cmdparams.add("-xmp:Label=" + xmpFields[2].getText().trim());
+                cmdparams.add("-xmp:Rights=" + xmpFields[2].getText().trim());
             }
             if (xmpBoxes[3].isSelected()) {
-                cmdparams.add("-xmp:Subject=" + xmpFields[3].getText().trim());
+                cmdparams.add("-xmp:Label=" + xmpFields[3].getText().trim());
             }
             if (xmpBoxes[4].isSelected()) {
-                cmdparams.add("-xmp:Title=" + xmpFields[4].getText().trim());
+                cmdparams.add("-xmp:Subject=" + xmpFields[4].getText().trim());
+            }
+            if (xmpBoxes[5].isSelected()) {
+                cmdparams.add("-xmp:Title=" + xmpFields[5].getText().trim());
             }	
     /*if (xmpBoxes[5.isSelected()) {
         if self.xmp_rating1.isSelected()) {
@@ -145,17 +151,17 @@ public class EditXmpdata {
         else) {
             rating = 5
         cmdparams.add("-xmp:Rating=" + rating); */
-            if (xmpBoxes[5].isSelected()) {
-                cmdparams.add("-xmp:Person=" + xmpFields[5].getText());
-                cmdparams.add("-xmp:PersonInImage=" + xmpFields[5].getText().trim());
-            }
             if (xmpBoxes[6].isSelected()) {
-                cmdparams.add("-xmp:RegionName=" + xmpFields[6].getText().trim());
+                cmdparams.add("-xmp:Person=" + xmpFields[6].getText());
+                cmdparams.add("-xmp:PersonInImage=" + xmpFields[6].getText().trim());
             }
             if (xmpBoxes[7].isSelected()) {
-                cmdparams.add("-xmp:RegionType=" + xmpFields[7].getText().trim());
+                cmdparams.add("-xmp:RegionName=" + xmpFields[7].getText().trim());
             }
             if (xmpBoxes[8].isSelected()) {
+                cmdparams.add("-xmp:RegionType=" + xmpFields[8].getText().trim());
+            }
+            if (xmpBoxes[9].isSelected()) {
                 cmdparams.add("-xmp:Description=" + Description.getText().trim());
             }
 

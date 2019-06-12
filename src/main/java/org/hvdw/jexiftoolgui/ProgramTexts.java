@@ -82,6 +82,7 @@ public class ProgramTexts {
     public static final String MyCommandsText = "<html>On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
             +"<br>You can both specify read parameters as well as write parameters. You can also combine several parameters."
             + " <b>Note:</b> You don\'t need (must not) provide the exiftool command itself. The Gui will take care of that.<br><br></html>"; // need 2 extra lines to create space
+    public static final String XmpGoogleText = "The fields marked with an * are used in all google (image) products";
     public static final String GeotaggingLeaveFolderEmpty = "<html>Leave the \"Folder containing the images:\"  empty if you want to use (a selection of) the images in the left images pane.</html>";
     public static final String GeotaggingLocationLabel = "Geotagging will add the GPS coordinates to your images, but not the location. Using below textfields you can add that as well.";
     public static final String GeotaggingGeosyncExplainLabel = "<html>A positive geosync time will add that time to your image(s), before comparing it/them to the track log.</html>";
