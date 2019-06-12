@@ -20,7 +20,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class StandardFileIO {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = LoggerFactory.getLogger(StandardFileIO.class);
 
     public static String readTextFileAsString (String fileName) {
         // This will reference one line at a time

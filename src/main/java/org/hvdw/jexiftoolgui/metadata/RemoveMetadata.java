@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RemoveMetadata extends JDialog {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = LoggerFactory.getLogger(RemoveMetadata.class);
 
     private JPanel contentPane;
     private JButton buttonOK;

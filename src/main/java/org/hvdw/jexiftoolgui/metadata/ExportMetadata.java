@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExportMetadata extends JDialog {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExportMetadata.class);
 
     private JPanel contentPane;
     private JButton buttonOK;

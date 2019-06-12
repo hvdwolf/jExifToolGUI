@@ -6,6 +6,8 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.PreferencesFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -25,6 +27,7 @@ public class EditGeotaggingdata {
 
     private String ImageFolder;
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
+    private final static Logger logger = LoggerFactory.getLogger(EditGeotaggingdata.class);
 
     public String getImagePath(JPanel myComponent) {
         String SelectedFolder;

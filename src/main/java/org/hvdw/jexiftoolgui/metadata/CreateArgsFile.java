@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 public class CreateArgsFile extends JDialog {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = LoggerFactory.getLogger(CreateArgsFile.class);
 
     private JPanel contentPane;
     private JButton buttonOK;

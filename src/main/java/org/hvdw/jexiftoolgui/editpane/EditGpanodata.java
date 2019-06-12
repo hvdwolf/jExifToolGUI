@@ -18,7 +18,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 
 
 public class EditGpanodata {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = LoggerFactory.getLogger(EditGpanodata.class);
 
 
     public void resetFields(JFormattedTextField[] gpanoFields, JTextField gpanoStitchingSoftwaretextField,  JCheckBox[] gpanoBoxes) {

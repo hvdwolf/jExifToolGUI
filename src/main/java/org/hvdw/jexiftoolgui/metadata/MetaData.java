@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MetaData {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = LoggerFactory.getLogger(MetaData.class);
 
     public void copyToXmp() {
         String fpath ="";
