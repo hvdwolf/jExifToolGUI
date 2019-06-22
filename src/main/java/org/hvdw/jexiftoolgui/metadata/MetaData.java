@@ -152,9 +152,14 @@ public class MetaData {
                 params.add("-jfif:all");
                 atLeastOneSelected = true;
             }
+            if (CopyMetaDataCheckBoxes[6].isSelected()) {
+                Message.append("<li>the makernotes data</li>");
+                params.add("-makernotes:all");
+                atLeastOneSelected = true;
+            }
             Message.append("</ul><br><br>");
         }
-        if (!CopyMetaDataCheckBoxes[6].isSelected()) {
+        if (!CopyMetaDataCheckBoxes[7].isSelected()) {
             params.add("-overwrite_original");
         }
         Message.append("Is this correct?</html>");

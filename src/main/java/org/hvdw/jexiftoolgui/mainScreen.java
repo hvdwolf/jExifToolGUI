@@ -259,6 +259,7 @@ public class mainScreen {
     private JTextField xmpCredittextField;
     private JCheckBox xmpCreditcheckBox;
     private JLabel xmpGoogleText;
+    private JCheckBox CopyMakernotescheckBox;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
@@ -317,7 +318,7 @@ public class mainScreen {
     private JCheckBox[] getGeotaggingBoxes() {return new JCheckBox[] {geotaggingLocationcheckbox, geotaggingCountrycheckbox, geotaggingStatecheckbox, geotaggingCitycheckbox};}
 
     private JRadioButton[] getCopyMetaDataRadiobuttons() {return new JRadioButton[] {copyAllMetadataRadiobutton, copyAllMetadataSameGroupsRadiobutton, copySelectiveMetadataradioButton}; }
-    private JCheckBox[] getCopyMetaDataCheckBoxes() {return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, BackupOriginalscheckBox}; }
+    private JCheckBox[] getCopyMetaDataCheckBoxes() {return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, CopyMakernotescheckBox, BackupOriginalscheckBox}; }
 
     private JTextField[] getGPSFields() {
         return new JTextField[] {gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField};
@@ -1402,7 +1403,7 @@ public class mainScreen {
         copySelectiveMetadataradioButton.setText("Copy metadata using below mentioned selective group options");
         panel22.add(copySelectiveMetadataradioButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel23 = new JPanel();
-        panel23.setLayout(new GridLayoutManager(6, 1, new Insets(10, 0, 15, 0), -1, -1));
+        panel23.setLayout(new GridLayoutManager(7, 1, new Insets(10, 0, 15, 0), -1, -1));
         panel22.add(panel23, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         panel23.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         CopyExifcheckBox = new JCheckBox();
@@ -1424,6 +1425,9 @@ public class mainScreen {
         CopyJfifcheckBox = new JCheckBox();
         CopyJfifcheckBox.setText("Copy JFIF data (from the jpeg JFIF header)");
         panel23.add(CopyJfifcheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CopyMakernotescheckBox = new JCheckBox();
+        CopyMakernotescheckBox.setText("Copy makernotes (-makernotes:all)");
+        panel23.add(CopyMakernotescheckBox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         BackupOriginalscheckBox = new JCheckBox();
         BackupOriginalscheckBox.setText("Make backup of originals");
         panel22.add(BackupOriginalscheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
