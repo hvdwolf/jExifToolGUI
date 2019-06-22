@@ -56,13 +56,13 @@ public class EditXmpdata {
         } else {
             fpath = files[SelectedRow].getPath();
         }
-        logger.debug(fpath);
+        logger.info(fpath);
         cmdparams.add(exiftool);
         cmdparams.addAll(Arrays.asList(xmpcopyparams));
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
-            logger.debug("res is\n{}", res);
+            logger.info("res is\n{}", res);
         } catch (IOException | InterruptedException ex) {
             logger.debug("Error executing command");
         }
@@ -167,7 +167,7 @@ public class EditXmpdata {
 
             boolean isWindows = Utils.isOsFromMicrosoft();
             for (int index: selectedIndices) {
-                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {

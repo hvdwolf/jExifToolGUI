@@ -224,7 +224,7 @@ public class Utils {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            logger.debug("Version: " + version);
+            logger.info("Version: " + version);
             if (Float.valueOf(version) > Float.valueOf(ProgramTexts.Version)) {
                 String[] options = {"No", "Yes"};
                 int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ProgramTexts.newVersionText), "New version found",
@@ -334,11 +334,11 @@ public class Utils {
         List<String> cmdparams = new ArrayList<String>();
         int selectedRow = MyVariables.getSelectedRow();
 
-        //logger.debug("selectedRow: {}", String.valueOf(selectedRow));
+        //logger.info("selectedRow: {}", String.valueOf(selectedRow));
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
-            //logger.debug("fpath is now: " + fpath);
+            //logger.info("fpath is now: " + fpath);
             exiftool = exiftool.replace("\\", "/");
         } else {
             fpath = files[selectedRow].getPath();

@@ -22,7 +22,7 @@ public class MetaData {
 
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {"No", "Yes"};
-        logger.debug("Copy all metadata to xmp format");
+        logger.info("Copy all metadata to xmp format");
         int choice = JOptionPane.showOptionDialog(null, ProgramTexts.copymetadatatoxmp,"Copy all metadata to xmp format",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
@@ -33,7 +33,7 @@ public class MetaData {
 
             for (int index: selectedIndices) {
                 // Unfortunately we need to do this file by file. It also means we need to initialize everything again and again
-                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 cmdparams.clear();
                 //cmdparams.add(exiftool);
                 //cmdparams.add("-TagsFromfile" );
@@ -51,7 +51,7 @@ public class MetaData {
                 }
                 try {
                     String res = CommandRunner.runCommand(cmdparams);
-                    logger.debug("res is\n{}", res);
+                    logger.info("res is\n{}", res);
                     TotalOutput.append(res);
                 } catch(IOException | InterruptedException ex) {
                     logger.debug("Error executing command");
@@ -68,7 +68,7 @@ public class MetaData {
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
-        logger.debug("Repair corrupted metadata in JPG(s)");
+        logger.info("Repair corrupted metadata in JPG(s)");
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.REPAIR_JPG_METADATA),"Repair corrupted metadata in JPG(s)",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
@@ -80,7 +80,7 @@ public class MetaData {
             boolean isWindows = Utils.isOsFromMicrosoft();
 
             for (int index: selectedIndices) {
-                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
@@ -171,7 +171,7 @@ public class MetaData {
                 // Copy metadata
                 String[] etparams = params.toArray(new String[0]);
                 for (int index: selectedIndices) {
-                    //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         params.add(files[index].getPath().replace("\\", "/"));
                     } else {

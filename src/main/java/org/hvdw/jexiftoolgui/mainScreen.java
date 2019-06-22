@@ -346,7 +346,7 @@ public class mainScreen {
 
 
         exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
-        logger.debug("exiftool_exists reports: {}",exiftool_exists);
+        logger.info("exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
@@ -357,8 +357,8 @@ public class mainScreen {
                 exiftool_path = null;
                 JOptionPane.showMessageDialog(rootPanel, ProgramTexts.ETpreferenceIncorrect, "exiftool preference incorrect", JOptionPane.WARNING_MESSAGE);
             }
-            logger.debug("exists is {}", exists);
-            logger.debug("preference exiftool returned: {}",exiftool_path);
+            logger.info("exists is {}", exists);
+            logger.info("preference exiftool returned: {}",exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
                 res = Utils.getExiftoolPath();
             } else {
@@ -424,7 +424,7 @@ public class mainScreen {
         List<Component> compList = new ArrayList<Component>();
         for (Component comp : comps) {
             compList.add(comp);
-            //logger.debug(comp.toString());
+            //logger.info(comp.toString());
             if (comp instanceof Container) {
                 compList.addAll(getAllComponents((Container) comp));
             }
@@ -1574,7 +1574,7 @@ public class mainScreen {
         // menuListener
         public void actionPerformed(ActionEvent ev) {
             String[] dummy = null;
-            logger.debug("Selected: {}", ev.getActionCommand());
+            logger.info("Selected: {}", ev.getActionCommand());
 
             switch (ev.getActionCommand()) {
                 case "Load Images":
@@ -1999,7 +1999,7 @@ public class mainScreen {
         radioButtonViewAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //logger.debug("button selected: {}", radioButtonViewAll.getText());
+                //logger.info("button selected: {}", radioButtonViewAll.getText());
                 Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
@@ -2096,7 +2096,7 @@ public class mainScreen {
                 Utils.getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
-                logger.debug("Selected indices: {}", tmpselectedIndices);
+                logger.info("Selected indices: {}", tmpselectedIndices);
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
             }
@@ -2115,7 +2115,7 @@ public class mainScreen {
                 int row = table.rowAtPoint(point);
                 if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
                     Utils.extdisplaySelectedImageInDefaultViewer();
-                    logger.debug("double-click registered");
+                    logger.info("double-click registered");
                 }
             }
         });

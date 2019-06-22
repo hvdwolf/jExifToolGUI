@@ -158,7 +158,7 @@ public class RemoveMetadata extends JDialog {
                 }
                 boolean isWindows = Utils.isOsFromMicrosoft();
                 for (int index : selectedFilenamesIndices) {
-                    //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         params.add(files[index].getPath().replace("\\", "/"));
                     } else {

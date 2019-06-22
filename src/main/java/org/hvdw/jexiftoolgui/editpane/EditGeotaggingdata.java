@@ -114,7 +114,7 @@ public class EditGeotaggingdata {
 
         if ("".equals(onFolder)) { // Empty folder string which means we use selected files
             for (int index: selectedFilenamesIndices) {
-                //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {

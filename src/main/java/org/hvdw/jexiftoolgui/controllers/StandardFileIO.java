@@ -37,7 +37,7 @@ public class StandardFileIO {
                     new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                logger.debug(line);
+                logger.info(line);
                 totalText.append(line);
             }
 

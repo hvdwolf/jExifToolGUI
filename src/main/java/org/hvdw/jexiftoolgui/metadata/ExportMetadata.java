@@ -191,7 +191,7 @@ public class ExportMetadata extends JDialog {
                 }
 
                 for (int index : selectedFilenamesIndices) {
-                    //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         if (csvRadioButton.isSelected()) {
                             params.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
@@ -214,7 +214,7 @@ public class ExportMetadata extends JDialog {
                         cmdparams.add("/c");
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > \"" + filepath.replace("\\", "/") + "/out.csv\" ");
                     } else {
-                        // logger.debug("params to string: {}", params.toString());
+                        // logger.info("params to string: {}", params.toString());
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > " + filepath + "/out.csv ");
@@ -222,7 +222,7 @@ public class ExportMetadata extends JDialog {
                 } else {
                     cmdparams = params;
                 }
-                logger.debug("cmdparams : {}", cmdparams);
+                logger.info("cmdparams : {}", cmdparams);
 
 
                 // Export metadata

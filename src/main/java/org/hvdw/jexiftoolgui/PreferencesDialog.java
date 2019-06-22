@@ -112,13 +112,13 @@ public class PreferencesDialog extends JDialog {
     }
 
     private void savePrefs() {
-        logger.debug("Saving the preferences");
-        logger.debug("artist {}", ArtisttextField.getText());
-        logger.debug("copyrights {}", CopyrightstextField.getText());
-        logger.debug("exiftool {}", ExiftoolLocationtextField.getText());
-        logger.debug("defaultstartfolder {}", ImgStartFoldertextField.getText());
-        logger.debug("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
-        logger.debug("Check for new version on startup {}", CheckVersioncheckBox.isSelected());
+        logger.info("Saving the preferences");
+        logger.info("artist {}", ArtisttextField.getText());
+        logger.info("copyrights {}", CopyrightstextField.getText());
+        logger.info("exiftool {}", ExiftoolLocationtextField.getText());
+        logger.info("defaultstartfolder {}", ImgStartFoldertextField.getText());
+        logger.info("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
+        logger.info("Check for new version on startup {}", CheckVersioncheckBox.isSelected());
 
         if (!ArtisttextField.getText().isEmpty()) {
             logger.trace("{}: {}", ARTIST.key, ArtisttextField.getText());

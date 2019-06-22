@@ -66,7 +66,7 @@ public class EditGpanodata {
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
-            logger.debug("res is\n{}", res);
+            logger.info("res is\n{}", res);
         } catch(IOException | InterruptedException ex) {
             logger.debug("Error executing command");
         }
@@ -82,7 +82,7 @@ public class EditGpanodata {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
             String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
-            logger.debug(SpaceStripped, " ; value: ", cells[1], "\n");
+            logger.info(SpaceStripped, " ; value: ", cells[1], "\n");
             if (SpaceStripped.contains("CroppedAreaImageHeightPixels")) {
                 gpanoFields[0].setText(cells[1]);
             }
@@ -103,7 +103,7 @@ public class EditGpanodata {
             }
             if (SpaceStripped.contains("ProjectionType")) {
                 gpanoPTCombobox.setSelectedItem(cells[1]);
-                logger.debug("projection type", cells[1]);
+                logger.info("projection type", cells[1]);
                 //gpanoFields[6].setText(cells[1]);
             }
             if (SpaceStripped.contains("PoseHeadingDegrees")) {
@@ -169,7 +169,7 @@ public class EditGpanodata {
         }
 
         for (int index: selectedIndices) {
-            //logger.debug("index: {}  image path: {}", index, files[index].getPath());
+            //logger.info("index: {}  image path: {}", index, files[index].getPath());
             if (Utils.isOsFromMicrosoft()) {
                 cmdparams.add(files[index].getPath().replace("\\", "/"));
             } else {
