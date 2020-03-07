@@ -49,11 +49,19 @@ dependencies {
     // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")
     testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
+
+    // sqlite at some time --> Adds 6MB
+    //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.8.11.2")
+    // or Derby at some time --> Adds 3.2 Mb
+    //implementation(group = "org.apache.derby", name = "derby", version = "10.15.1.3")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    // Undo version 11 again. 95% or more of OSes and distributions still use java 8
+    //sourceCompatibility = JavaVersion.VERSION_11
+    //targetCompatibility = JavaVersion.VERSION_11
 
 }
 
