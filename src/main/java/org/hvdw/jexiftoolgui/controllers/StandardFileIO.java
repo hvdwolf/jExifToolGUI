@@ -91,9 +91,13 @@ public class StandardFileIO {
 
         String defaultStartFolder = prefs.getByKey(DEFAULT_START_FOLDER, "");
 
-        String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
+        //java_11 String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
+        // At least for time being use java_1.8
+        String startFolder = !defaultStartFolder.isEmpty() ? defaultStartFolder : userHome;
 
-        if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
+        //jave_11 if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
+        // At least for time being use java_1.8
+        if (useLastOpenedFolder && !lastOpenedFolder.isEmpty()) {
             startFolder = lastOpenedFolder;
         }
         return startFolder;
