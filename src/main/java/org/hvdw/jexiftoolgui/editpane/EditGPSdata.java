@@ -119,7 +119,17 @@ public class EditGPSdata {
             // Exiftool prefers to only set one tag (exif or xmp) and retrieve with composite,
             // but I prefer to set both to satisfy every user
             cmdparams.add("-exif:GPSLatitude=" + gpsFields[0].getText().trim());
+            if (Float.parseFloat(gpsFields[0].getText().trim()) > 0 ) {
+                cmdparams.add("-exif:GPSLatitudeREF=N");
+            } else {
+                cmdparams.add("-exif:GPSLatitudeREF=S");
+            }
             cmdparams.add("-exif:GPSLongitude=" + gpsFields[1].getText().trim());
+            if (Float.parseFloat(gpsFields[1].getText().trim()) > 0 ) {
+                cmdparams.add("-exif:GPSLongitudeREF=E");
+            } else {
+                cmdparams.add("-exif:GPSLongitudeREF=W");
+            }
             cmdparams.add("-exif:GPSAltitude=" + gpsFields[2].getText().trim());
             cmdparams.add("-xmp:GPSLatitude=" + gpsFields[0].getText().trim());
             cmdparams.add("-xmp:GPSLongitude=" + gpsFields[1].getText().trim());
