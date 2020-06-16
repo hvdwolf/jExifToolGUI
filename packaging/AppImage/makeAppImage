@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Script to make a universal appimage
+# version 0.1, 2020-01-05, hvdw
+
+VER="1.0"
+#
+printf "Remove, create and step into our AppDir\n\n"
+#
+AppDir="jExifToolGUI-x84_64"
+rm -rf ${AppDir}
+mkdir -p ${AppDir}
+cd ${AppDir}
+
+#
+printf "copy the complete jar into this AppDir folder\n\n"
+#
+cp ../../../build/libs/jExifToolGUI-all.jar jExifToolGUI.jar
+
+mkdir -p usr/share/jexiftoolgui
+mkdir -p usr/share/applications
+
+cp ../jexiftoolgui-48x48.png usr/share/jexiftoolgui
+cp ../jexiftoolgui-48x48.png .
+mv jExifToolGUI.jar usr/share/jexiftoolgui
+cp ../jexiftoolgui.desktop usr/share/applications
+cp ../jexiftoolgui.desktop .
+
+# We will not install exiftool
+#
+# Install libimage-exiftool-perl deb
+# latest current version: libimage-exiftool-perl_10.80-1_all.deb
+#latest_exif="libimage-exiftool-perl_10.80-1_all.deb"
+#wget -c --trust-server-names http://nl.archive.ubuntu.com/ubuntu/pool/universe/libi/libimage-exiftool-perl/${latest_exif}
+#dpkg -x ${latest_exif} .
+
+#
+printf "Now copy the unpacked jre folder into our folder structure\n\n"
+cp -a ../jre .
+
+#
+printf "Create the AppRun script\n\n"
+#
+#cd usr/bin
+cat > ./AppRun <<\EOF
+#!/bin/sh
+HERE=$(dirname $(readlink -f "${0}"))
+export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+export JAVA_HOME="${HERE}"/jre
+export PATH="${HERE}"/usr/bin:SPATH
+"${HERE}"/jre/bin/java -jar "${HERE}"/usr/share/jexiftoolgui/jExifToolGUI.jar
+EOF
+
+chmod a+x ./AppRun
+
+#
+# We're done in the AppDir
+cd ..
+#rm ${AppDir}/${latest_exif}
+
+#
+# Create the AppImage
+#
+wget -c https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage
+chmod +x appimagetool-x86_64.AppImage
+./appimagetool-x86_64.AppImage -n ${AppDir}
+
+#
+# Rename the created app image
+#
+mv jExifToolGUI-x86_64.AppImage jExifToolGUI-${VER}-x86_64.AppImage
