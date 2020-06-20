@@ -2669,4 +2669,7 @@
       <member id="fdf93"/>
     </group>
   </buttonGroups>
+  <inspectionSuppressions>
+    <suppress inspection="I18nForm" id="2f048"/>
+  </inspectionSuppressions>
 </form>

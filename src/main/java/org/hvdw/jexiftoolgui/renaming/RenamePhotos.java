@@ -4,11 +4,26 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
+import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.PreferencesFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hvdw.jexiftoolgui.controllers.CommandRunner.*;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
 public class RenamePhotos extends JDialog {
     private JPanel contentPane;
@@ -43,8 +58,14 @@ public class RenamePhotos extends JDialog {
     private JRadioButton extLeaveradioButton;
     private JRadioButton makeLowerCaseRadioButton;
     private JRadioButton makeUpperCaseRadioButton;
+    private JProgressBar progBar;
+
+    private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     public RenamePhotos() {
+        StringBuilder res = new StringBuilder();
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -52,7 +73,14 @@ public class RenamePhotos extends JDialog {
         // button listeners
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                try {
+                    onOK();
+                } catch (IOException | InterruptedException ee) {
+                    logger.error("IOException error", ee);
+                    res.append("IOException error")
+                            .append(System.lineSeparator())
+                            .append(ee.getMessage());
+                }
             }
         });
 
@@ -85,15 +113,36 @@ public class RenamePhotos extends JDialog {
         RenamingSourceFolderbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                String ImgPath = getImagePath(contentPane);
+                if (!"".equals(ImgPath)) {
+                    RenamingSourceFoldertextField.setText(ImgPath);
+                }
             }
         });
     }
+
+    public String getImagePath(JPanel myComponent) {
+        String SelectedFolder;
+
+        String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
+        final JFileChooser chooser = new JFileChooser(startFolder);
+        chooser.setDialogTitle("Locate the image folder ...");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int status = chooser.showOpenDialog(myComponent);
+        if (status == JFileChooser.APPROVE_OPTION) {
+            SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
+            return SelectedFolder;
+        } else {
+            return "";
+        }
+    }
+
 
     // Start of the methods
     public void initDialog() {
         RenamingGeneralText.setText(String.format(ProgramTexts.HTML, 650, ProgramTexts.RenamingGeneralText));
         RenamingDuplicateNames.setText(String.format(ProgramTexts.HTML, 370, ProgramTexts.RenamingDuplicateNames));
+        RenamingSourceFoldertextField.setText("");
 
         for (String item : MyConstants.DATES_TIMES_STRINGS) {
             prefixDate_timecomboBox.addItem(item);
@@ -110,9 +159,288 @@ public class RenamePhotos extends JDialog {
         StartOnImgcomboBox.addItem("start counting on 2nd image");
     }
 
+    private void rename_photos() {
+        //int[] selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
+        //File[] files = MyVariables.getSelectedFiles();
+        StringBuilder res = new StringBuilder();
+        String fpath = "";
+        List<String> cmdparams = new ArrayList<String>();
+        String build_cmdparams = "";
 
-    private void onOK() {
-        // add your code here
+        String rename_extension = "";
+        String extension_message = "";
+        String prefix = "${CreateDate}";
+        String prefix_message = "";
+        String prefixformat = "";
+        boolean fulldatetime = false;
+        String suffix = "${CreateDate}";
+        String suffix_message = "";
+        String suffixformat = "";
+        String startcounting = "";
+        String startcounting_message = "";
+        boolean date_used = true;
+
+        // exiftool on windows or other
+        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
+        boolean isWindows = Utils.isOsFromMicrosoft();
+        if (isWindows) {
+            exiftool = exiftool.replace("\\", "/");
+        }
+
+
+        if ("".equals(RenamingSourceFoldertextField.getText())) { // Empty folder string
+            JOptionPane.showMessageDialog(null, "No image folder path selected", "No path", JOptionPane.WARNING_MESSAGE);
+        } else {
+            //JOptionPane.showMessageDialog(null, "In onOK", "In OnOK", JOptionPane.WARNING_MESSAGE);
+
+            // analyze what prefix radio button has been chosen
+            if (prefixDate_timeradioButton.isSelected()) {
+                if (prefixDate_timecomboBox.getSelectedItem() == "YYYYMMDDHHMMSS") {
+                    prefix_message = "YYYYMMDDHHMMSS";
+                    prefixformat = "%Y%m%d%H%M%S";
+                } else if (prefixDate_timecomboBox.getSelectedItem() == "YYYYMMDD_HHMMSS") {
+                    prefix_message = "YYYYMMDD_HHMMSS";
+                    prefixformat = "%Y%m%d_%H%M%S";
+                } else if (prefixDate_timecomboBox.getSelectedItem() == "YYYYMMDD-HHMMSS") {
+                    prefix_message = "YYYYMMDD-HHMMSS";
+                    prefixformat = "%Y%m%d-%H%M%S";
+                } else if (prefixDate_timecomboBox.getSelectedItem() == "YYYY_MM_DD_HH_MM_SS") {
+                    prefix_message = "YYYY_MM_DD_HH_MM_SS";
+                    prefixformat = "%Y_%m_%d_%H_%M_%S";
+                } else if (prefixDate_timecomboBox.getSelectedItem() == "YYYY-MM-DD-HH-MM-SS") {
+                    prefix_message = "YYYY-MM-DD-HH-MM-SS";
+                    prefixformat = "%Y-%m-%d-%H-%M-%S";
+                }
+                fulldatetime = true;
+            } else if (prefixDateradioButton.isSelected()) {
+                if (prefixDatecomboBox.getSelectedItem() == "YYYYMMDD") {
+                    prefix_message = "YYYYMMDD";
+                    prefixformat = "%Y%m%d";
+                } else if (prefixDatecomboBox.getSelectedItem() == "YYYY_MM_DD") {
+                    prefix_message = "YYYY_MM_DD";
+                    prefixformat = "%Y_%m_%d";
+                } else if (prefixDatecomboBox.getSelectedItem() == "YYYY-MM-DD") {
+                    prefix_message = "YYYY-MM-DD";
+                    prefixformat = "%Y-%m-%d";
+                }
+                fulldatetime = false;
+            } else if (prefixStringradioButton.isSelected()) {
+                prefix_message = prefixStringtextField.getText();
+                prefix = prefixStringtextField.getText();
+                prefixformat = "";
+                fulldatetime = false;
+            }
+
+
+            // analyze if and which suffix radio button has been chosen
+            suffix = "${CreateDate}";
+            if (suffixDonNotUseradioButton.isSelected()) {
+                suffix_message = "";
+                suffixformat = "";
+                suffix = "";
+            } else {
+                if (suffixStringradioButton.isSelected()) {
+                    suffix_message = suffixStringtextField.getText();
+                    suffix = suffixStringtextField.getText();
+                    suffixformat = "";
+                } else if (suffixDatetimeradioButton.isSelected()) {
+                    if (suffixDatetimecomboBox.getSelectedItem() == "YYYYMMDDHHMMSS") {
+                        suffix_message = "YYYYMMDDHHMMSS";
+                        suffixformat = "%Y%m%d%H%M%S";
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYYMMDD_HHMMSS") {
+                        suffix_message = "YYYYMMDD_HHMMSS";
+                        suffixformat = "%Y%m%d_%H%M%S";
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYMMDD-HHMMSS") {
+                        suffix_message = "YYYMMDD-HHMMSS";
+                        suffixformat = "%Y%m%d-%H%M%S";
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY_MM_DD_HH_MM_SS") {
+                        suffix_message = "YYYY_MM_DD_HH_MM_SS";
+                        suffixformat = "%Y_%m_%d_%H_%M_%S";
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY-MM-DD-HH-MM-SS") {
+                        suffix_message = "YYYY-MM-DD-HH-MM-SS";
+                        suffixformat = "%Y-%m-%d-%H-%M-%S";
+                    }
+                    fulldatetime = true;
+                } else if (suffixDateradioButton.isSelected()) {
+                    if (suffixDatecomboBox.getSelectedItem() == "YYYYMMDD") {
+                        suffix_message = "YYYYMMDD";
+                        suffixformat = "%Y%m%d";
+                    } else if (suffixDatecomboBox.getSelectedItem() == "YYYY_MM_DD") {
+                        suffix_message = "YYYY_MM_DD";
+                        suffixformat = "%Y_%m_%d";
+                    } else if (suffixDatecomboBox.getSelectedItem() == "YYYY-MM-DD") {
+                        suffix_message = "YYYY-MM-DD";
+                        suffixformat = "%Y-%m-%d";
+                    }
+                    fulldatetime = false;
+                } else if (suffixCameramodelradioButton.isSelected()) {
+                    suffix_message = "${Exif:Model}";
+                    suffix = "${Exif:Model}";
+                    suffixformat = "";
+                } else if (suffixOriginalFilenameradioButton.isSelected()) {
+                    suffix_message = "${filename}";
+                    suffix = "${filename}";
+                    suffixformat = "";
+                }
+            }
+
+            // Now the extension: Does the user want lowercase, uppercase or doesn't care (leave as is)?
+            if (extLeaveradioButton.isSelected()) {
+                rename_extension = ".%e";
+                extension_message = "Leave as is";
+            } else if (makeLowerCaseRadioButton.isSelected()) {
+                rename_extension = ".%le";
+                extension_message = "Make lowercase";
+            } else if (makeUpperCaseRadioButton.isSelected()) {
+                rename_extension = ".%ue";
+                extension_message = "Make uppercase";
+            }
+
+            // Finally: Does the user want to start counting as of the first image or starting on the second image
+            if (StartOnImgcomboBox.getSelectedIndex() == 0) {
+                startcounting = "nc";
+                logger.info("start counting on 1st image");
+                startcounting_message = "start counting on 1st image";
+            } else {
+                startcounting = "c";
+                logger.info("start counting on 2nd image");
+                startcounting_message = "start counting on 2nd image";
+            }
+
+            // Now ask the user whether the selected options are really what he/she wants
+            String dialogMessage = "You selected:\n\nAs prefix:  ";
+            dialogMessage += prefix_message;
+            if (!suffixDonNotUseradioButton.isSelected()) {
+                dialogMessage += "\n\nAnd as suffix:  ";
+                dialogMessage += suffix_message;
+            }
+            dialogMessage += "\n\nFor counting:  ";
+            dialogMessage += startcounting_message;
+            dialogMessage += "\n\nFor the extension:  ";
+            dialogMessage += extension_message;
+
+            String[] options = {"Continue", "Cancel"};
+            int choice = JOptionPane.showOptionDialog(null, dialogMessage, "In OnOK",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+            if (choice == 0) { //Continue
+                // Here is where we build the exiftool parameter string
+                /* Examples
+                Below you see "filename"  options: '-filename<CreateDate' -> single quotes for linux/MacOS; double quotes for windows
+
+                exiftool '-filename<CreateDate' -d %Y%m%d%%-.3nc.%%le DIR
+                for 3 images this will deliver for example
+                20190628-001.jpg
+                20190628-002.jpg
+                20190628-003.jpg
+                  -.3nc means: start with first image and use 3 digits; .%%le means: make the extension lowercase
+                  '-filename<CreateDate' -> linux/MacOS need single quotes, windows need double quotes
+
+                exiftool "-filename<CreateDate" -d %Y%m%d-Paris%-.3nc.%%le DIR
+                will give
+                20190628-Paris-001.jpg
+                20190628-Paris-002.jpg
+                20190628-Paris-003.jpg
+
+                exiftool "-filename<CreateDate" -d Paris-%Y%m%d%-.3nc.%%le
+                  will give:
+                Paris-20190628-001.jpg # "some string", YYYYMMDD, 3 digits, lowercase extension
+                Paris-20190628-002.jpg
+                Paris-20190628-003.jpg
+
+                exiftool '-filename<${model;}%-.2c.%e' DIR
+                  will give:
+                DMC-TZ80-00.JPG  # model, 2 digits, leave extension as is
+                DMC-TZ80-01.JPG
+                DMC-TZ80-02.JPG
+
+                exiftool '-filename<London-${model;}%-.3c.%le'
+                  will give:
+                London-DMC-TZ80-000.jpg  # "some string", model, 3-digits, change to lower case extension (see above)
+                London-DMC-TZ80-001.jpg
+                London-DMC-TZ80-002.jpg
+                */
+
+                //cmdparams.add("-overwrite_original_in_place");
+                // We need to first cmdparams here, as sometimes the string does not contains spaces and sometimes it does
+                // When it does have spaces we need to create an addition cdmparams
+
+                // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
+                StringBuilder tmpcmpstring = new StringBuilder();
+                cmdparams.add("/bin/sh");
+                cmdparams.add("-c");
+                //cmdparams.add(Utils.platformExiftool());
+                build_cmdparams = "'-FileName<" + prefix;
+                tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " '-FileName<" + prefix);
+                if (!suffixDonNotUseradioButton.isSelected()) {
+                    build_cmdparams += "_" + suffix;
+                    tmpcmpstring.append("_" + suffix);
+                }
+                if (fulldatetime) {
+                    // This means that the autonumber should only work on images that have the same full datetime
+                    build_cmdparams += "%-" + DigitscomboBox.getSelectedItem() + startcounting;
+                    tmpcmpstring.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
+                } else {
+                    build_cmdparams += "%-." + DigitscomboBox.getSelectedItem() + startcounting;
+                    tmpcmpstring.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
+                }
+                if (!"".equals(prefixformat)) {
+                    // This means that the prefix is a date(time), we do need an additional cmdparams command
+                    //cmdparams.add(build_cmdparams + rename_extension + "'");
+                    //cmdparams.add("-d");
+                    //cmdparams.add(prefixformat);
+                    build_cmdparams += rename_extension + "' -d " + prefixformat;
+                    tmpcmpstring.append(rename_extension + "' -d " + prefixformat);
+                } else {
+                    // this means that we use a string instead of date(time) as prefix
+                    // if the prefixformat is empty we need to move the "counter"
+                    //cmdparams.add(build_cmdparams + rename_extension + "'");
+                    build_cmdparams += rename_extension + "'";
+                    tmpcmpstring.append(rename_extension + "'");
+                    if (!"".equals(suffixformat)) {
+                        // means that we have a date(time) in the suffix
+                        build_cmdparams += " -d " + suffixformat;
+                        tmpcmpstring.append(" -d " + suffixformat);
+                        //cmdparams.add("-d");
+                        //cmdparams.add(suffixformat);
+                    }
+                }
+                logger.info("final build_cmdparams: " + build_cmdparams);
+                // Add the dir
+                build_cmdparams += RenamingSourceFoldertextField.getText();
+                /*if (isWindows) {
+                    tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText().replace("\\", "/"));
+                } else
+                    tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText());
+                }*/
+                tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                //cmdparams.add(RenamingSourceFoldertextField.getText());
+                logger.info("final cmdparams: " + cmdparams);
+
+
+                //CommandRunner.runCommandWithProgressBar(cmdparams, progBar);
+                cmdparams.add(tmpcmpstring.toString());
+                logger.info("final tmpcmpstring: " + tmpcmpstring.toString());
+                CommandRunner.runCommandWithProgressBar(cmdparams, progBar);
+                /*try {
+                    String result = CommandRunner.runCommand(cmdparams);
+                } catch (IOException e) {
+                    logger.error("IOException error", e);
+                    res.append("IOException error")
+                            .append(System.lineSeparator())
+                            .append(e.getMessage());
+                }*/
+
+                //runCommandWithProgressBar("pipo", progres);
+            } // On Cancel we don't have to do anything
+            //JOptionPane.showMessageDialog(null, dialogMessage, "In OnOK", JOptionPane.WARNING_MESSAGE);
+        }
+
+
+    }
+
+    private void onOK() throws IOException, InterruptedException {
+        rename_photos();
         dispose();
     }
 
@@ -121,7 +449,9 @@ public class RenamePhotos extends JDialog {
         dispose();
     }
 
-    public void showDialog() {
+    public void showDialog(JProgressBar progressBar) {
+        progBar = progressBar;
+
         pack();
         //setLocationRelativeTo(null);
         setLocationByPlatform(true);
@@ -391,4 +721,5 @@ public class RenamePhotos extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

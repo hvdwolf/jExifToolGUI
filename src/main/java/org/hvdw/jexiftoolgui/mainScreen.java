@@ -1591,7 +1591,7 @@ public class mainScreen {
                 case "Rename photos":
                     RenamePhotos renPhotos = new RenamePhotos();
                     renPhotos.setTitle("Rename Photos");
-                    renPhotos.showDialog();
+                    renPhotos.showDialog(progressBar);
                     break;
                 case "Copy all metadata to xmp format":
                     if (selectedIndicesList.size() > 0) {
