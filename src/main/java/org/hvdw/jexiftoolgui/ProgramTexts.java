@@ -6,7 +6,7 @@ public class ProgramTexts {
      */
     public static final String Author = "Harry van der Wolf";
     public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
-    public static final String Version = "1";
+    public static final String Version = "1.00";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
     public static final String newVersionText = "<html><big>There is a new version available</big><br><br>"
             +"I can open the releases webpage so you can download the new version.<br><br>"
@@ -31,7 +31,7 @@ public class ProgramTexts {
             +"warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR "
             +"PURPOSE.  See the GNU General Public License for more details."
             +"<br>You should have received a copy of the GNU General Public "
-            +"License along with this program.  If not, see <a href='http://www.gnu.org/licenses'>www.gnu.org/licenses</a>.</p>"
+            +"License along with this program. If not, see <a href='http://www.gnu.org/licenses'>www.gnu.org/licenses</a>.</p>"
             +"<br><br>jExifToolGUI version: " + Version + "."
             +"<br><br>Author/creator of ExifTool: Phil Harvey."
             +"<br><br>Author/creator of jExifToolGUI: " + Author + ".";
@@ -46,8 +46,8 @@ public class ProgramTexts {
     public static final String CreditsText =
             "<big>Credits</big><hr><br>"
             +"This is currently a very short list, but nonetheless really essential<br><br>"
-            +"David Däster: Bringing structure into this project. Building the facades, adding the logger, creating the idea/gradle integration. I started as python programmer, hardly knowing anything of java, "
-            +"and he helped, educated and corrected me in many areas. Thanks!<br><br>";
+            +"<b>David Däster:</b> Bringing structure into this project. Building the facades, adding the logger, creating the idea/gradle integration. I started as python programmer, hardly knowing anything of java, "
+            +"and he helped, educated and corrected me in many areas (although I undoubtedly made again many errors afterwards).<br>Thanks for all your support!<br><br>";
     public static final String noExifTool = "<b>I can't find exiftool in your PATH and it is not specified in the preferences either.<br>"
             +"I can't continue without it.</b><br><br>"
             +"You have a few options:<br>"

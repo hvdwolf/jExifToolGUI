@@ -58,7 +58,7 @@ public class RenamePhotos extends JDialog {
     private JRadioButton extLeaveradioButton;
     private JRadioButton makeLowerCaseRadioButton;
     private JRadioButton makeUpperCaseRadioButton;
-    private JProgressBar progBar;
+    private JProgressBar progressBar;
 
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
@@ -166,6 +166,7 @@ public class RenamePhotos extends JDialog {
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
         String build_cmdparams = "";
+        StringBuilder tmpcmpstring = new StringBuilder();
 
         String rename_extension = "";
         String extension_message = "";
@@ -365,73 +366,93 @@ public class RenamePhotos extends JDialog {
                 // We need to first cmdparams here, as sometimes the string does not contains spaces and sometimes it does
                 // When it does have spaces we need to create an addition cdmparams
 
-                // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
-                StringBuilder tmpcmpstring = new StringBuilder();
-                cmdparams.add("/bin/sh");
-                cmdparams.add("-c");
-                //cmdparams.add(Utils.platformExiftool());
-                build_cmdparams = "'-FileName<" + prefix;
-                tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " '-FileName<" + prefix);
+                if (isWindows) {
+                    cmdparams.add(Utils.platformExiftool());
+                    cmdparams.add("\"-FileName<" + prefix);
+                } else {
+                    // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
+                    cmdparams.add("/bin/sh");
+                    cmdparams.add("-c");
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " '-FileName<" + prefix);
+                }
                 if (!suffixDonNotUseradioButton.isSelected()) {
+                    if (isWindows) {
+                        cmdparams.add("_" + suffix);
+                    } else {
+                        tmpcmpstring.append("_" + suffix);
+                    }
                     build_cmdparams += "_" + suffix;
-                    tmpcmpstring.append("_" + suffix);
                 }
                 if (fulldatetime) {
                     // This means that the autonumber should only work on images that have the same full datetime
+                    if (isWindows) {
+                        cmdparams.add("%-" + DigitscomboBox.getSelectedItem() + startcounting);
+                    } else {
+                        tmpcmpstring.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
+                    }
                     build_cmdparams += "%-" + DigitscomboBox.getSelectedItem() + startcounting;
-                    tmpcmpstring.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
                 } else {
+                    if (isWindows) {
+                        cmdparams.add("%-." + DigitscomboBox.getSelectedItem() + startcounting);
+                    } else {
+                        tmpcmpstring.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
+                    }
                     build_cmdparams += "%-." + DigitscomboBox.getSelectedItem() + startcounting;
-                    tmpcmpstring.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
                 }
                 if (!"".equals(prefixformat)) {
                     // This means that the prefix is a date(time), we do need an additional cmdparams command
-                    //cmdparams.add(build_cmdparams + rename_extension + "'");
-                    //cmdparams.add("-d");
-                    //cmdparams.add(prefixformat);
+                    if (isWindows) {
+                        cmdparams.add(rename_extension + "\"");
+                        cmdparams.add("-d");
+                        cmdparams.add(prefixformat);
+                    } else {
+                        tmpcmpstring.append(rename_extension + "' -d " + prefixformat);
+                    }
                     build_cmdparams += rename_extension + "' -d " + prefixformat;
-                    tmpcmpstring.append(rename_extension + "' -d " + prefixformat);
                 } else {
                     // this means that we use a string instead of date(time) as prefix
                     // if the prefixformat is empty we need to move the "counter"
-                    //cmdparams.add(build_cmdparams + rename_extension + "'");
+                    if (isWindows) {
+                        cmdparams.add(rename_extension + "\"");
+                    } else {
+                        tmpcmpstring.append(rename_extension + "'");
+                    }
                     build_cmdparams += rename_extension + "'";
-                    tmpcmpstring.append(rename_extension + "'");
                     if (!"".equals(suffixformat)) {
                         // means that we have a date(time) in the suffix
+                        if (isWindows) {
+                            cmdparams.add("-d");
+                            cmdparams.add(suffixformat);
+                        } else {
+                            tmpcmpstring.append(" -d " + suffixformat);
+                        }
                         build_cmdparams += " -d " + suffixformat;
-                        tmpcmpstring.append(" -d " + suffixformat);
-                        //cmdparams.add("-d");
-                        //cmdparams.add(suffixformat);
                     }
                 }
-                logger.info("final build_cmdparams: " + build_cmdparams);
-                // Add the dir
+                if ((!"".equals(prefixformat)) || (!"".equals(suffixformat))) {
+                    // if date time use -fileorder datetimeoriginal#
+                    if (isWindows) {
+                        cmdparams.add("-fileorder datetimeoriginal#");
+                    } else {
+                        tmpcmpstring.append(" '-fileorder datetimeoriginal#'");
+                    }
+                    build_cmdparams += " '-fileorder datetimeoriginal#'";
+                }
                 build_cmdparams += RenamingSourceFoldertextField.getText();
-                /*if (isWindows) {
-                    tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText().replace("\\", "/"));
-                } else
-                    tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText());
-                }*/
-                tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
-                //cmdparams.add(RenamingSourceFoldertextField.getText());
+                // Add the dir
+                if (isWindows) {
+                    cmdparams.add(RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                } else {
+                    tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                }
+                logger.info("final build_cmdparams: " + build_cmdparams);
                 logger.info("final cmdparams: " + cmdparams);
-
-
-                //CommandRunner.runCommandWithProgressBar(cmdparams, progBar);
-                cmdparams.add(tmpcmpstring.toString());
                 logger.info("final tmpcmpstring: " + tmpcmpstring.toString());
-                CommandRunner.runCommandWithProgressBar(cmdparams, progBar);
-                /*try {
-                    String result = CommandRunner.runCommand(cmdparams);
-                } catch (IOException e) {
-                    logger.error("IOException error", e);
-                    res.append("IOException error")
-                            .append(System.lineSeparator())
-                            .append(e.getMessage());
-                }*/
 
-                //runCommandWithProgressBar("pipo", progres);
+                if (!isWindows) {
+                    cmdparams.add(tmpcmpstring.toString());
+                }
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
             } // On Cancel we don't have to do anything
             //JOptionPane.showMessageDialog(null, dialogMessage, "In OnOK", JOptionPane.WARNING_MESSAGE);
         }
@@ -441,7 +462,7 @@ public class RenamePhotos extends JDialog {
 
     private void onOK() throws IOException, InterruptedException {
         rename_photos();
-        dispose();
+        //dispose();
     }
 
     private void onCancel() {
@@ -449,8 +470,9 @@ public class RenamePhotos extends JDialog {
         dispose();
     }
 
-    public void showDialog(JProgressBar progressBar) {
-        progBar = progressBar;
+    public void showDialog() {
+        //progBar = progressBar;
+        progressBar.setVisible(false);
 
         pack();
         //setLocationRelativeTo(null);
@@ -479,16 +501,16 @@ public class RenamePhotos extends JDialog {
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         contentPane.setPreferredSize(new Dimension(880, 650));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel1.add(panel2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel1.add(panel2, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
         buttonOK.setText("OK");
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
+        buttonCancel.setText("Close");
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -500,6 +522,9 @@ public class RenamePhotos extends JDialog {
         panel3.add(label1);
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        panel1.add(progressBar, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(25, 8), new Dimension(85, 15), null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

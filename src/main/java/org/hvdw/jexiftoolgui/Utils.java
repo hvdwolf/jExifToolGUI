@@ -110,6 +110,10 @@ public class Utils {
 
         String license = StandardFileIO.readTextFileAsStringFromResource("COPYING");
         JTextArea textArea = new JTextArea(license);
+        boolean isWindows = Utils.isOsFromMicrosoft();
+        if (isWindows) {
+            textArea.setFont(new Font("Sans_Serif", Font.PLAIN, 15));
+        }
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
