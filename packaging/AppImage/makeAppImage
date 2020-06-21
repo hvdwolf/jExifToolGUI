@@ -1,9 +1,14 @@
 #!/bin/bash
 
 # Script to make a universal appimage
-# version 0.1, 2020-01-05, hvdw
+# version 0.2, 2020-06-21, hvdw
 
-VER="1.0"
+# Requirements:
+# appimagetool: Download from https://github.com/AppImage/AppImageKit/releases
+# jre V11: download from https://adoptopenjdk.net/releases.html. Untar it and rename resulting folder to jre (to keepit simple over the versions)
+
+
+VER="1.00"
 #
 printf "Remove, create and step into our AppDir\n\n"
 #
@@ -17,6 +22,9 @@ printf "copy the complete jar into this AppDir folder\n\n"
 #
 cp ../../../build/libs/jExifToolGUI-all.jar jExifToolGUI.jar
 
+#
+printf "Create folders and copy program icon and desktop file\n\n"
+#
 mkdir -p usr/share/jexiftoolgui
 mkdir -p usr/share/applications
 
