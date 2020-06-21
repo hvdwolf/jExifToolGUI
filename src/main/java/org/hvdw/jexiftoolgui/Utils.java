@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +50,17 @@ public class Utils {
      * and displays the specified URL
      */
     static void openBrowser(String webUrl) {
+
+        /*try {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI(webUrl));
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
         try {
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().browse(URI.create(webUrl));
@@ -63,6 +75,7 @@ public class Utils {
                     runtime.exec("open " + webUrl);
                     return;
                 case LINUX:
+                    //runtime.exec("open " + webUrl);
                     runtime.exec("xdg-open " + webUrl);
                     return;
                 case MICROSOFT:
@@ -75,8 +88,7 @@ public class Utils {
         }
     }
 
-
-    /*
+        /*
      * The ImageInfo method uses exiftool to read image info which is outputted as csv
      * This method converts it to 3-column "tabular" data
      */

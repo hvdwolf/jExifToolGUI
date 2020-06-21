@@ -1673,6 +1673,9 @@ public class mainScreen {
                 case "ExifTool homepage":
                     Utils.openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
                     break;
+                case "Credits":
+                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 case "License":
                     Utils.showLicense(mainScreen.this.rootPanel);
                     break;
@@ -2142,15 +2145,19 @@ public class mainScreen {
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
 
-        // Extra menu
-        myMenu = new JMenu("Extra");
-        myMenu.setMnemonic(KeyEvent.VK_E);
+        // Rename photos menu
+        myMenu = new JMenu("Renaming");
         menuBar.add(myMenu);
         menuItem = new JMenuItem("Rename photos");
         //myMenu.setMnemonic(KeyEvent.VK_R);
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        myMenu.addSeparator();
+
+        // Extra menu
+        myMenu = new JMenu("Extra");
+        myMenu.setMnemonic(KeyEvent.VK_E);
+        menuBar.add(myMenu);
+        //myMenu.addSeparator();
         menuItem = new JMenuItem("Export metadata");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
@@ -2182,15 +2189,18 @@ public class mainScreen {
         myMenu = new JMenu("Help");
         myMenu.setMnemonic(KeyEvent.VK_H);
         menuBar.add(myMenu);
-        menuItem = new JMenuItem("jExifToolGUI homepage");
+        /*menuItem = new JMenuItem("jExifToolGUI homepage");
         menuItem.addActionListener(new MenuActionListener());
-        myMenu.add(menuItem);
+        myMenu.add(menuItem); */
         menuItem = new JMenuItem("ExifTool homepage");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        menuItem = new JMenuItem("Manual");
-        myMenu.add(menuItem);
+        /*menuItem = new JMenuItem("Manual");
+        myMenu.add(menuItem); */
         myMenu.addSeparator();
+        menuItem = new JMenuItem("Credits");
+        myMenu.add(menuItem);
+        menuItem.addActionListener(new MenuActionListener());
         menuItem = new JMenuItem("Donate");
         myMenu.add(menuItem);
         myMenu.addSeparator();

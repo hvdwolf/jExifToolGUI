@@ -43,6 +43,11 @@ public class ProgramTexts {
             +"many cameras, JFIF, GeoTIFF, ICC Profile, Photoshop IRB, FlashPix and many, many more tags.<br>"
             +"It can use a \"reference\" image to write the tags to a multiple set of photos or a complete directory containing photos.<br>"
             +"<br><br>Author/creator/maintainer of ExifTool: Phil Harvey.<br><br>";
+    public static final String CreditsText =
+            "<big>Credits</big><hr><br>"
+            +"This is currently a very short list, but nonetheless really essential<br><br>"
+            +"David Däster: Bringing structure into this project. Building the facades, adding the logger, creating the idea/gradle integration. I started as python programmer, hardly knowing anything of java, "
+            +"and he helped, educated and corrected me in many areas. Thanks!<br><br>";
     public static final String noExifTool = "<b>I can't find exiftool in your PATH and it is not specified in the preferences either.<br>"
             +"I can't continue without it.</b><br><br>"
             +"You have a few options:<br>"
