@@ -112,7 +112,7 @@ public class Utils {
         JTextArea textArea = new JTextArea(license);
         boolean isWindows = Utils.isOsFromMicrosoft();
         if (isWindows) {
-            textArea.setFont(new Font("Sans_Serif", Font.PLAIN, 15));
+            textArea.setFont(new Font("Sans_Serif", Font.PLAIN, 13));
         }
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
