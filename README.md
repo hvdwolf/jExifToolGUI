@@ -15,7 +15,7 @@ jExifToolGUI also contains extensive renaming functionality based on the exif in
 This jExifToolGUI program is free, Open Source software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 <br><hr>
 
-<br><br>jExifToolGUI is a remake of [pyExifToolGUI](https://github.com/hvdwolf/pyExifToolGUI). I discontinued pyExifToolGUI for a couple of reasons:
+<br><br>jExifToolGUI is a remake of [pyExifToolGUI](https://github.com/hvdwolf/pyExifToolGUI) ([website](https://hvdwolf.github.io/pyExifToolGUI/)). I discontinued pyExifToolGUI for a couple of reasons:
 * pyExifToolGUI uses python/pySide/QT4. pySide/QT have undergone some changes over the years that require quite some rework. pySide has also changed the license. The combination is cross-platform but not so easy to package for Windows and MacOS.
 * I started programming in java because I wanted "things" on my Android car head unit that nobody else would make. And now I prefer java for "bigger things" over python.
 * Java comes with the builtin Swing gui. I don't need to package any dependencies. The user downloads java and jExiftoolGUI and that's all.
