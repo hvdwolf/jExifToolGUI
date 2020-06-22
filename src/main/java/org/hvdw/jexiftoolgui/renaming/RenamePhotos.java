@@ -165,8 +165,7 @@ public class RenamePhotos extends JDialog {
         StringBuilder res = new StringBuilder();
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
-        String build_cmdparams = "";
-        StringBuilder tmpcmpstring = new StringBuilder();
+        StringBuilder exifcommands = new StringBuilder();
 
         String rename_extension = "";
         String extension_message = "";
@@ -192,8 +191,6 @@ public class RenamePhotos extends JDialog {
         if ("".equals(RenamingSourceFoldertextField.getText())) { // Empty folder string
             JOptionPane.showMessageDialog(null, "No image folder path selected", "No path", JOptionPane.WARNING_MESSAGE);
         } else {
-            //JOptionPane.showMessageDialog(null, "In onOK", "In OnOK", JOptionPane.WARNING_MESSAGE);
-
             // analyze what prefix radio button has been chosen
             if (prefixDate_timeradioButton.isSelected()) {
                 if (prefixDate_timecomboBox.getSelectedItem() == "YYYYMMDDHHMMSS") {
@@ -366,93 +363,79 @@ public class RenamePhotos extends JDialog {
                 // We need to first cmdparams here, as sometimes the string does not contains spaces and sometimes it does
                 // When it does have spaces we need to create an addition cdmparams
 
-                if (isWindows) {
-                    cmdparams.add(Utils.platformExiftool());
-                    cmdparams.add("\"-FileName<" + prefix);
-                } else {
-                    // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
-                    cmdparams.add("/bin/sh");
-                    cmdparams.add("-c");
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " '-FileName<" + prefix);
+                if ((suffixDonNotUseradioButton.isSelected()) && ("".equals(prefixformat))) {
+                    // string as prefix and no suffix
+                    if (isWindows) {
+                        cmdparams.add(Utils.platformExiftool());
+                        exifcommands = new StringBuilder("\"-FileName=" + prefix);
+                    } else {
+                        // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
+                        cmdparams.add("/bin/sh");
+                        cmdparams.add("-c");
+                        exifcommands = new StringBuilder(Utils.platformExiftool() + " '-FileName=" + prefix);
+                    }
+                } else { // Or a suffix or date(time), or both
+                    if (isWindows) {
+                        cmdparams.add(Utils.platformExiftool());
+                        exifcommands = new StringBuilder("\"-FileName<" + prefix);
+                    } else {
+                        // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
+                        cmdparams.add("/bin/sh");
+                        cmdparams.add("-c");
+                        exifcommands = new StringBuilder(Utils.platformExiftool() + " '-FileName<" + prefix);
+                    }
                 }
                 if (!suffixDonNotUseradioButton.isSelected()) {
-                    if (isWindows) {
-                        cmdparams.add("_" + suffix);
-                    } else {
-                        tmpcmpstring.append("_" + suffix);
-                    }
-                    build_cmdparams += "_" + suffix;
+                    exifcommands.append("_" + suffix);
                 }
                 if (fulldatetime) {
                     // This means that the autonumber should only work on images that have the same full datetime
-                    if (isWindows) {
-                        cmdparams.add("%-" + DigitscomboBox.getSelectedItem() + startcounting);
-                    } else {
-                        tmpcmpstring.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
-                    }
-                    build_cmdparams += "%-" + DigitscomboBox.getSelectedItem() + startcounting;
+                    exifcommands.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
                 } else {
-                    if (isWindows) {
-                        cmdparams.add("%-." + DigitscomboBox.getSelectedItem() + startcounting);
-                    } else {
-                        tmpcmpstring.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
-                    }
-                    build_cmdparams += "%-." + DigitscomboBox.getSelectedItem() + startcounting;
+                    exifcommands.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
                 }
                 if (!"".equals(prefixformat)) {
                     // This means that the prefix is a date(time), we do need an additional cmdparams command
                     if (isWindows) {
-                        cmdparams.add(rename_extension + "\"");
-                        cmdparams.add("-d");
-                        cmdparams.add(prefixformat);
+                        exifcommands.append(rename_extension + "\" -d " + prefixformat);
                     } else {
-                        tmpcmpstring.append(rename_extension + "' -d " + prefixformat);
+                        exifcommands.append(rename_extension + "' -d " + prefixformat);
                     }
-                    build_cmdparams += rename_extension + "' -d " + prefixformat;
                 } else {
                     // this means that we use a string instead of date(time) as prefix
                     // if the prefixformat is empty we need to move the "counter"
+                    // It also means we must have a suffix
                     if (isWindows) {
-                        cmdparams.add(rename_extension + "\"");
+                        exifcommands.append(rename_extension + "\"");
                     } else {
-                        tmpcmpstring.append(rename_extension + "'");
+                        exifcommands.append(rename_extension + "'");
                     }
-                    build_cmdparams += rename_extension + "'";
                     if (!"".equals(suffixformat)) {
                         // means that we have a date(time) in the suffix
-                        if (isWindows) {
-                            cmdparams.add("-d");
-                            cmdparams.add(suffixformat);
-                        } else {
-                            tmpcmpstring.append(" -d " + suffixformat);
-                        }
-                        build_cmdparams += " -d " + suffixformat;
+                        exifcommands.append(" -d " + suffixformat);
                     }
                 }
                 if ((!"".equals(prefixformat)) || (!"".equals(suffixformat))) {
                     // if date time use -fileorder datetimeoriginal#
                     if (isWindows) {
-                        cmdparams.add("-fileorder datetimeoriginal#");
+                        exifcommands.append(" \"-fileorder datetimeoriginal#\"");
                     } else {
-                        tmpcmpstring.append(" '-fileorder datetimeoriginal#'");
+                        exifcommands.append(" '-fileorder datetimeoriginal#'");
                     }
-                    build_cmdparams += " '-fileorder datetimeoriginal#'";
                 }
-                build_cmdparams += RenamingSourceFoldertextField.getText();
                 // Add the dir
                 if (isWindows) {
+                    cmdparams.add(exifcommands.toString());
                     cmdparams.add(RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
                 } else {
-                    tmpcmpstring.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                    exifcommands.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                    cmdparams.add(exifcommands.toString());
                 }
-                logger.info("final build_cmdparams: " + build_cmdparams);
                 logger.info("final cmdparams: " + cmdparams);
-                logger.info("final tmpcmpstring: " + tmpcmpstring.toString());
+                logger.info("final exifcommands: " + exifcommands.toString());
 
-                if (!isWindows) {
-                    cmdparams.add(tmpcmpstring.toString());
-                }
                 CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+                //} //end of else statement where we do not have a string and not a suffix
             } // On Cancel we don't have to do anything
             //JOptionPane.showMessageDialog(null, dialogMessage, "In OnOK", JOptionPane.WARNING_MESSAGE);
         }
