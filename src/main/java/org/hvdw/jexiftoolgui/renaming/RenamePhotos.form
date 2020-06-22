@@ -148,7 +148,7 @@
             <properties/>
             <border type="bevel-raised"/>
             <children>
-              <grid id="766cc" binding="RenamingOptions" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="766cc" binding="RenamingOptions" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
@@ -234,6 +234,28 @@
                         <constraints/>
                         <properties>
                           <preferredSize width="200" height="30"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="2428" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="afd71" class="javax.swing.JRadioButton" binding="prefixCameramodelradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="145" height="19"/>
+                          <text value="Camera model"/>
+                        </properties>
+                      </component>
+                      <component id="70878" class="javax.swing.JLabel">
+                        <constraints/>
+                        <properties>
+                          <text value="${Exif:Model}"/>
                         </properties>
                       </component>
                     </children>
@@ -494,15 +516,16 @@
       <member id="908b6"/>
       <member id="371b7"/>
     </group>
-    <group name="prefixbuttonGroup">
-      <member id="74c8"/>
-      <member id="fca2"/>
-      <member id="6449a"/>
-    </group>
     <group name="extensionbuttonGroup">
       <member id="8ee29"/>
       <member id="e905c"/>
       <member id="c7940"/>
+    </group>
+    <group name="prefixbuttonGroup">
+      <member id="74c8"/>
+      <member id="fca2"/>
+      <member id="6449a"/>
+      <member id="afd71"/>
     </group>
   </buttonGroups>
 </form>
