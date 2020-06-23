@@ -3,10 +3,7 @@ package org.hvdw.jexiftoolgui.renaming;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.ProgramTexts;
-import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
@@ -22,11 +19,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hvdw.jexiftoolgui.controllers.CommandRunner.*;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
 public class RenamePhotos extends JDialog {
-    private JPanel contentPane;
+    private JPanel rootRenamingPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JLabel RenamingGeneralText;
@@ -62,14 +58,19 @@ public class RenamePhotos extends JDialog {
     private JRadioButton prefixCameramodelradioButton;
     private JRadioButton suffixCityNameradioButton;
     private JRadioButton suffixLocationradioButton;
+    private JRadioButton suffixISOradioButton;
+    private JRadioButton suffixFocalLengthradioButton;
 
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
+    private int[] selectedFilenamesIndices;
+    public File[] files;
+
     public RenamePhotos() {
         StringBuilder res = new StringBuilder();
 
-        setContentPane(contentPane);
+        setContentPane(rootRenamingPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
@@ -102,21 +103,23 @@ public class RenamePhotos extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
+        rootRenamingPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        // This is the info button on the Rename panel
         renamingInfobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                JOptionPane.showMessageDialog(rootRenamingPane, String.format(ProgramTexts.HTML, 450, ProgramTexts.RenamingInfoText), "Renaming info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         RenamingSourceFolderbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String ImgPath = getImagePath(contentPane);
+                String ImgPath = getImagePath(rootRenamingPane);
                 if (!"".equals(ImgPath)) {
                     RenamingSourceFoldertextField.setText(ImgPath);
                 }
@@ -290,6 +293,14 @@ public class RenamePhotos extends JDialog {
                 } else if (suffixCityNameradioButton.isSelected()) {
                     suffix_message = "${xmp:city}";
                     suffix = "${xmp:city}";
+                    suffixformat = "";
+                } else if (suffixISOradioButton.isSelected()) {
+                    suffix_message = "${exif:iso}ISO";
+                    suffix = "${exif:iso}ISO";
+                    suffixformat = "";
+                } else if (suffixFocalLengthradioButton.isSelected()) {
+                    suffix_message = "${exif:focallengthin35mmformat}";
+                    suffix = "${exif:focallengthin35mmformat}";
                     suffixformat = "";
                 } else if (suffixOriginalFilenameradioButton.isSelected()) {
                     suffix_message = "${filename}";
@@ -470,7 +481,8 @@ public class RenamePhotos extends JDialog {
     }
 
     public void showDialog() {
-        //progBar = progressBar;
+        selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
+        files = MyVariables.getSelectedFiles();
         progressBar.setVisible(false);
 
         pack();
@@ -496,12 +508,12 @@ public class RenamePhotos extends JDialog {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setPreferredSize(new Dimension(880, 750));
+        rootRenamingPane = new JPanel();
+        rootRenamingPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        rootRenamingPane.setPreferredSize(new Dimension(950, 800));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        rootRenamingPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -529,7 +541,7 @@ public class RenamePhotos extends JDialog {
         panel1.add(progressBar, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(25, 8), new Dimension(85, 15), null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        rootRenamingPane.add(panel4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(3, 1, new Insets(10, 0, 10, 0), -1, -1));
         panel4.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -611,7 +623,7 @@ public class RenamePhotos extends JDialog {
         label5.setText("${Exif:Model}");
         panel11.add(label5);
         RenamingsuffixPanel = new JPanel();
-        RenamingsuffixPanel.setLayout(new GridLayoutManager(9, 1, new Insets(0, 0, 0, 0), -1, -1));
+        RenamingsuffixPanel.setLayout(new GridLayoutManager(11, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel7.add(RenamingsuffixPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label6 = new JLabel();
         Font label6Font = this.$$$getFont$$$(null, Font.BOLD, -1, label6.getFont());
@@ -622,7 +634,7 @@ public class RenamePhotos extends JDialog {
         panel12.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel12, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixDonNotUseradioButton = new JRadioButton();
-        suffixDonNotUseradioButton.setMinimumSize(new Dimension(175, 19));
+        suffixDonNotUseradioButton.setMinimumSize(new Dimension(190, 19));
         suffixDonNotUseradioButton.setSelected(true);
         suffixDonNotUseradioButton.setText("Do not use");
         panel12.add(suffixDonNotUseradioButton);
@@ -630,7 +642,7 @@ public class RenamePhotos extends JDialog {
         panel13.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel13, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixStringradioButton = new JRadioButton();
-        suffixStringradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixStringradioButton.setPreferredSize(new Dimension(190, 19));
         suffixStringradioButton.setText("String");
         panel13.add(suffixStringradioButton);
         suffixStringtextField = new JTextField();
@@ -640,7 +652,7 @@ public class RenamePhotos extends JDialog {
         panel14.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel14, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixDatetimeradioButton = new JRadioButton();
-        suffixDatetimeradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixDatetimeradioButton.setPreferredSize(new Dimension(190, 19));
         suffixDatetimeradioButton.setText("Date_time");
         panel14.add(suffixDatetimeradioButton);
         suffixDatetimecomboBox = new JComboBox();
@@ -649,7 +661,7 @@ public class RenamePhotos extends JDialog {
         panel15.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel15, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixDateradioButton = new JRadioButton();
-        suffixDateradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixDateradioButton.setPreferredSize(new Dimension(190, 19));
         suffixDateradioButton.setText("Date");
         panel15.add(suffixDateradioButton);
         suffixDatecomboBox = new JComboBox();
@@ -658,7 +670,7 @@ public class RenamePhotos extends JDialog {
         panel16.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel16, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixCameramodelradioButton = new JRadioButton();
-        suffixCameramodelradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixCameramodelradioButton.setPreferredSize(new Dimension(190, 19));
         suffixCameramodelradioButton.setText("Camera model");
         panel16.add(suffixCameramodelradioButton);
         final JLabel label7 = new JLabel();
@@ -666,9 +678,9 @@ public class RenamePhotos extends JDialog {
         panel16.add(label7);
         final JPanel panel17 = new JPanel();
         panel17.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        RenamingsuffixPanel.add(panel17, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        RenamingsuffixPanel.add(panel17, new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixOriginalFilenameradioButton = new JRadioButton();
-        suffixOriginalFilenameradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixOriginalFilenameradioButton.setPreferredSize(new Dimension(190, 19));
         suffixOriginalFilenameradioButton.setText("Original filename");
         panel17.add(suffixOriginalFilenameradioButton);
         final JLabel label8 = new JLabel();
@@ -678,7 +690,7 @@ public class RenamePhotos extends JDialog {
         panel18.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel18, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixCityNameradioButton = new JRadioButton();
-        suffixCityNameradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixCityNameradioButton.setPreferredSize(new Dimension(190, 19));
         suffixCityNameradioButton.setText("City name");
         panel18.add(suffixCityNameradioButton);
         final JLabel label9 = new JLabel();
@@ -688,43 +700,63 @@ public class RenamePhotos extends JDialog {
         panel19.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel19, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixLocationradioButton = new JRadioButton();
-        suffixLocationradioButton.setPreferredSize(new Dimension(175, 19));
+        suffixLocationradioButton.setPreferredSize(new Dimension(190, 19));
         suffixLocationradioButton.setText("Location");
         panel19.add(suffixLocationradioButton);
         final JLabel label10 = new JLabel();
         label10.setText("${Xmp:Location}");
         panel19.add(label10);
         final JPanel panel20 = new JPanel();
-        panel20.setLayout(new GridLayoutManager(1, 2, new Insets(10, 0, 10, 0), -1, -1));
-        panel4.add(panel20, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel20.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
+        panel20.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        RenamingsuffixPanel.add(panel20, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        suffixISOradioButton = new JRadioButton();
+        suffixISOradioButton.setPreferredSize(new Dimension(190, 19));
+        suffixISOradioButton.setText("ISO value");
+        panel20.add(suffixISOradioButton);
+        final JLabel label11 = new JLabel();
+        label11.setText("${Exif:ISO}");
+        panel20.add(label11);
+        final JPanel panel21 = new JPanel();
+        panel21.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        RenamingsuffixPanel.add(panel21, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        suffixFocalLengthradioButton = new JRadioButton();
+        suffixFocalLengthradioButton.setPreferredSize(new Dimension(190, 19));
+        suffixFocalLengthradioButton.setText("Focal length in 35 mm");
+        panel21.add(suffixFocalLengthradioButton);
+        final JLabel label12 = new JLabel();
+        label12.setText("${exif:focallengthin35mmformat}");
+        panel21.add(label12);
+        final JPanel panel22 = new JPanel();
+        panel22.setLayout(new GridLayoutManager(1, 2, new Insets(10, 0, 10, 0), -1, -1));
+        panel4.add(panel22, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel22.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         RenamingNumberingPanel = new JPanel();
         RenamingNumberingPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel20.add(RenamingNumberingPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel22.add(RenamingNumberingPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         RenamingDuplicateNames = new JLabel();
         Font RenamingDuplicateNamesFont = this.$$$getFont$$$(null, -1, -1, RenamingDuplicateNames.getFont());
         if (RenamingDuplicateNamesFont != null) RenamingDuplicateNames.setFont(RenamingDuplicateNamesFont);
         RenamingDuplicateNames.setText("RenamingDuplicateNames");
         RenamingNumberingPanel.add(RenamingDuplicateNames, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel21 = new JPanel();
-        panel21.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        RenamingNumberingPanel.add(panel21, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JLabel label11 = new JLabel();
-        label11.setPreferredSize(new Dimension(140, 18));
-        label11.setText("No. of digits");
-        panel21.add(label11);
+        final JPanel panel23 = new JPanel();
+        panel23.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        RenamingNumberingPanel.add(panel23, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label13 = new JLabel();
+        label13.setPreferredSize(new Dimension(140, 18));
+        label13.setText("No. of digits");
+        panel23.add(label13);
         DigitscomboBox = new JComboBox();
-        panel21.add(DigitscomboBox);
+        panel23.add(DigitscomboBox);
         StartOnImgcomboBox = new JComboBox();
-        panel21.add(StartOnImgcomboBox);
+        panel23.add(StartOnImgcomboBox);
         RenamingFileExtPanel = new JPanel();
         RenamingFileExtPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel20.add(RenamingFileExtPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JLabel label12 = new JLabel();
-        Font label12Font = this.$$$getFont$$$(null, Font.BOLD, -1, label12.getFont());
-        if (label12Font != null) label12.setFont(label12Font);
-        label12.setText("File extension:");
-        RenamingFileExtPanel.add(label12, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel22.add(RenamingFileExtPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label14 = new JLabel();
+        Font label14Font = this.$$$getFont$$$(null, Font.BOLD, -1, label14.getFont());
+        if (label14Font != null) label14.setFont(label14Font);
+        label14.setText("File extension:");
+        RenamingFileExtPanel.add(label14, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         extLeaveradioButton = new JRadioButton();
         extLeaveradioButton.setSelected(true);
         extLeaveradioButton.setText("Leave as is");
@@ -745,6 +777,8 @@ public class RenamePhotos extends JDialog {
         buttonGroup.add(suffixOriginalFilenameradioButton);
         buttonGroup.add(suffixCityNameradioButton);
         buttonGroup.add(suffixLocationradioButton);
+        buttonGroup.add(suffixISOradioButton);
+        buttonGroup.add(suffixFocalLengthradioButton);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(extLeaveradioButton);
         buttonGroup.add(makeLowerCaseRadioButton);
@@ -779,7 +813,7 @@ public class RenamePhotos extends JDialog {
      * @noinspection ALL
      */
     public JComponent $$$getRootComponent$$$() {
-        return contentPane;
+        return rootRenamingPane;
     }
 
 }
