@@ -3,7 +3,7 @@
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="48" y="54" width="873" height="645"/>
+      <xy x="48" y="54" width="873" height="679"/>
     </constraints>
     <properties>
       <preferredSize width="880" height="750"/>
@@ -55,6 +55,9 @@
                 <constraints/>
                 <properties>
                   <font style="3"/>
+                  <foreground color="-16776961"/>
+                  <minimumSize width="235" height="17"/>
+                  <preferredSize width="235" height="17"/>
                   <text value="Name: Prefix_Suffix.extension"/>
                 </properties>
               </component>
@@ -262,7 +265,7 @@
                   </grid>
                 </children>
               </grid>
-              <grid id="bb8d0" binding="RenamingsuffixPanel" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="bb8d0" binding="RenamingsuffixPanel" layout-manager="GridLayoutManager" row-count="9" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
@@ -382,7 +385,7 @@
                   </grid>
                   <grid id="180c7" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                     <constraints>
-                      <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -404,7 +407,7 @@
                   </grid>
                   <grid id="8ca3f" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                     <constraints>
-                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -420,6 +423,28 @@
                         <constraints/>
                         <properties>
                           <text value="${Xmp:City}"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="2ac6c" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="ca501" class="javax.swing.JRadioButton" binding="suffixLocationradioButton">
+                        <constraints/>
+                        <properties>
+                          <preferredSize width="175" height="19"/>
+                          <text value="Location"/>
+                        </properties>
+                      </component>
+                      <component id="3988" class="javax.swing.JLabel">
+                        <constraints/>
+                        <properties>
+                          <text value="${Xmp:Location}"/>
                         </properties>
                       </component>
                     </children>
@@ -538,6 +563,7 @@
       <member id="908b6"/>
       <member id="371b7"/>
       <member id="64699"/>
+      <member id="ca501"/>
     </group>
     <group name="extensionbuttonGroup">
       <member id="8ee29"/>
