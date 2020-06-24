@@ -181,12 +181,12 @@ public class mainScreen {
     private JTextField gpsCitytextField;
     private JCheckBox gpsCitycheckBox;
     private JButton copyToInputFieldsButton;
-    private JTextField CalcLatDecimaltextField;
+    private JLabel CalcLatDecimaltextLabel;
     private JTextField CalcLatDegtextField;
     private JTextField CalcLatMintextField;
     private JTextField CalcLatSectextField;
-    private JTextField gpsCalcLonDecimaltextField;
-    private JTextField gpsCalcLondegtextField;
+    private JLabel CalcLonDecimaltextLabel;
+    private JTextField CalcLonDegtextField;
     private JTextField CalcLonMintextField;
     private JTextField CalcLonSectextField;
     private JRadioButton CalcNorthRadioButton;
@@ -1042,74 +1042,79 @@ public class mainScreen {
         gpsAboveSealevelcheckBox.setText("Above sea level");
         gpsLatLonAltPanel.add(gpsAboveSealevelcheckBox, new GridConstraints(4, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         gpsCalculationPanel = new JPanel();
-        gpsCalculationPanel.setLayout(new GridLayoutManager(4, 8, new Insets(5, 5, 5, 5), -1, -1));
+        gpsCalculationPanel.setLayout(new GridLayoutManager(5, 8, new Insets(5, 5, 5, 5), -1, -1));
         panel8.add(gpsCalculationPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         gpsCalculationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         gpsCalculatorLabelText = new JLabel();
         gpsCalculatorLabelText.setText("Label");
-        gpsCalculationPanel.add(gpsCalculatorLabelText, new GridConstraints(0, 0, 3, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsCalculationPanel.add(gpsCalculatorLabelText, new GridConstraints(1, 0, 3, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(200, -1), null, 0, false));
         final JLabel label42 = new JLabel();
-        Font label42Font = this.$$$getFont$$$(null, Font.BOLD, -1, label42.getFont());
-        if (label42Font != null) label42.setFont(label42Font);
-        label42.setText("Calculator");
-        gpsCalculationPanel.add(label42, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label42.setText("Decimal degrees");
+        gpsCalculationPanel.add(label42, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label43 = new JLabel();
-        label43.setText("Decimal");
-        gpsCalculationPanel.add(label43, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label43.setText("deg");
+        gpsCalculationPanel.add(label43, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label44 = new JLabel();
-        label44.setText("deg");
-        gpsCalculationPanel.add(label44, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label44.setText("min");
+        gpsCalculationPanel.add(label44, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label45 = new JLabel();
-        label45.setText("min");
-        gpsCalculationPanel.add(label45, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label45.setText("sec");
+        gpsCalculationPanel.add(label45, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label46 = new JLabel();
-        label46.setText("sec");
-        gpsCalculationPanel.add(label46, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label47 = new JLabel();
-        label47.setText("Latitude");
-        gpsCalculationPanel.add(label47, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        CalcLatDecimaltextField = new JTextField();
-        gpsCalculationPanel.add(CalcLatDecimaltextField, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
+        label46.setText("Latitude");
+        gpsCalculationPanel.add(label46, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CalcLatDecimaltextLabel = new JLabel();
+        CalcLatDecimaltextLabel.setText("00.00000");
+        gpsCalculationPanel.add(CalcLatDecimaltextLabel, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
         CalcLatDegtextField = new JTextField();
-        gpsCalculationPanel.add(CalcLatDegtextField, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
+        gpsCalculationPanel.add(CalcLatDegtextField, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         CalcLatMintextField = new JTextField();
-        gpsCalculationPanel.add(CalcLatMintextField, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
+        gpsCalculationPanel.add(CalcLatMintextField, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         CalcLatSectextField = new JTextField();
-        gpsCalculationPanel.add(CalcLatSectextField, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
-        final JLabel label48 = new JLabel();
-        label48.setText("Longitude");
-        gpsCalculationPanel.add(label48, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpsCalcLonDecimaltextField = new JTextField();
-        gpsCalculationPanel.add(gpsCalcLonDecimaltextField, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
-        gpsCalcLondegtextField = new JTextField();
-        gpsCalculationPanel.add(gpsCalcLondegtextField, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
+        gpsCalculationPanel.add(CalcLatSectextField, new GridConstraints(2, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
+        final JLabel label47 = new JLabel();
+        label47.setText("Longitude");
+        gpsCalculationPanel.add(label47, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CalcLonDecimaltextLabel = new JLabel();
+        CalcLonDecimaltextLabel.setText("00.00000");
+        gpsCalculationPanel.add(CalcLonDecimaltextLabel, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
+        CalcLonDegtextField = new JTextField();
+        gpsCalculationPanel.add(CalcLonDegtextField, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         CalcLonMintextField = new JTextField();
-        gpsCalculationPanel.add(CalcLonMintextField, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
+        gpsCalculationPanel.add(CalcLonMintextField, new GridConstraints(3, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         CalcLonSectextField = new JTextField();
-        gpsCalculationPanel.add(CalcLonSectextField, new GridConstraints(2, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), null, 0, false));
+        gpsCalculationPanel.add(CalcLonSectextField, new GridConstraints(3, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         CalcNorthRadioButton = new JRadioButton();
         CalcNorthRadioButton.setSelected(true);
         CalcNorthRadioButton.setText("N");
-        gpsCalculationPanel.add(CalcNorthRadioButton, new GridConstraints(1, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsCalculationPanel.add(CalcNorthRadioButton, new GridConstraints(2, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CalcSouthRadioButton = new JRadioButton();
         CalcSouthRadioButton.setText("S");
-        gpsCalculationPanel.add(CalcSouthRadioButton, new GridConstraints(1, 7, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsCalculationPanel.add(CalcSouthRadioButton, new GridConstraints(2, 7, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CalcEastradioButton = new JRadioButton();
         CalcEastradioButton.setSelected(true);
         CalcEastradioButton.setText("E");
-        gpsCalculationPanel.add(CalcEastradioButton, new GridConstraints(2, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsCalculationPanel.add(CalcEastradioButton, new GridConstraints(3, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CalcWestRadioButton = new JRadioButton();
         CalcWestRadioButton.setText("W");
-        gpsCalculationPanel.add(CalcWestRadioButton, new GridConstraints(2, 7, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsCalculationPanel.add(CalcWestRadioButton, new GridConstraints(3, 7, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         decimalToMinutesSecondsButton = new JButton();
+        decimalToMinutesSecondsButton.setEnabled(false);
         decimalToMinutesSecondsButton.setText("Decimal to minutes-seconds =>");
-        gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        decimalToMinutesSecondsButton.setVisible(false);
+        gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
-        minutesSecondsToDecimalButton.setText("<= Minutes-seconds to decimal");
-        gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
+        minutesSecondsToDecimalButton.setText("Convert to decimal degrees");
+        gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(4, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         copyToInputFieldsButton = new JButton();
         copyToInputFieldsButton.setText("Copy to input fields");
-        gpsCalculationPanel.add(copyToInputFieldsButton, new GridConstraints(3, 5, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsCalculationPanel.add(copyToInputFieldsButton, new GridConstraints(4, 5, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label48 = new JLabel();
+        Font label48Font = this.$$$getFont$$$(null, Font.BOLD, -1, label48.getFont());
+        if (label48Font != null) label48.setFont(label48Font);
+        label48.setText("Calculator");
+        gpsCalculationPanel.add(label48, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         GeotaggingEditpanel = new JPanel();
         GeotaggingEditpanel.setLayout(new GridLayoutManager(8, 1, new Insets(10, 20, 10, 20), -1, -1));
         tabbedPaneEditfunctions.addTab("Geotagging", GeotaggingEditpanel);
@@ -1591,6 +1596,11 @@ public class mainScreen {
                 case "Rename photos":
                     RenamePhotos renPhotos = new RenamePhotos();
                     renPhotos.setTitle("Rename Photos");
+                    /*boolean images_selected = false;
+                    if (selectedIndicesList.size() > 0) {
+                        images_selected = true;
+                    }
+                    renPhotos.showDialog(images_selected); */
                     renPhotos.showDialog();
                     break;
                 case "Copy all metadata to xmp format":
@@ -1902,19 +1912,48 @@ public class mainScreen {
         decimalToMinutesSecondsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                // We will not use this one
 
             }
         });
         minutesSecondsToDecimalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                // Here is where we calculate the degrees-minutes-seconds to decimal values
+                String[] calc_lat_lon = new String[2];
+                String[] input_lat_lon = new String[8];
 
+                input_lat_lon[0] = CalcLatDegtextField.getText();
+                input_lat_lon[1] = CalcLatMintextField.getText();
+                input_lat_lon[2] = CalcLatSectextField.getText();
+                if (CalcNorthRadioButton.isSelected()) {
+                    input_lat_lon[3] = "N";
+                } else {
+                    input_lat_lon[3] = "S";
+                }
+                input_lat_lon[4] = CalcLonDegtextField.getText();
+                input_lat_lon[5] = CalcLonMintextField.getText();
+                input_lat_lon[6] = CalcLonSectextField.getText();
+                if (CalcEastradioButton.isSelected()) {
+                    input_lat_lon[7] = "E";
+                } else {
+                    input_lat_lon[7] = "W";
+                }
+
+                calc_lat_lon = Utils.gpsCalculator(rootPanel, input_lat_lon);
+                //Utils.gpsCalculator(CalcLatDegtextField.getText(), CalcLatMintextField.getText(), CalcLatSectextField.getText(), CalcLonDegtextField.getText(), CalcLonDegtextField.getText(), CalcLonMintextField.getText(), CalcLonSectextField.getText());
+                if (!"error".equals(calc_lat_lon[0])) {
+                    CalcLatDecimaltextLabel.setText(calc_lat_lon[0]);
+                    CalcLonDecimaltextLabel.setText(calc_lat_lon[1]);
+                }
             }
         });
         copyToInputFieldsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                // This will copy the calculated values to the lat/lon input fields
+                gpsLatDecimaltextField.setText( CalcLatDecimaltextLabel.getText() );
+                gpsLonDecimaltextField.setText( CalcLonDecimaltextLabel.getText() );
             }
         });
 
@@ -2229,7 +2268,7 @@ public class mainScreen {
         GeotaggingLeaveFolderEmptyLabel.setText(ProgramTexts.GeotaggingLeaveFolderEmpty);
         GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingLocationLabel));
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
-        gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 110, ProgramTexts.gpsCalculatorLabelText));
+        gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 200, ProgramTexts.gpsCalculatorLabelText));
         gPanoTopText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GPanoTopText));
         // Special dynamic version string
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");

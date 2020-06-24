@@ -112,8 +112,8 @@ public class ProgramTexts {
             +"of the prefix, only the allowed suffixes are enabled.</html>";
     public static final String RenamingDuplicateNames = "In case your chosen options lead to duplicate names, the tool will automatically"
             +" autonumber the images.<br>Please specify how the tool should do this.";
-    public static final String gpsCalculatorLabelText = "This program wants your latitude and longitude as decimal values for input."
-            +" If you have your data in deg-min-sec N(S)/E(W), you can use this calculator to convert the data.";
+    public static final String gpsCalculatorLabelText = "This program wants your latitude and longitude as decimal degrees for input."
+            +" If you have your data in degrees-min-sec N(S)/E(W), you can use this calculator to convert the data.";
     public static final String ModifyDateTimeLabel = "This dialog gives you the option to modify the several date/time tags "
             +"in the exif (and xmp) information like in the \"Edit Data -> Exif\" tab. It works on the selected images.<br>"
             +"More important here: You can use the shift the date/time forward/backward (future/past) for the selected fields, for the selected images.<br>"
