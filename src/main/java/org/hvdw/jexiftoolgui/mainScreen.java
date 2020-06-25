@@ -1534,12 +1534,11 @@ public class mainScreen {
                 case "Rename photos":
                     RenamePhotos renPhotos = new RenamePhotos();
                     renPhotos.setTitle("Rename Photos");
-                    /*boolean images_selected = false;
                     if (selectedIndicesList.size() > 0) {
-                        images_selected = true;
+                        renPhotos.showDialog(true);
+                    } else {
+                        renPhotos.showDialog(false);
                     }
-                    renPhotos.showDialog(images_selected); */
-                    renPhotos.showDialog();
                     break;
                 case "Copy all metadata to xmp format":
                     if (selectedIndicesList.size() > 0) {

@@ -66,6 +66,7 @@ public class RenamePhotos extends JDialog {
 
     private int[] selectedFilenamesIndices;
     public File[] files;
+    boolean selected_files;
 
     public RenamePhotos() {
         StringBuilder res = new StringBuilder();
@@ -194,8 +195,8 @@ public class RenamePhotos extends JDialog {
         }
 
 
-        if ("".equals(RenamingSourceFoldertextField.getText())) { // Empty folder string
-            JOptionPane.showMessageDialog(null, "No image folder path selected", "No path", JOptionPane.WARNING_MESSAGE);
+        if (("".equals(RenamingSourceFoldertextField.getText())) && (!selected_files)) { // Empty folder string and no files selected
+            JOptionPane.showMessageDialog(null, "No image folder path selected\nand/or\nNo images selected in the main screen", "No path or selected files", JOptionPane.WARNING_MESSAGE);
         } else {
             // analyze what prefix radio button has been chosen
             if (prefixDate_timeradioButton.isSelected()) {
@@ -345,7 +346,7 @@ public class RenamePhotos extends JDialog {
             dialogMessage += extension_message;
 
             String[] options = {"Continue", "Cancel"};
-            int choice = JOptionPane.showOptionDialog(null, dialogMessage, "In OnOK",
+            int choice = JOptionPane.showOptionDialog(null, dialogMessage, "Selected options",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             if (choice == 0) { //Continue
@@ -450,13 +451,29 @@ public class RenamePhotos extends JDialog {
                         exifcommands.append(" '-fileorder datetimeoriginal#'");
                     }
                 }
-                // Add the dir
-                if (isWindows) {
-                    cmdparams.add(exifcommands.toString());
-                    cmdparams.add(RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
-                } else {
-                    exifcommands.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
-                    cmdparams.add(exifcommands.toString());
+                // Check whether the directory has been povided (takes precedence) or files have been selected from the main page
+                if (!"".equals(RenamingSourceFoldertextField.getText())) { // not empty, so a selected folder
+                    // Add the dir
+                    if (isWindows) {
+                        cmdparams.add(exifcommands.toString());
+                        cmdparams.add(RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                    } else {
+                        exifcommands.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                        cmdparams.add(exifcommands.toString());
+                    }
+                } else { // we have images selected in the main screen
+                    if (isWindows) {
+                        cmdparams.add(exifcommands.toString());
+                        for (int index : selectedFilenamesIndices) {
+                            cmdparams.add(files[index].getPath().replace("\\", "/"));
+                        }
+                    } else {
+                        for (int index : selectedFilenamesIndices) {
+                            exifcommands.append(" " + files[index].getPath());
+                        }
+                        cmdparams.add(exifcommands.toString());
+                    }
+
                 }
                 logger.info("final cmdparams: " + cmdparams);
                 logger.info("final exifcommands: " + exifcommands.toString());
@@ -480,9 +497,13 @@ public class RenamePhotos extends JDialog {
         dispose();
     }
 
-    public void showDialog() {
-        selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-        files = MyVariables.getSelectedFiles();
+    public void showDialog(boolean files_selected) {
+        if (files_selected) {
+            selected_files = true;
+            selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
+            files = MyVariables.getSelectedFiles();
+        }
+
         progressBar.setVisible(false);
 
         pack();
