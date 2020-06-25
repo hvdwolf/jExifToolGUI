@@ -585,6 +585,86 @@ public class Utils {
         return getCurrentOsName() == Application.OS_NAMES.MICROSOFT;
     }
 
+    public static boolean in_Range(int checkvalue, int lower, int upper) {
+        // note: lower >=; upper <
+        if (checkvalue >= lower && checkvalue < upper) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static String[] gpsCalculator(JPanel rootPanel, String[] input_lat_lon) {
+        // Here is where we calculate the degrees-minutes-seconds to decimal values
+        float coordinate;
+        //float coordinate;
+        String[] lat_lon = {"", ""};
+
+        // No complex method. Simply write it out
+        // first latitude
+        // Note that "South" latitudes and "West" longitudes convert to negative decimal numbers.
+        // In decs-mins-secs, degrees < 90, minutes < 60, seconds <60. NOT <=
+        if ( in_Range(Integer.parseInt(input_lat_lon[2]), 0, 60)) { //secs
+            coordinate = Float.parseFloat(input_lat_lon[2]) / (float) 60;
+            logger.info("converted seconds: " + coordinate);
+        } else {
+            JOptionPane.showMessageDialog(rootPanel, "seconds must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            lat_lon[0] = "error";
+            return lat_lon;
+        }
+        if (in_Range(Integer.parseInt(input_lat_lon[1]), 0, 60)) { //mins
+            coordinate = (Float.parseFloat( input_lat_lon[1]) + coordinate) / (float) 60;
+            logger.info("converted mins + secs: " + coordinate);
+        } else {
+            JOptionPane.showMessageDialog(rootPanel, "minutes must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            lat_lon[0] = "error";
+            return lat_lon;
+        }
+        if (in_Range(Integer.parseInt(input_lat_lon[0]), 0, 90)) { //degs
+            coordinate = Float.parseFloat( input_lat_lon[0]) + coordinate;
+            if ("S".equals(input_lat_lon[3])) { //South means negative value
+                coordinate = -(coordinate);
+            }
+            logger.info("decimal lat: " + coordinate);
+            lat_lon[0] = String.valueOf(coordinate);
+        } else {
+            JOptionPane.showMessageDialog(rootPanel, "degrees must fall in the range 0 to <90", "error", JOptionPane.ERROR_MESSAGE);
+            lat_lon[0] = "error";
+            return lat_lon;
+        }
+        
+        // Now do the same for longitude
+        if ( in_Range(Integer.parseInt(input_lat_lon[6]), 0, 60)) { //secs
+            coordinate = Float.parseFloat(input_lat_lon[6]) / (float) 60;
+            logger.info("converted seconds: " + coordinate);
+        } else {
+            JOptionPane.showMessageDialog(rootPanel, "seconds must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            lat_lon[0] = "error";
+            return lat_lon;
+        }
+        if (in_Range(Integer.parseInt(input_lat_lon[5]), 0, 60)) { //mins
+            coordinate = (Float.parseFloat( input_lat_lon[5]) + coordinate) / (float) 60;
+            logger.info("converted mins + secs: " + coordinate);
+        } else {
+            JOptionPane.showMessageDialog(rootPanel, "minutes must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            lat_lon[0] = "error";
+            return lat_lon;
+        }
+        if (in_Range(Integer.parseInt(input_lat_lon[4]), 0, 90)) { //degs
+            coordinate = Float.parseFloat( input_lat_lon[4]) + coordinate;
+            if ("W".equals(input_lat_lon[7])) { //West means negative value
+                coordinate = -(coordinate);
+            }
+            lat_lon[1] = String.valueOf(coordinate);
+            logger.info("decimal lon: " + coordinate);
+        } else {
+            JOptionPane.showMessageDialog(rootPanel, "degrees must fall in the range 0 to <90", "error", JOptionPane.ERROR_MESSAGE);
+            lat_lon[0] = "error";
+            return lat_lon;
+        }
+
+        return lat_lon;
+    }
 
     @SuppressWarnings("SameParameterValue")
     private static URL getResource(String path) {
