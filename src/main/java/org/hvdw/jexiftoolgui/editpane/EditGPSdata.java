@@ -70,14 +70,14 @@ public class EditGPSdata {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
             String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
-            logger.info(SpaceStripped, " ; value: ", cells[1], "\n");
+            logger.info(SpaceStripped + "; value: " + cells[1], "\n");
             if (SpaceStripped.contains("Latitude")) {
                 gpsFields[0].setText(cells[1]);
             }
             if (SpaceStripped.contains("Longitude")) {
                 gpsFields[1].setText(cells[1]);
             }
-            if (SpaceStripped.contains("Altitude")) {
+            if ("GPSAltitude".equals(SpaceStripped)) {
                 gpsFields[2].setText(cells[1]);
             }
             if (SpaceStripped.contains("AltitudeRef")) {
