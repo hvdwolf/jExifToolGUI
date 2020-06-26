@@ -81,7 +81,8 @@ public class ProgramTexts {
             +"Note that this screen is meant to move all tags from a certain category from your selected images(s).<br>" +
             "By writing \"clean empty\" fields from the Edit tabs you can more specifically clean that metadata.";
     public static final String exportMetaDataUiText = "This option gives you the possibility to export the metadata from your selected photo(s). A number of formats is supported.<br>"
-            +"All formats give an export file per selected photo, apart from csv which will give you one (big) csv file for all selected photos.";
+            +"All formats give an export file per selected photo, apart from csv which will give you one (big) csv file for all selected photos.<br><br>"
+            +"The exported files will be saved to the image folder you loaded your images from.";
     public static final String CreateArgsMetaDataUiText = "Which metadata from your selected image(s) do you want to add to your args file(s)?";
     public static final String NoOptionSelected = "You did not select one single option. Cancel would have been the correct option. I will not do anything.";
     public static final String MyCommandsText = "<html>On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
