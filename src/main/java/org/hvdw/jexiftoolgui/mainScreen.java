@@ -1791,7 +1791,12 @@ public class mainScreen {
                     if ("".equals(geotaggingGPSLogtextField.getText())) {
                         JOptionPane.showMessageDialog(rootPanel, "No gps track log selected", "No gps log", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        EGd.writeInfo(getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
+                        if ((selectedIndicesList.size() == 0)) { //we have no images selected but the folder is selected
+                            EGd.writeInfo(false, getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
+                        } else {
+                            EGd.writeInfo(true, getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
+                        }
+
                     }
                 }
                 OutputLabel.setText("");

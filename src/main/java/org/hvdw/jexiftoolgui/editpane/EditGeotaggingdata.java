@@ -65,15 +65,20 @@ public class EditGeotaggingdata {
     }
 
 //    public void writeInfo(String onFolder, String gpslogfile, String geosync, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
-    public void writeInfo(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
+    public void writeInfo(boolean images_selected, JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
 
-        int[] selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        int[] selectedFilenamesIndices = new int[]{};
+        File[] files = new File[]{};
+        if (images_selected) {
+            selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
+            files = MyVariables.getSelectedFiles();
+        }
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
         String onFolder = geotaggingFields[0].getText().trim();
         String gpslogfile = geotaggingFields[1].getText().trim();
         String geosync = geotaggingFields[2].getText().trim();
+        logger.info("onFolder: " + onFolder);
 
         // exiftool on windows or other
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
@@ -123,6 +128,7 @@ public class EditGeotaggingdata {
             }
         } else { // We do have a non-empty folder string
             //cmdparams.addAll( Arrays.asList(params) );
+
             if (isWindows) {
                 cmdparams.add(onFolder.replace("\\", "/"));
             } else {
