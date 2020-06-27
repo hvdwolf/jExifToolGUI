@@ -20,6 +20,9 @@ rm -rvf jExifToolGUI.app tmp *.dmg
 printf "Create the bundle from the base bundle\n\n"
 cp -a $BaseApp $App
 
+printf "Update the VersionString to $Version\n\n"
+sed -i "s+VersionString+$Version+" $App/Contents/Info.plist
+
 printf "Now copy the jre and the jar into the app\n\n" 
 cp -a jre $App/Contents/MacOS
 cp ../../jExifToolGUI.jar $App/Contents/MacOS/
