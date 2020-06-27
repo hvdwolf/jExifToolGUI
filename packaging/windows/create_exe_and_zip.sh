@@ -9,8 +9,17 @@
 # jre V11: download from https://adoptopenjdk.net/releases.html.
 #      Untar it and rename resulting folder to jre (to keep it simple over the versions)
 
+if [ "$1" = "" ]
+then
+        printf "\n\nYou have to provide the version\n\n"
+        exit
+fi
+
+Version="$1"
+
+
+
 launch4jPATH="../../../launch4j/launch4j"
-Version="1.00"
 exe_zip_path="jExifToolGUI-$Version-x86_64"
 JRE="../../../java/JREs/windows-jre"
 

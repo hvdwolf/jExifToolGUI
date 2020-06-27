@@ -7,8 +7,14 @@
 # appimagetool: Download from https://github.com/AppImage/AppImageKit/releases
 # jre V11: download from https://adoptopenjdk.net/releases.html. Untar it and rename resulting folder to jre (to keepit simple over the versions)
 
+if [ "$1" = "" ]
+then
+        printf "\n\nYou have to provide the version\n\n"
+        exit
+fi
 
-VER="1.00"
+VER="$1"
+
 #
 printf "Remove, create and step into our AppDir\n\n"
 #
