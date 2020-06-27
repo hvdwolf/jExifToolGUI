@@ -1,0 +1,7 @@
+#!/bin/bash
+
+CurDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+export JAVA_HOME="${CurDir}"/jre
+"${CurDir}"/jre/Contents/Home/bin/java -Xmx1024M -jar "${CurDir}"/jExifToolGUI.jar &
+
