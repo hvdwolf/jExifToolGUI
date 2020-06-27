@@ -51,16 +51,6 @@ public class Utils {
      */
     static void openBrowser(String webUrl) {
 
-        /*try {
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI(webUrl));
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         try {
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().browse(URI.create(webUrl));
@@ -68,19 +58,17 @@ public class Utils {
             }
             Application.OS_NAMES os = Utils.getCurrentOsName();
 
-            // Such calls are extremely difficult to mock and test. In a future release, we should think about dependency injection and such stuff ;-)
             Runtime runtime = Runtime.getRuntime();
             switch (os) {
                 case APPLE:
                     runtime.exec("open " + webUrl);
                     return;
                 case LINUX:
-                    //runtime.exec("open " + webUrl);
                     runtime.exec("xdg-open " + webUrl);
                     return;
                 case MICROSOFT:
                     runtime.exec("explorer " + webUrl);
-
+                    return;
             }
         }
         catch (IOException | IllegalArgumentException e) {
