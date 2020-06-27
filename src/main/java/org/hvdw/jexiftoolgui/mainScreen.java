@@ -1629,6 +1629,9 @@ public class mainScreen {
                 case "Check for new version":
                     Utils.checkForNewVersion("menu");
                     break;
+                case "Donate":
+                    Utils.openBrowser("https://hvdwolf.github.io/jExifToolGUI/donate.html");
+                    break;
                 default:
                     break;
             }
@@ -2170,9 +2173,9 @@ public class mainScreen {
         myMenu = new JMenu("Help");
         myMenu.setMnemonic(KeyEvent.VK_H);
         menuBar.add(myMenu);
-        /*menuItem = new JMenuItem("jExifToolGUI homepage");
+        menuItem = new JMenuItem("jExifToolGUI homepage");
         menuItem.addActionListener(new MenuActionListener());
-        myMenu.add(menuItem); */
+        myMenu.add(menuItem);
         menuItem = new JMenuItem("ExifTool homepage");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
@@ -2184,6 +2187,7 @@ public class mainScreen {
         menuItem.addActionListener(new MenuActionListener());
         menuItem = new JMenuItem("Donate");
         myMenu.add(menuItem);
+        menuItem.addActionListener(new MenuActionListener());
         myMenu.addSeparator();
         menuItem = new JMenuItem("License");
         menuItem.addActionListener(new MenuActionListener());
