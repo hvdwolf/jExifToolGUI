@@ -1618,7 +1618,7 @@ public class mainScreen {
                     Utils.openBrowser(ProgramTexts.ProjectWebSite);
                     break;
                 case "ExifTool homepage":
-                    Utils.openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
+                    Utils.openBrowser("https://exiftool.org/");
                     break;
                 case "Credits":
                     JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
