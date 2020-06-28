@@ -7,6 +7,8 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ShiftDateTime extends JDialog {
-    private JPanel contentPane;
+    private JPanel shiftDateTimePane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JCheckBox shiftForwardCheckBox;
@@ -34,8 +36,10 @@ public class ShiftDateTime extends JDialog {
     public File[] files;
     private JProgressBar progBar;
 
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     public ShiftDateTime() {
-        setContentPane(contentPane);
+        setContentPane(shiftDateTimePane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
@@ -51,7 +55,7 @@ public class ShiftDateTime extends JDialog {
             }
         });
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        shiftDateTimePane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void initDialog() {
@@ -101,12 +105,21 @@ public class ShiftDateTime extends JDialog {
             }
         }
 
+        logger.info(cmdparams.toString());
         CommandRunner.runCommandWithProgressBar(cmdparams, progBar);
     }
 
     private void onOK() {
-        writeInfo();
-        dispose();
+        if ("0000:00:00 00:00:00".equals(ShiftDateTimetextField.getText())) {
+            JOptionPane.showMessageDialog(shiftDateTimePane, "You left the shift value at \"0000:00:00 00:00:00\".\nNothing to do!", "No shift value set", JOptionPane.ERROR_MESSAGE);
+        } else if ((!ShiftDateTimeOriginalcheckBox.isSelected()) && (!ShiftModifyDatecheckBox.isSelected()) && (!ShiftCreateDatecheckBox.isSelected())) {
+            // You did not select any date option
+            JOptionPane.showMessageDialog(shiftDateTimePane, "You did not select any of the date options.\nNothing to do!", "No date option set", JOptionPane.ERROR_MESSAGE);
+        } else {
+            writeInfo();
+            dispose();
+        }
+
     }
 
     private void onCancel() {
@@ -141,12 +154,12 @@ public class ShiftDateTime extends JDialog {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(7, 1, new Insets(10, 10, 10, 10), 1, 1));
-        contentPane.setPreferredSize(new Dimension(450, 500));
+        shiftDateTimePane = new JPanel();
+        shiftDateTimePane.setLayout(new GridLayoutManager(7, 1, new Insets(10, 10, 10, 10), 1, 1));
+        shiftDateTimePane.setPreferredSize(new Dimension(450, 500));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        shiftDateTimePane.add(panel1, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
@@ -160,7 +173,7 @@ public class ShiftDateTime extends JDialog {
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        shiftDateTimePane.add(panel3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         shiftForwardCheckBox = new JCheckBox();
         shiftForwardCheckBox.setText("Shift forward");
@@ -178,10 +191,10 @@ public class ShiftDateTime extends JDialog {
         panel3.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ShiftDateTimeLabel = new JLabel();
         ShiftDateTimeLabel.setText("ShiftDateTimeLabel");
-        contentPane.add(ShiftDateTimeLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        shiftDateTimePane.add(ShiftDateTimeLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        shiftDateTimePane.add(panel4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         ShiftDateTimeOriginalcheckBox = new JCheckBox();
         ShiftDateTimeOriginalcheckBox.setText("shift exif:DateTimeOriginal");
@@ -194,18 +207,18 @@ public class ShiftDateTime extends JDialog {
         panel4.add(ShiftModifyDatecheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         BackupOfOriginalscheckBox = new JCheckBox();
         BackupOfOriginalscheckBox.setText("Make backup of originals");
-        contentPane.add(BackupOfOriginalscheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        shiftDateTimePane.add(BackupOfOriginalscheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         UpdatexmpcheckBox = new JCheckBox();
         UpdatexmpcheckBox.setSelected(true);
         UpdatexmpcheckBox.setText("Update xmp values as well");
-        contentPane.add(UpdatexmpcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        shiftDateTimePane.add(UpdatexmpcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
      * @noinspection ALL
      */
     public JComponent $$$getRootComponent$$$() {
-        return contentPane;
+        return shiftDateTimePane;
     }
 
 }
