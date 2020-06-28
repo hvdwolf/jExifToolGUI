@@ -118,7 +118,7 @@ public class ProgramTexts {
     public static final String ModifyDateTimeLabel = "This dialog gives you the option to modify the several date/time tags "
             +"in the exif (and xmp) information like in the \"Edit Data -> Exif\" tab. It works on the selected images.<br>"
             +"More important here: You can use the shift the date/time forward/backward (future/past) for the selected fields, for the selected images.<br>"
-            +"The corresponfing xmp values can be updated at the same time.";
+            +"The corresponding xmp values can be updated at the same time.";
     public static final String ShiftDateTimeLabel = "Sometimes your camera's clock is 1-2 hours behind or ahead because you are "
             +"\"suddenly\" in another time zone, or forgot to adjust for summer/winter time. This allows you to shift a bunch of photos all with the same time shift.";
     public static final String NotAllMandatoryFields = "<html>At least one of the manadatory fields is not complete.<br>Please complete the missing mandatory data.<br><br>I can't continue without it.</html>";
