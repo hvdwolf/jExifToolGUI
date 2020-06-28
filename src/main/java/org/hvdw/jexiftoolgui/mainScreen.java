@@ -1587,7 +1587,7 @@ public class mainScreen {
                 case "Modify Date/time":
                     if (selectedIndicesList.size() > 0) {
                         ModifyDateTime MDT = new ModifyDateTime();
-                        MDT.showDialog(selectedIndices, files);
+                        MDT.showDialog(progressBar);
                         OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
