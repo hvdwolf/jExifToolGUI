@@ -20,7 +20,7 @@ Version="$1"
 
 
 launch4jPATH="../../../launch4j/launch4j"
-exe_zip_path="jExifToolGUI-$Version-x86_64"
+exe_zip_path="jExifToolGUI-$Version-win-x86_64"
 JRE="../../../java/JREs/windows-jre"
 
 cp ../../jExifToolGUI.jar .
