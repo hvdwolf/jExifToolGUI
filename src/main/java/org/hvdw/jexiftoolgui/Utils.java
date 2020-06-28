@@ -214,7 +214,7 @@ public class Utils {
      * It can be called from startup (preferences setting) or from the Help menu
      */
     static void checkForNewVersion(String fromWhere) {
-        String version = "";
+        String web_version = "";
         boolean versioncheck = prefs.getByKey(VERSION_CHECK, false);
 
 
@@ -223,13 +223,15 @@ public class Utils {
                 URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                version = in.readLine();
+                web_version = in.readLine();
                 in.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            logger.info("Version: " + version);
-            if (Float.valueOf(version) > Float.valueOf(ProgramTexts.Version)) {
+            logger.info("Version: " + web_version);
+            int version_compare = web_version.compareTo(ProgramTexts.Version);
+            if ( version_compare > 0 ) { // This means the version on the web is newer
+            //if (Float.valueOf(web_version) > Float.valueOf(ProgramTexts.Version)) {
                 String[] options = {"No", "Yes"};
                 int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ProgramTexts.newVersionText), "New version found",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
