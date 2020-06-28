@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+
+<title>Installing jExifToolGUI</title>
+<META NAME="description" LANG="EN" CONTENT="jExifToolGUI">
+<META NAME="keywords" LANG="EN" CONTENT="jExifToolGUI, photo, exiftool, exif, xmp, iptc, gps, image, rename, gui, gpano, metadata, tags, jpg, jpeg, tif, tiff, png">
+<META NAME="description" LANG="NL" CONTENT="jExifToolGUI">
+<META NAME="keywords" LANG="NL" CONTENT="jExifToolGUI, foto, exiftool, exif, xmp, iptc, gps, image, rename, gui, gpano, metadata, tags, jpg, jpeg, tif, tiff, png">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+<link rel="shortcut icon" href="images/favicon.ico" >
+
+<!-- styles for panos -->
+<link rel="STYLESHEET" type="text/css" href="css/styles.css">
+
+
+
+</head>
+<body  bgcolor="#FFFFCC">
+<center><H1>Installing jExifToolGUI</H1></center>
+<table width="900" border="1" style="background-color:#FEE;"><tr><td><b>jExifToolGUI</b> actually does not need to be installed. The only exception is the debian .deb file. All other release files can be 
+copied into "some" folder and started from there.<br>The releases mentioning "including java V11" do not need anything else. The releases without the jre, require 
+you to download either the full java V 11 (or newer) JDK or the V11 (or newer) JRE from <a href="https://adoptopenjdk.net/releases.html" target="_blank">https://adoptopenjdk.net/releases.html</a>.<br><br>
+jExifToolGUI needs exiftool from Phil Harvey, but exiftool is not bundled with jExifToolGUI. You have to download it yourself from <a href="https://exiftool.org" target="_blank">exiftool.org</a>.
+</td></tr></table>
+
+<ul>
+<li><a href="#Linux">Linux Platforms*</a></li>
+<li><a href="#Windows">Windows</a></li>
+<li><a href="#MacOS">MacOS</a></li>
+<li><a href="#Universal">Universal</a></li>
+</ul>
+<br><br>
+<i>*: Linux is not Unix. Linux is Linux. MacOS is a BSD-unix. So often people make that mistake.</i><hr>
+<strong>Prerequisite:</strong> jExifToolGUI needs exiftool from Phil Harvey, but exiftool is not bundled with jExifToolGUI. You have to download it yourself from <a href="https://exiftool.org" target="_blank">exiftool.org</a>.
+<br><br>
+
+<h2><a name="Linux">Linux Platforms</a></h2>
+On Linux you have a few options.
+<ul>
+<li><strong>On a debian based Linux</strong> (Debian/Ubuntu/Mint/MX Linux/Raspbian etc. etc.): You can download the jexiftoolgui-{some version}.deb.<br>
+You can install this on any architecture that supports Java V11. Install it with <tt>sudo dpkg -i jexiftoolgui-{some version}.deb</tt>. 
+It will install jExifToolGUI, add icons/shortcuts to your menu and install java V11 and "image-exiftool" for you.</li>
+<li><strong>The AppImage</strong>: This is a "universal" appimage (see <a href="https://appimage.org/" target="_blank">https://appimage.org</a>). It runs on any 64bit Intel Linux. 
+(32bit and ARM architectures are currently not supported. In case of demand they can easily be made)</li>
+</ul>
+
+<h2><a name="Windows">Windows</a></h2>
+For Windows you have a few options, but the most simple one is to download the "jExifToolGUI-{some version}-win-x86_64.zip".<br>
+This is the "all in one" version and comes with the java V11 JRE (java runtime environment) included.<br> It does require a 64bit Windows.<br>
+Unzip this zip file into some folder. Make sure to unzip with paths intact! 
+Simply double-click the .exe file to start jExifToolGUI.<br>
+<i>With regard to exiftool: If you download the stand-alone executable, make sure to rename "exiftool(-k).exe" to "exiftool.exe" after unzipping the zip file.</i>
+<br><br>
+
+<h2><a name="MacOS">MacOS</a></h2>
+For MacOS there is the full bundle inside jExifToolGUI-x86_64-macos-full-{some version}.dmg.zip. It contains jExifToolGUI and also "inside" the bundle the java V11 JRE.<br>
+Download the zip and unzip it. Open the dmg as you are used. Drag the jExifToolGUI.app into the "Applications" or any place of your liking.
+<br><br>
+
+<h2><a name="Universal">Universal</a></h2>
+The <strong>jExifToolGUI.jar</strong>. The barebone jExifToolGUI.jar containing all dependencies.<br>
+This one is for those user who know what they are doing and only need the jar. You need to have java V11 installed on your system.<br>Start with <tt>java -jar jExifToolGUI.jar &</tt><br>
+Or alternatively <tt>java -Xmx1024M -jar jExifToolGUI.jar &</tt>.
+
+</body>
+</html>
