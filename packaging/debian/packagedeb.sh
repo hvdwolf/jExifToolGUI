@@ -1,7 +1,19 @@
-#!/bin/sh
- 
+#!/bin/bash
+
+if [ "$1" = "" ]
+then
+        printf "\n\nYou have to provide the version\n\n"
+        exit
+fi
+
+# Check if running as root
+if [ "$EUID" -ne 0 ]
+  then printf "\n\nPlease run as root\n\n"
+  exit
+fi
+
 PACKAGE_NAME="jexiftoolgui"
-PACKAGE_VERSION="0.1"
+PACKAGE_VERSION="$1"
 SOURCE_DIR=$PWD
 TEMP_DIR="/tmp"
 
