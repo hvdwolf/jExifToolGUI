@@ -9,7 +9,8 @@ public interface IPreferencesFacade {
         COPYRIGHTS("copyrights"),
         VERSION_CHECK("versioncheck"),
         LAST_APPLICATION_VERSION("applicationVersion"),
-        EXIFTOOL_PATH("exiftool");
+        EXIFTOOL_PATH("exiftool"),
+        METADATA_LANGUAGE("metadatalanguage");
 
         public final String key;
         PreferenceKey(String key) {

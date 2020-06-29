@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ public class PreferencesDialog extends JDialog {
     JTextField CopyrightstextField;
     JCheckBox UseLastOpenedFoldercheckBox;
     JCheckBox CheckVersioncheckBox;
+    private JComboBox metadataLanuagecomboBox;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -119,6 +121,7 @@ public class PreferencesDialog extends JDialog {
         logger.info("defaultstartfolder {}", ImgStartFoldertextField.getText());
         logger.info("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
         logger.info("Check for new version on startup {}", CheckVersioncheckBox.isSelected());
+        logger.info("metadatalanguage {}", metadataLanuagecomboBox.getSelectedItem());
 
         if (!ArtisttextField.getText().isEmpty()) {
             logger.trace("{}: {}", ARTIST.key, ArtisttextField.getText());
@@ -144,6 +147,9 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", VERSION_CHECK.key, CheckVersioncheckBox.isSelected());
         prefs.storeByKey(VERSION_CHECK, CheckVersioncheckBox.isSelected());
 
+        logger.trace("{}: {}", METADATA_LANGUAGE.key, metadataLanuagecomboBox.getSelectedItem());
+        prefs.storeByKey(METADATA_LANGUAGE, (String) metadataLanuagecomboBox.getSelectedItem());
+
         JOptionPane.showMessageDialog(contentPanel, "Settings saved", "Settings saved", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -156,15 +162,20 @@ public class PreferencesDialog extends JDialog {
         CopyrightstextField.setText(prefs.getByKey(COPYRIGHTS, ""));
         UseLastOpenedFoldercheckBox.setSelected(prefs.getByKey(USE_LAST_OPENED_FOLDER, false));
         CheckVersioncheckBox.setSelected(prefs.getByKey(VERSION_CHECK, false));
+        metadataLanuagecomboBox.setSelectedItem(prefs.getByKey(METADATA_LANGUAGE, "exiftool - default"));
     }
 
     // The  main" function of this class
     void showDialog() {
-        setSize(700, 400);
+        setSize(700, 500);
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();
         //setLocation((int) x - getWidth() / 2, (int) y - getHeight() / 2);
         setLocationRelativeTo(null);
+        String languages = StandardFileIO.readTextFileAsStringFromResource("texts/Languages.txt");
+        String[] exiftoolLanguages = languages.split("\\r?\\n"); // split on new lines
+        metadataLanuagecomboBox.setModel(new DefaultComboBoxModel(exiftoolLanguages));
+
         retrievePreferences();
         setVisible(true);
 
@@ -186,12 +197,12 @@ public class PreferencesDialog extends JDialog {
      */
     private void $$$setupUI$$$() {
         contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayoutManager(9, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPanel.setPreferredSize(new Dimension(834, 600));
+        contentPanel.setLayout(new GridLayoutManager(10, 1, new Insets(10, 10, 10, 10), -1, -1));
+        contentPanel.setPreferredSize(new Dimension(834, 800));
         contentPanel.setRequestFocusEnabled(false);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPanel.add(panel1, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
+        contentPanel.add(panel1, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
@@ -238,7 +249,7 @@ public class PreferencesDialog extends JDialog {
         panel5.add(ImgStartFolderButton);
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridLayoutManager(4, 2, new Insets(0, 10, 0, 0), -1, -1));
-        contentPanel.add(panel6, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        contentPanel.add(panel6, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel6.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         final JLabel label3 = new JLabel();
         Font label3Font = this.$$$getFont$$$(null, Font.BOLD, -1, label3.getFont());
@@ -276,10 +287,19 @@ public class PreferencesDialog extends JDialog {
         UseLastOpenedFoldercheckBox.setToolTipText("Selecting this checkbox will overrule the \"Default image start directory:\"");
         contentPanel.add(UseLastOpenedFoldercheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer4 = new Spacer();
-        contentPanel.add(spacer4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        contentPanel.add(spacer4, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         CheckVersioncheckBox = new JCheckBox();
         CheckVersioncheckBox.setText("Check for new jExifToolGUI version on program start");
-        contentPanel.add(CheckVersioncheckBox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPanel.add(CheckVersioncheckBox, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel9 = new JPanel();
+        panel9.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        contentPanel.add(panel9, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label6 = new JLabel();
+        label6.setText("Language to use to display metadata tags");
+        panel9.add(label6);
+        metadataLanuagecomboBox = new JComboBox();
+        metadataLanuagecomboBox.setPreferredSize(new Dimension(300, 30));
+        panel9.add(metadataLanuagecomboBox);
     }
 
     /**
@@ -307,4 +327,5 @@ public class PreferencesDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPanel;
     }
+
 }

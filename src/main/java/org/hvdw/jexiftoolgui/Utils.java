@@ -260,6 +260,19 @@ public class Utils {
         }
         return exiftool;
     }
+
+    // Get the configured metadata
+    public static String getmetadataLanguage() {
+        String metadatalanguage = prefs.getByKey(METADATA_LANGUAGE, "");
+        if ( ("".equals(metadatalanguage)) || ("exiftool - default".equals(metadatalanguage)) ) {
+            return "";
+        } else {
+            String[] parts = metadatalanguage.split(" - ");
+            logger.debug("metadatalanguage: " + parts[0]);
+            //return "-lang " + parts[0];
+            return parts[0];
+        }
+    }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
 
 
@@ -352,6 +365,11 @@ public class Utils {
         // Need to build exiftool prefs check
         MyVariables.setSelectedImagePath(fpath);
         cmdparams.add(exiftool);
+        // Check for chosen metadata language
+        if (!"".equals(getmetadataLanguage())) {
+            cmdparams.add("-lang");
+            cmdparams.add(getmetadataLanguage());
+        }
         cmdparams.addAll(Arrays.asList(whichInfo));
         logger.trace("image file path: {}", fpath);
         cmdparams.add(MyVariables.getSelectedImagePath());
