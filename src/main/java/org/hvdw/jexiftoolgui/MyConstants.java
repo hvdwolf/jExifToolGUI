@@ -6,11 +6,13 @@ public class MyConstants {
     public static final String[] EXIF_PARAMS = {"-exif:all","-G", "-tab"};
     public static final String[] XMP_PARAMS = {"-xmp:all","-G", "-tab"};
     public static final String[] IPTC_PARAMS = {"-iptc:all","-G", "-tab"};
-    public static final String[] GPS_LOC__PARAMS = {"-a","-G", "-tab","-gps:all","-xmp:GPSLatitude","-xmp:GPSLongitude","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
+    public static final String[] GPS_LOC_PARAMS = {"-a","-G", "-tab","-gps:all","-xmp:GPSLatitude","-xmp:GPSLongitude","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
     public static final String[] GPANO_PARAMS = {"-G", "-tab", "-xmp:StitchingSoftware","-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:InitialHorizontalFOVDegrees"};
     public static final String[] ICC_PARAMS = {"-icc_profile:all","-G", "-tab"};
     public static final String[] MAKERNOTES_PARAMS = {"-makernotes:all","-G", "-tab"};
     public static final String[] COMPOSITE_PARAMS = {"-composite:all","-G", "-tab"};
+//    public static final String[] LENS_PARAMS = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-exif:focallength","-exif:focallengthIn35mmformat","-exif:fnumber","-exif:maxaperturevalue","-composite:aperture","-exif:meteringmode","-composite:lensid","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensserialnumber","-makernotes:lensfirmwareversion","-G", "-tab"};
+public static final String[] LENS_PARAMS = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-exif:focallength","-exif:focallengthIn35mmformat","-exif:fnumber","-exif:maxaperturevalue","-exif:meteringmode","-composite:lensid","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensserialnumber","-makernotes:lensfirmwareversion","-G", "-tab"};
     public static final String[] REF_IMAGE_DATETIME = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
     public static final String[] GPANO_PROJECTIONS = {"equirectangular", "cylindrical", "rectilinear"};
 

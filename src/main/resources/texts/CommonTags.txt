@@ -4,6 +4,7 @@ iptc
 composite
 gps
 gps/location
+lens data
 gpano
 icc_profile
 makernotes

@@ -428,7 +428,10 @@ public class Utils {
                 params[0] = "-gps:all";
                 break;
             case "gps/location":
-                params = MyConstants.GPS_LOC__PARAMS;
+                params = MyConstants.GPS_LOC_PARAMS;
+                break;
+            case "lens data":
+                params = MyConstants.LENS_PARAMS;
                 break;
             case "gpano":
                 params = MyConstants.GPANO_PARAMS;
