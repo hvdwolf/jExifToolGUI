@@ -31,6 +31,8 @@ public class RemoveMetadata extends JDialog {
     private JCheckBox removeIptcDataCheckBox;
     private JCheckBox removeICCDataCheckBox;
     private JCheckBox makeBackupOfOriginalsCheckBox;
+    private JCheckBox removegeotagDataCheckbox;
+    private JCheckBox removexmpgeotagDataCheckbox;
 
     public int[] selectedFilenamesIndices;
     public File[] files;
@@ -91,7 +93,7 @@ public class RemoveMetadata extends JDialog {
 
     private void initDialog() {
         //RemoveMetaDataUiText.setContentType("text/html");
-        RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 270, ProgramTexts.RemoveMetaData));
+        RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 320, ProgramTexts.RemoveMetaData));
 
 
     }
@@ -143,6 +145,16 @@ public class RemoveMetadata extends JDialog {
             if (removeICCDataCheckBox.isSelected()) {
                 Message.append("<li>the ICC data</li>");
                 params.add("-icc_profile:all=");
+                atLeastOneSelected = true;
+            }
+            if (removegeotagDataCheckbox.isSelected()) {
+                Message.append("<li>the geotag data</li>");
+                params.add("-geotag=");
+                atLeastOneSelected = true;
+            }
+            if (removexmpgeotagDataCheckbox.isSelected()) {
+                Message.append("<li>the xmp geotag data</li>");
+                params.add("-xmp:geotag=");
                 atLeastOneSelected = true;
             }
             Message.append("</ul><br><br>");
@@ -205,7 +217,7 @@ public class RemoveMetadata extends JDialog {
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(4, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setPreferredSize(new Dimension(400, 450));
+        contentPane.setPreferredSize(new Dimension(450, 550));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
@@ -244,7 +256,7 @@ public class RemoveMetadata extends JDialog {
         removeAllMetadataCheckBox.setText("Remove all metadata");
         panel5.add(removeAllMetadataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel6 = new JPanel();
-        panel6.setLayout(new GridLayoutManager(5, 1, new Insets(0, 30, 0, 0), -1, -1));
+        panel6.setLayout(new GridLayoutManager(7, 1, new Insets(0, 30, 0, 0), -1, -1));
         panel5.add(panel6, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
         removeExifDataCheckBox = new JCheckBox();
         removeExifDataCheckBox.setText("Remove exif data");
@@ -261,6 +273,12 @@ public class RemoveMetadata extends JDialog {
         removeICCDataCheckBox = new JCheckBox();
         removeICCDataCheckBox.setText("Remove ICC data");
         panel6.add(removeICCDataCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        removegeotagDataCheckbox = new JCheckBox();
+        removegeotagDataCheckbox.setText("Remove geotag data");
+        panel6.add(removegeotagDataCheckbox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        removexmpgeotagDataCheckbox = new JCheckBox();
+        removexmpgeotagDataCheckbox.setText("Remove xmp geotag data");
+        panel6.add(removexmpgeotagDataCheckbox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel5.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
@@ -271,4 +289,5 @@ public class RemoveMetadata extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }
