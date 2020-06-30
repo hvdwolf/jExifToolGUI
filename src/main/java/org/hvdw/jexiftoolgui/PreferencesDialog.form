@@ -231,7 +231,7 @@
           <component id="9b473" class="javax.swing.JLabel">
             <constraints/>
             <properties>
-              <text value="Language to use to display metadata tags"/>
+              <text value="Language to use to display metadata tag descriptions"/>
             </properties>
           </component>
           <component id="4ce99" class="javax.swing.JComboBox" binding="metadataLanuagecomboBox">

@@ -95,7 +95,7 @@ public class ExportMetadata extends JDialog {
 
     private void initDialog() {
         //exportMetaDataUiText.setContentType("text/html");
-        exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 320, ProgramTexts.exportMetaDataUiText));
+        exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 420, ProgramTexts.exportMetaDataUiText));
 
 
         ButtonGroup ExportRbBtns = new ButtonGroup();
@@ -272,7 +272,7 @@ public class ExportMetadata extends JDialog {
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(5, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setPreferredSize(new Dimension(450, 500));
+        contentPane.setPreferredSize(new Dimension(600, 450));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
@@ -360,7 +360,7 @@ public class ExportMetadata extends JDialog {
         panel7.add(spacer4, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         useMetadataTagLanguageCheckBox = new JCheckBox();
         useMetadataTagLanguageCheckBox.setSelected(true);
-        useMetadataTagLanguageCheckBox.setText("Use metadata tag language from Preferences");
+        useMetadataTagLanguageCheckBox.setText("Use language from Preferences for metadata tag descriptions");
         contentPane.add(useMetadataTagLanguageCheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 

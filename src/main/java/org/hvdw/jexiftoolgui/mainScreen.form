@@ -6,7 +6,7 @@
       <xy x="20" y="20" width="1280" height="800"/>
     </constraints>
     <properties>
-      <minimumSize width="1200" height="800"/>
+      <minimumSize width="1200" height="720"/>
       <preferredSize width="1350" height="800"/>
       <requestFocusEnabled value="true"/>
     </properties>
@@ -81,7 +81,7 @@
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="6" use-parent-layout="false">
             <minimum-size width="600" height="-1"/>
-            <preferred-size width="700" height="-1"/>
+            <preferred-size width="750" height="-1"/>
           </grid>
         </constraints>
         <properties/>
@@ -125,7 +125,7 @@
                   <component id="d5c45" class="javax.swing.JRadioButton" binding="radioButtonByTagName">
                     <constraints/>
                     <properties>
-                      <text value="All Tag Names:"/>
+                      <text value="By Group"/>
                     </properties>
                   </component>
                   <component id="74af7" class="javax.swing.JComboBox" binding="comboBoxViewByTagName">

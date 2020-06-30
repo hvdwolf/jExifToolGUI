@@ -167,7 +167,7 @@ public class PreferencesDialog extends JDialog {
 
     // The  main" function of this class
     void showDialog() {
-        setSize(700, 500);
+        setSize(800, 500);
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();
         //setLocation((int) x - getWidth() / 2, (int) y - getHeight() / 2);
@@ -295,7 +295,7 @@ public class PreferencesDialog extends JDialog {
         panel9.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         contentPanel.add(panel9, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label6 = new JLabel();
-        label6.setText("Language to use to display metadata tags");
+        label6.setText("Language to use to display metadata tag descriptions");
         panel9.add(label6);
         metadataLanuagecomboBox = new JComboBox();
         metadataLanuagecomboBox.setPreferredSize(new Dimension(300, 30));

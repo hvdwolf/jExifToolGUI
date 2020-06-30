@@ -466,7 +466,7 @@ public class mainScreen {
     private void $$$setupUI$$$() {
         rootPanel = new JPanel();
         rootPanel.setLayout(new GridLayoutManager(2, 2, new Insets(10, 10, 10, 10), -1, -1));
-        rootPanel.setMinimumSize(new Dimension(1200, 800));
+        rootPanel.setMinimumSize(new Dimension(1200, 720));
         rootPanel.setPreferredSize(new Dimension(1350, 800));
         rootPanel.setRequestFocusEnabled(true);
         LeftPanel = new JPanel();
@@ -499,7 +499,7 @@ public class mainScreen {
         tableListfiles.setToolTipText("Double-clicking the thumbnail or filename will open the image in the default viewer");
         Leftscrollpane.setViewportView(tableListfiles);
         tabbedPaneRight = new JTabbedPane();
-        rootPanel.add(tabbedPaneRight, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, -1), new Dimension(700, -1), null, 6, false));
+        rootPanel.add(tabbedPaneRight, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, -1), new Dimension(750, -1), null, 6, false));
         ViewDatapanel = new JPanel();
         ViewDatapanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         ViewDatapanel.setMinimumSize(new Dimension(500, 90));
@@ -518,7 +518,7 @@ public class mainScreen {
         comboBoxViewCommonTags = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewCommonTags);
         radioButtonByTagName = new JRadioButton();
-        radioButtonByTagName.setText("All Tag Names:");
+        radioButtonByTagName.setText("By Group");
         ViewRadiobuttonpanel.add(radioButtonByTagName);
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);

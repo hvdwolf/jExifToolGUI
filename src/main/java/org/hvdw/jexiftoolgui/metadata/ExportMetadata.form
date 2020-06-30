@@ -6,7 +6,7 @@
       <xy x="48" y="3" width="511" height="531"/>
     </constraints>
     <properties>
-      <preferredSize width="450" height="500"/>
+      <preferredSize width="600" height="450"/>
     </properties>
     <border type="none"/>
     <children>
@@ -235,7 +235,7 @@
         </constraints>
         <properties>
           <selected value="true"/>
-          <text value="Use metadata tag language from Preferences"/>
+          <text value="Use language from Preferences for metadata tag descriptions"/>
         </properties>
       </component>
     </children>
