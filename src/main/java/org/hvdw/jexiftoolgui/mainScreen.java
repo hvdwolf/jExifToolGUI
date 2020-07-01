@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
 
@@ -2249,6 +2250,11 @@ public class mainScreen {
         ViewRadiobuttonListener();
         fillViewTagNamesComboboxes();
 
+        // Check if our custom folder exists and create it
+        String check_result = checkforjexiftoolguiFolder();
+        if (check_result.contains("Error creating")) {
+            JOptionPane.showMessageDialog(rootPanel, "Could not create folder jexiftoolgui_custom or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
+        }
         // Now check the preferences
         preferences = checkPreferences();
         if (!preferences) {

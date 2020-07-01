@@ -12,6 +12,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.LAST_OPENED_FOLDER;
@@ -21,6 +24,47 @@ public class StandardFileIO {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     private final static Logger logger = LoggerFactory.getLogger(StandardFileIO.class);
+
+    public static String extract_resource_to_jexiftoolguiFolder(String resourcePath, String strjexiftoolguifolder){
+        String copyresult = "";
+        Path resourceFile = Paths.get(strjexiftoolguifolder + File.separator);
+
+        try {
+            InputStream fileStream =StandardFileIO.getResourceAsStream(resourcePath);
+            if(fileStream == null)
+                return null;
+
+            // Grab the file name
+            String[] chopped = resourcePath.split("\\/");
+            String fileName = chopped[chopped.length-1];
+            resourceFile = Paths.get(strjexiftoolguifolder + File.separator + fileName);
+
+            // Create an output stream
+            OutputStream out = new FileOutputStream(String.valueOf(resourceFile));
+
+            // Write the file
+            byte[] buffer = new byte[1024];
+            int len = fileStream.read(buffer);
+            while (len != -1) {
+                out.write(buffer, 0, len);
+                len = fileStream.read(buffer);
+            }
+
+            // Close the streams
+            fileStream.close();
+            out.close();
+
+        } catch (IOException e) {
+            copyresult = "Error creating file " + resourcePath;
+            logger.error("Error creating file " + resourcePath);
+            return null;
+        }
+        if ("".equals(copyresult)) {
+            copyresult = "success";
+            logger.info("success");
+        }
+        return copyresult;
+    }
 
     public static String readTextFileAsString (String fileName) {
         // This will reference one line at a time
@@ -130,4 +174,36 @@ public class StandardFileIO {
         }
         return files;
     }
+
+    // Check if we have a jexiftoolgui_custom folder in $HOME with defaults
+    public static String checkforjexiftoolguiFolder() {
+        String method_result = "";
+        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+        // Check if folder exists
+        String strjexiftoolguifolder = userHome + File.separator + "jexiftoolgui_custom";
+        File jexiftoolguifolder = new File(strjexiftoolguifolder);
+        if (!jexiftoolguifolder.exists()) { // no folder yet
+            // First create jexiftoolgui_custom in userHome
+            try {
+                Files.createDirectories(Paths.get(strjexiftoolguifolder));
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                method_result = "Error creating directory " + strjexiftoolguifolder;
+                logger.error("Error creating directory " + strjexiftoolguifolder);
+            }
+        } else { //folder exists
+            method_result = "exists";
+        }
+        // Now check if our first custom.csv exists
+        String strcustomcsv = strjexiftoolguifolder + File.separator + "custom.csv";
+        File customcsv = new File(strcustomcsv);
+        if (!customcsv.exists()) {
+            logger.debug("no custom.csv; trying to create it");
+            method_result = extract_resource_to_jexiftoolguiFolder("texts/custom.csv", strjexiftoolguifolder);
+        } else { //custom.csv exists
+            method_result = "exists";
+        }
+        return method_result;
+    }
+
 }
