@@ -3,7 +3,7 @@ xmp
 iptc
 composite
 gps
-gps/location
+location
 lens data
 gpano
 icc_profile
