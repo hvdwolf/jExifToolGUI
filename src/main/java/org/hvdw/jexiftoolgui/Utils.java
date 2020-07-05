@@ -431,8 +431,8 @@ public class Utils {
             case "gps":
                 params[0] = "-gps:all";
                 break;
-            case "gps/location":
-                params = MyConstants.GPS_LOC_PARAMS;
+            case "location":
+                params[0] = "-location:all";
                 break;
             case "lens data":
                 params = MyConstants.LENS_PARAMS;
