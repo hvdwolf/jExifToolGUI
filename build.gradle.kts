@@ -50,7 +50,7 @@ dependencies {
     // At some time maybe when I feel like adding charts to display ISOs, focal length, aperture and the like
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
 
-    // sqlite at some time --> Adds 6MB
+    // sqlite at some time --> Adds 7MB
     //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
     // or Derby at some time --> Adds 3.2 Mb
     //implementation(group = "org.apache.derby", name = "derby", version = "10.15.2.0")
@@ -61,12 +61,12 @@ dependencies {
 }
 
 java {
-    //sourceCompatibility = JavaVersion.VERSION_1_8
-    //targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     // Undo version 11 again. 95% or more of OSes and distributions still use java 8
     // Redo java_11. We will deliver a jre11 if neccessary. Simple as that
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    //sourceCompatibility = JavaVersion.VERSION_11
+    //targetCompatibility = JavaVersion.VERSION_11
 
 }
 

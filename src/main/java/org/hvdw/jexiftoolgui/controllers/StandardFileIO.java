@@ -136,14 +136,14 @@ public class StandardFileIO {
         String defaultStartFolder = prefs.getByKey(DEFAULT_START_FOLDER, "");
 
         //java_11 
-        String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
+        //String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
         // At least for time being use java_1.8
-        //String startFolder = !defaultStartFolder.isEmpty() ? defaultStartFolder : userHome;
+        String startFolder = !defaultStartFolder.isEmpty() ? defaultStartFolder : userHome;
 
         //java_11 
-        if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
+        //if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
         // At least for time being use java_1.8
-        // if (useLastOpenedFolder && !lastOpenedFolder.isEmpty()) {
+        if (useLastOpenedFolder && !lastOpenedFolder.isEmpty()) {
             startFolder = lastOpenedFolder;
         }
         return startFolder;
@@ -160,10 +160,14 @@ public class StandardFileIO {
         final JFileChooser chooser = new JFileChooser(startFolder);
         //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
         javax.swing.filechooser.FileFilter imgFilter = new FileNameExtensionFilter("(images)", MyConstants.SUPPORTED_IMAGES);
-        FileFilter supFormats = new FileNameExtensionFilter("(supported formats)", MyConstants.SUPPORTED_FORMATS);
+        FileFilter audioFormats = new FileNameExtensionFilter("(audio formats)", MyConstants.SUPPORTED_AUDIOS);
+        FileFilter videoFormats = new FileNameExtensionFilter("(video formats)", MyConstants.SUPPORTED_VIDEOS);
+        FileFilter supFormats = new FileNameExtensionFilter("(all supported formats)", MyConstants.SUPPORTED_FORMATS);
         chooser.setMultiSelectionEnabled(true);
-        chooser.setDialogTitle("Load Image(s)...");
+        chooser.setDialogTitle("Load Image(s)... (or select other file filter)");
         chooser.setFileFilter(imgFilter);
+        chooser.addChoosableFileFilter(audioFormats);
+        chooser.addChoosableFileFilter(videoFormats);
         chooser.addChoosableFileFilter(supFormats);
         //chooser.showOpenDialog(mainScreen.this.rootPanel);
         int status = chooser.showOpenDialog(myComponent);
