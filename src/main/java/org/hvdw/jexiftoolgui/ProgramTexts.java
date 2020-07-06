@@ -121,4 +121,7 @@ public class ProgramTexts {
     public static final String ShiftDateTimeLabel = "Sometimes your camera's clock is 1-2 hours behind or ahead because you are "
             +"\"suddenly\" in another time zone, or forgot to adjust for summer/winter time. This allows you to shift a bunch of photos all with the same time shift.";
     public static final String NotAllMandatoryFields = "<html>At least one of the manadatory fields is not complete.<br>Please complete the missing mandatory data.<br><br>I can't continue without it.</html>";
+    public static final String lensSaveLoadConfigLabel = "<html>Below two buttons give you the option to configure one or more of your lenses and to save it/them for later use."
+            +" In case of saving a lens, the \"Save\" checkboxes are not used. All fields/values will be saved regardless whether you added data to it or not.";
+    public static final String exiftoolDBText = "This tab gives you the option to query the builtin exiftool groups & tags database. You can query by selecting values from the drop-downs or by issueing a direct sql query.";
 }

@@ -5,16 +5,13 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.controllers.YourCommands;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
 import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
-import org.hvdw.jexiftoolgui.editpane.EditExifdata;
-import org.hvdw.jexiftoolgui.editpane.EditGPSdata;
-import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
-import org.hvdw.jexiftoolgui.editpane.EditGpanodata;
-import org.hvdw.jexiftoolgui.editpane.EditXmpdata;
+import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
 import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
@@ -251,6 +248,53 @@ public class mainScreen {
     private JCheckBox xmpCreditcheckBox;
     private JLabel xmpGoogleText;
     private JCheckBox CopyMakernotescheckBox;
+    private JTextField lensmaketextField;
+    private JCheckBox lensmakecheckBox;
+    private JTextField lensmodeltextField;
+    private JCheckBox lensmodelcheckBox;
+    private JTextField lensserialnumbertextField;
+    private JTextField focallengthtextField;
+    private JCheckBox lensserialnumbercheckBox;
+    private JCheckBox focallengthcheckBox;
+    private JTextField focallengthIn35mmformattextField;
+    private JCheckBox focallengthIn35mmformatcheckBox;
+    private JTextField fnumbertextField;
+    private JCheckBox fnumbercheckBox;
+    private JTextField maxaperturevaluetextField;
+    private JCheckBox maxaperturevaluecheckBox;
+    private JComboBox meteringmodecomboBox;
+    private JCheckBox meteringmodecheckBox;
+    private JTextField focusdistancetextField;
+    private JCheckBox focusdistancecheckBox;
+    private JTextField lensidtextField;
+    private JCheckBox lensidcheckBox;
+    private JTextField conversionlenstextField;
+    private JCheckBox conversionlenscheckBox;
+    private JTextField lenstypetextField;
+    private JCheckBox lenstypecheckBox;
+    private JTextField lensfirmwareversiontextField;
+    private JCheckBox lensfirmwareversioncheckBox;
+    private JCheckBox lensOverwriteOriginalscheckBox;
+    private JButton lensCopyFrombutton;
+    private JButton lensSaveTobutton;
+    private JButton lensResetFieldsbutton;
+    private JButton lensHelpbutton;
+    private JPanel saveloadlensconfigpanel;
+    private JButton saveLensConfigurationbutton;
+    private JButton loadLensConfigurationButton;
+    private JLabel lensSaveLoadConfigLabel;
+    private JScrollPane databaseScrollPanel;
+    private JTable DBResultsTable;
+    private JLabel exiftoolDBText;
+    private JRadioButton radiobuttonQueryByGroup;
+    private JRadioButton radiobuttonQueryByCameraMake;
+    private JComboBox comboBoxQueryCommonTags;
+    private JComboBox comboBoxQueryByTagName;
+    private JComboBox comboBoxQueryCameraMake;
+    private JTextField sqlQuerytextField;
+    private JButton sqlExecutebutton;
+    private JTextField queryTagLiketextField;
+    private JButton searchLikebutton;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
@@ -277,6 +321,7 @@ public class mainScreen {
     private EditGPSdata EGPSd = new EditGPSdata();
     private YourCommands YourCmnds = new YourCommands();
     private EditGpanodata EGpanod = new EditGpanodata();
+    private EditLensdata ELd = new EditLensdata();
 
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
@@ -323,6 +368,14 @@ public class mainScreen {
     }
     private JCheckBox[] getGpanoCheckBoxes() {
         return new JCheckBox[] {gpanoPHDcheckBox, gpanoStitchingSoftwarecheckBox, gpanoIVHDCheckBox, gpanoIVPDCheckBox, gpanoIVRDCheckBox, gpanoIHFOVDtextFieldCheckBox, gpanoOverwriteOriginalscheckBox};
+    }
+
+    private JTextField[] getLensFields() {
+        return new JTextField[] {lensmaketextField, lensmodeltextField, lensserialnumbertextField, focallengthtextField, focallengthIn35mmformattextField, fnumbertextField, maxaperturevaluetextField, focusdistancetextField, lensidtextField, conversionlenstextField, lenstypetextField, lensfirmwareversiontextField};
+    }
+
+    private JCheckBox[] getLensCheckBoxes() {
+        return new JCheckBox[] {lensmakecheckBox, lensmodelcheckBox, lensserialnumbercheckBox, focallengthcheckBox, focallengthIn35mmformatcheckBox, fnumbercheckBox, maxaperturevaluecheckBox, focusdistancecheckBox, lensidcheckBox, conversionlenscheckBox, lenstypecheckBox, lensfirmwareversioncheckBox, meteringmodecheckBox, lensOverwriteOriginalscheckBox};
     }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -446,6 +499,23 @@ public class mainScreen {
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCameraMake.setModel(new DefaultComboBoxModel(Tags));
 
+        // fill combobox in Lens panel
+        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/lensmeteringmodes.txt");
+        Tags = TagNames.split("\\r?\\n"); // split on new lines
+        meteringmodecomboBox.setModel(new DefaultComboBoxModel(Tags));
+
+        // Fill all comboboxes in the Exiftool database panel
+        //TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
+        //Tags = TagNames.split("\\r?\\n"); // split on new lines
+        //comboBoxQueryCommonTags.setModel(new DefaultComboBoxModel(Tags));
+
+        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/ExifToolTagNames.txt");
+        Tags = TagNames.split("\\r?\\n"); // split on new lines
+        comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
+
+        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
+        Tags = TagNames.split("\\r?\\n"); // split on new lines
+        comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags));
     }
 
     // region IntelliJ GUI Code Generated
@@ -1337,126 +1407,335 @@ public class mainScreen {
         gpanoMinVersionText.setText("gpanoMinVersionText");
         panel17.add(gpanoMinVersionText, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel21 = new JPanel();
-        panel21.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPaneEditfunctions.addTab("IPTC", panel21);
+        panel21.setLayout(new GridLayoutManager(20, 3, new Insets(10, 20, 10, 20), -1, -1));
+        tabbedPaneEditfunctions.addTab("Lens", panel21);
+        final JLabel label71 = new JLabel();
+        label71.setText("Lens make");
+        panel21.add(label71, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensmaketextField = new JTextField();
+        panel21.add(lensmaketextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JPanel panel22 = new JPanel();
-        panel22.setLayout(new GridLayoutManager(6, 1, new Insets(10, 10, 5, 5), -1, -1));
-        tabbedPaneRight.addTab("Copy Data", panel22);
+        panel22.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        panel21.add(panel22, new GridConstraints(16, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        lensCopyFrombutton = new JButton();
+        lensCopyFrombutton.setText("Copy from selected image");
+        panel22.add(lensCopyFrombutton);
+        lensSaveTobutton = new JButton();
+        lensSaveTobutton.setText("Save to selected image(s)");
+        panel22.add(lensSaveTobutton);
+        lensResetFieldsbutton = new JButton();
+        lensResetFieldsbutton.setText("Reset Fields");
+        panel22.add(lensResetFieldsbutton);
+        lensHelpbutton = new JButton();
+        lensHelpbutton.setLabel("Help");
+        lensHelpbutton.setText("Help");
+        panel22.add(lensHelpbutton);
+        final JLabel label72 = new JLabel();
+        label72.setText("lens Model");
+        panel21.add(label72, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensmodeltextField = new JTextField();
+        panel21.add(lensmodeltextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        lensmodelcheckBox = new JCheckBox();
+        lensmodelcheckBox.setSelected(true);
+        lensmodelcheckBox.setText("");
+        panel21.add(lensmodelcheckBox, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label73 = new JLabel();
+        label73.setText("Save");
+        panel21.add(label73, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensmakecheckBox = new JCheckBox();
+        lensmakecheckBox.setSelected(true);
+        lensmakecheckBox.setText("");
+        panel21.add(lensmakecheckBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label74 = new JLabel();
+        label74.setText("lens serial number");
+        panel21.add(label74, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensserialnumbertextField = new JTextField();
+        panel21.add(lensserialnumbertextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label75 = new JLabel();
+        label75.setText("focal length");
+        panel21.add(label75, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        focallengthtextField = new JTextField();
+        panel21.add(focallengthtextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        lensserialnumbercheckBox = new JCheckBox();
+        lensserialnumbercheckBox.setSelected(true);
+        lensserialnumbercheckBox.setText("");
+        panel21.add(lensserialnumbercheckBox, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        focallengthcheckBox = new JCheckBox();
+        focallengthcheckBox.setSelected(true);
+        focallengthcheckBox.setText("");
+        panel21.add(focallengthcheckBox, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label76 = new JLabel();
+        label76.setText("focal length In 35mm format");
+        panel21.add(label76, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        focallengthIn35mmformattextField = new JTextField();
+        panel21.add(focallengthIn35mmformattextField, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        focallengthIn35mmformatcheckBox = new JCheckBox();
+        focallengthIn35mmformatcheckBox.setSelected(true);
+        focallengthIn35mmformatcheckBox.setText("");
+        panel21.add(focallengthIn35mmformatcheckBox, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label77 = new JLabel();
+        label77.setText("fnumber");
+        panel21.add(label77, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        fnumbertextField = new JTextField();
+        panel21.add(fnumbertextField, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        fnumbercheckBox = new JCheckBox();
+        fnumbercheckBox.setSelected(true);
+        fnumbercheckBox.setText("");
+        panel21.add(fnumbercheckBox, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label78 = new JLabel();
+        label78.setText("max. Aperture value");
+        panel21.add(label78, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        maxaperturevaluetextField = new JTextField();
+        panel21.add(maxaperturevaluetextField, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        maxaperturevaluecheckBox = new JCheckBox();
+        maxaperturevaluecheckBox.setSelected(true);
+        maxaperturevaluecheckBox.setText("");
+        panel21.add(maxaperturevaluecheckBox, new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label79 = new JLabel();
+        label79.setText("metering mode");
+        panel21.add(label79, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        meteringmodecomboBox = new JComboBox();
+        panel21.add(meteringmodecomboBox, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        meteringmodecheckBox = new JCheckBox();
+        meteringmodecheckBox.setSelected(true);
+        meteringmodecheckBox.setText("");
+        panel21.add(meteringmodecheckBox, new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label80 = new JLabel();
+        label80.setText("focus distance");
+        panel21.add(label80, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        focusdistancetextField = new JTextField();
+        panel21.add(focusdistancetextField, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        focusdistancecheckBox = new JCheckBox();
+        focusdistancecheckBox.setSelected(true);
+        focusdistancecheckBox.setText("");
+        panel21.add(focusdistancecheckBox, new GridConstraints(9, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label81 = new JLabel();
+        label81.setText("lensid");
+        panel21.add(label81, new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensidtextField = new JTextField();
+        panel21.add(lensidtextField, new GridConstraints(10, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        lensidcheckBox = new JCheckBox();
+        lensidcheckBox.setSelected(true);
+        lensidcheckBox.setText("");
+        panel21.add(lensidcheckBox, new GridConstraints(10, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label82 = new JLabel();
+        label82.setText("conversion lens");
+        panel21.add(label82, new GridConstraints(11, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        conversionlenstextField = new JTextField();
+        panel21.add(conversionlenstextField, new GridConstraints(11, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        conversionlenscheckBox = new JCheckBox();
+        conversionlenscheckBox.setSelected(true);
+        conversionlenscheckBox.setText("");
+        panel21.add(conversionlenscheckBox, new GridConstraints(11, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label83 = new JLabel();
+        label83.setText("lens type");
+        panel21.add(label83, new GridConstraints(12, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lenstypetextField = new JTextField();
+        panel21.add(lenstypetextField, new GridConstraints(12, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        lenstypecheckBox = new JCheckBox();
+        lenstypecheckBox.setSelected(true);
+        lenstypecheckBox.setText("");
+        panel21.add(lenstypecheckBox, new GridConstraints(12, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label84 = new JLabel();
+        label84.setText("lens firmware version");
+        panel21.add(label84, new GridConstraints(13, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensfirmwareversiontextField = new JTextField();
+        panel21.add(lensfirmwareversiontextField, new GridConstraints(13, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        lensfirmwareversioncheckBox = new JCheckBox();
+        lensfirmwareversioncheckBox.setSelected(true);
+        lensfirmwareversioncheckBox.setText("");
+        panel21.add(lensfirmwareversioncheckBox, new GridConstraints(13, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lensOverwriteOriginalscheckBox = new JCheckBox();
+        lensOverwriteOriginalscheckBox.setText("Make backup of originals");
+        panel21.add(lensOverwriteOriginalscheckBox, new GridConstraints(15, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        final Spacer spacer3 = new Spacer();
+        panel21.add(spacer3, new GridConstraints(14, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(-1, 25), new Dimension(-1, 25), null, 0, false));
+        saveloadlensconfigpanel = new JPanel();
+        saveloadlensconfigpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        panel21.add(saveloadlensconfigpanel, new GridConstraints(19, 0, 1, 2, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        saveLensConfigurationbutton = new JButton();
+        saveLensConfigurationbutton.setText("Save this lens configuration");
+        saveLensConfigurationbutton.setToolTipText("This allows you to save lens configurations for future use");
+        saveloadlensconfigpanel.add(saveLensConfigurationbutton);
+        loadLensConfigurationButton = new JButton();
+        loadLensConfigurationButton.setText("Load a lens configuration");
+        saveloadlensconfigpanel.add(loadLensConfigurationButton);
+        final Spacer spacer4 = new Spacer();
+        panel21.add(spacer4, new GridConstraints(17, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        lensSaveLoadConfigLabel = new JLabel();
+        lensSaveLoadConfigLabel.setText("Label");
+        panel21.add(lensSaveLoadConfigLabel, new GridConstraints(18, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel23 = new JPanel();
+        panel23.setLayout(new GridLayoutManager(6, 1, new Insets(10, 10, 5, 5), -1, -1));
+        tabbedPaneRight.addTab("Copy Data", panel23);
         copyAllMetadataRadiobutton = new JRadioButton();
         copyAllMetadataRadiobutton.setText("<html>Copy the values of all writable tags from the source image to the target image(s), writing the information to same-named tags in the preferred groups</html>");
-        panel22.add(copyAllMetadataRadiobutton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel23.add(copyAllMetadataRadiobutton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         copyAllMetadataSameGroupsRadiobutton = new JRadioButton();
         copyAllMetadataSameGroupsRadiobutton.setText("<html>Copy the values of all writable tags from the source image to the target image(s), preserving the original tag groups</html>");
-        panel22.add(copyAllMetadataSameGroupsRadiobutton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel23.add(copyAllMetadataSameGroupsRadiobutton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         copySelectiveMetadataradioButton = new JRadioButton();
         copySelectiveMetadataradioButton.setSelected(true);
         copySelectiveMetadataradioButton.setText("Copy metadata using below mentioned selective group options");
-        panel22.add(copySelectiveMetadataradioButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel23 = new JPanel();
-        panel23.setLayout(new GridLayoutManager(7, 1, new Insets(10, 0, 15, 0), -1, -1));
-        panel22.add(panel23, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
-        panel23.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
+        panel23.add(copySelectiveMetadataradioButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel24 = new JPanel();
+        panel24.setLayout(new GridLayoutManager(7, 1, new Insets(10, 0, 15, 0), -1, -1));
+        panel23.add(panel24, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel24.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         CopyExifcheckBox = new JCheckBox();
         CopyExifcheckBox.setText("Copy exif data (-exif:all)");
-        panel23.add(CopyExifcheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyExifcheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CopyXmpcheckBox = new JCheckBox();
         CopyXmpcheckBox.setText("Copy xmp data (-xmp:all)");
-        panel23.add(CopyXmpcheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyXmpcheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CopyIptccheckBox = new JCheckBox();
         CopyIptccheckBox.setText("Copy IPTC data (-iptc:all)");
-        panel23.add(CopyIptccheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyIptccheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CopyIcc_profileDataCheckBox = new JCheckBox();
         CopyIcc_profileDataCheckBox.setActionCommand("");
         CopyIcc_profileDataCheckBox.setText("Copy ICC(_profile) data (-icc_profile:all)");
-        panel23.add(CopyIcc_profileDataCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyIcc_profileDataCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CopyGpsCheckBox = new JCheckBox();
         CopyGpsCheckBox.setText("Copy gps data (-gps:all)");
-        panel23.add(CopyGpsCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyGpsCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CopyJfifcheckBox = new JCheckBox();
         CopyJfifcheckBox.setText("Copy JFIF data (from the jpeg JFIF header)");
-        panel23.add(CopyJfifcheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyJfifcheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CopyMakernotescheckBox = new JCheckBox();
         CopyMakernotescheckBox.setText("Copy makernotes (-makernotes:all)");
-        panel23.add(CopyMakernotescheckBox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel24.add(CopyMakernotescheckBox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         BackupOriginalscheckBox = new JCheckBox();
         BackupOriginalscheckBox.setText("Make backup of originals");
-        panel22.add(BackupOriginalscheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel24 = new JPanel();
-        panel24.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel22.add(panel24, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel23.add(BackupOriginalscheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel25 = new JPanel();
+        panel25.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panel23.add(panel25, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         UseDataFrombutton = new JButton();
         UseDataFrombutton.setText("Use data from selected image");
-        panel24.add(UseDataFrombutton);
+        panel25.add(UseDataFrombutton);
         CopyDataCopyTobutton = new JButton();
         CopyDataCopyTobutton.setText("Copy to selected image(s)");
-        panel24.add(CopyDataCopyTobutton);
+        panel25.add(CopyDataCopyTobutton);
         CopyHelpbutton = new JButton();
         CopyHelpbutton.setText("Help");
-        panel24.add(CopyHelpbutton);
-        final JPanel panel25 = new JPanel();
-        panel25.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        tabbedPaneRight.addTab("Your Commands", panel25);
+        panel25.add(CopyHelpbutton);
         final JPanel panel26 = new JPanel();
-        panel26.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel25.add(panel26, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        CommandsParameterstextField = new JTextField();
-        panel26.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        final JLabel label71 = new JLabel();
-        Font label71Font = this.$$$getFont$$$(null, Font.BOLD, -1, label71.getFont());
-        if (label71Font != null) label71.setFont(label71Font);
-        label71.setText("Parameters:");
-        panel26.add(label71, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel26.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        tabbedPaneRight.addTab("Your Commands", panel26);
         final JPanel panel27 = new JPanel();
-        panel27.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel26.add(panel27, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel27.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel26.add(panel27, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        CommandsParameterstextField = new JTextField();
+        panel27.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label85 = new JLabel();
+        Font label85Font = this.$$$getFont$$$(null, Font.BOLD, -1, label85.getFont());
+        if (label85Font != null) label85.setFont(label85Font);
+        label85.setText("Parameters:");
+        panel27.add(label85, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel28 = new JPanel();
+        panel28.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panel27.add(panel28, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         CommandsclearParameterSFieldButton = new JButton();
         CommandsclearParameterSFieldButton.setText("Clear parameter(s) field");
-        panel27.add(CommandsclearParameterSFieldButton);
+        panel28.add(CommandsclearParameterSFieldButton);
         CommandsclearOutputFieldButton = new JButton();
         CommandsclearOutputFieldButton.setText("Clear output field");
-        panel27.add(CommandsclearOutputFieldButton);
+        panel28.add(CommandsclearOutputFieldButton);
         CommandsgoButton = new JButton();
         CommandsgoButton.setText("Go");
-        panel27.add(CommandsgoButton);
+        panel28.add(CommandsgoButton);
         CommandshelpButton = new JButton();
         CommandshelpButton.setText("Help");
-        panel27.add(CommandshelpButton);
-        final JPanel panel28 = new JPanel();
-        panel28.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel26.add(panel28, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JLabel label72 = new JLabel();
-        label72.setText("The final output will be displayed below:");
-        label72.setVerticalTextPosition(1);
-        panel28.add(label72, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel28.add(CommandshelpButton);
+        final JPanel panel29 = new JPanel();
+        panel29.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel27.add(panel29, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JLabel label86 = new JLabel();
+        label86.setText("The final output will be displayed below:");
+        label86.setVerticalTextPosition(1);
+        panel29.add(label86, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel28.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel29.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         YourCommandsOutputTextArea = new JTextArea();
         YourCommandsOutputTextArea.setText("");
         scrollPane1.setViewportView(YourCommandsOutputTextArea);
-        final JPanel panel29 = new JPanel();
-        panel29.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
-        panel28.add(panel29, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel30 = new JPanel();
+        panel30.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        panel29.add(panel30, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         UseNonPropFontradioButton = new JRadioButton();
         UseNonPropFontradioButton.setSelected(true);
         UseNonPropFontradioButton.setText("Use a non-proportional \"monospaced\" font");
-        panel29.add(UseNonPropFontradioButton);
+        panel30.add(UseNonPropFontradioButton);
         UsePropFontradioButton = new JRadioButton();
         UsePropFontradioButton.setText("Use a proportional font");
-        panel29.add(UsePropFontradioButton);
+        panel30.add(UsePropFontradioButton);
         MyCommandsText = new JLabel();
         MyCommandsText.setText("MyCommandsText");
-        panel25.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
-        final JPanel panel30 = new JPanel();
-        panel30.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        rootPanel.add(panel30, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel26.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
+        final JPanel panel31 = new JPanel();
+        panel31.setLayout(new GridLayoutManager(6, 1, new Insets(10, 10, 10, 10), -1, -1));
+        tabbedPaneRight.addTab("Exiftool Database", panel31);
+        databaseScrollPanel = new JScrollPane();
+        panel31.add(databaseScrollPanel, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        DBResultsTable = new JTable();
+        databaseScrollPanel.setViewportView(DBResultsTable);
+        final JPanel panel32 = new JPanel();
+        panel32.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel31.add(panel32, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        exiftoolDBText = new JLabel();
+        exiftoolDBText.setText("Label");
+        panel32.add(exiftoolDBText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label87 = new JLabel();
+        Font label87Font = this.$$$getFont$$$(null, Font.BOLD, -1, label87.getFont());
+        if (label87Font != null) label87.setFont(label87Font);
+        label87.setText("Your own sql command:");
+        panel31.add(label87, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel33 = new JPanel();
+        panel33.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel31.add(panel33, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        sqlQuerytextField = new JTextField();
+        panel33.add(sqlQuerytextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        sqlExecutebutton = new JButton();
+        sqlExecutebutton.setText("Go");
+        panel33.add(sqlExecutebutton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel34 = new JPanel();
+        panel34.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel31.add(panel34, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel34.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null));
+        radiobuttonQueryByGroup = new JRadioButton();
+        radiobuttonQueryByGroup.setText("By Group");
+        panel34.add(radiobuttonQueryByGroup);
+        comboBoxQueryByTagName = new JComboBox();
+        panel34.add(comboBoxQueryByTagName);
+        radiobuttonQueryByCameraMake = new JRadioButton();
+        radiobuttonQueryByCameraMake.setText("Camera make:");
+        panel34.add(radiobuttonQueryByCameraMake);
+        comboBoxQueryCameraMake = new JComboBox();
+        panel34.add(comboBoxQueryCameraMake);
+        final JPanel panel35 = new JPanel();
+        panel35.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel31.add(panel35, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel35.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null));
+        final JLabel label88 = new JLabel();
+        label88.setText("Where tag like:");
+        panel35.add(label88);
+        queryTagLiketextField = new JTextField();
+        queryTagLiketextField.setPreferredSize(new Dimension(300, 30));
+        panel35.add(queryTagLiketextField);
+        searchLikebutton = new JButton();
+        searchLikebutton.setText("Search like");
+        panel35.add(searchLikebutton);
+        final JPanel panel36 = new JPanel();
+        panel36.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        rootPanel.add(panel36, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         OutputLabel = new JLabel();
         OutputLabel.setText("");
-        panel30.add(OutputLabel);
+        panel36.add(OutputLabel);
         progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
         progressBar.setPreferredSize(new Dimension(100, 15));
         progressBar.setStringPainted(false);
-        panel30.add(progressBar);
+        panel36.add(progressBar);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(xmp1starradioButton);
@@ -1482,6 +1761,9 @@ public class mainScreen {
         buttonGroup.add(radioButtoncommonTags);
         buttonGroup.add(radioButtonByTagName);
         buttonGroup.add(radioButtonCameraMakes);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(radiobuttonQueryByGroup);
+        buttonGroup.add(radiobuttonQueryByCameraMake);
     }
 
     /**
@@ -1979,6 +2261,54 @@ public class mainScreen {
             }
         });
 
+        // The buttons from the lens tab
+        lensCopyFrombutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (selectedIndicesList.size() > 0) {
+                    ELd.copyLensDataFromSelected(getLensFields(), meteringmodecomboBox, getLensCheckBoxes());
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        });
+        lensSaveTobutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (selectedIndicesList.size() > 0) {
+                    ELd.writeLensTags(getLensFields(), getLensCheckBoxes(), meteringmodecomboBox, progressBar);
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        });
+        lensResetFieldsbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ELd.resetFields(getLensFields(), getLensCheckBoxes());
+            }
+        });
+        lensHelpbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        saveLensConfigurationbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ELd.saveLensconfig(getLensFields(), meteringmodecomboBox);
+            }
+        });
+        loadLensConfigurationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ELd.loadLensconfig();
+            }
+        });
+
     }
 
     private void ViewRadiobuttonListener() {
@@ -2138,9 +2468,9 @@ public class mainScreen {
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
 
-        // Extra menu
-        myMenu = new JMenu("Extra");
-        myMenu.setMnemonic(KeyEvent.VK_E);
+        // metadata menu
+        myMenu = new JMenu("Metadata");
+        myMenu.setMnemonic(KeyEvent.VK_M);
         menuBar.add(myMenu);
         //myMenu.addSeparator();
         menuItem = new JMenuItem("Export metadata");
@@ -2152,7 +2482,10 @@ public class mainScreen {
         menuItem = new JMenuItem("Remove metadata");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        myMenu.addSeparator();
+
+        // Date/time menu
+        myMenu = new JMenu("Date/Time");
+        menuBar.add(myMenu);
         menuItem = new JMenuItem("Shift Date/time");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
@@ -2162,13 +2495,23 @@ public class mainScreen {
         menuItem = new JMenuItem("Set file date to DateTimeOriginal");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        myMenu.addSeparator();
+        //myMenu.addSeparator();
+
+        // Other
+        myMenu = new JMenu("Other");
+        menuBar.add(myMenu);
         menuItem = new JMenuItem("Repair JPG(s) with corrupted metadata");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
         menuItem = new JMenuItem("Create args file(s)");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
+
+        // exiftool database
+        //myMenu = new JMenu("Database");
+        //menuBar.add(myMenu);
+        //menuItem = new JMenuItem("Query the exiftool groups/tags database");
+        //menuItem.addActionListener(new MenuActionListener());
 
         // Help menu
         myMenu = new JMenu("Help");
@@ -2217,6 +2560,9 @@ public class mainScreen {
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GeotaggingGeosyncExplainLabel));
         gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 200, ProgramTexts.gpsCalculatorLabelText));
         gPanoTopText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.GPanoTopText));
+        lensSaveLoadConfigLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.lensSaveLoadConfigLabel));
+        exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.exiftoolDBText));
+
         // Special dynamic version string
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         List<String> cmdparams = new ArrayList<>();
@@ -2253,7 +2599,9 @@ public class mainScreen {
         // Check if our custom folder exists and create it
         String check_result = checkforjexiftoolguiFolder();
         if (check_result.contains("Error creating")) {
-            JOptionPane.showMessageDialog(rootPanel, "Could not create folder jexiftoolgui_custom or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
+        } else { // Set database to variable
+
         }
         // Now check the preferences
         preferences = checkPreferences();

@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui;
 
 public class MyConstants {
+    public static final String MY_DATA_FOLDER = "jexiftoolgui_data";
     // exiftool image info parameters
     public static final String[] ALL_PARAMS = {"-a","-G", "-tab"};
     public static final String[] EXIF_PARAMS = {"-exif:all","-G", "-tab"};
@@ -13,7 +14,7 @@ public class MyConstants {
     public static final String[] MAKERNOTES_PARAMS = {"-makernotes:all","-G", "-tab"};
     public static final String[] COMPOSITE_PARAMS = {"-composite:all","-G", "-tab"};
 //    public static final String[] LENS_PARAMS = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-exif:focallength","-exif:focallengthIn35mmformat","-exif:fnumber","-exif:maxaperturevalue","-composite:aperture","-exif:meteringmode","-composite:lensid","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensserialnumber","-makernotes:lensfirmwareversion","-G", "-tab"};
-    public static final String[] LENS_PARAMS = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-exif:focallength","-exif:focallengthIn35mmformat","-exif:fnumber","-exif:maxaperturevalue","-exif:meteringmode","-composite:lensid","-makernotes:focusdistance","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensfirmwareversion","-G", "-tab"};
+    public static final String[] LENS_PARAMS = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-makernotes:lensserialnumber","-exif:focallength","-exif:focallengthIn35mmformat","-exif:fnumber","-exif:maxaperturevalue","-exif:meteringmode","-composite:lensid","-composite:lens","-makernotes:focusdistance","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensfirmwareversion","-G", "-tab"};
     public static final String[] REF_IMAGE_DATETIME = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
     public static final String[] GPANO_PROJECTIONS = {"equirectangular", "cylindrical", "rectilinear"};
 

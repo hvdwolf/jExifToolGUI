@@ -2202,14 +2202,431 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="4207a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
+                  <grid id="4207a" layout-manager="GridLayoutManager" row-count="20" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="10" left="20" bottom="10" right="20"/>
                     <constraints>
-                      <tabbedpane title="IPTC"/>
+                      <tabbedpane title="Lens"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="dd896" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Lens make"/>
+                        </properties>
+                      </component>
+                      <component id="554a9" class="javax.swing.JTextField" binding="lensmaketextField">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <grid id="6487e" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="16" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="ba804" class="javax.swing.JButton" binding="lensCopyFrombutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Copy from selected image"/>
+                            </properties>
+                          </component>
+                          <component id="5fffe" class="javax.swing.JButton" binding="lensSaveTobutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Save to selected image(s)"/>
+                            </properties>
+                          </component>
+                          <component id="d3b52" class="javax.swing.JButton" binding="lensResetFieldsbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Reset Fields"/>
+                            </properties>
+                          </component>
+                          <component id="add49" class="javax.swing.JButton" binding="lensHelpbutton">
+                            <constraints/>
+                            <properties>
+                              <label value="Help"/>
+                              <text value="Help"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <component id="2d56f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="lens Model"/>
+                        </properties>
+                      </component>
+                      <component id="8bd73" class="javax.swing.JTextField" binding="lensmodeltextField">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="e710a" class="javax.swing.JCheckBox" binding="lensmodelcheckBox">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="f16f4" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Save"/>
+                        </properties>
+                      </component>
+                      <component id="f95d8" class="javax.swing.JCheckBox" binding="lensmakecheckBox">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="3fa7f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="lens serial number"/>
+                        </properties>
+                      </component>
+                      <component id="fcd7b" class="javax.swing.JTextField" binding="lensserialnumbertextField">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="8aee" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="focal length"/>
+                        </properties>
+                      </component>
+                      <component id="e13e9" class="javax.swing.JTextField" binding="focallengthtextField">
+                        <constraints>
+                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="63c70" class="javax.swing.JCheckBox" binding="lensserialnumbercheckBox">
+                        <constraints>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="1dbd7" class="javax.swing.JCheckBox" binding="focallengthcheckBox">
+                        <constraints>
+                          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="253e4" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="focal length In 35mm format"/>
+                        </properties>
+                      </component>
+                      <component id="94163" class="javax.swing.JTextField" binding="focallengthIn35mmformattextField">
+                        <constraints>
+                          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="6ec54" class="javax.swing.JCheckBox" binding="focallengthIn35mmformatcheckBox">
+                        <constraints>
+                          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="bff28" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="fnumber"/>
+                        </properties>
+                      </component>
+                      <component id="70a7f" class="javax.swing.JTextField" binding="fnumbertextField">
+                        <constraints>
+                          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="bb4ac" class="javax.swing.JCheckBox" binding="fnumbercheckBox">
+                        <constraints>
+                          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="1a03d" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="max. Aperture value"/>
+                        </properties>
+                      </component>
+                      <component id="aa6e2" class="javax.swing.JTextField" binding="maxaperturevaluetextField">
+                        <constraints>
+                          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="c98e9" class="javax.swing.JCheckBox" binding="maxaperturevaluecheckBox">
+                        <constraints>
+                          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="12ba" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="metering mode"/>
+                        </properties>
+                      </component>
+                      <component id="1659c" class="javax.swing.JComboBox" binding="meteringmodecomboBox">
+                        <constraints>
+                          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="f53a0" class="javax.swing.JCheckBox" binding="meteringmodecheckBox">
+                        <constraints>
+                          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="ca2c1" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="focus distance"/>
+                        </properties>
+                      </component>
+                      <component id="1b085" class="javax.swing.JTextField" binding="focusdistancetextField">
+                        <constraints>
+                          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="16cb9" class="javax.swing.JCheckBox" binding="focusdistancecheckBox">
+                        <constraints>
+                          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="ce6e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="lensid"/>
+                        </properties>
+                      </component>
+                      <component id="b2280" class="javax.swing.JTextField" binding="lensidtextField">
+                        <constraints>
+                          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="802e3" class="javax.swing.JCheckBox" binding="lensidcheckBox">
+                        <constraints>
+                          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="b3feb" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="conversion lens"/>
+                        </properties>
+                      </component>
+                      <component id="ebf51" class="javax.swing.JTextField" binding="conversionlenstextField">
+                        <constraints>
+                          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="f78e4" class="javax.swing.JCheckBox" binding="conversionlenscheckBox">
+                        <constraints>
+                          <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="f0468" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="lens type"/>
+                        </properties>
+                      </component>
+                      <component id="2681a" class="javax.swing.JTextField" binding="lenstypetextField">
+                        <constraints>
+                          <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="c6dac" class="javax.swing.JCheckBox" binding="lenstypecheckBox">
+                        <constraints>
+                          <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="49f9" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="lens firmware version"/>
+                        </properties>
+                      </component>
+                      <component id="e65f3" class="javax.swing.JTextField" binding="lensfirmwareversiontextField">
+                        <constraints>
+                          <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="bf43e" class="javax.swing.JCheckBox" binding="lensfirmwareversioncheckBox">
+                        <constraints>
+                          <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="b528f" class="javax.swing.JCheckBox" binding="lensOverwriteOriginalscheckBox">
+                        <constraints>
+                          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Make backup of originals"/>
+                        </properties>
+                      </component>
+                      <vspacer id="c2df">
+                        <constraints>
+                          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                            <minimum-size width="-1" height="25"/>
+                            <preferred-size width="-1" height="25"/>
+                          </grid>
+                        </constraints>
+                      </vspacer>
+                      <grid id="34682" binding="saveloadlensconfigpanel" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="19" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="689c" class="javax.swing.JButton" binding="saveLensConfigurationbutton">
+                            <constraints/>
+                            <properties>
+                              <text value="Save this lens configuration"/>
+                              <toolTipText value="This allows you to save lens configurations for future use"/>
+                            </properties>
+                          </component>
+                          <component id="23aa0" class="javax.swing.JButton" binding="loadLensConfigurationButton">
+                            <constraints/>
+                            <properties>
+                              <text value="Load a lens configuration"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <vspacer id="858ba">
+                        <constraints>
+                          <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </vspacer>
+                      <component id="dc244" class="javax.swing.JLabel" binding="lensSaveLoadConfigLabel">
+                        <constraints>
+                          <grid row="18" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Label"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                 </children>
               </tabbedpane>
@@ -2488,6 +2905,138 @@
               </component>
             </children>
           </grid>
+          <grid id="ae6cf" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="10" bottom="10" right="10"/>
+            <constraints>
+              <tabbedpane title="Exiftool Database"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="333ca" binding="databaseScrollPanel">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="c2a2e" class="javax.swing.JTable" binding="DBResultsTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <grid id="b4280" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="56847" class="javax.swing.JLabel" binding="exiftoolDBText">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Label"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="e95fc" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font style="1"/>
+                  <text value="Your own sql command:"/>
+                </properties>
+              </component>
+              <grid id="da05a" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="80907" class="javax.swing.JTextField" binding="sqlQuerytextField">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="b90cc" class="javax.swing.JButton" binding="sqlExecutebutton">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Go"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="a5ee7" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="line"/>
+                <children>
+                  <component id="6a459" class="javax.swing.JRadioButton" binding="radiobuttonQueryByGroup">
+                    <constraints/>
+                    <properties>
+                      <text value="By Group"/>
+                    </properties>
+                  </component>
+                  <component id="cf1ea" class="javax.swing.JComboBox" binding="comboBoxQueryByTagName">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="bf285" class="javax.swing.JRadioButton" binding="radiobuttonQueryByCameraMake">
+                    <constraints/>
+                    <properties>
+                      <text value="Camera make:"/>
+                    </properties>
+                  </component>
+                  <component id="eb4c3" class="javax.swing.JComboBox" binding="comboBoxQueryCameraMake">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </grid>
+              <grid id="46de1" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="line"/>
+                <children>
+                  <component id="254b2" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="Where tag like:"/>
+                    </properties>
+                  </component>
+                  <component id="e9041" class="javax.swing.JTextField" binding="queryTagLiketextField">
+                    <constraints/>
+                    <properties>
+                      <preferredSize width="300" height="30"/>
+                    </properties>
+                  </component>
+                  <component id="b9dd5" class="javax.swing.JButton" binding="searchLikebutton">
+                    <constraints/>
+                    <properties>
+                      <text value="Search like"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
         </children>
       </tabbedpane>
       <grid id="b4327" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
@@ -2553,6 +3102,11 @@
       <member id="5955a"/>
       <member id="d5c45"/>
       <member id="fdf93"/>
+    </group>
+    <group name="QueryDBbuttonGroup">
+      <member id="a69be"/>
+      <member id="6a459"/>
+      <member id="bf285"/>
     </group>
   </buttonGroups>
   <inspectionSuppressions>
