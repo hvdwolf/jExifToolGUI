@@ -6,6 +6,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.controllers.YourCommands;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
@@ -487,13 +488,18 @@ public class mainScreen {
 
     private void fillViewTagNamesComboboxes() {
         // Fill all combo boxes in the View panel
-        String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/ExifToolTagNames.txt");
+        String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
         String[] Tags = TagNames.split("\\r?\\n"); // split on new lines
-        comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
-
-        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
-        Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(Tags));
+
+
+        String sqlGroups = SQLiteJDBC.getGroups();
+        //logger.info("returned getGroups: " + sqlGroups);
+        //String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/ExifToolTagNames.txt");
+        Tags = sqlGroups.split("\\r?\\n"); // split on new lines
+        comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
+        comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
+
 
         TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
@@ -504,14 +510,10 @@ public class mainScreen {
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         meteringmodecomboBox.setModel(new DefaultComboBoxModel(Tags));
 
-        // Fill all comboboxes in the Exiftool database panel
-        //TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
-        //Tags = TagNames.split("\\r?\\n"); // split on new lines
-        //comboBoxQueryCommonTags.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/ExifToolTagNames.txt");
-        Tags = TagNames.split("\\r?\\n"); // split on new lines
-        comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
+        //TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/ExifToolTagNames.txt");
+        //Tags = TagNames.split("\\r?\\n"); // split on new lines
+        //comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
 
         TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
@@ -1703,6 +1705,7 @@ public class mainScreen {
         panel31.add(panel34, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel34.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null));
         radiobuttonQueryByGroup = new JRadioButton();
+        radiobuttonQueryByGroup.setSelected(true);
         radiobuttonQueryByGroup.setText("By Group");
         panel34.add(radiobuttonQueryByGroup);
         comboBoxQueryByTagName = new JComboBox();
@@ -2309,6 +2312,34 @@ public class mainScreen {
             }
         });
 
+        // buttons and the like on database panel
+        searchLikebutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!"".equals(queryTagLiketextField.getText())) {
+                    String result = SQLiteJDBC.queryByTagname(queryTagLiketextField.getText(), true);
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, "No search string provided!", "No search string", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        comboBoxQueryByTagName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (radiobuttonQueryByGroup.isSelected()) {
+                    if (!"".equals(queryTagLiketextField.getText())) {
+                        String result = SQLiteJDBC.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
+                    }
+                }
+            }
+        });
+        comboBoxQueryCameraMake.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+
     }
 
     private void ViewRadiobuttonListener() {
@@ -2593,21 +2624,22 @@ public class mainScreen {
         Utils.progressStatus(progressBar, false);
 
         createmyMenuBar(frame);
-        ViewRadiobuttonListener();
-        fillViewTagNamesComboboxes();
 
         // Check if our custom folder exists and create it
         String check_result = checkforjexiftoolguiFolder();
         if (check_result.contains("Error creating")) {
             JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
         } else { // Set database to variable
-
+            logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         }
         // Now check the preferences
         preferences = checkPreferences();
         if (!preferences) {
             Utils.checkExifTool(mainScreen.this.rootPanel);
         }
+
+        ViewRadiobuttonListener();
+        fillViewTagNamesComboboxes();
 
         // Use the mouselistener for the double-click to display the image
         fileNamesTableMouseListener();

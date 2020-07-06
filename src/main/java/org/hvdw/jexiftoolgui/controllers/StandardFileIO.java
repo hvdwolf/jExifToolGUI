@@ -184,7 +184,7 @@ public class StandardFileIO {
         String method_result = "";
         String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
         // Check if folder exists
-        String strjexiftoolguifolder = userHome + File.separator + "jexiftoolgui_custom";
+        String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
         File jexiftoolguifolder = new File(strjexiftoolguifolder);
         if (!jexiftoolguifolder.exists()) { // no folder yet
             // First create jexiftoolgui_custom in userHome
@@ -207,6 +207,22 @@ public class StandardFileIO {
         } else { //custom.csv exists
             method_result = "exists";
         }
+        // Now check if our database exists
+        String strDB = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
+        File jexifDB = new File(strDB);
+        if (!jexifDB.exists()) {
+            logger.debug("no database yet; trying to create it");
+            method_result = extract_resource_to_jexiftoolguiFolder("jexiftoolgui.db", strjexiftoolguifolder);
+            if ("success".equals(method_result)) {
+                MyVariables.setjexiftoolguiDBPath(strDB);
+                logger.info("copied the initial database");
+            }
+        } else { // the DB already exists
+            method_result = "exists";
+            logger.info("the database already exists.");
+            MyVariables.setjexiftoolguiDBPath(strDB);
+        }
+        //logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         return method_result;
     }
 

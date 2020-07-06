@@ -2989,6 +2989,7 @@
                   <component id="6a459" class="javax.swing.JRadioButton" binding="radiobuttonQueryByGroup">
                     <constraints/>
                     <properties>
+                      <selected value="true"/>
                       <text value="By Group"/>
                     </properties>
                   </component>

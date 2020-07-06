@@ -19,6 +19,7 @@ public class MyVariables {
     private String SelectedImagePath;
     private File[] selectedFiles;
     private int[] selectedFilenamesIndices;
+    private String jexiftoolguiDBPath;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -36,6 +37,13 @@ public class MyVariables {
     }
     public static void setSelectedImagePath(String selImgPath) {
         staticInstance.SelectedImagePath = selImgPath;
+    }
+
+    public static String getjexiftoolguiDBPath() {
+        return staticInstance.jexiftoolguiDBPath;
+    }
+    public static void setjexiftoolguiDBPath(String selDBPath) {
+        staticInstance.jexiftoolguiDBPath = selDBPath;
     }
 
     public static void setSelectedFiles(File[] openedFiles) {

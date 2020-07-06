@@ -51,7 +51,7 @@ dependencies {
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
 
     // sqlite at some time --> Adds 7MB
-    //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
+    implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
     // or Derby at some time --> Adds 3.2 Mb
     //implementation(group = "org.apache.derby", name = "derby", version = "10.15.2.0")
 
