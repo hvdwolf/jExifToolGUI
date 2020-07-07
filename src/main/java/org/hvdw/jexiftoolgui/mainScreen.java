@@ -19,6 +19,7 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
+import org.hvdw.jexiftoolgui.view.DatabasePanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -296,6 +297,7 @@ public class mainScreen {
     private JButton sqlExecutebutton;
     private JTextField queryTagLiketextField;
     private JButton searchLikebutton;
+    private JLabel exiftoolDBversion;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
     private JPanel prefPanel;
@@ -323,6 +325,7 @@ public class mainScreen {
     private YourCommands YourCmnds = new YourCommands();
     private EditGpanodata EGpanod = new EditGpanodata();
     private EditLensdata ELd = new EditLensdata();
+    private DatabasePanel DBP = new DatabasePanel();
 
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
@@ -1716,7 +1719,7 @@ public class mainScreen {
         comboBoxQueryCameraMake = new JComboBox();
         panel34.add(comboBoxQueryCameraMake);
         final JPanel panel35 = new JPanel();
-        panel35.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel35.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel31.add(panel35, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel35.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null));
         final JLabel label88 = new JLabel();
@@ -1728,6 +1731,16 @@ public class mainScreen {
         searchLikebutton = new JButton();
         searchLikebutton.setText("Search like");
         panel35.add(searchLikebutton);
+        final Spacer spacer5 = new Spacer();
+        panel35.add(spacer5);
+        final Spacer spacer6 = new Spacer();
+        panel35.add(spacer6);
+        exiftoolDBversion = new JLabel();
+        Font exiftoolDBversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolDBversion.getFont());
+        if (exiftoolDBversionFont != null) exiftoolDBversion.setFont(exiftoolDBversionFont);
+        exiftoolDBversion.setText("exiftool DB version:");
+        exiftoolDBversion.setToolTipText("The included database version is not necessarily the same as your installed exiftool version");
+        panel35.add(exiftoolDBversion);
         final JPanel panel36 = new JPanel();
         panel36.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         rootPanel.add(panel36, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2317,7 +2330,8 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!"".equals(queryTagLiketextField.getText())) {
-                    String result = SQLiteJDBC.queryByTagname(queryTagLiketextField.getText(), true);
+                    String queryResult = SQLiteJDBC.queryByTagname(queryTagLiketextField.getText(), true);
+                    DBP.displayQueryResults(queryResult, DBResultsTable);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, "No search string provided!", "No search string", JOptionPane.WARNING_MESSAGE);
                 }
@@ -2327,16 +2341,18 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radiobuttonQueryByGroup.isSelected()) {
-                    if (!"".equals(queryTagLiketextField.getText())) {
-                        String result = SQLiteJDBC.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
-                    }
+                        String queryResult = SQLiteJDBC.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
+                        DBP.displayQueryResults(queryResult, DBResultsTable);
                 }
             }
         });
         comboBoxQueryCameraMake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                if (radiobuttonQueryByCameraMake.isSelected()) {
+                    String queryResult = SQLiteJDBC.queryByTagname(comboBoxQueryCameraMake.getSelectedItem().toString(), false);
+                    DBP.displayQueryResults(queryResult, DBResultsTable);
+                }
             }
         });
 
@@ -2594,6 +2610,8 @@ public class mainScreen {
         lensSaveLoadConfigLabel.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.lensSaveLoadConfigLabel));
         exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ProgramTexts.exiftoolDBText));
 
+        // database version
+        exiftoolDBversion.setText("exiftool DB version: " + SQLiteJDBC.getDBversion());
         // Special dynamic version string
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         List<String> cmdparams = new ArrayList<>();
@@ -2632,6 +2650,7 @@ public class mainScreen {
         } else { // Set database to variable
             logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         }
+
         // Now check the preferences
         preferences = checkPreferences();
         if (!preferences) {

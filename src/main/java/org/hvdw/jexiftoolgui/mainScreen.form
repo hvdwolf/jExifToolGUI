@@ -3009,7 +3009,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="46de1" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+              <grid id="46de1" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -3032,6 +3032,20 @@
                     <constraints/>
                     <properties>
                       <text value="Search like"/>
+                    </properties>
+                  </component>
+                  <hspacer id="9d875">
+                    <constraints/>
+                  </hspacer>
+                  <hspacer id="e16fd">
+                    <constraints/>
+                  </hspacer>
+                  <component id="ff67e" class="javax.swing.JLabel" binding="exiftoolDBversion">
+                    <constraints/>
+                    <properties>
+                      <font style="2"/>
+                      <text value="exiftool DB version:"/>
+                      <toolTipText value="The included database version is not necessarily the same as your installed exiftool version"/>
                     </properties>
                   </component>
                 </children>

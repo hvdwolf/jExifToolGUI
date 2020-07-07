@@ -12,7 +12,7 @@ import java.util.List;
 public class SQLiteJDBC {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(StandardFileIO.class);
+    private final static Logger logger = LoggerFactory.getLogger(SQLiteJDBC.class);
 
     static public Connection connect() {
         Connection conn = null;
@@ -28,6 +28,27 @@ public class SQLiteJDBC {
         return conn;
     }
 
+    static public String getDBversion() {
+        String sql = "select version from ExiftoolVersion limit 1";
+        String DBversion = "";
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // Set initial value
+            //sbgroups.append("all\n"); Remove again. We don' t want to retrieve and display 15.000+ tags
+            // loop through the result set
+            while (rs.next()) {
+                DBversion = (rs.getString("version") + "\n");
+                logger.info(rs.getString("taggroup"));
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        //logger.info("getGroups: " + groups);
+        return DBversion;
+    }
+
     static public String getGroups() {
         StringBuilder sbgroups = new StringBuilder();
         String sql = "SELECT taggroup FROM Groups order by taggroup";
@@ -37,7 +58,7 @@ public class SQLiteJDBC {
              ResultSet rs    = stmt.executeQuery(sql)){
 
             // Set initial value
-            sbgroups.append("all\n");
+            //sbgroups.append("all\n"); Remove again. We don' t want to retrieve and display 15.000+ tags
             // loop through the result set
             while (rs.next()) {
                 sbgroups.append(rs.getString("taggroup") + "\n");
@@ -55,9 +76,13 @@ public class SQLiteJDBC {
         String sql = "";
         logger.debug("search string is: " + searchString);
         if (likequery) {
-            sql = "select taggroup,tagname,tagtype,writable from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id and tagname like '%" + searchString + "%'";
+            sql = "select taggroup,tagname,tagtype,writable from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id and tagname like '%" + searchString + "%' order by taggroup";
+            // use our view
+            //sql = "select taggroup,tagname,tagtype,writable from v_tags_groups where tagname like '%" + searchString + "%'";
         } else {
             sql = "select taggroup,tagname,tagtype,writable from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id and taggroup='" + searchString + "'";
+            // use our view
+            //sql = "select taggroup,tagname,tagtype,writable from v_tags_groups where taggroup='" + searchString + "'";
         }
 
         try (Connection conn = connect();
