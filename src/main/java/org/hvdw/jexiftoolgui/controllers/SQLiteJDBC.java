@@ -3,12 +3,15 @@ package org.hvdw.jexiftoolgui.controllers;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class SQLiteJDBC {
 
@@ -54,7 +57,8 @@ public class SQLiteJDBC {
                         //logger.debug("counter in tab: " + counter);
                         counter ++;
                     } else {
-                        sbresult.append(rs.getString(dbfield) + "\n");
+                        //sbresult.append(rs.getString(dbfield) + "\n");
+                        sbresult.append(rs.getString(dbfield) + SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
                         //logger.debug("counter in linefeed: " + counter);
                         counter = 1;
                     }
