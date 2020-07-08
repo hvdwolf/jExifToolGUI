@@ -19,6 +19,7 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
+import org.hvdw.jexiftoolgui.view.CreateUpdatemyLens;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -326,6 +327,7 @@ public class mainScreen {
     private EditGpanodata EGpanod = new EditGpanodata();
     private EditLensdata ELd = new EditLensdata();
     private DatabasePanel DBP = new DatabasePanel();
+    private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
 
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
@@ -1515,7 +1517,7 @@ public class mainScreen {
         focusdistancecheckBox.setText("");
         panel21.add(focusdistancecheckBox, new GridConstraints(9, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label81 = new JLabel();
-        label81.setText("lensid");
+        label81.setText("lens id");
         panel21.add(label81, new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lensidtextField = new JTextField();
         panel21.add(lensidtextField, new GridConstraints(10, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
@@ -2315,15 +2317,18 @@ public class mainScreen {
         saveLensConfigurationbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                ELd.saveLensconfig(getLensFields(), meteringmodecomboBox);
+                //CUL.showDialog(getLensFields(), meteringmodecomboBox, rootPanel);
+                //CreateUpdatemyLens.showDialog(getLensFields(), meteringmodecomboBox, rootPanel);
+                ELd.saveLensconfig(getLensFields(), meteringmodecomboBox, rootPanel);
             }
         });
         loadLensConfigurationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                ELd.loadLensconfig();
+                ELd.loadLensconfig(getLensFields(), meteringmodecomboBox, rootPanel);
             }
         });
+
 
         // buttons and the like on database panel
         searchLikebutton.addActionListener(new ActionListener() {

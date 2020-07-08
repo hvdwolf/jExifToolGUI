@@ -277,6 +277,22 @@ public class Utils {
     }
 
 
+    public static String stringBetween(String value, String before, String after) {
+        // Return a substring between the two strings before and after.
+        int posA = value.indexOf(before);
+        if (posA == -1) {
+            return "";
+        }
+        int posB = value.lastIndexOf(after);
+        if (posB == -1) {
+            return "";
+        }
+        int adjustedPosA = posA + before.length();
+        if (adjustedPosA >= posB) {
+            return "";
+        }
+        return value.substring(adjustedPosA, posB);
+    }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
 
 

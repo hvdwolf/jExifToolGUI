@@ -16,6 +16,8 @@ public class SQLiteJDBC {
     private final static Logger logger = LoggerFactory.getLogger(SQLiteJDBC.class);
 
     static public Connection connect() {
+
+        // ######################### The basic necessary stuff ###################3
         Connection conn = null;
         try {
             // db parameters
@@ -35,7 +37,7 @@ public class SQLiteJDBC {
 
         // get the fields that are being queried on and immediately remove spaces
         String queryFields = Utils.stringBetween(sql.toLowerCase(), "select", "from").replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \;
-        logger.info("the queryfields returned string: " + queryFields);
+        //logger.info("the queryfields returned string: " + queryFields);
         String[] dbFields = queryFields.split(",");
 
         try (Connection conn = connect();
@@ -83,6 +85,24 @@ public class SQLiteJDBC {
         }
         return sbresult.toString();
     }
+
+    static public String insertUpdateQuery(String sql) {
+        String queryresult = "";
+
+        try {
+            Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             stmt.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            queryresult = e.getMessage();
+        }
+        return queryresult;
+    }
+    // ################### End of the basic necessary stuff ###################
+
+    // ######################### Our program queries ###################
 
     static public String getDBversion() {
         String sql = "select version from ExiftoolVersion limit 1";
