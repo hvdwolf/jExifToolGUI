@@ -40,7 +40,7 @@ create table if not exists Tags (
     id integer primary key autoincrement, 
     tagname text NOT NULL,
     tagtype text,
-    writable integer
+    writable text
 );
 -- Below index will be created AFTER having added everything to Tags as that makes the initial "filling" faster
 -- create unique index if not exists Tags_Index on Tags(tag);
@@ -61,6 +61,8 @@ create table if not exists tmptags (
   G1 text,
   G2 text
 );
+
+create view if not exists v_tags_groups as select taggroup,tagname,tagtype,writable from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id;
 --
 -- Create DB part for the custom "things"
 --
@@ -142,12 +144,17 @@ Create table if not exists myLenses (
     exif_focallengthIn35mmformat text,
     exif_fnumber text,
     exif_maxaperturevalue text,
-    exif_meteringmode,
+    exif_meteringmode text,
+    makernotes_focusdistance text,
+    composite_lensid text,
+    makernotes_conversionlens text,
+    makernotes_lenstype text,
+    makernotes_lensfirmwareversion text,
     UNIQUE (parent_id, lens_name)
 );
 --
 -- Add some example data in the myLenses table
 --
-insert into myLenses(lens_name,lens_description,exif_lensmake,exif_lensmodel,exif_lensserialnumber,exif_focallength,exif_focallengthIn35mmformat,exif_fnumber,exif_maxaperturevalue,exif_meteringmode)
-values('Panasonic Leica DG Summilux 25/f1.4','some example','Panasonic','Leica DG Summilux 25/f1.4','123456-ABC','25','50','1.4','22','Multi-segment');
+insert into myLenses(lens_name, lens_description, exif_lensmake, exif_lensmodel, exif_lensserialnumber, exif_focallength, exif_focallengthIn35mmformat, exif_fnumber, exif_maxaperturevalue, exif_meteringmode, composite_lensid, makernotes_conversionlens, makernotes_lenstype, makernotes_lensfirmwareversion)
+values('Panasonic Leica DG Summilux 25/f1.4','some example','Panasonic','Leica DG Summilux 25/f1.4','123456-ABC','25','50','1.4','22','Multi-segment', 'Leica DG Summilux 25/f1.4', ' Off', 'LUMIX G VARIO 14-140/F3.5-5.6', '0.1.0.0' );
 

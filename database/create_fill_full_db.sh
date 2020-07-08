@@ -99,7 +99,7 @@ printf "We have one duplicate record. Delete it! (bug in exiftool?)\n"
 sqlite3 $DB "delete from Tags where rowid not in (select min(rowid) from Tags group by tagname);"
 
 printf "Now, after inital filling, create the unique index on Tags\n"
-sqlite3 $DB "create unique index if not exists Tags_Index on Tags(tag);"
+sqlite3 $DB "create unique index if not exists Tags_Index on Tags(tagname);"
 
 printf "Add all writable tags to the database (this can also take a few minutes. Please be patient).\n"
 echo "-- Add writable tags to the database" > tmp.sql
