@@ -20,6 +20,7 @@ public class MyVariables {
     private File[] selectedFiles;
     private int[] selectedFilenamesIndices;
     private String jexiftoolguiDBPath;
+    private String selectedLensConfig;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -44,6 +45,13 @@ public class MyVariables {
     }
     public static void setjexiftoolguiDBPath(String selDBPath) {
         staticInstance.jexiftoolguiDBPath = selDBPath;
+    }
+
+    public static String getselectedLensConfig() {
+        return staticInstance.selectedLensConfig;
+    }
+    public static void setselectedLensConfig(String sLC) {
+        staticInstance.selectedLensConfig = sLC;
     }
 
     public static void setSelectedFiles(File[] openedFiles) {

@@ -32,7 +32,7 @@ public class EditLensdata {
     private SelectmyLens SmL = new SelectmyLens();
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
 
-    public void resetFields(JTextField[] lensFields, JCheckBox[] lensBoxes) {
+    public void resetFields(JTextField[] lensFields, JCheckBox[] lensBoxes, JComboBox meteringmodecomboBox) {
 
         for (JTextField field: lensFields) {
             field.setText("");
@@ -40,7 +40,7 @@ public class EditLensdata {
         for (JCheckBox checkbox: lensBoxes) {
             checkbox.setSelected(true);
         }
-
+        meteringmodecomboBox.setSelectedItem("Unknown");
     }
 
 
@@ -53,7 +53,7 @@ public class EditLensdata {
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetFields(lensFields, lensBoxes);
+        resetFields(lensFields, lensBoxes, meteringmodecomboBox);
 
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (Utils.isOsFromMicrosoft()) {
@@ -77,7 +77,7 @@ public class EditLensdata {
         }
     }
 
-        public void displayCopiedInfo(JTextField[] lensFields, JCheckBox[] lesnBoxes, JComboBox meteringmodecomboBox, String exiftoolInfo) {
+        public void displayCopiedInfo(JTextField[] lensFields, JCheckBox[] lensBoxes, JComboBox meteringmodecomboBox, String exiftoolInfo) {
             String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
             for (String line : lines) {
                 String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :

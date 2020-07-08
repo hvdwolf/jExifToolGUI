@@ -198,7 +198,7 @@ public class StandardFileIO {
         } else { //folder exists
             method_result = "exists";
         }
-        // Now check if our first custom.csv exists
+       /* // Now check if our first custom.csv exists
         String strcustomcsv = strjexiftoolguifolder + File.separator + "custom.csv";
         File customcsv = new File(strcustomcsv);
         if (!customcsv.exists()) {
@@ -206,7 +206,7 @@ public class StandardFileIO {
             method_result = extract_resource_to_jexiftoolguiFolder("texts/custom.csv", strjexiftoolguifolder);
         } else { //custom.csv exists
             method_result = "exists";
-        }
+        } */
         // Now check if our database exists
         String strDB = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
         File jexifDB = new File(strDB);

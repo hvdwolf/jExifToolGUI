@@ -2305,7 +2305,7 @@ public class mainScreen {
         lensResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                ELd.resetFields(getLensFields(), getLensCheckBoxes());
+                ELd.resetFields(getLensFields(), getLensCheckBoxes(), meteringmodecomboBox);
             }
         });
         lensHelpbutton.addActionListener(new ActionListener() {
