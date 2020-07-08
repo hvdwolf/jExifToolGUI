@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui.controllers;
 
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,51 +29,78 @@ public class SQLiteJDBC {
         return conn;
     }
 
-    static public String getDBversion() {
-        String sql = "select version from ExiftoolVersion limit 1";
-        String DBversion = "";
+    static public String generalQuery(String sql) {
+        String DBresult = "";
+        StringBuilder sbresult = new StringBuilder();
+
+        // get the fields that are being queried on and immediately remove spaces
+        String queryFields = Utils.stringBetween(sql.toLowerCase(), "select", "from").replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \;
+        logger.info("the queryfields returned string: " + queryFields);
+        String[] dbFields = queryFields.split(",");
+
         try (Connection conn = connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
-            // Set initial value
-            //sbgroups.append("all\n"); Remove again. We don' t want to retrieve and display 15.000+ tags
-            // loop through the result set
+            int noOfFields = dbFields.length;
+            //logger.debug("nooffields: " + String.valueOf(noOfFields));
+            int counter = 1;
             while (rs.next()) {
-                DBversion = (rs.getString("version") + "\n");
-                logger.info(rs.getString("taggroup"));
+                for (String dbfield : dbFields) {
+                    if ( (noOfFields) > counter) {
+                        sbresult.append(rs.getString(dbfield) + "\t");
+                        //logger.debug("counter in tab: " + counter);
+                        counter ++;
+                    } else {
+                        sbresult.append(rs.getString(dbfield) + "\n");
+                        //logger.debug("counter in linefeed: " + counter);
+                        counter = 1;
+                    }
+                }
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-        //logger.info("getGroups: " + groups);
-        return DBversion;
+        //logger.info(sbresult.toString());
+        return sbresult.toString();
+    }
+
+    static public String singleFieldQuery(String sql, String field) {
+        String DBresult = "";
+        StringBuilder sbresult = new StringBuilder();
+
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                sbresult.append(rs.getString(field) + "\n");
+                //logger.info(rs.getString(field));
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return sbresult.toString();
+    }
+
+    static public String getDBversion() {
+        String sql = "select version from ExiftoolVersion limit 1";
+        return singleFieldQuery(sql, "version");
     }
 
     static public String getGroups() {
-        StringBuilder sbgroups = new StringBuilder();
         String sql = "SELECT taggroup FROM Groups order by taggroup";
+        return singleFieldQuery(sql, "taggroup");
+    }
 
-        try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
-            // Set initial value
-            //sbgroups.append("all\n"); Remove again. We don' t want to retrieve and display 15.000+ tags
-            // loop through the result set
-            while (rs.next()) {
-                sbgroups.append(rs.getString("taggroup") + "\n");
-                logger.info(rs.getString("taggroup"));
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-        //logger.info("getGroups: " + groups);
-        return sbgroups.toString();
+    static public String getdefinedlensnames() {
+        String sql = "select lens_name from myLenses order by lens_Name";
+        return singleFieldQuery(sql, "lens_name");
     }
 
     static public String queryByTagname(String searchString, boolean likequery) {
-        StringBuilder sbresult = new StringBuilder();
+        String sqlresult;
         String sql = "";
         logger.debug("search string is: " + searchString);
         if (likequery) {
@@ -85,23 +113,8 @@ public class SQLiteJDBC {
             //sql = "select taggroup,tagname,tagtype,writable from v_tags_groups where taggroup='" + searchString + "'";
         }
 
-        try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
-            while (rs.next()) {
-                sbresult.append(rs.getString("taggroup") + "\t");
-                sbresult.append(rs.getString("tagname") + "\t");
-                sbresult.append(rs.getString("tagtype") + "\t");
-                sbresult.append(rs.getString("writable") + "\n");
-                //logger.info(rs.getString("taggroup"));
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-        logger.info(sbresult.toString());
-        return sbresult.toString();
+        sqlresult = SQLiteJDBC.generalQuery(sql);
+        return sqlresult;
     }
 
 }
