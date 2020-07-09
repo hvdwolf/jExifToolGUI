@@ -99,16 +99,6 @@ public class ProgramTexts {
     public static final String RenamingGeneralText = "If you want to autonumber your images, make sure you have them in the right alphabetical or date order."
             +" This is not a problem if you use the \"source folder\" here, but can be a problem if you use the images from the main screen "
             +"and if they are in \"random\"  order.";
-    public static final String RenamingInfoText = "<big>Renaming</big><hr><br>The general date time options will not be mentioned as they are self explanatory.<br><br>"
-            +"<b>String:</b> This can be any string you like also with spaces. UTF-8 is used but I can' t predict which \"strange\" characters might cause an error, maybe also OS dependent.<br><br>"
-            +"<b>Camera model:</b> This will extract the camera model from the exif data of your image(s).<br><br>"
-            +"<b>Location:</b> This will extract the \"xmp:location\" info from your image(s). NOTE: This will only work if your images contain this info. For example because you added that before(!) "
-            +"in the \"Edit Data -> gps\" tab.<br><br>"
-            +"<b>City Name:</b> This will extract the \"xmp:city\" info from your image(s). NOTE: This will only work if your images contain this info. For example because you added that before(!) "
-            +"in the \"Edit Data -> gps\" tab.<br><br>"
-            +"<b>ISO value:</b> This will take the \"exif:iso\" value from images. As ISO is just a numeric value like 100, the string ISO will be added, making it 100ISO.<br><br>"
-            +"<b>Focal length in 35 mm:</b> For all of us (not) having a full-frame camera, this will add the corresponding focal length for a 35 mm.<br><br>"
-            +"<b>Original file name:</b> This is the original name as given by your camera to your image.<br>";
     public static final String RenamingNoteText = "<html>Note: Some combinations of prefix and suffic are not allowed. Upon the selection "
             +"of the prefix, only the allowed suffixes are enabled.</html>";
     public static final String RenamingDuplicateNames = "In case your chosen options lead to duplicate names, the tool will automatically"
@@ -121,7 +111,7 @@ public class ProgramTexts {
     public static final String ShiftDateTimeLabel = "Sometimes your camera's clock is 1-2 hours behind or ahead because you are "
             +"\"suddenly\" in another time zone, or forgot to adjust for summer/winter time. This allows you to shift a bunch of photos all with the same time shift.";
     public static final String NotAllMandatoryFields = "<html>At least one of the manadatory fields is not complete.<br>Please complete the missing mandatory data.<br><br>I can't continue without it.</html>";
-    public static final String lensSaveLoadConfigLabel = "<html>Below two buttons give you the option to configure one or more of your lenses and to save it/them for later use."
+    public static final String lensSaveLoadConfigLabel = "<html>Below two buttons that give you the option to configure one or more of your lenses and to save it/them for later use."
             +" In case of saving a lens, the \"Save\" checkboxes are not used. All fields/values will be saved regardless whether you added data to it or not.";
     public static final String exiftoolDBText = "This tab gives you the option to query the builtin exiftool groups & tags database. You can query by selecting values from the drop-downs or by issueing a direct sql query.<br>"
             +"Note: This will show the available tags (tagnames) that exiftool knows. This tab doesn't do anything with your images.";

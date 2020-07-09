@@ -6,7 +6,7 @@ public class HelpTexts {
    All strings use "internal" tags, but not begin and end tags as we use the String.format(ProgramTexts.HTML, <width>, helptext)
     */
 
-    public static final String ExifAndXmpHelp = "This tab is used to add (a limited amount of) xmp data to your selected image(s).</p>"
+    public static final String ExifAndXmpHelp = "This tab is used to add (a limited amount of) exif or xmp data (depending on the tab) to your selected image(s).</p>"
             + "<p><b>Things to take into account!</b></p><p>As you can see the options all have a \"Save checkbox\" behind their input fields. "
             + "It means that this option/field will be saved when checked, even when the field is empty. This also means that you can:"
             + "<ul><li>overwrite existing data with empty data \"by accident\".</li><li>deliberately clear (overwrite) existing data with an empty string from an empty field.</li></ul>"
@@ -55,6 +55,34 @@ public class HelpTexts {
             + "The Google PhotoSphere functionality has been added in November 2012 to enable the use of auto-rotating panoramic photos inside Google products."
             +" For more info see the Google page: https://developers.google.com/streetview/spherical-metadata<br><br>"
             +"The fields marked with an asterisk are mandatory. The \"Use panorama viewer\" is also mandatory, but prefilled. It is here to show you that \"it is not forgotten\".";
+    public static final String RenamingInfoText = "<big>Renaming</big><hr><br>The general date time options will not be mentioned as they are self explanatory.<br><br>"
+            +"<b>String:</b> This can be any string you like also with spaces. UTF-8 is used but I can' t predict which \"strange\" characters might cause an error, maybe also OS dependent.<br><br>"
+            +"<b>Camera model:</b> This will extract the camera model from the exif data of your image(s).<br><br>"
+            +"<b>Location:</b> This will extract the \"xmp:location\" info from your image(s). NOTE: This will only work if your images contain this info. For example because you added that before(!) "
+            +"in the \"Edit Data -> gps\" tab.<br><br>"
+            +"<b>City Name:</b> This will extract the \"xmp:city\" info from your image(s). NOTE: This will only work if your images contain this info. For example because you added that before(!) "
+            +"in the \"Edit Data -> gps\" tab.<br><br>"
+            +"<b>ISO value:</b> This will take the \"exif:iso\" value from images. As ISO is just a numeric value like 100, the string ISO will be added, making it 100ISO.<br><br>"
+            +"<b>Focal length in 35 mm:</b> For all of us (not) having a full-frame camera, this will add the corresponding focal length for a 35 mm.<br><br>"
+            +"<b>Original file name:</b> This is the original name as given by your camera to your image.<br>";
+    public static final String lensHelpText = "<big>Edit lens</big><hr><br>This screen has two purposes:<br>"
+            +"<ul><li>Add/remove lens data to your photos (first row of buttons)</li>"
+            +"<li>Create/Modify a lens configuration (second row of buttons enclosed inside lined framework).</li></ul>"
+            +"Both options can be used to add lens data to your image if it is not complete.<br><br>"
+            +"Next to that: Still some add-on lenses are not completely recognized by the camera and therefore the info is not added to the image. For these cases you can create lens configs "
+            +"and save and load them for your images taken with that specific lens.";
+    public static final String ExifToolDBhelptext = "<big>Exiftool database Query screen</big><hr><br>"
+            +"exiftool comes with a huge set of tags for the several families (g0, g1, g2, g3, g4) and groups (like exif, xmp, iptc, etc.). All these tags can also be listed from exiftool itself "
+            +"but it's less easy to see which tag(s) belong to which group(s). Also in plural: some tags come back multiple times in makernotes for camera's, or specific camera data. "
+            +"And some are almost equal to each other.<br><br>"
+            +"And why a database?: It's fast! And it can also be used to store \"custom settings\" like lenses (lens configurations) and personal views (ToDo).<br><br>"
+            +"This screen comes in 3 \"action rows\":<br>"
+            +"<ol><li>1st line: two comboboxes (dropdowns) that you can select to query the tags (do not forget to select the radio button in front of it. "
+            +"(This was first automatic but then the query becomes really \"nervous\" as it will act on every change.)<br>"
+            +"The second is actually a subset of the first (current 320) options but experience from my previous pyExifToolgUI program learns that most users are interested in their own camera.</li>"
+            +"<li>2nd line: This is a \"wildcard\" query. Search for example on \"width\" and it will find all tagnames with \"width\" in the name (and there are a lot).</li>"
+            +"<li>3rd line: Here you can put your own query like \"select taggroup,tagname from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id and Groups.taggroup='EXIF';\".<br>"
+            +"A database diagram is available for those (expert) users wanting to use this option.";
     /*
     */
 }
