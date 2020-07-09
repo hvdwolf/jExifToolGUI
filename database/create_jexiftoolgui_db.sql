@@ -21,7 +21,8 @@ create table if not exists FamilyGroups (
     family_id integer NOT NULL,
     famgroup text NOT NULL,
     deletable integer,
-    unique (family_id, famgroup)
+    unique (family_id, famgroup),
+    foreign key(family_id) references Family(id)
 );
 
 Create table if not exists Groups (
@@ -49,7 +50,9 @@ create table if not exists TagsInGroups (
     id integer primary key autoincrement,
     groupid integer NOT NULL,
     tagid integer NOT NULL,
-    unique (groupid, tagid)
+    unique (groupid, tagid),
+    foreign key(groupid) references Groups(id),
+    foreign key(tagid) references Tags(id)
 );
 
 create table if not exists tmptags ( 
@@ -79,7 +82,8 @@ Create table if not exists CustomViewLines (
     displayname text NOT NULL,
     tag text NOT NULL,
     description text,
-    UNIQUE (parent_id, displayname)
+    UNIQUE (parent_id, displayname),
+    foreign key(parent_id) references CustomView(id)
 );
 
 Create table if not exists CustomEdit (
