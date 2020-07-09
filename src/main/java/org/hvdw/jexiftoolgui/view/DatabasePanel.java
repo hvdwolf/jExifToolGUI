@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.view;
 
+import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -48,4 +49,27 @@ public class DatabasePanel {
         }
 
     }
+
+    public static void displayOwnQueryResults (String sql, String queryResult, JTable DBResultsTable) {
+        DefaultTableModel model = (DefaultTableModel) DBResultsTable.getModel();
+        // get the fields that are being queried on and immediately remove spaces for our table header and number of columns
+        String queryFields = Utils.stringBetween(sql.toLowerCase(), "select", "from").replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \;
+        String[] headerFields = queryFields.split(",");
+
+        model.setColumnIdentifiers(headerFields);
+        model.setRowCount(0);
+
+        Object[] row = new Object[1];
+
+        if (queryResult.length() > 0) {
+            String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+
+            for (String line : lines) {
+                String[] cells = line.split("\\t");
+                model.addRow(cells);
+            }
+        }
+
+    }
+
 }

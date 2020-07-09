@@ -65,7 +65,8 @@ public class SQLiteJDBC {
                 }
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.error("sql error: " + e.getMessage());
+            sbresult.append(e.getMessage());
         }
         //logger.info(sbresult.toString());
         return sbresult.toString();
@@ -124,7 +125,7 @@ public class SQLiteJDBC {
     }
 
     static public String queryByTagname(String searchString, boolean likequery) {
-        String sqlresult;
+        String sqlresult = "";
         String sql = "";
         logger.debug("search string is: " + searchString);
         if (likequery) {
@@ -136,6 +137,13 @@ public class SQLiteJDBC {
             // use our view
             //sql = "select taggroup,tagname,tagtype,writable from v_tags_groups where taggroup='" + searchString + "'";
         }
+
+        sqlresult = SQLiteJDBC.generalQuery(sql);
+        return sqlresult;
+    }
+
+    static public String ownQuery(String sql) {
+        String sqlresult = "";
 
         sqlresult = SQLiteJDBC.generalQuery(sql);
         return sqlresult;
