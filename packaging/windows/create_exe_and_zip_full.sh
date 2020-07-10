@@ -20,19 +20,19 @@ Version="$1"
 
 
 launch4jPATH="../../../launch4j/launch4j"
-exe_zip_path="jExifToolGUI-$Version-win-x86_64"
-#JRE="../../../java/JREs/windows-jre"
+exe_zip_path="jExifToolGUI-$Version-win-x86_64_with-jre"
+JRE="../../../java/JREs/windows-jre"
 
 cp ../../jExifToolGUI.jar .
 
-# No jre included
-$launch4jPATH ./jexiftoolgui.xml
+# use jexiftoolgui-jre to link the exe against the local jre
+$launch4jPATH ./jexiftoolgui-jre.xml
 
 rm -rf ${exe_zip_path}
 mkdir ${exe_zip_path}
 mv *.exe ${exe_zip_path}
 cp ../../LICENSE ${exe_zip_path}
-#cp -a "${JRE}" ${exe_zip_path}/jre
+cp -a "${JRE}" ${exe_zip_path}/jre
 
 rm "${exe_zip_path}.zip"
 zip -r9 "${exe_zip_path}.zip" "${exe_zip_path}"

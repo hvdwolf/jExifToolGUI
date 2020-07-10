@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>../../out/artifacts/jExifToolGUI_jar/jExifToolGUI.jar</jar>
-  <outfile>./jExifToolGUI.exe</outfile>
+  <jar>jExifToolGUI.jar</jar>
+  <outfile>jExifToolGUI.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,13 +13,13 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon></icon>
+  <icon>/media/harryvanderwolf/128GB/software/jExifToolGUI/src/main/resources/icons/jexiftoolgui.ico</icon>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>1.7</minVersion>
-    <maxVersion>1.8</maxVersion>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion>14</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
   </jre>
