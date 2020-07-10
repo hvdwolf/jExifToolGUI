@@ -6,7 +6,7 @@ public class HelpTexts {
    All strings use "internal" tags, but not begin and end tags as we use the String.format(ProgramTexts.HTML, <width>, helptext)
     */
 
-    public static final String ExifAndXmpHelp = "This tab is used to add (a limited amount of) exif or xmp data (depending on the tab) to your selected image(s).</p>"
+    public static final String ExifAndXmpHelp = "<big>Exif or XMP metadata</big><hr><br>This tab is used to add (a limited amount of) exif or xmp data (depending on the tab) to your selected image(s).</p>"
             + "<p><b>Things to take into account!</b></p><p>As you can see the options all have a \"Save checkbox\" behind their input fields. "
             + "It means that this option/field will be saved when checked, even when the field is empty. This also means that you can:"
             + "<ul><li>overwrite existing data with empty data \"by accident\".</li><li>deliberately clear (overwrite) existing data with an empty string from an empty field.</li></ul>"
@@ -16,7 +16,7 @@ public class HelpTexts {
             + "<li><b>Copy Defaults</b>: This will copy the default creator and rights data which you provided in the Preferences tab.</li>"
             + "<li><b> Reset fields</b>: This will empty all fields and set checkboxes to their defaults.</li>"
             + "<li><b>Help</b>: This button opens this popup that you are currently reading.</li></ul>";
-    public static final String GeotaggingHelp = "Geotagging adds GPS data to your images based on data from a GPS track log file."
+    public static final String GeotaggingHelp = "<big>Geotagging</big><hr><br>Geotagging adds GPS data to your images based on data from a GPS track log file."
             +"This GPS track file can be used from your phone, gps device, navigation device, or whatever you have providing such a GPS track.<br>"
             + " The GPS track log file is loaded, and linear interpolation is used to determine the GPS position at the time of the image, then the following tags "
             + "are written to the image (if the corresponding information is available). It means that your camera needs to be set correctly with regard to the date/time of the location where you are.<br><br>"
@@ -29,10 +29,10 @@ public class HelpTexts {
             + "<p>In case of the first option you need to leave the folder empty. If the \"Folder containing the images:\" is not left empty, it will always be the first option used.<br><br>"
             + "The \"Overwrite Originals\" checkbox (default selected) makes that exiftool does an \"in place\" modification. When unselected new images will be created and the orignals get the extension \".original\"<br><br>"
             + "Note that jExifToolGUI will write both the EXIF GPS tags as well as the XMP GPS tags.";
-    public static final String GPSHelp = "This tab is used to add GPS data to your images. This tab works on a combination of exif, xmp and iptc gps data as latitude, longitude and altitude are covered in both the exif and in the xmp metadata structure.<br><br>"
+    public static final String GPSHelp = "<big>GPS and Location</big><hr><br>This tab is used to add GPS data to your images. This tab works on a combination of exif, xmp and iptc gps data as latitude, longitude and altitude are covered in both the exif and in the xmp metadata structure.<br><br>"
             + "The Location metadata details (Country, Province/State, City, Location) are covered by xmp and IPTC.<br><br>This tab therefore acts on multiple tag categories (exif, xmp and iptc) "
             + "at once and simply tries to make your gps/location data as complete as possible in the several tag categories.";
-    public static final String YourCommandsHelp = "On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
+    public static final String YourCommandsHelp = "<big>Your commands</big><hr><br>On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
             + "<br>You can both specify read parameters as well as write parameters but not in one command: write actions take precedence. You can also combine several parameters. "
             + "<b>Note:</b> You don't need (must not) provide the exiftool command itself. The Gui will take care of that.<br>"
             + "One thing YOU need to take care of is the use of either single quotes or double quotes around some commands. "
@@ -45,13 +45,13 @@ public class HelpTexts {
             + "<tr><td>-Exif:Artist=\"My Name\"</td><td>Will put \"Your Name\" into the selected image(s)</td></tr>"
             + "<tr><td>-Xmp:City=Zwolle -Xmp:Country=Netherlands</td><td>Will write your city and country into the xmp tags of your image(s)</td></tr></table>"
             + "See also the <a href=\"http://www.sno.phy.queensu.ca/~phil/exiftool/exiftool_pod.html\" target=\"_blank\">exiftool Application Documentation</a> which gives extensive information and lots of examples.";
-    public static final String CopyMetaDataHelp = "This function will copy all or selected metadata from the source image into the target image(s).<br><br>"
+    public static final String CopyMetaDataHelp = "<big>Copy metadata</big><hr><br>This function will copy all or selected metadata from the source image into the target image(s).<br><br>"
             +"This can be done in several ways:<ul>"
             +"<li>all information to same-named tags in the preferred groups</li>"
             +"<li>all info from all tag groups to same tag groups</li>"
             +"<li>selected group to same group</li></ul><br>"
             +"This is NOT an internal \"same image to same image\" copy to the xmp tag group; See menu \"Extra -> Copy all metadata to xmp format\" for that option.<br><br>";
-    public static final String GpanoHelp = "This tab is used to add GPano Google PhotoSphere data to your selected image(s).<br><br>"
+    public static final String GpanoHelp = "<big>Gpano</big><hr><br>This tab is used to add GPano Google PhotoSphere data to your selected image(s).<br><br>"
             + "The Google PhotoSphere functionality has been added in November 2012 to enable the use of auto-rotating panoramic photos inside Google products."
             +" For more info see the Google page: https://developers.google.com/streetview/spherical-metadata<br><br>"
             +"The fields marked with an asterisk are mandatory. The \"Use panorama viewer\" is also mandatory, but prefilled. It is here to show you that \"it is not forgotten\".";

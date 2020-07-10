@@ -1940,6 +1940,37 @@ public class mainScreen {
                 case "Donate":
                     Utils.openBrowser("https://hvdwolf.github.io/jExifToolGUI/donate.html");
                     break;
+                // Below this line we will add our Help sub menu containing the helptexts topics in this program
+                case "Edit data -> Exif":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifAndXmpHelp), "Help for the Exif edit panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Edit data -> XMP":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifAndXmpHelp), "Help for the XMP edit panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Edit data -> gps":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, HelpTexts.GPSHelp), "Help for the GPS-Location edit panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Edit data -> Geotagging":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.GeotaggingHelp), "Help for the Geotagging edit panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Edit data -> GPano":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.GpanoHelp), "Help for the Edit Gpano metadata panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Edit data -> Lens":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.lensHelpText), "Help for the Edit lens data panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Copy Data":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.CopyMetaDataHelp), "Help for the Copy metadata panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Your Commands":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.YourCommandsHelp), "Help for the Your Commands panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "Exiftool Database":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifToolDBhelptext), "Help for the Exiftool database query panel", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case "menu -> Renaming -> Info":
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.RenamingInfoText), "Renaming info", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 default:
                     break;
             }
@@ -2370,7 +2401,7 @@ public class mainScreen {
         edbHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.ExifToolDBhelptext), "Help for the Exiftool database query panel", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.ExifToolDBhelptext), "Help for the Exiftool database query panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         sqlExecutebutton.addActionListener(new ActionListener() {
@@ -2601,25 +2632,35 @@ public class mainScreen {
         // this will be a sub menu of the Help menu containing the help dialogs for the several buttons
         JMenu mysubMenu = new JMenu("help topics program");
         menuItem = new JMenuItem("Edit data -> Exif");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Edit data -> XMP");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Edit data -> gps");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Edit data -> Geotagging");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Edit data -> GPano");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Edit data -> Lens");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Copy Data");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Your Commands");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         menuItem = new JMenuItem("Exiftool Database");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
         mysubMenu.addSeparator();
         menuItem = new JMenuItem("menu -> Renaming -> Info");
+        menuItem.addActionListener(new MenuActionListener());
         mysubMenu.add(menuItem);
 
 

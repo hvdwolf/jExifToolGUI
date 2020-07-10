@@ -124,7 +124,7 @@
                   <component id="3569c" class="javax.swing.JButton" binding="renamingInfobutton">
                     <constraints/>
                     <properties>
-                      <text value="Info"/>
+                      <text value="Help"/>
                     </properties>
                   </component>
                   <component id="3a4b0" class="javax.swing.JTextField" binding="RenamingSourceFoldertextField">

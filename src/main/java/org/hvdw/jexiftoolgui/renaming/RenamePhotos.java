@@ -114,7 +114,7 @@ public class RenamePhotos extends JDialog {
         renamingInfobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootRenamingPane, String.format(ProgramTexts.HTML, 450, HelpTexts.RenamingInfoText), "Renaming info", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootRenamingPane, String.format(ProgramTexts.HTML, 700, HelpTexts.RenamingInfoText), "Renaming info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         RenamingSourceFolderbutton.addActionListener(new ActionListener() {
@@ -578,7 +578,7 @@ public class RenamePhotos extends JDialog {
         panel6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         panel5.add(panel6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         renamingInfobutton = new JButton();
-        renamingInfobutton.setText("Info");
+        renamingInfobutton.setText("Help");
         panel6.add(renamingInfobutton);
         RenamingSourceFoldertextField = new JTextField();
         RenamingSourceFoldertextField.setPreferredSize(new Dimension(600, 30));
