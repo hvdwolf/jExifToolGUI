@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CurDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+java -Xmx1024M -jar "${CurDir}"/jExifToolGUI.jar &
+

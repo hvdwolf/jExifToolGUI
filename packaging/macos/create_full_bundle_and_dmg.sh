@@ -27,10 +27,10 @@ printf "Now copy the jre and the jar into the app\n\n"
 cp -a jre $App/Contents/MacOS
 cp ../../jExifToolGUI.jar $App/Contents/MacOS/
 
-printf "Create the 125MB (full) dmg\n\n"
+printf "Create the 130MB (full) dmg\n\n"
 mkdir -p tmp/dmg
 # 125MB dmg
-dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=125
+dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=130
 
 mkfs.hfsplus -v "jExifToolGUI-x86_64 $Version" tmp/jExifToolGUI.dmg
 
@@ -40,5 +40,5 @@ sudo cp -a  jExifToolGUI.app tmp/dmg/
 sudo cp ../../LICENSE tmp/dmg/
 
 sudo umount tmp/dmg
-mv tmp/jExifToolGUI.dmg ./"jExifToolGUI-x86_64-macos-full-$Version.dmg"
+mv tmp/jExifToolGUI.dmg ./"jExifToolGUI-x86_64-macos-$Version-with_jre.dmg"
 rm -rf tmp 

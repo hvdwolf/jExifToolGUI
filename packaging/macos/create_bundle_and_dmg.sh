@@ -1,27 +1,44 @@
 #!/bin/bash
 
-# Download jar2app from https://github.com/Jorl17/jar2app
-# Download the latest JRE for Mac OS/X if you want to bundle java with the app (-r ....jdk/jre)
-
 # Some variables
-jar2appPATH="../../../jar2app/jar2app"
-Version="0.1"
+BaseApp="jExifToolGUI.app.base"
+AppName="jExifToolGUI"
+App="jExifToolGUI.app"
 
+if [ "$1" = "" ]
+then
+        printf "\n\nYou have to provide the version\n\n"
+        exit
+fi
+
+Version="$1"
+
+printf "Do initial cleanup\n\n"
+rm -rvf jExifToolGUI.app tmp *.dmg
 # Create the app bundle
-#$jar2appPATH ../../build/libs/JEXIFTOOLGUI/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns -r Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk
-$jar2appPATH ../../build/libs/jExifToolGUI.jar jExifToolGUI -n jExifToolGUI -i ./appIcon.icns
+# full bundle with jre
+printf "Create the bundle from the base bundle\n\n"
+cp -a $BaseApp $App
 
-# Create the dmg
+printf "Update the VersionString to $Version\n\n"
+sed -i "s+VersionString+$Version+" $App/Contents/Info.plist
+
+printf "Now copy the jar and modified script into the app\n\n" 
+cp ../../jExifToolGUI.jar $App/Contents/MacOS/
+cp jexiftoolgui.jar_only $App/Contents/MacOS/jexiftoolgui
+
+printf "Create the 15MB dmg\n\n"
 mkdir -p tmp/dmg
-# 1MB dmg
-dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=1
+# 15MB dmg
+dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=15
 
-mkfs.hfsplus -v "jExifToolGUI $Version" tmp/jExifToolGUI.dmg
+mkfs.hfsplus -v "jExifToolGUI-x86_64 $Version" tmp/jExifToolGUI.dmg
 
 sudo mount -o loop tmp/jExifToolGUI.dmg tmp/dmg
-sudo mv  jExifToolGUI.app tmp/dmg/
-sudo cp ../../src/main/java/org/hvdw/jexiftoolgui/resources/COPYING tmp/dmg/
+sudo cp -a  jExifToolGUI.app tmp/dmg/
+#sudo mv  jExifToolGUI.app tmp/dmg/
+sudo cp ../../LICENSE tmp/dmg/
 
 sudo umount tmp/dmg
-mv tmp/jExifToolGUI.dmg ./"jExifToolGUI-$Version.dmg"
+mv tmp/jExifToolGUI.dmg ./"jExifToolGUI-x86_64-macos-$Version.dmg"
 rm -rf tmp 
