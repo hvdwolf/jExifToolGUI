@@ -1916,6 +1916,14 @@ public class mainScreen {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
                     break;
+                case "Export all previews/thumbs from selected":
+                    if (selectedIndicesList.size() > 0) {
+                        OutputLabel.setText("Extracting previews and thumbnails from selected images, please be patient ...");
+                        Utils.ExportPreviewsThumbnails(progressBar);
+                    } else {
+                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
+                    }
+                    break;
                 case "About jExifToolGUI":
                     JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ProgramTexts.aboutText), "About jExifToolGUI for ExifTool by Phil Harvey", JOptionPane.INFORMATION_MESSAGE);
                     break;
@@ -2623,6 +2631,10 @@ public class mainScreen {
         menuItem = new JMenuItem("Create args file(s)");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
+        menuItem = new JMenuItem("Export all previews/thumbs from selected");
+        menuItem.addActionListener(new MenuActionListener());
+        myMenu.add(menuItem);
+
 
         // exiftool database
         //myMenu = new JMenu("Database");

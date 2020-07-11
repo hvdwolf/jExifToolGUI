@@ -115,4 +115,6 @@ public class ProgramTexts {
             +" In case of saving a lens, the \"Save\" checkboxes are not used. All fields/values will be saved regardless whether you added data to it or not.";
     public static final String exiftoolDBText = "This tab gives you the option to query the builtin exiftool groups & tags database. You can query by selecting values from the drop-downs or by issueing a direct sql query.<br>"
             +"Note: This will show the available tags (tagnames) that exiftool knows. This tab doesn't do anything with your images.";
+    public static final String ExportPreviewsThumbnails = "This option will export all preview images and thumbnails from the selected images. This can only be done if your image(s) do have them.<br>"
+            +"Do you want to continue?";
 }

@@ -697,6 +697,47 @@ public class Utils {
         return lat_lon;
     }
 
+    public static void ExportPreviewsThumbnails(JProgressBar progressBar) {
+        List<String> cmdparams = new ArrayList<String>();
+        String[] options = {"No", "Yes"};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
+
+        logger.info("Export previews/thumbnails..");
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.ExportPreviewsThumbnails),"Extract previews/thumbnails",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (choice == 1) { //Yes
+            cmdparams.add(Utils.platformExiftool());
+            boolean isWindows = Utils.isOsFromMicrosoft();
+
+            File myFilePath = files[0];
+            String absolutePath = myFilePath.getAbsolutePath();
+            String myPath = absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));
+            if (isWindows) {
+                myPath = myFilePath.getPath().replace("\\", "/");
+            }
+            cmdparams.add("-a");
+            cmdparams.add("-b");
+            cmdparams.add("-W");
+            cmdparams.add(myPath + File.separator + "%f_%t%-c.%s");
+            cmdparams.add("-preview:all");
+
+
+            for (int index: selectedIndices) {
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                if (isWindows) {
+                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                } else {
+                    cmdparams.add(files[index].getPath());
+                }
+            }
+            // export metadata
+            CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+        }
+
+    }
+
+
     @SuppressWarnings("SameParameterValue")
     private static URL getResource(String path) {
         return Utils.class.getClassLoader().getResource(path);
