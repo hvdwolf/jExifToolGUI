@@ -41,4 +41,5 @@ sudo cp ../../LICENSE tmp/dmg/
 
 sudo umount tmp/dmg
 mv tmp/jExifToolGUI.dmg ./"jExifToolGUI-x86_64-macos-$Version-with_jre.dmg"
+zip -9 ./"jExifToolGUI-x86_64-macos-$Version-with_jre.dmg.zip" ./"jExifToolGUI-x86_64-macos-$Version-with_jre.dmg"
 rm -rf tmp 

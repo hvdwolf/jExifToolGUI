@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-07-11 1.01-beta
+* Fix (stupid) mistake in parameters for gps and location view
+
 ## 2020-07-10 1.00-beta
 * Add "Edit lens tab". Enables to save (additional) lens data and to create and save lens configurations for future use. 
 * add SQLite database with exiftool tags, groups, families.
