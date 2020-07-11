@@ -6,17 +6,17 @@ If some java/gradle/IntellIJ expert has info, please let me know.
 
 ## Initial steps to do
 
-- Download the source code. Either as zip or via "git clone .."
+* Download the source code. Either as zip or via "git clone .."
 
-- Start IntellIJ via "idea &" or via the menu.
-- Import the project. Select "Import project from another model" (2nd radiobutton) and select "Gradle" as option.
-- Go to (menu) File -> Settings -> Build, Execution, Deployment -> Build Tools -> Gradle. Make sure Gradle is select as "Build and run using" and "Run tests using".
-- Go to (menu) File -> Settings -> Editor -> GUI Designer and set **Generate GUI into: Java source code** (This is a vital step!)
-- Select (menu) Build -> Build Project
+* Start IntellIJ via "idea &" or via the menu.
+* Import the project. Select "Import project from another model" (2nd radiobutton) and select "Gradle" as option.
+* Go to (menu) File -> Settings -> Build, Execution, Deployment -> Build Tools -> Gradle. Make sure Gradle is select as "Build and run using" and "Run tests using".
+* Go to (menu) File -> Settings -> Editor -> GUI Designer and set **Generate GUI into: Java source code** (This is a vital step! See also the [readme-intellij](https://github.com/hvdwolf/jExifToolGUI/blob/master/readme-intellIJ.md))
+* Select (menu) Build -> Build Project
 
-- Now open a terminal (command prompt) and "cd" into your project folder.<br>
--- On linux/MacOS use : `./gradlew assemble buildDependents shadowJar shadowDistZip`<br>
--- On Windows use: `gradlew.bat assemble buildDependents shadowJar shadowDistZip`
+* Now open a terminal (command prompt) and "cd" into your project folder.<br>
+    * On linux/MacOS use : `./gradlew assemble buildDependents shadowJar shadowDistZip`<br>
+    * On Windows use: `gradlew.bat assemble buildDependents shadowJar shadowDistZip`
 
 When done check the build folder.<br>
 * `/build/libs` will contain `jExifToolGUI-all.jar` and `jExifToolGUI.jar`. The big "-all-jar" is the jar file that contains all dependency jars inside as well. This is the "one in all" jar.
