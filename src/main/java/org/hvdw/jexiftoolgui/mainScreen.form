@@ -3016,7 +3016,7 @@
                 <properties>
                   <font style="2"/>
                   <text value="exiftool DB version:"/>
-                  <toolTipText value="The included database version is not necessarily the same as your installed exiftool version"/>
+                  <toolTipText value="The exiftool version to build the included database version is not necessarily the same as your installed exiftool version"/>
                 </properties>
               </component>
               <component id="3ef45" class="javax.swing.JButton" binding="buttonDBdiagram">

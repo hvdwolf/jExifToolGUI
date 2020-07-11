@@ -76,6 +76,7 @@ public class HelpTexts {
             +"but it's less easy to see which tag(s) belong to which group(s). Also in plural: some tags come back multiple times in makernotes for camera's, or specific camera data. "
             +"And some are almost equal to each other.<br><br>"
             +"And why a database?: It's fast! And it can also be used to store \"custom settings\" like lenses (lens configurations) and personal views (ToDo).<br><br>"
+            +"(Note: The exiftool version to build the included database version is not necessarily the same as your installed exiftool version.)<br><br>"
             +"This screen comes in 3 \"action rows\":<br>"
             +"<ol><li>1st line: two comboboxes (dropdowns) that you can select to query the tags (do not forget to select the radio button in front of it. "
             +"(This was first automatic but then the query becomes really \"nervous\" as it will act on every change.)<br>"

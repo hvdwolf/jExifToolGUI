@@ -1730,7 +1730,7 @@ public class mainScreen {
         Font exiftoolDBversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolDBversion.getFont());
         if (exiftoolDBversionFont != null) exiftoolDBversion.setFont(exiftoolDBversionFont);
         exiftoolDBversion.setText("exiftool DB version:");
-        exiftoolDBversion.setToolTipText("The included database version is not necessarily the same as your installed exiftool version");
+        exiftoolDBversion.setToolTipText("The exiftool version to build the included database version is not necessarily the same as your installed exiftool version");
         panel31.add(exiftoolDBversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonDBdiagram = new JButton();
         buttonDBdiagram.setText("DB diagram");
