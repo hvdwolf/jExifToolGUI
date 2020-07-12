@@ -25,6 +25,9 @@ exe_zip_path="jExifToolGUI-$Version-win-x86_64"
 
 cp ../../jExifToolGUI.jar .
 
+#Update the launch4j config file with the version
+sed -e "s+VersionString+$Version+" jexiftoolgui-base.xml > jexiftoolgui.xml
+
 # No jre included
 $launch4jPATH ./jexiftoolgui.xml
 

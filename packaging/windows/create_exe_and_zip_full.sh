@@ -25,6 +25,9 @@ JRE="../../../java/JREs/windows-jre"
 
 cp ../../jExifToolGUI.jar .
 
+#Update the launch4j config file with the version
+sed -e "s+VersionString+$Version+" jexiftoolgui-jre-base.xml > jexiftoolgui-jre.xml
+
 # use jexiftoolgui-jre to link the exe against the local jre
 $launch4jPATH ./jexiftoolgui-jre.xml
 

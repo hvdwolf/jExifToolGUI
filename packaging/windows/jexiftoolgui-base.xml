@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>jExifToolGUI.jar</jar>
+  <outfile>jExifToolGUI.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>https://adoptopenjdk.net/releases.html</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>/media/harryvanderwolf/128GB/software/jExifToolGUI/src/main/resources/icons/jexiftoolgui.ico</icon>
+  <jre>
+    <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>11</minVersion>
+    <maxVersion>14</maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+  <versionInfo>
+    <fileVersion>VersionString</fileVersion>
+    <txtFileVersion>version VersionString</txtFileVersion>
+    <fileDescription>jExifToolGUI vVersionString</fileDescription>
+    <copyright>Harry van der Wolf</copyright>
+    <productVersion>VersionString</productVersion>
+    <txtProductVersion>version VersionString</txtProductVersion>
+    <productName>jExifToolGUI</productName>
+    <companyName></companyName>
+    <internalName>jExifToolGUI</internalName>
+    <originalFilename>jExifToolGUI.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
