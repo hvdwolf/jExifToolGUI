@@ -226,4 +226,45 @@ public class StandardFileIO {
         return method_result;
     }
 
+    public static boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
+    public static String RecreateOurTempFolder () {
+        String result = "Success";
+        boolean successfully_erased = true;
+        //File tf = null;
+        //String tmpfolder = "";
+
+        // Get the temporary directory
+        String tempDir = System.getProperty("java.io.tmpdir");
+        File tmpfolder = new File (tempDir + File.separator + "jexiftoolgui");
+        if (tmpfolder.exists()) {
+            boolean successfully_deleted = deleteDirectory(tmpfolder);
+            if (!successfully_deleted) {
+                successfully_erased = false;
+                result = "Failed to erase " + tempDir + File.separator + "jexiftoolgui";
+                logger.error(result);
+            }
+        }
+        // Now (re)create our tmpfolder
+        try {
+            Files.createDirectories(Paths.get(tempDir + File.separator + "jexiftoolgui"));
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            result = "Creating folder \"" + tempDir + File.separator + "jexiftoolgui failed";
+            logger.error(result);
+        }
+        // delete our tmp workfolder including contents on program exit
+        tmpfolder.deleteOnExit();
+
+        return result;
+    }
+
 }

@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.RecreateOurTempFolder;
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
@@ -1919,7 +1920,7 @@ public class mainScreen {
                 case "Export all previews/thumbs from selected":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Extracting previews and thumbnails from selected images, please be patient ...");
-                        Utils.ExportPreviewsThumbnails(progressBar);
+                        Utils.ExportPreviewsThumbnails(progressBar, false);
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -2770,7 +2771,11 @@ public class mainScreen {
         } else { // Set database to variable
             logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         }
-
+        // Delete and recreate {tmp dir}/jexiftoolgui
+        check_result = RecreateOurTempFolder();
+        if (!"Success".equals(check_result)) {
+            JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
+        }
         // Now check the preferences
         preferences = checkPreferences();
         if (!preferences) {
