@@ -20,7 +20,10 @@ public class MyVariables {
     private File[] selectedFiles;
     private int[] selectedFilenamesIndices;
     private String jexiftoolguiDBPath;
+    private String cantdisplaypng;
     private String selectedLensConfig;
+    private String tmpWorkFolder;
+    private File CurrentWorkFile;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -47,6 +50,13 @@ public class MyVariables {
         staticInstance.jexiftoolguiDBPath = selDBPath;
     }
 
+    public static String getcantdisplaypng() {
+        return staticInstance.cantdisplaypng;
+    }
+    public static void setcantdisplaypng(String pngPath) {
+        staticInstance.cantdisplaypng = pngPath;
+    }
+
     public static String getselectedLensConfig() {
         return staticInstance.selectedLensConfig;
     }
@@ -61,6 +71,19 @@ public class MyVariables {
         return Arrays.copyOf(staticInstance.selectedFiles, staticInstance.selectedFiles.length);
     }
 
+    public static String gettmpWorkFolder() {
+        return staticInstance.tmpWorkFolder;
+    }
+    public static void settmpWorkFolder( String tmpworkfldr) {
+        staticInstance.tmpWorkFolder = tmpworkfldr;
+    }
+
+    public static File getCurrentWorkFile() {
+        return staticInstance.CurrentWorkFile;
+    }
+    public static void setCurrentWorkFile(File file) {
+        staticInstance.CurrentWorkFile = file;
+    }
 
     public static int[] getSelectedFilenamesIndices() {
         return Arrays.copyOf(staticInstance.selectedFilenamesIndices, staticInstance.selectedFilenamesIndices.length);

@@ -1920,7 +1920,8 @@ public class mainScreen {
                 case "Export all previews/thumbs from selected":
                     if (selectedIndicesList.size() > 0) {
                         OutputLabel.setText("Extracting previews and thumbnails from selected images, please be patient ...");
-                        Utils.ExportPreviewsThumbnails(progressBar, false);
+                        Utils.ExportPreviewsThumbnails(progressBar);
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NoImgSelected, "No images selected", JOptionPane.WARNING_MESSAGE);
                     }
@@ -2772,7 +2773,7 @@ public class mainScreen {
             logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         }
         // Delete and recreate {tmp dir}/jexiftoolgui
-        check_result = RecreateOurTempFolder();
+        check_result = StandardFileIO.RecreateOurTempFolder();
         if (!"Success".equals(check_result)) {
             JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
         }

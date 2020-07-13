@@ -182,6 +182,8 @@ public class StandardFileIO {
     // Check if we have a jexiftoolgui_custom folder in $HOME with defaults
     public static String checkforjexiftoolguiFolder() {
         String method_result = "";
+        String fileToBecopied = "";
+        File copyFile = null;
         String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
         // Check if folder exists
         String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
@@ -208,20 +210,36 @@ public class StandardFileIO {
             method_result = "exists";
         } */
         // Now check if our database exists
-        String strDB = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
-        File jexifDB = new File(strDB);
-        if (!jexifDB.exists()) {
+        fileToBecopied = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
+        copyFile = new File(fileToBecopied);
+        if (!copyFile.exists()) {
             logger.debug("no database yet; trying to create it");
             method_result = extract_resource_to_jexiftoolguiFolder("jexiftoolgui.db", strjexiftoolguifolder);
             if ("success".equals(method_result)) {
-                MyVariables.setjexiftoolguiDBPath(strDB);
+                MyVariables.setjexiftoolguiDBPath(fileToBecopied);
                 logger.info("copied the initial database");
             }
         } else { // the DB already exists
             method_result = "exists";
             logger.info("the database already exists.");
-            MyVariables.setjexiftoolguiDBPath(strDB);
+            MyVariables.setjexiftoolguiDBPath(fileToBecopied);
         }
+        // Now check if our "cantdisplay.png" already exists which is the placeholder for non-displayable RAW formats
+        fileToBecopied = strjexiftoolguifolder + File.separator + "cantdisplay.png";
+        copyFile = new File(fileToBecopied);
+        if (!copyFile.exists()) {
+            logger.debug("no cantdisplay.png yet; trying to create it");
+            method_result = extract_resource_to_jexiftoolguiFolder("cantdisplay.png", strjexiftoolguifolder);
+            if ("success".equals(method_result)) {
+                MyVariables.setcantdisplaypng(fileToBecopied);
+                logger.info("copied cantdisplay.png");
+            }
+        } else { // the png already exists
+            method_result = "exists";
+            logger.info("the cantdisplay.png already exists.");
+            MyVariables.setcantdisplaypng(fileToBecopied);
+        }
+
         //logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         return method_result;
     }
@@ -243,22 +261,23 @@ public class StandardFileIO {
         //String tmpfolder = "";
 
         // Get the temporary directory
-        String tempDir = System.getProperty("java.io.tmpdir");
-        File tmpfolder = new File (tempDir + File.separator + "jexiftoolgui");
+        String tempWorkDir = System.getProperty("java.io.tmpdir") + File.separator + "jexiftoolgui";
+        File tmpfolder = new File (tempWorkDir);
+        MyVariables.settmpWorkFolder(tempWorkDir);
         if (tmpfolder.exists()) {
             boolean successfully_deleted = deleteDirectory(tmpfolder);
             if (!successfully_deleted) {
                 successfully_erased = false;
-                result = "Failed to erase " + tempDir + File.separator + "jexiftoolgui";
+                result = "Failed to erase " + tempWorkDir + File.separator + "jexiftoolgui";
                 logger.error(result);
             }
         }
         // Now (re)create our tmpfolder
         try {
-            Files.createDirectories(Paths.get(tempDir + File.separator + "jexiftoolgui"));
+            Files.createDirectories(Paths.get(tempWorkDir + File.separator + "jexiftoolgui"));
         } catch (IOException ioe) {
             ioe.printStackTrace();
-            result = "Creating folder \"" + tempDir + File.separator + "jexiftoolgui failed";
+            result = "Creating folder \"" + tempWorkDir + File.separator + "jexiftoolgui failed";
             logger.error(result);
         }
         // delete our tmp workfolder including contents on program exit

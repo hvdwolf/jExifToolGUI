@@ -9,6 +9,7 @@ import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -294,15 +295,60 @@ public class Utils {
         return value.substring(adjustedPosA, posB);
     }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
+    private static String getFileExtension(String filename) {
 
+        int lastIndexOf = filename.lastIndexOf(".") + 1;
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return filename.substring(lastIndexOf);
+    }
+
+    /*
+    * Create the icon
+    */
+    static ImageIcon createIcon(File file) {
+        ImageIcon icon = null;
+        try {
+            //logger.info("Trying to display: " + filename);
+            BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
+            // resize it
+            BufferedImage resizedImg = new BufferedImage(160, 120, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = resizedImg.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.drawImage(img, 0, 0, 160, 120, null);
+            g2.dispose();
+
+            icon = new ImageIcon(resizedImg);
+            return icon;
+        } catch (IIOException iex) {
+            /*String strfile = file.toString();
+            //logger.debug("Error javax.imageio.IIOException: " + iex + " for image: " + strfile);
+            // Use the cantdisplay.png for this preview. We can't do anything with this image
+            File thumbfile = new File(MyVariables.getcantdisplaypng());
+            if (thumbfile.exists()) {
+                // Create icon of this Preview
+                icon = createIcon(thumbfile);
+            } */
+            icon = null;
+        } catch (IOException ex) {
+            logger.error("Error loading image", ex);
+            icon = null;
+        }
+
+        return icon;
+    }
 
     /*
      * Display the loaded files with icon and name
      */
     //static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
-
         int selectedRow, selectedColumn;
+        String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        String thumbfilename = "";
+        File thumbfile = null;
+        ImageIcon icon = null;
         File[] files = MyVariables.getSelectedFiles();
         DefaultTableModel model = (DefaultTableModel) jTable_File_Names.getModel();
         //model.setColumnIdentifiers(new String[]{"File Name(s)"});
@@ -335,26 +381,85 @@ public class Utils {
 
 
         for (File file : files) {
-            try {
-                logger.trace(file.getName().replace("\\", "/"));
-                filename = file.getName().replace("\\", "/");
-                logger.trace(file.getPath().replace("\\", "/"));
-                BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
-                // resize it
-                BufferedImage resizedImg = new BufferedImage(160, 120, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g2 = resizedImg.createGraphics();
-                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                g2.drawImage(img, 0, 0, 160, 120, null);
-                g2.dispose();
-                ImageIcon icon = new ImageIcon(resizedImg);
-                    /*ImgRow[tcolumn] = icon;
-                    FilenameRow[tcolumn] = filename;*/
-                ImgFilenameRow[0] = icon;
-                ImgFilenameRow[1] = filename;
-            } catch (IOException ex) {
-                logger.error("Error loading image", ex);
+
+            //logger.trace(file.getName().replace("\\", "/"));
+            filename = file.getName().replace("\\", "/");
+            //logger.info("Now working on image: " +filename);
+            String filenameExt = getFileExtension(filename);
+            for (String ext : SimpleExtensions) {
+                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png
+                    icon = createIcon(file);
+                    ImgFilenameRow[0] = icon;
+
+                } else { //We have a RAW image extension or tiff or something else like audio/video
+                    // Export previews for current (RAW) image to tempWorkfolder
+                    String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);
+                    if ("Success".equals(exportResult)) {
+                        //Hoping we have a thumbnail
+                        thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                        thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                        //logger.info("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                        if (thumbfile.exists()) {
+                            // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
+                            //logger.info("create thumb nr1");
+                            icon = createIcon(thumbfile);
+                            if (icon != null) {
+                                // display our created icon from the thumbnail
+                                ImgFilenameRow[0] = icon;
+                            }
+                        } else { //thumbnail image probably doesn't exist, move to 2nd option
+                            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
+                            thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                            if (thumbfile.exists()) {
+                                // Create icon of this Preview
+                                //logger.info("create thumb nr2");
+                                icon = createIcon(thumbfile);
+                                if (icon != null) {
+                                    // display our created icon from the preview
+                                    ImgFilenameRow[0] = icon;
+                                }
+                            } else { // So thumbnail and previewImage don't exist. Try 3rd option
+                                thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
+                                thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                                if (thumbfile.exists()) {
+                                    // Create icon of this Preview
+                                    icon = createIcon(thumbfile);
+                                    if (icon != null) {
+                                        // display our created icon from the preview
+                                        ImgFilenameRow[0] = icon;
+                                    }
+                                } else {
+                                    // Use the cantdisplay.png for this preview. Should actually not be necessary here
+                                    thumbfile = new File(MyVariables.getcantdisplaypng());
+                                    if (thumbfile.exists()) {
+                                        // Create icon of this Preview
+                                        icon = createIcon(thumbfile);
+                                        if (icon != null) {
+                                            // display our created icon from the preview
+                                            ImgFilenameRow[0] = icon;
+                                        }
+                                    }
+                                } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
+                            } // end of 2nd option creation ("else if") and 3rd option creation (else)
+                        } // end of 1st option creation ("else if") and 2nd option creation (else)
+
+                    } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
+                        // Use the cantdisplay.png for this preview
+                        thumbfile = new File(MyVariables.getcantdisplaypng());
+                        if (thumbfile.exists()) {
+                            // Create icon of this Preview
+                            icon = createIcon(thumbfile);
+                            if (icon != null) {
+                                // display our created icon from the preview
+                                ImgFilenameRow[0] = icon;
+                            }
+                        }
+                    }
+
+                }
             }
 
+            ImgFilenameRow[1] = filename;
             jTable_File_Names.setRowHeight(150);
             model.addRow(ImgFilenameRow);
         }
@@ -697,8 +802,13 @@ public class Utils {
         return lat_lon;
     }
 
+    /*
+    * This method is used to export all avalaible previews/thumbnails/jpegFromRaw which are in the selected images
+     */
     public static void ExportPreviewsThumbnails(JProgressBar progressBar) {
+        // tmpPath is optional and only used to create previews of raw images which can't be displayed directly
         List<String> cmdparams = new ArrayList<String>();
+        File myFilePath;
         String[] options = {"No", "Yes"};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
@@ -710,13 +820,14 @@ public class Utils {
             cmdparams.add(Utils.platformExiftool());
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            File myFilePath = files[0];
+            myFilePath = files[0];
             String absolutePath = myFilePath.getAbsolutePath();
             String myPath = absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));
             if (isWindows) {
                 myPath = myFilePath.getPath().replace("\\", "/");
             }
             cmdparams.add("-a");
+            cmdparams.add("-m");
             cmdparams.add("-b");
             cmdparams.add("-W");
             cmdparams.add(myPath + File.separator + "%f_%t%-c.%s");
@@ -734,7 +845,44 @@ public class Utils {
             // export metadata
             CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
         }
+    }
 
+    /*
+    * This method is used to try to get a preview image for those (RAW) images that can't be converted directly to be displayed in the left images column
+    * We will try to extract a jpg from the RAW to the tempdir and resize/display that one
+     */
+    public static String ExportPreviewsThumbnailsForIconDisplay(File file) {
+        List<String> cmdparams = new ArrayList<String>();
+        String exportResult = "Success";
+
+        cmdparams.add(Utils.platformExiftool());
+        boolean isWindows = Utils.isOsFromMicrosoft();
+
+        // Get the temporary directory
+        String tempWorkDir = MyVariables.gettmpWorkFolder();
+
+        cmdparams.add("-a");
+        cmdparams.add("-m");
+        cmdparams.add("-b");
+        cmdparams.add("-W");
+        cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
+        cmdparams.add("-preview:ThumbnailImage");
+        cmdparams.add("-preview:PreviewImage");
+
+        if (isWindows) {
+            cmdparams.add(file.getPath().replace("\\", "/"));
+        } else {
+            cmdparams.add(file.getPath());
+        }
+
+        try {
+            String cmdResult = CommandRunner.runCommand(cmdparams);
+            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing command to export previes for one RAW");
+            exportResult = (" Failed to create previews");
+        }
+        return exportResult;
     }
 
 
