@@ -3,8 +3,16 @@ package org.hvdw.jexiftoolgui.facades;
 public class SystemPropertyFacade {
     public enum SystemPropertyKey {
         LINE_SEPARATOR("line.separator"),
+        FILE_SEPARATOR(" file.separator"),
         OS_NAME("os.name"),
-        USER_HOME("user.home");
+        OS_ARCH("os.arch"),
+        OS_VERSION(" os.version"),
+        USER_DIR("user.dir"),
+        USER_HOME("user.home"),
+        USER_NAME("user.name"),
+        JAVA_HOME("java.home"),
+        JAVA_VERSION("java.version");
+
 
         public final String key;
         SystemPropertyKey(String key) {
