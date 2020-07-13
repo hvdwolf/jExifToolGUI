@@ -50,10 +50,11 @@ dependencies {
     // At some time maybe when I feel like adding charts to display ISOs, focal length, aperture and the like
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
 
+    // Thumnailator: easy library to create thumbnails. Might going to use it in the future
+    implementation(group = "net.coobird", name = "thumbnailator", version = "0.4.11")
+
     // sqlite at some time --> Adds 7MB
     implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
-    // or Derby at some time --> Adds 3.2 Mb
-    //implementation(group = "org.apache.derby", name = "derby", version = "10.15.2.0")
 
     // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")

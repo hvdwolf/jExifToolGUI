@@ -231,7 +231,8 @@ public class Utils {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            logger.info("Version: " + web_version);
+            logger.info("Version on the web: " + web_version);
+            logger.info("This version: " + ProgramTexts.Version);
             int version_compare = web_version.compareTo(ProgramTexts.Version);
             if ( version_compare > 0 ) { // This means the version on the web is newer
             //if (Float.valueOf(web_version) > Float.valueOf(ProgramTexts.Version)) {
@@ -346,6 +347,7 @@ public class Utils {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
         int selectedRow, selectedColumn;
         String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        boolean bSimpleExtension = false;
         String thumbfilename = "";
         File thumbfile = null;
         ImageIcon icon = null;
@@ -383,44 +385,59 @@ public class Utils {
         for (File file : files) {
 
             //logger.trace(file.getName().replace("\\", "/"));
+            bSimpleExtension = false;
             filename = file.getName().replace("\\", "/");
             //logger.info("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
             for (String ext : SimpleExtensions) {
                 if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png
-                    icon = createIcon(file);
-                    ImgFilenameRow[0] = icon;
-
-                } else { //We have a RAW image extension or tiff or something else like audio/video
-                    // Export previews for current (RAW) image to tempWorkfolder
-                    String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);
-                    if ("Success".equals(exportResult)) {
-                        //Hoping we have a thumbnail
-                        thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                    bSimpleExtension = true;
+                    break;
+                }
+            }
+            if (bSimpleExtension) {
+                icon = createIcon(file);
+                ImgFilenameRow[0] = icon;
+            } else { //We have a RAW image extension or tiff or something else like audio/video
+                // Export previews for current (RAW) image to tempWorkfolder
+                String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);
+                if ("Success".equals(exportResult)) {
+                    //Hoping we have a thumbnail
+                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    //logger.info("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    if (thumbfile.exists()) {
+                        // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
+                        //logger.info("create thumb nr1");
+                        icon = createIcon(thumbfile);
+                        if (icon != null) {
+                            // display our created icon from the thumbnail
+                            ImgFilenameRow[0] = icon;
+                        }
+                    } else { //thumbnail image probably doesn't exist, move to 2nd option
+                        thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
                         thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                        //logger.info("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                         if (thumbfile.exists()) {
-                            // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
-                            //logger.info("create thumb nr1");
+                            // Create icon of this Preview
+                            //logger.info("create thumb nr2");
                             icon = createIcon(thumbfile);
                             if (icon != null) {
-                                // display our created icon from the thumbnail
+                                // display our created icon from the preview
                                 ImgFilenameRow[0] = icon;
                             }
-                        } else { //thumbnail image probably doesn't exist, move to 2nd option
-                            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
+                        } else { // So thumbnail and previewImage don't exist. Try 3rd option
+                            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
                             thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                             if (thumbfile.exists()) {
                                 // Create icon of this Preview
-                                //logger.info("create thumb nr2");
                                 icon = createIcon(thumbfile);
                                 if (icon != null) {
                                     // display our created icon from the preview
                                     ImgFilenameRow[0] = icon;
                                 }
-                            } else { // So thumbnail and previewImage don't exist. Try 3rd option
-                                thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
-                                thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                            } else {
+                                // Use the cantdisplay.png for this preview. Should actually not be necessary here
+                                thumbfile = new File(MyVariables.getcantdisplaypng());
                                 if (thumbfile.exists()) {
                                     // Create icon of this Preview
                                     icon = createIcon(thumbfile);
@@ -428,35 +445,24 @@ public class Utils {
                                         // display our created icon from the preview
                                         ImgFilenameRow[0] = icon;
                                     }
-                                } else {
-                                    // Use the cantdisplay.png for this preview. Should actually not be necessary here
-                                    thumbfile = new File(MyVariables.getcantdisplaypng());
-                                    if (thumbfile.exists()) {
-                                        // Create icon of this Preview
-                                        icon = createIcon(thumbfile);
-                                        if (icon != null) {
-                                            // display our created icon from the preview
-                                            ImgFilenameRow[0] = icon;
-                                        }
-                                    }
-                                } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
-                            } // end of 2nd option creation ("else if") and 3rd option creation (else)
-                        } // end of 1st option creation ("else if") and 2nd option creation (else)
+                                }
+                            } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
+                        } // end of 2nd option creation ("else if") and 3rd option creation (else)
+                    } // end of 1st option creation ("else if") and 2nd option creation (else)
 
-                    } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
-                        // Use the cantdisplay.png for this preview
-                        thumbfile = new File(MyVariables.getcantdisplaypng());
-                        if (thumbfile.exists()) {
-                            // Create icon of this Preview
-                            icon = createIcon(thumbfile);
-                            if (icon != null) {
-                                // display our created icon from the preview
-                                ImgFilenameRow[0] = icon;
-                            }
+                } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
+                    // Use the cantdisplay.png for this preview
+                    thumbfile = new File(MyVariables.getcantdisplaypng());
+                    if (thumbfile.exists()) {
+                        // Create icon of this Preview
+                        icon = createIcon(thumbfile);
+                        if (icon != null) {
+                            // display our created icon from the preview
+                            ImgFilenameRow[0] = icon;
                         }
                     }
-
                 }
+
             }
 
             ImgFilenameRow[1] = filename;

@@ -41,8 +41,10 @@ jExifToolGUI needs exiftool from Phil Harvey, but exiftool is not bundled with j
 On Linux you have a few options.
 <ul>
 <li><strong>On a debian based Linux</strong> (Debian/Ubuntu/Mint/MX Linux/Raspbian etc. etc.): You can download the jexiftoolgui-{some version}.deb.<br>
-You can install this on any architecture that supports Java V11. Install it with <tt>sudo dpkg -i jexiftoolgui-{some version}.deb</tt>. 
-It will install jExifToolGUI, add icons/shortcuts to your menu and install java V11 and "image-exiftool" for you.</li>
+You can install this on any architecture that supports Java V11. Install it with <tt>sudo dpkg -i jexiftoolgui-{some version}.deb</tt>.<br>
+<!--You will get an error that it can't install dcraw. This is because the dpkg command only looks at local available packages, so we need to get dcraw via one of the repositories. 
+To "fix" this do <tt>sudo apt-get --fix-broken install</tt>. This will check the missing/broken parts from the online repos and install dcraw. -->
+Now it will install jExifToolGUI, add icons/shortcuts to your menu and install java V11 and "image-exiftool" for you.</li>
 <li><strong>The AppImage</strong>: This is a "universal" appimage (see <a href="https://appimage.org/" target="_blank">https://appimage.org</a>). It runs on any 64bit Intel Linux. 
 (32bit and ARM architectures are currently not supported. In case of demand they can easily be made)</li>
 </ul>
