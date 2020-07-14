@@ -10,7 +10,7 @@ If some java/gradle/IntellIJ expert has info, please let me know.
 
 * Start IntellIJ via "idea &" or via the menu.
 * Import the project. Select "Import project from another model" (2nd radiobutton) and select "Gradle" as option.
-* Go to (menu) File -> Settings -> Build, Execution, Deployment -> Build Tools -> Gradle. Make sure Gradle is select as "Build and run using" and "Run tests using".
+* Go to (menu) File -> Settings -> Build, Execution, Deployment -> Build Tools -> Gradle. Make sure IntelliJ is selected as "Build and run using" and "Run tests using". This is necessary to compile the gui forms into the java code.
 * Go to (menu) File -> Settings -> Editor -> GUI Designer and set **Generate GUI into: Java source code** (This is a vital step! See also the [readme-intellij](https://github.com/hvdwolf/jExifToolGUI/blob/master/readme-intellIJ.md))
 * Select (menu) Build -> Build Project
 
