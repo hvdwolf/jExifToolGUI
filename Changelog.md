@@ -1,11 +1,12 @@
 # Changelog
 
-## 2020-07-13 1.1.0 (silent version; no release)
+## 2020-07-13 1.1.0
+* Internal: Go back to good old Linux/Unix versioning schema.
 * Add work-around for displaying RAW images based on Thumbnail/PreviewImage.
 * housekeeping: (re)create temp work folder on program start and delete (incl. contents) on program exit.
 * Add splash screen to Linux and Mac versions. (Windows versions crash for some reason)
 * Fix: debian .deb package. Icon name incorrect in jexiftoolgui.desktop.
-* add: Extract all previews/thumbs from selected image(s).
+* add: Extract all previews/thumbs from selected image(s): "(menu) Other -> Export all previews/thumbs from selected".
 
 ## 2020-07-11 1.01-beta
 * Fix (stupid) mistake in parameters for gps and location view

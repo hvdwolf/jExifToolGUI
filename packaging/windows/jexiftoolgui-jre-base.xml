@@ -18,7 +18,7 @@
     <path>jre</path>
     <bundledJre64Bit>true</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>11</minVersion>
+    <minVersion>1.8.0</minVersion>
     <maxVersion>14.0</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
