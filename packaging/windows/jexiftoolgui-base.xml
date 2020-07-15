@@ -8,7 +8,7 @@
   <cmdLine></cmdLine>
   <chdir>.</chdir>
   <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
+  <downloadUrl>https://adoptopenjdk.net/releases.html</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
@@ -22,5 +22,19 @@
     <maxVersion>14</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
+    <initialHeapSize>640</initialHeapSize>
+    <maxHeapSize>2048</maxHeapSize>
   </jre>
+  <versionInfo>
+    <fileVersion>VersionString</fileVersion>
+    <txtFileVersion>version VersionString</txtFileVersion>
+    <fileDescription>jExifToolGUI vVersionString</fileDescription>
+    <copyright>Harry van der Wolf</copyright>
+    <productVersion>VersionString</productVersion>
+    <txtProductVersion>version VersionString</txtProductVersion>
+    <productName>jExifToolGUI</productName>
+    <companyName></companyName>
+    <internalName>jExifToolGUI</internalName>
+    <originalFilename>jExifToolGUI.exe</originalFilename>
+  </versionInfo>
 </launch4jConfig>

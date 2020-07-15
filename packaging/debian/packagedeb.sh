@@ -44,7 +44,7 @@ echo " -- Harry van der Wolf <hvdwolf@gmail.com>  `date -R`" >> changelog
 gzip -9c changelog > $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/changelog.gz
  
 cp jexiftoolgui-48x48.png $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
-cp ../../src/main/resources/icons/jexiftoolgui-splashlogo.png $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
+#cp ../../src/main/resources/icons/jexiftoolgui-splashlogo.png $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
 chmod 0644 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*.png
  
 PACKAGE_SIZE=`du -bs $TEMP_DIR/debian | cut -f 1`
