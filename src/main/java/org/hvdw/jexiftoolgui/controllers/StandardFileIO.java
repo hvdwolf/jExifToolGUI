@@ -179,6 +179,60 @@ public class StandardFileIO {
         return files;
     }
 
+    /*
+    * Get the files from a folder via the "Load Dirextory"
+     */
+    public static File[] getFolderFiles(JPanel myComponent) {
+        File[] files = null;
+        String SelectedFolder;
+
+        String startFolder = getFolderPathToOpenBasedOnPreferences();
+
+        final JFileChooser chooser = new JFileChooser(startFolder);
+        chooser.setDialogTitle("Locate the image folder ...");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int status = chooser.showOpenDialog(myComponent);
+        if (status == JFileChooser.APPROVE_OPTION) {
+            SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
+            File folder = new File(SelectedFolder);
+            //files = listFiles(SelectedFolder);
+            files = folder.listFiles();
+            MyVariables.setSelectedFiles(files);
+            prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getSelectedFile().getAbsolutePath());
+        }
+
+        return files;
+    }
+    /*File folder = new File("/Users/you/folder/");
+      File[] listOfFiles = folder.listFiles();
+
+      for (File file : listOfFiles) {
+          if (file.isFile()) {
+              System.out.println(file.getName());
+          }
+      }
+    */
+    /*public void listFilesForFolder(final File folder) {
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                listFilesForFolder(fileEntry);
+            } else {
+                System.out.println(fileEntry.getName());
+            }
+        }
+    }
+
+    final File folder = new File("/home/you/Desktop");
+    listFilesForFolder(folder); 
+
+    // As from java 8
+    try (Stream<Path> paths = Files.walk(Paths.get("/home/you/Desktop"))) {
+        paths
+            .filter(Files::isRegularFile)
+            .forEach(System.out::println);
+    } 
+*/
+
     // Check if we have a jexiftoolgui_custom folder in $HOME with defaults
     public static String checkforjexiftoolguiFolder() {
         String method_result = "";

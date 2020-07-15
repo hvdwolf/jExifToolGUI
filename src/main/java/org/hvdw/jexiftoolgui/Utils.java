@@ -272,7 +272,7 @@ public class Utils {
             return "";
         } else {
             String[] parts = metadatalanguage.split(" - ");
-            logger.debug("metadatalanguage: " + parts[0]);
+            //logger.debug("metadatalanguage: " + parts[0]);
             //return "-lang " + parts[0];
             return parts[0];
         }
@@ -587,7 +587,7 @@ public class Utils {
         model.setColumnIdentifiers(new String[]{"Group", "Tag", "Value"});
         ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
         ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
-        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(500);
+        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(400);
         model.setRowCount(0);
 
         Object[] row = new Object[1];

@@ -6,7 +6,7 @@ public class ProgramTexts {
      */
     public static final String Author = "Harry van der Wolf";
     public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
-    public static final String Version = "1.1.0";
+    public static final String Version = "1.2.0";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
     public static final String newVersionText = "<html><big>There is a new version available</big><br><br>"
             +"I can open the releases webpage so you can download the new version.<br><br>"
@@ -88,7 +88,9 @@ public class ProgramTexts {
     public static final String MyCommandsText = "<html>On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
             +"<br>You can both specify read parameters as well as write parameters. You can also combine several parameters."
             + " <b>Note:</b> You don\'t need (must not) provide the exiftool command itself. The Gui will take care of that.<br><br></html>"; // need 2 extra lines to create space
-    public static final String XmpGoogleText = "The fields marked with an * are used in all google (image) products";
+    public static final String XmpTopText = "The fields marked with a * are used in all google (image) products<br>The fields marked with ** are list+ tags."
+            +" Keywords in those fields need to be separated by a \",\". The program will separate them in multiple keyword fields"
+            +"<br>NOTE: The list+ (**) fields in this screen are always \"overwite\". For other options use the keywords/subjects tab";
     public static final String GeotaggingLeaveFolderEmpty = "<html>Leave the \"Folder containing the images:\"  empty if you want to use (a selection of) the images in the left images pane.</html>";
     public static final String GeotaggingLocationLabel = "Geotagging will add the GPS coordinates to your images, but not the location. Using below textfields you can add that as well.";
     public static final String GeotaggingGeosyncExplainLabel = "<html>A positive geosync time will add that time to your image(s), before comparing it/them to the track log.</html>";
