@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-07-15 1.2.0
+* Add button "Load Directory" and (menu) "File -> Directory"
+* [Issue #32](https://github.com/hvdwolf/jExifToolGUI/issues/32): First remark -> field size.
+
 ## 2020-07-13 1.1.0
 * Internal: Go back to good old Linux/Unix versioning schema.
 * Add work-around for displaying RAW images based on Thumbnail/PreviewImage.
