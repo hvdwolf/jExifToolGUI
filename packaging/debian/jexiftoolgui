@@ -2,4 +2,4 @@
 
 CLASSPATH=/usr/share/jexiftoolgui/jExifToolGUI.jar
 
-java -splash:/usr/share/jexiftoolgui/jexiftoolgui-splashlogo.jpg -jar /usr/share/jexiftoolgui/jExifToolGUI.jar &
+java -splash:/usr/share/jexiftoolgui/jexiftoolgui-splashlogo.png -jar /usr/share/jexiftoolgui/jExifToolGUI.jar &

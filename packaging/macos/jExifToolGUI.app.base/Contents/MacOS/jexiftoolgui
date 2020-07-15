@@ -3,5 +3,5 @@
 CurDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 export JAVA_HOME="${CurDir}"/jre
-"${CurDir}"/jre/Contents/Home/bin/java -splash:"${CurDir}"/jexiftoolgui-splashlogo.jpg -Xmx2048M -jar "${CurDir}"/jExifToolGUI.jar &
+"${CurDir}"/jre/Contents/Home/bin/java -splash:"${CurDir}"/jexiftoolgui-splashlogo.png -Xmx2048M -jar "${CurDir}"/jExifToolGUI.jar &
 
