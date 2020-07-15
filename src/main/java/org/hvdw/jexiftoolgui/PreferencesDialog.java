@@ -27,6 +27,7 @@ public class PreferencesDialog extends JDialog {
     JCheckBox UseLastOpenedFoldercheckBox;
     JCheckBox CheckVersioncheckBox;
     private JComboBox metadataLanuagecomboBox;
+    private JTextField CreditstextField;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -117,6 +118,7 @@ public class PreferencesDialog extends JDialog {
         logger.info("Saving the preferences");
         logger.info("artist {}", ArtisttextField.getText());
         logger.info("copyrights {}", CopyrightstextField.getText());
+        logger.info("credit {}", CreditstextField.getText());
         logger.info("exiftool {}", ExiftoolLocationtextField.getText());
         logger.info("defaultstartfolder {}", ImgStartFoldertextField.getText());
         logger.info("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
@@ -126,6 +128,10 @@ public class PreferencesDialog extends JDialog {
         if (!ArtisttextField.getText().isEmpty()) {
             logger.trace("{}: {}", ARTIST.key, ArtisttextField.getText());
             prefs.storeByKey(ARTIST, ArtisttextField.getText());
+        }
+        if (!CreditstextField.getText().isEmpty()) {
+            logger.trace("{}: {}", CREDIT.key, CreditstextField.getText());
+            prefs.storeByKey(CREDIT, CreditstextField.getText());
         }
         if (!CopyrightstextField.getText().isEmpty()) {
             logger.trace("{}: {}", COPYRIGHTS.key, CopyrightstextField.getText());
@@ -143,7 +149,6 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", USE_LAST_OPENED_FOLDER.key, UseLastOpenedFoldercheckBox.isSelected());
         prefs.storeByKey(USE_LAST_OPENED_FOLDER, UseLastOpenedFoldercheckBox.isSelected());
 
-
         logger.trace("{}: {}", VERSION_CHECK.key, CheckVersioncheckBox.isSelected());
         prefs.storeByKey(VERSION_CHECK, CheckVersioncheckBox.isSelected());
 
@@ -159,6 +164,7 @@ public class PreferencesDialog extends JDialog {
         ExiftoolLocationtextField.setText(prefs.getByKey(EXIFTOOL_PATH, ""));
         ImgStartFoldertextField.setText(prefs.getByKey(DEFAULT_START_FOLDER, ""));
         ArtisttextField.setText(prefs.getByKey(ARTIST, ""));
+        CreditstextField.setText(prefs.getByKey(CREDIT, ""));
         CopyrightstextField.setText(prefs.getByKey(COPYRIGHTS, ""));
         UseLastOpenedFoldercheckBox.setSelected(prefs.getByKey(USE_LAST_OPENED_FOLDER, false));
         CheckVersioncheckBox.setSelected(prefs.getByKey(VERSION_CHECK, false));
@@ -248,58 +254,68 @@ public class PreferencesDialog extends JDialog {
         ImgStartFolderButton.setText("Choose");
         panel5.add(ImgStartFolderButton);
         final JPanel panel6 = new JPanel();
-        panel6.setLayout(new GridLayoutManager(4, 2, new Insets(0, 10, 0, 0), -1, -1));
+        panel6.setLayout(new GridLayoutManager(4, 1, new Insets(0, 10, 0, 0), -1, -1));
         contentPanel.add(panel6, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel6.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null));
         final JLabel label3 = new JLabel();
         Font label3Font = this.$$$getFont$$$(null, Font.BOLD, -1, label3.getFont());
         if (label3Font != null) label3.setFont(label3Font);
         label3.setText("Values to always add to your images");
-        panel6.add(label3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        panel6.add(spacer2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        panel6.add(spacer3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel6.add(label3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel7 = new JPanel();
         panel7.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel6.add(panel7, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel6.add(panel7, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label4 = new JLabel();
+        label4.setMaximumSize(new Dimension(300, 18));
         label4.setMinimumSize(new Dimension(220, 18));
-        label4.setPreferredSize(new Dimension(250, 18));
-        label4.setText("Artist / Creator / Photographer");
+        label4.setPreferredSize(new Dimension(300, 18));
+        label4.setText("Artist / Creator  (xmp-dc:creator)");
         panel7.add(label4);
         ArtisttextField = new JTextField();
         ArtisttextField.setPreferredSize(new Dimension(350, 30));
         panel7.add(ArtisttextField);
         final JPanel panel8 = new JPanel();
         panel8.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel6.add(panel8, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel6.add(panel8, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label5 = new JLabel();
+        label5.setMaximumSize(new Dimension(300, 18));
         label5.setMinimumSize(new Dimension(220, 18));
-        label5.setPreferredSize(new Dimension(250, 18));
-        label5.setText("Copyrights / Rights");
+        label5.setPreferredSize(new Dimension(300, 18));
+        label5.setText("Copyrights / Rights (xmp-dc:rights)");
         panel8.add(label5);
         CopyrightstextField = new JTextField();
         CopyrightstextField.setPreferredSize(new Dimension(350, 30));
         panel8.add(CopyrightstextField);
+        final JPanel panel9 = new JPanel();
+        panel9.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel6.add(panel9, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label6 = new JLabel();
+        label6.setMaximumSize(new Dimension(300, 18));
+        label6.setMinimumSize(new Dimension(250, 18));
+        label6.setPreferredSize(new Dimension(300, 18));
+        label6.setText("Credits (xmp:credits)");
+        panel9.add(label6);
+        CreditstextField = new JTextField();
+        CreditstextField.setPreferredSize(new Dimension(350, 30));
+        panel9.add(CreditstextField);
         UseLastOpenedFoldercheckBox = new JCheckBox();
         UseLastOpenedFoldercheckBox.setText("Always use last opened folder");
         UseLastOpenedFoldercheckBox.setToolTipText("Selecting this checkbox will overrule the \"Default image start directory:\"");
         contentPanel.add(UseLastOpenedFoldercheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        contentPanel.add(spacer4, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        contentPanel.add(spacer2, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         CheckVersioncheckBox = new JCheckBox();
         CheckVersioncheckBox.setText("Check for new jExifToolGUI version on program start");
         contentPanel.add(CheckVersioncheckBox, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel9 = new JPanel();
-        panel9.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        contentPanel.add(panel9, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JLabel label6 = new JLabel();
-        label6.setText("Language to use to display metadata tag descriptions");
-        panel9.add(label6);
+        final JPanel panel10 = new JPanel();
+        panel10.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        contentPanel.add(panel10, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label7 = new JLabel();
+        label7.setText("Language to use to display metadata tag descriptions");
+        panel10.add(label7);
         metadataLanuagecomboBox = new JComboBox();
         metadataLanuagecomboBox.setPreferredSize(new Dimension(300, 30));
-        panel9.add(metadataLanuagecomboBox);
+        panel10.add(metadataLanuagecomboBox);
     }
 
     /**

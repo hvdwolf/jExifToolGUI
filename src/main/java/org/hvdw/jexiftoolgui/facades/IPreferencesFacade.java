@@ -5,8 +5,9 @@ public interface IPreferencesFacade {
         USE_LAST_OPENED_FOLDER("uselastopenedfolder"),
         LAST_OPENED_FOLDER("lastopenedfolder"),
         DEFAULT_START_FOLDER("defaultstartfolder"),
-        ARTIST("artist"),
-        COPYRIGHTS("copyrights"),
+        ARTIST("artist"),  // xmp-dc:creator
+        COPYRIGHTS("copyrights"),  // xmp-dc:rights
+        CREDIT("credit"),  // xmp:credit
         VERSION_CHECK("versioncheck"),
         LAST_APPLICATION_VERSION("applicationVersion"),
         EXIFTOOL_PATH("exiftool"),

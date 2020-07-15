@@ -2094,7 +2094,7 @@ public class mainScreen {
         ExifcopyDefaultsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                setArtistCreditsCopyrightDefaults();
             }
         });
         resetFieldsButton.addActionListener(new ActionListener() {
@@ -2131,7 +2131,7 @@ public class mainScreen {
         xmpCopyDefaultsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                setArtistCreditsCopyrightDefaults();
             }
         });
         xmpResetFieldsbutton.addActionListener(new ActionListener() {
@@ -2795,6 +2795,17 @@ public class mainScreen {
         }
     }
 
+    private void setArtistCreditsCopyrightDefaults() {
+        // Try to set the defaults for artist, credit and copyrights in the edit exif/xmp panes if prefs available
+        //Pair<String, String> prefsArtistCopyRights = Utils.checkPrefsArtistCopyRights();
+        String[] ArtCredCopyPrefs = Utils.checkPrefsArtistCreditsCopyRights();
+        ExifArtistCreatortextField.setText(ArtCredCopyPrefs[0]);
+        ExifCopyrighttextField.setText(ArtCredCopyPrefs[2]);
+        xmpCreatortextField.setText(ArtCredCopyPrefs[0]);
+        xmpCredittextField.setText(ArtCredCopyPrefs[1]);
+        xmpRightstextField.setText(ArtCredCopyPrefs[2]);
+    }
+
     private mainScreen(JFrame frame) {
         boolean preferences = false;
 
@@ -2845,13 +2856,8 @@ public class mainScreen {
             logger.debug("Error executing command");
         }
 
+        setArtistCreditsCopyrightDefaults();
 
-        // Try to set the defaults for artist and copyrights in the edit exif/xmp panes if prefs available
-        Pair<String, String> prefsArtistCopyRights = Utils.checkPrefsArtistCopyRights();
-        ExifArtistCreatortextField.setText(prefsArtistCopyRights.getLeft());
-        xmpCreatortextField.setText(prefsArtistCopyRights.getLeft());
-        ExifCopyrighttextField.setText(prefsArtistCopyRights.getRight());
-        xmpRightstextField.setText(prefsArtistCopyRights.getRight());
 
         //Combobox on Gpano edit tab
         for (String item : MyConstants.GPANO_PROJECTIONS) {
