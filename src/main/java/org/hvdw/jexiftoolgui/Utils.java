@@ -136,10 +136,6 @@ public class Utils {
         };
         return ArtCredCopyPrefs;
     }
-    static Pair<String, String> checkPrefsArtistCopyRights() {
-        return ImmutablePair.of(prefs.getByKey(ARTIST, ""), prefs.getByKey(COPYRIGHTS, ""));
-        //, prefs.getByKey(CREDITS, "")
-    }
 
     /////////////////// Locate exiftool //////////////
     /*

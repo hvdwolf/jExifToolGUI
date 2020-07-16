@@ -99,12 +99,12 @@ public class EditXmpdata {
                 if (SpaceStripped.contains("PersonInImage")) {
                     xmpFields[6].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("RegionName")) {
+                /*if (SpaceStripped.contains("RegionName")) {
                     xmpFields[7].setText(cells[1]);
                 }
                 if (SpaceStripped.contains("RegionType")) {
                     xmpFields[8].setText(cells[1]);
-                }
+                }*/
                 if (SpaceStripped.contains("Description")) { // Our text area
                     Description.setText(cells[1]);
                 }
@@ -118,7 +118,7 @@ public class EditXmpdata {
             File[] files = MyVariables.getSelectedFiles();
 
             cmdparams.add(Utils.platformExiftool());
-            if (!xmpBoxes[9].isSelected()) { // default overwrite originals, when set do not
+            if (!xmpBoxes[8].isSelected()) { // default overwrite originals, when set do not
                 cmdparams.add("-overwrite_original");
             }
             if (xmpBoxes[0].isSelected()) {
@@ -134,7 +134,11 @@ public class EditXmpdata {
                 cmdparams.add("-xmp:Label=" + xmpFields[3].getText().trim());
             }
             if (xmpBoxes[4].isSelected()) {
-                cmdparams.add("-xmp:Subject=" + xmpFields[4].getText().trim());
+                String[] subjects = xmpFields[4].getText().trim().split(",");
+                for (String subject : subjects) {
+                    cmdparams.add("-xmp:Subject=" + subject);
+                }
+                //cmdparams.add("-xmp:Subject=" + xmpFields[4].getText().trim());
             }
             if (xmpBoxes[5].isSelected()) {
                 cmdparams.add("-xmp:Title=" + xmpFields[5].getText().trim());
@@ -152,16 +156,20 @@ public class EditXmpdata {
             rating = 5
         cmdparams.add("-xmp:Rating=" + rating); */
             if (xmpBoxes[6].isSelected()) {
-                cmdparams.add("-xmp:Person=" + xmpFields[6].getText());
-                cmdparams.add("-xmp:PersonInImage=" + xmpFields[6].getText().trim());
+                //cmdparams.add("-xmp:Person=" + xmpFields[6].getText());
+                String[] persons = xmpFields[6].getText().trim().split(",");
+                for (String person : persons) {
+                    cmdparams.add("-xmp:PersonInImage=" + person);
+                }
+                //cmdparams.add("-xmp:PersonInImage=" + xmpFields[6].getText().trim());
             }
-            if (xmpBoxes[7].isSelected()) {
-                cmdparams.add("-xmp:RegionName=" + xmpFields[7].getText().trim());
+            /*if (xmpBoxes[7].isSelected()) {
+                cmdparams.add("-xmp:RegionName=\"" + xmpFields[7].getText().trim() + "\"");
             }
             if (xmpBoxes[8].isSelected()) {
-                cmdparams.add("-xmp:RegionType=" + xmpFields[8].getText().trim());
-            }
-            if (xmpBoxes[9].isSelected()) {
+                cmdparams.add("-xmp:RegionType=\"" + xmpFields[8].getText().trim() + "\"");
+            }*/
+            if (xmpBoxes[7].isSelected()) {
                 cmdparams.add("-xmp:Description=" + Description.getText().trim());
             }
 
