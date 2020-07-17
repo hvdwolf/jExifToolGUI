@@ -6,7 +6,7 @@ public class ProgramTexts {
      */
     public static final String Author = "Harry van der Wolf";
     public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
-    public static final String Version = "1.2.0";
+    public static final String Version = "1.3.0";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
     public static final String newVersionText = "<html><big>There is a new version available</big><br><br>"
             +"I can open the releases webpage so you can download the new version.<br><br>"
