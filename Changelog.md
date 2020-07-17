@@ -1,12 +1,12 @@
 # Changelog
 
-## 2020-07-xx 1.3.0
+## 2020-07-17 1.3.0
 * Under Help menu: add "System/Program Info" to show some info (in case we need to troubleshoot).
 * Add "XMP_IPTC_Strings+" tab. Currently contains Keywords, Subject and PersonInImage. Allows for more fine-grained options then now in XMP-tab (and might be extended with more).
 * Add "simple"xmp-pdf:keywords to XMP tab
 * Fix: multiple errors in XMP tab
 * Add xmp:credit to the defaults.
-* Fix: Copy defaults on Exif & XMP (copy Artist/Creator and Copyrights back in if somehow removed)
+* Fix: Copy defaults on Exif & XMP (copy Artist/Creator, Credit and Copyrights back in if somehow removed)
 * embed splash screen in jar; also works on windows
 
 ## 2020-07-15 1.2.0
