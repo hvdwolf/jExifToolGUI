@@ -41,7 +41,7 @@ public class EditXmpdata {
     public void copyXmpFromSelected(JTextField[] xmpFields, JTextArea Description) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
-        String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Credit", "-xmp:Rights", "-xmp:Label", "-xmp:Subject", "-xmp:Title", "-xmp:Rating", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage", "-xmp:RegionName" , "-xmp:RegionType"};
+        String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Credit", "-xmp:Rights", "-xmp:Label", "-xmp-pdf:Keywords", "-xmp:Subject", "-xmp:Title", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage"};
         String fpath = "";
         String res = "";
         List<String> cmdparams = new ArrayList<String>();
@@ -90,14 +90,17 @@ public class EditXmpdata {
                 if (SpaceStripped.contains("Label")) {
                     xmpFields[3].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("Subject")) {
+                if (SpaceStripped.contains("Title")) {
                     xmpFields[4].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("Title")) {
+                if (SpaceStripped.contains("Keywords")) {
                     xmpFields[5].setText(cells[1]);
                 }
-                if (SpaceStripped.contains("PersonInImage")) {
+                if (SpaceStripped.contains("Subject")) {
                     xmpFields[6].setText(cells[1]);
+                }
+                if (SpaceStripped.contains("PersonInImage")) {
+                    xmpFields[7].setText(cells[1]);
                 }
                 /*if (SpaceStripped.contains("RegionName")) {
                     xmpFields[7].setText(cells[1]);
@@ -118,7 +121,7 @@ public class EditXmpdata {
             File[] files = MyVariables.getSelectedFiles();
 
             cmdparams.add(Utils.platformExiftool());
-            if (!xmpBoxes[8].isSelected()) { // default overwrite originals, when set do not
+            if (!xmpBoxes[9].isSelected()) { // default overwrite originals, when set do not
                 cmdparams.add("-overwrite_original");
             }
             if (xmpBoxes[0].isSelected()) {
@@ -134,15 +137,18 @@ public class EditXmpdata {
                 cmdparams.add("-xmp:Label=" + xmpFields[3].getText().trim());
             }
             if (xmpBoxes[4].isSelected()) {
-                String[] subjects = xmpFields[4].getText().trim().split(",");
+                cmdparams.add("-xmp:Title=" + xmpFields[4].getText().trim());
+            }
+            if (xmpBoxes[5].isSelected()) {
+                cmdparams.add("-xmp-pdf:Keywords=" + xmpFields[5].getText().trim());
+            }
+            if (xmpBoxes[6].isSelected()) {
+                String[] subjects = xmpFields[6].getText().trim().split(",");
                 for (String subject : subjects) {
                     cmdparams.add("-xmp:Subject=" + subject);
                 }
                 //cmdparams.add("-xmp:Subject=" + xmpFields[4].getText().trim());
             }
-            if (xmpBoxes[5].isSelected()) {
-                cmdparams.add("-xmp:Title=" + xmpFields[5].getText().trim());
-            }	
     /*if (xmpBoxes[5.isSelected()) {
         if self.xmp_rating1.isSelected()) {
             rating = 1
@@ -155,9 +161,9 @@ public class EditXmpdata {
         else) {
             rating = 5
         cmdparams.add("-xmp:Rating=" + rating); */
-            if (xmpBoxes[6].isSelected()) {
+            if (xmpBoxes[7].isSelected()) {
                 //cmdparams.add("-xmp:Person=" + xmpFields[6].getText());
-                String[] persons = xmpFields[6].getText().trim().split(",");
+                String[] persons = xmpFields[7].getText().trim().split(",");
                 for (String person : persons) {
                     cmdparams.add("-xmp:PersonInImage=" + person);
                 }
@@ -169,7 +175,7 @@ public class EditXmpdata {
             if (xmpBoxes[8].isSelected()) {
                 cmdparams.add("-xmp:RegionType=\"" + xmpFields[8].getText().trim() + "\"");
             }*/
-            if (xmpBoxes[7].isSelected()) {
+            if (xmpBoxes[8].isSelected()) {
                 cmdparams.add("-xmp:Description=" + Description.getText().trim());
             }
 
