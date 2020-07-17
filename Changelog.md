@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2020-07-xx 1.3.0
+* Under Help menu: add "System/Program Info" to show some info (in case we need to troubleshoot).
 * Add "XMP_IPTC_Strings+" tab. Currently contains Keywords, Subject and PersonInImage. Allows for more fine-grained options then now in XMP-tab (and might be extended with more).
 * Add "simple"xmp-pdf:keywords to XMP tab
 * Fix: multiple errors in XMP tab

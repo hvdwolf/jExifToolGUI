@@ -79,6 +79,21 @@ public class Utils {
         }
     }
 
+    public static String systemProgramInfo() {
+        StringBuilder infostring = new StringBuilder();
+
+        infostring.append("<big>System and Program Info</big><hr><br><table width=\"90%\" border=0>");
+        infostring.append("<tr><td>Operating system:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_NAME) + "</td></tr>");
+        infostring.append("<tr><td>Operating system architecture:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH) + "</td></tr>");
+        infostring.append("<tr><td>Operating system version:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION) + "<br><br></td></tr>");
+        infostring.append("<tr><td>jExifToolGUI version:</td><td>" + ProgramTexts.Version + "</td></tr>");
+        infostring.append("<tr><td>Exiftool version:</td><td>" + MyVariables.getExiftoolVersion() + "<br><br></td></tr>");
+        infostring.append("<tr><td>java version:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_VERSION) + "</td></tr>");
+        infostring.append("<tr><td>java home:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_HOME) + "</td></tr>");
+        infostring.append("</table></html>");
+
+        return infostring.toString();
+    }
         /*
      * The ImageInfo method uses exiftool to read image info which is outputted as csv
      * This method converts it to 3-column "tabular" data

@@ -478,7 +478,9 @@ public class mainScreen {
                 cmdparams.add(res);
                 cmdparams.add("-ver");
                 try {
-                    OutputLabel.setText("Exiftool available;  Version: " + CommandRunner.runCommand(cmdparams));
+                    String exv = CommandRunner.runCommand(cmdparams).replace("\n", "").replace("\r", "");
+                    OutputLabel.setText("Exiftool available;  Version: " + exv);
+                    MyVariables.setExiftoolVersion(exv);
                 } catch (IOException | InterruptedException ex) {
                     logger.debug("Error executing command");
                 }
@@ -2115,6 +2117,9 @@ public class mainScreen {
                 case "Credits":
                     JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
                     break;
+                case "System/Program info":
+                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, Utils.systemProgramInfo()), "System and Program Information", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 case "License":
                     Utils.showLicense(mainScreen.this.rootPanel);
                     break;
@@ -2912,8 +2917,11 @@ public class mainScreen {
         menuItem = new JMenuItem("Donate");
         myMenu.add(menuItem);
         menuItem.addActionListener(new MenuActionListener());
-        myMenu.addSeparator();
         menuItem = new JMenuItem("License");
+        menuItem.addActionListener(new MenuActionListener());
+        myMenu.add(menuItem);
+        myMenu.addSeparator();
+        menuItem = new JMenuItem("System/Program info");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
         menuItem = new JMenuItem("Check for new version");

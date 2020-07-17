@@ -24,6 +24,7 @@ public class MyVariables {
     private String selectedLensConfig;
     private String tmpWorkFolder;
     private File CurrentWorkFile;
+    private String ExiftoolVersion;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -91,6 +92,12 @@ public class MyVariables {
     public static void setSelectedFilenamesIndices(int[] selectedTableIndices) {
         staticInstance.selectedFilenamesIndices = Arrays.copyOf(selectedTableIndices,selectedTableIndices.length);
     }
-    
+    public static String getExiftoolVersion() {
+        return staticInstance.ExiftoolVersion;
+    }
+    public static void setExiftoolVersion(String exv) {
+        staticInstance.ExiftoolVersion = exv;
+    }
+
 
 }
