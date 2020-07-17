@@ -145,7 +145,7 @@ public class EditXmpdata {
             if (xmpBoxes[6].isSelected()) {
                 String[] subjects = xmpFields[6].getText().trim().split(",");
                 for (String subject : subjects) {
-                    cmdparams.add("-xmp:Subject=" + subject);
+                    cmdparams.add("-xmp:Subject=" + subject.trim());
                 }
                 //cmdparams.add("-xmp:Subject=" + xmpFields[4].getText().trim());
             }
@@ -165,7 +165,7 @@ public class EditXmpdata {
                 //cmdparams.add("-xmp:Person=" + xmpFields[6].getText());
                 String[] persons = xmpFields[7].getText().trim().split(",");
                 for (String person : persons) {
-                    cmdparams.add("-xmp:PersonInImage=" + person);
+                    cmdparams.add("-xmp:PersonInImage=" + person.trim());
                 }
                 //cmdparams.add("-xmp:PersonInImage=" + xmpFields[6].getText().trim());
             }
