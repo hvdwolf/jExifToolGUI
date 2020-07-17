@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-07-xx 1.3.0
+* Add "XMP_IPTC_Strings+" tab. Currently contains Keywords, Subject and PersonInImage. Allows for more fine-grained options then now in XMP-tab (and might be extended with more).
+* Add "simple"xmp-pdf:keywords to XMP tab
+* Fix: multiple errors in XMP tab
+* Add xmp:credit to the defaults.
+* Fix: Copy defaults on Exif & XMP (copy Artist/Creator and Copyrights back in if somehow removed)
+* embed splash screen in jar; also works on windows
+
 ## 2020-07-15 1.2.0
 * Add button "Load Directory" and (menu) "File -> Directory"
 * [Issue #32](https://github.com/hvdwolf/jExifToolGUI/issues/32): First remark -> field size.

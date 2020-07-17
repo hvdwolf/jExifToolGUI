@@ -88,9 +88,12 @@ public class ProgramTexts {
     public static final String MyCommandsText = "<html>On this tab you can define your own parameters to \"send to\" exiftool. The parameters will be executed on the images you have selected on the left."
             +"<br>You can both specify read parameters as well as write parameters. You can also combine several parameters."
             + " <b>Note:</b> You don\'t need (must not) provide the exiftool command itself. The Gui will take care of that.<br><br></html>"; // need 2 extra lines to create space
-    public static final String XmpTopText = "The fields marked with a * are used in all google (image) products<br>The fields marked with ** are list+ tags."
-            +" Keywords in those fields need to be separated by a \",\". The program will separate them in multiple keyword fields"
-            +"<br>--Note--: The string+ (**) fields in this (xmp) tab are, like the other fields, always \"overwite\". For more options use the \"String+\" tab";
+    public static final String XmpTopText = "These are some predefined XMP tags.<br>"
+            +"*: These fields are used in all google (image) products<br>"
+            +"**: These are the \"normal\" xmp-pdf keywords. You can simply fill in multiple keywords.<br>"
+            +"**: These fields are so-called \"string+\" tags."
+            +" Multiple Subjects/Persons in those fields need to be separated by a \",\". The program will separate them in multiple strings upon writing to the file."
+            +"<br>--Note--: The string+ (***) fields in this (xmp) tab are, like the other fields, always \"overwite\". For more options use the \"XMP_IPTC_String+\" tab<br>";
     public static final String GeotaggingLeaveFolderEmpty = "<html>Leave the \"Folder containing the images:\"  empty if you want to use (a selection of) the images in the left images pane.</html>";
     public static final String GeotaggingLocationLabel = "Geotagging will add the GPS coordinates to your images, but not the location. Using below textfields you can add that as well.";
     public static final String GeotaggingGeosyncExplainLabel = "<html>A positive geosync time will add that time to your image(s), before comparing it/them to the track log.</html>";
@@ -119,4 +122,9 @@ public class ProgramTexts {
             +"Note: This will show the available tags (tagnames) that exiftool knows. This tab doesn't do anything with your images.";
     public static final String ExportPreviewsThumbnails = "This option will export all preview images and thumbnails from the selected images. This can only be done if your image(s) do have them.<br>"
             +"Do you want to continue?";
+    public static final String StringsTopText = "This tab (currently) combines seveal XMP and one IPTC String+ tags. String+ tags can contain multiple strings."
+            +" Multiple Keywords/Subjects/Persons in those fields need to be separated by a \",\". The program will separate them in multiple strings upon writing to the file.<br>"
+            +"Note: The xmp keywords in this tab are the xmp-acdsee keywords.<br>"
+            +"<br>You can also choose the write option for the specific string+ when writing them to your files.<br>"
+            +"Note: When choosing append, only specify the new value and do not include the keywords/subjects/persons already in your file as they will be appended again.<br><br>";
 }
