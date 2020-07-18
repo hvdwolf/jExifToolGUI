@@ -11,7 +11,9 @@ public interface IPreferencesFacade {
         VERSION_CHECK("versioncheck"),
         LAST_APPLICATION_VERSION("applicationVersion"),
         EXIFTOOL_PATH("exiftool"),
-        METADATA_LANGUAGE("metadatalanguage");
+        METADATA_LANGUAGE("metadatalanguage"),
+        RAW_VIEWER_PATH("rawviewer"),
+        RAW_VIEWER_ALL_IMAGES("rawviewerallimages");
 
         public final String key;
         PreferenceKey(String key) {

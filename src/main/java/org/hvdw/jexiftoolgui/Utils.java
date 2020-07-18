@@ -709,31 +709,126 @@ public class Utils {
         ThumbView.setIcon(icon);
     }
 
-    static void extdisplaySelectedImageInDefaultViewer() {
-        //myVariables myVars = new myVariables();
+    /*
+/ This method is called from displaySelectedImageInExternalViewer() in case of
+/ - no raw viewer defined
+/ - default image
+/ - whatever other file type we encounter
+ */
+    static void viewInRawViewer(String RawViewerPath) {
+        String command = ""; // macos/linux
+        String[] commands = {}; // windows
 
-        //MyVariables.getMySelectedRow(), MyVariables.getSelectedImagePath()
+        logger.info("RAW viewer started (trying to start)");
+        Application.OS_NAMES currentOsName = getCurrentOsName();
         Runtime runtime = Runtime.getRuntime();
         try {
-            Application.OS_NAMES currentOsName = getCurrentOsName();
             switch (currentOsName) {
                 case APPLE:
-                    runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                    String file_ext = getFileExtension(RawViewerPath);
+                    if ("app".equals(file_ext)) {
+                        command = "open " + RawViewerPath + " " + MyVariables.getSelectedImagePath();
+                    } else {
+                        command = RawViewerPath + " " + MyVariables.getSelectedImagePath();
+                    }
+                    runtime.exec(command);
                     return;
                 case MICROSOFT:
                     String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
-                    String[] commands = {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
+                    commands = new String[] {RawViewerPath, convImg};
                     runtime.exec(commands);
                     return;
                 case LINUX:
-                    String selectedImagePath = MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                    logger.trace("xdg-open {}", selectedImagePath);
-                    runtime.exec("xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                    command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    runtime.exec(command);
                     return;
             }
         } catch (IOException e) {
             logger.error("Could not open image app.", e);
         }
+    }
+
+    /*
+    / This method is called from displaySelectedImageInExternalViewer() in case of
+    / - no raw viewer defined
+    / - default image
+    / - whatever other file type we encounter
+     */
+    static void viewInDefaultViewer() {
+        String command = ""; // macos/linux
+        String[] commands = {}; // windows
+
+        logger.info("default viewer started (trying to start)");
+        Application.OS_NAMES currentOsName = getCurrentOsName();
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            switch (currentOsName) {
+                case APPLE:
+                    command = "open /Applications/Preview.app " + MyVariables.getSelectedImagePath();
+                    runtime.exec(command);
+                    return;
+                case MICROSOFT:
+                    String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
+                    commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
+                    runtime.exec(commands);
+                    return;
+                case LINUX:
+                    String selectedImagePath = MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    logger.trace("xdg-open {}", selectedImagePath);
+                    command = "xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    runtime.exec(command);
+                    return;
+            }
+        } catch (IOException e) {
+            logger.error("Could not open image app.", e);
+        }
+    }
+    /*
+    / This method is called from main screen. It needs to detect if we have a raw image, a bmp/gif/jpg/png image, or whatever other kind of file
+    / If it is a raw image and we have a raw viewer configured, use method viewInRawViewer
+    / if it is an image (whatever) and we always want to use the raw viewer, use method viewInRawViewer
+    / If no raw viewer defined, or we have whatever other extension (can also be normal or raw image), use method viewInDefaultViewer (based on mime type and default app)
+     */
+    static void displaySelectedImageInExternalViewer() {
+        String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
+        boolean AlwaysUseRawViewer = prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false);
+        boolean RawExtension = false;
+        boolean defaultImg = false;
+
+        // check first if we have a raw image (can also be audio/video/whatever)
+        String[] raw_images = MyConstants.RAW_IMAGES;
+        String filenameExt = getFileExtension(MyVariables.getSelectedImagePath());
+        for (String ext: raw_images) {
+            if ( filenameExt.toLowerCase().equals(ext)) { // it is a raw image
+                RawExtension = true;
+                logger.info("RawExtension is true");
+                break;
+            }
+        }
+        if (!RawExtension) { //check if we have another image
+            for (String ext : SimpleExtensions) {
+                if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image
+                    defaultImg = true;
+                    logger.info("default image is true");
+                    break;
+                }
+            }
+        }
+        if (RawExtension || defaultImg) { // we have an image
+            if (AlwaysUseRawViewer) {
+                viewInRawViewer(RawViewer);
+            } else if (RawExtension) {
+                if (!"".equals(RawViewer)) { // We do have a raw image AND a raw viewer defined
+                    viewInRawViewer(RawViewer);
+                }
+            } else { // We have a defaultImg
+                viewInDefaultViewer();
+            }
+        } else { // Whatever other extension, simply try by default mime type
+            viewInDefaultViewer();
+        }
+
     }
 
     public static Application.OS_NAMES getCurrentOsName() {
