@@ -1,0 +1,19 @@
+exiftool - default
+cs - Czech (Čeština)
+de - German (Deutsch)
+en - English
+en-ca - Canadian English
+en-gb - British English
+es - Spanish (Español)
+fi - Finnish (Suomi)
+fr - French (Français)
+it - Italian (Italiano)
+ja - Japanese (日本語)
+ko - Korean (한국어)
+nl - Dutch (Nederlands)
+pl - Polish (Polski)
+ru - Russian (Русский)
+sv - Swedish (Svenska)
+tr - Turkish (Türkçe)
+zh-cn - Simplified Chinese (简体中文)
+zh-tw - Traditional Chinese (繁體中文)
