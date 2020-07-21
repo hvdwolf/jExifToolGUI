@@ -1,0 +1,8 @@
+Unknown
+Average
+Center-weighted average
+Spot
+Multi-spot
+Multi-segment
+Partial
+Other
