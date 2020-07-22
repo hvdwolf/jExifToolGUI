@@ -327,6 +327,8 @@ public class mainScreen {
     private JCheckBox xmpKeywordscheckBox;
     private JButton AddCommandFavoritebutton;
     private JButton LoadCommandFavoritebutton;
+    private JButton SaveQuerybutton;
+    private JButton loadQuerybutton;
     private JButton button;
     private JPanel gps;
     private JTextField ExiftoolLocationtextField;
@@ -1802,7 +1804,7 @@ public class mainScreen {
         panel35.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel34.add(panel35, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         CommandsParameterstextField = new JTextField();
-        panel35.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel35.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label90 = new JLabel();
         Font label90Font = this.$$$getFont$$$(null, Font.BOLD, -1, label90.getFont());
         if (label90Font != null) label90.setFont(label90Font);
@@ -1916,19 +1918,27 @@ public class mainScreen {
         buttonDBdiagram.setToolTipText("Opens a browser displaying the DB diagram");
         panel40.add(buttonDBdiagram, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel44 = new JPanel();
-        panel44.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
+        panel44.setLayout(new GridLayoutManager(3, 4, new Insets(5, 5, 5, 5), -1, -1));
         panel40.add(panel44, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel44.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         sqlQuerytextField = new JTextField();
-        panel44.add(sqlQuerytextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        sqlExecutebutton = new JButton();
-        sqlExecutebutton.setText("Go");
-        panel44.add(sqlExecutebutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel44.add(sqlQuerytextField, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label93 = new JLabel();
         Font label93Font = this.$$$getFont$$$(null, Font.BOLD, -1, label93.getFont());
         if (label93Font != null) label93.setFont(label93Font);
         label93.setText("Your own sql query:");
         panel44.add(label93, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sqlExecutebutton = new JButton();
+        sqlExecutebutton.setText("Go");
+        panel44.add(sqlExecutebutton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        SaveQuerybutton = new JButton();
+        SaveQuerybutton.setText("Add Favorite");
+        panel44.add(SaveQuerybutton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        loadQuerybutton = new JButton();
+        loadQuerybutton.setText("Load Favorite");
+        panel44.add(loadQuerybutton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer8 = new Spacer();
+        panel44.add(spacer8, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel45 = new JPanel();
         panel45.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         rootPanel.add(panel45, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2680,6 +2690,22 @@ public class mainScreen {
                 } else { //user did not proved an sql string
                     JOptionPane.showMessageDialog(rootPanel, "No sql query provided!", "No sql query", JOptionPane.WARNING_MESSAGE);
                 }
+            }
+        });
+        SaveQuerybutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (sqlQuerytextField.getText().length()>0) {
+                    AddFav.showDialog(rootPanel, "DB_query", sqlQuerytextField.getText());
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, "No query given", "No query", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        loadQuerybutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
             }
         });
         buttonDBdiagram.addActionListener(new ActionListener() {

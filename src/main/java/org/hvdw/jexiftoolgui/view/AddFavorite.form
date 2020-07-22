@@ -118,7 +118,9 @@
                 <children>
                   <component id="7f394" class="javax.swing.JTable" binding="favoritestable">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <preferredScrollableViewportSize width="600" height="400"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

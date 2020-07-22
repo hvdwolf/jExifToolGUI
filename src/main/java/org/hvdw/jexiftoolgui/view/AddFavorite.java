@@ -96,8 +96,8 @@ public class AddFavorite extends JDialog {
         DefaultTableModel model = (DefaultTableModel) favoritestable.getModel();
         model.setColumnIdentifiers(new String[]{"name", favoriteType});
         //favoritestable.setModel(model);
-        favoritestable.getColumnModel().getColumn(0).setPreferredWidth(150);
-        favoritestable.getColumnModel().getColumn(1).setPreferredWidth(300);
+        favoritestable.getColumnModel().getColumn(0).setPreferredWidth(120);
+        favoritestable.getColumnModel().getColumn(1).setPreferredWidth(350);
         model.setRowCount(0);
 
         Object[] row = new Object[1];
@@ -120,6 +120,11 @@ public class AddFavorite extends JDialog {
         String queryresult = "";
         String chosenname = favoritenametextField.getText().trim();
 
+        // We do save to the database using single quotes, so if the command or the query contains single quotes we need to escape them
+        // by doubling them (as that is what databases expect)
+        // We can not do that at the start as the user would see those escaped single quotes in his/her command
+        String cmd_qry_escaped = cmd_qry.replace("'", "''");
+        logger.info("cmd_qry_escaped: " + cmd_qry_escaped);
         if (!"".equals(chosenname)) { // user gave a favorites name
             // Check if already exists
             sql = "select favorite_name from userFavorites where favorite_name='" + chosenname + "' and favorite_type='" + favtype + "';";
@@ -132,7 +137,9 @@ public class AddFavorite extends JDialog {
                     logger.info("user wants to update the favorites with name: " + chosenname);
                     sql = "update userFavorites set favorite_type='" + favtype + "',"
                             + " favorite_name='" + chosenname + "',"
-                            + " command_query='" + cmd_qry + "'";
+                            + " command_query='" + cmd_qry_escaped + "'"
+                            + " where favorite_name='" + chosenname + "'"
+                            + " and favorite_type='" + favtype + "'";
                     logger.info("update sql:" + sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
@@ -147,7 +154,7 @@ public class AddFavorite extends JDialog {
                         + " values('"
                         + favtype + "','"
                         + chosenname + "','"
-                        + cmd_qry + "')";
+                        + cmd_qry_escaped + "')";
                 logger.info("insert sql: " + sql);
                 queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                 if (!"".equals(queryresult)) { //means we have an error
@@ -259,6 +266,7 @@ public class AddFavorite extends JDialog {
         scrollPane = new JScrollPane();
         panel4.add(scrollPane, new GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         favoritestable = new JTable();
+        favoritestable.setPreferredScrollableViewportSize(new Dimension(600, 400));
         scrollPane.setViewportView(favoritestable);
         final Spacer spacer2 = new Spacer();
         panel4.add(spacer2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

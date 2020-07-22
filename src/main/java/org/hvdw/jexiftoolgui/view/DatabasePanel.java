@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui.view;
 
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -16,6 +17,8 @@ public class DatabasePanel {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     private final static Logger logger = LoggerFactory.getLogger(DatabasePanel.class);
+
+    private SelectFavorite SelFav = new SelectFavorite();
 
     static String convertWritable(String writable) {
         // For some stupid reason SQLJDBC always changes "Yes" or "true" to 1, and "false" or "No" to null.
@@ -69,7 +72,22 @@ public class DatabasePanel {
                 model.addRow(cells);
             }
         }
+    }
 
+    public void LoadQueryFavorite(JPanel rootpanel, JTextField sqlQuerytextField) {
+        String queryresult = "";
+
+        String favName = SelFav.showDialog(rootpanel, "DB_query");
+        logger.debug("returned selected favorite: " + favName);
+        if (!"".equals(favName)) {
+            String sql = "select command_query from userFavorites where favorite_type='DB_query' and favorite_name='" + favName + "' limit 1";
+            queryresult = SQLiteJDBC.generalQuery(sql);
+            logger.debug("returned command: " + queryresult);
+ /*           // We do save to the database using single quotes, so if the command or the query contains single quotes we need to escape them
+            // Upon retrieval we need to rool back as the user would see those escaped single quotes in his/her command
+            String queryresult_unescaped = queryresult.replace("\'", "'"); */
+            sqlQuerytextField.setText(queryresult);
+        }
     }
 
 }

@@ -92,6 +92,7 @@ public class YourCommands {
             String sql = "select command_query from userFavorites where favorite_type='Exiftool_Command' and favorite_name='" + favName + "' limit 1";
             queryresult = SQLiteJDBC.generalQuery(sql);
             logger.debug("returned command: " + queryresult);
+
             CommandsParameterstextField.setText(queryresult);
         }
     }
