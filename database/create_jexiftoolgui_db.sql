@@ -162,3 +162,14 @@ Create table if not exists myLenses (
 insert into myLenses(lens_name, lens_description, exif_lensmake, exif_lensmodel, exif_lensserialnumber, exif_focallength, exif_focallengthIn35mmformat, exif_fnumber, exif_maxaperturevalue, exif_meteringmode, composite_lensid, makernotes_conversionlens, makernotes_lenstype, makernotes_lensfirmwareversion)
 values('Panasonic Leica DG Summilux 25/f1.4','some example','Panasonic','Leica DG Summilux 25/f1.4','123456-ABC','25','50','1.4','22','Multi-segment', 'Leica DG Summilux 25/f1.4', ' Off', 'LUMIX G VARIO 14-140/F3.5-5.6', '0.1.0.0' );
 
+
+--
+-- Create table for userfavorites
+--
+Create table if not exists userFavorites (
+    id integer primary key autoincrement,
+    favorite_type text NOT NULL,
+    favorite_name text NOT NULL,
+    command_query text NOT NULL,
+    UNIQUE (favorite_type, favorite_name)
+);
