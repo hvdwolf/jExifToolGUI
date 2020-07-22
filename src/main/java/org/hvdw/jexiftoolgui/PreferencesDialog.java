@@ -393,7 +393,7 @@ public class PreferencesDialog extends JDialog {
         final JLabel label9 = new JLabel();
         Font label9Font = this.$$$getFont$$$(null, Font.ITALIC, -1, label9.getFont());
         if (label9Font != null) label9.setFont(label9Font);
-        label9.setText("<html>MacOS always overrule the \"Use the Raw Viewer also for non-Raw images\"<br>and launches their own Preview.app next to the raw viewer.</html>");
+        label9.setText("<html>MacOS always overrules the \"Use the Raw Viewer also for non-Raw images\"<br>and launches their own Preview.app next to the raw viewer.</html>");
         panel11.add(label9, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 

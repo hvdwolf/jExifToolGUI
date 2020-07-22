@@ -3,10 +3,7 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
-import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
-import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
-import org.hvdw.jexiftoolgui.controllers.YourCommands;
+import org.hvdw.jexiftoolgui.controllers.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
 import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
@@ -18,8 +15,10 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
+import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.CreateUpdatemyLens;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
+import org.hvdw.jexiftoolgui.view.SelectFavorite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -326,6 +325,9 @@ public class mainScreen {
     private JButton stringPlusHelpbutton;
     private JTextField xmpKeywordstextField;
     private JCheckBox xmpKeywordscheckBox;
+    private JButton AddCommandFavoritebutton;
+    private JButton LoadCommandFavoritebutton;
+    private JButton button;
     private JPanel gps;
     private JTextField ExiftoolLocationtextField;
     private MenuListener menuListener;
@@ -357,6 +359,7 @@ public class mainScreen {
     private DatabasePanel DBP = new DatabasePanel();
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
+    private AddFavorite AddFav = new AddFavorite();
 
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
@@ -1806,8 +1809,8 @@ public class mainScreen {
         label90.setText("Parameters:");
         panel35.add(label90, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel36 = new JPanel();
-        panel36.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel35.add(panel36, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel36.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel35.add(panel36, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         CommandsclearParameterSFieldButton = new JButton();
         CommandsclearParameterSFieldButton.setText("Clear parameter(s) field");
         panel36.add(CommandsclearParameterSFieldButton);
@@ -1820,110 +1823,123 @@ public class mainScreen {
         CommandshelpButton = new JButton();
         CommandshelpButton.setText("Help");
         panel36.add(CommandshelpButton);
+        final Spacer spacer6 = new Spacer();
+        panel36.add(spacer6);
         final JPanel panel37 = new JPanel();
-        panel37.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel35.add(panel37, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel37.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        panel36.add(panel37);
+        final Spacer spacer7 = new Spacer();
+        panel37.add(spacer7);
+        AddCommandFavoritebutton = new JButton();
+        AddCommandFavoritebutton.setText("Add favorite");
+        panel37.add(AddCommandFavoritebutton);
+        LoadCommandFavoritebutton = new JButton();
+        LoadCommandFavoritebutton.setText("Load favorite");
+        panel37.add(LoadCommandFavoritebutton);
+        final JPanel panel38 = new JPanel();
+        panel38.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel35.add(panel38, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label91 = new JLabel();
         label91.setText("The final output will be displayed below:");
         label91.setVerticalTextPosition(1);
-        panel37.add(label91, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel38.add(label91, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel37.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel38.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         YourCommandsOutputTextArea = new JTextArea();
         YourCommandsOutputTextArea.setText("");
         scrollPane1.setViewportView(YourCommandsOutputTextArea);
-        final JPanel panel38 = new JPanel();
-        panel38.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
-        panel37.add(panel38, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel39 = new JPanel();
+        panel39.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        panel38.add(panel39, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         UseNonPropFontradioButton = new JRadioButton();
         UseNonPropFontradioButton.setSelected(true);
         UseNonPropFontradioButton.setText("Use a non-proportional \"monospaced\" font");
-        panel38.add(UseNonPropFontradioButton);
+        panel39.add(UseNonPropFontradioButton);
         UsePropFontradioButton = new JRadioButton();
         UsePropFontradioButton.setText("Use a proportional font");
-        panel38.add(UsePropFontradioButton);
+        panel39.add(UsePropFontradioButton);
         MyCommandsText = new JLabel();
         MyCommandsText.setText("MyCommandsText");
         panel34.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
-        final JPanel panel39 = new JPanel();
-        panel39.setLayout(new GridLayoutManager(5, 2, new Insets(10, 10, 10, 10), -1, -1));
-        tabbedPaneRight.addTab("Exiftool Database", panel39);
+        final JPanel panel40 = new JPanel();
+        panel40.setLayout(new GridLayoutManager(5, 2, new Insets(10, 10, 10, 10), -1, -1));
+        tabbedPaneRight.addTab("Exiftool Database", panel40);
         databaseScrollPanel = new JScrollPane();
-        panel39.add(databaseScrollPanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel40.add(databaseScrollPanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         DBResultsTable = new JTable();
         databaseScrollPanel.setViewportView(DBResultsTable);
-        final JPanel panel40 = new JPanel();
-        panel40.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel39.add(panel40, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel41 = new JPanel();
+        panel41.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel40.add(panel41, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         exiftoolDBText = new JLabel();
         exiftoolDBText.setText("Label");
-        panel40.add(exiftoolDBText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel41 = new JPanel();
-        panel41.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel39.add(panel41, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        panel41.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        panel41.add(exiftoolDBText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel42 = new JPanel();
+        panel42.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel40.add(panel42, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel42.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         radiobuttonQueryByGroup = new JRadioButton();
         radiobuttonQueryByGroup.setSelected(true);
         radiobuttonQueryByGroup.setText("By Group");
-        panel41.add(radiobuttonQueryByGroup);
+        panel42.add(radiobuttonQueryByGroup);
         comboBoxQueryByTagName = new JComboBox();
-        panel41.add(comboBoxQueryByTagName);
+        panel42.add(comboBoxQueryByTagName);
         radiobuttonQueryByCameraMake = new JRadioButton();
         radiobuttonQueryByCameraMake.setText("Camera make:");
-        panel41.add(radiobuttonQueryByCameraMake);
+        panel42.add(radiobuttonQueryByCameraMake);
         comboBoxQueryCameraMake = new JComboBox();
-        panel41.add(comboBoxQueryCameraMake);
-        final JPanel panel42 = new JPanel();
-        panel42.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel39.add(panel42, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel42.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        panel42.add(comboBoxQueryCameraMake);
+        final JPanel panel43 = new JPanel();
+        panel43.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panel40.add(panel43, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel43.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label92 = new JLabel();
         label92.setText("Where tag like:");
-        panel42.add(label92);
+        panel43.add(label92);
         queryTagLiketextField = new JTextField();
         queryTagLiketextField.setPreferredSize(new Dimension(300, 30));
-        panel42.add(queryTagLiketextField);
+        panel43.add(queryTagLiketextField);
         searchLikebutton = new JButton();
         searchLikebutton.setText("Search like");
-        panel42.add(searchLikebutton);
+        panel43.add(searchLikebutton);
         edbHelpbutton = new JButton();
         edbHelpbutton.setText("Help");
-        panel39.add(edbHelpbutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel40.add(edbHelpbutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         exiftoolDBversion = new JLabel();
         Font exiftoolDBversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolDBversion.getFont());
         if (exiftoolDBversionFont != null) exiftoolDBversion.setFont(exiftoolDBversionFont);
         exiftoolDBversion.setText("exiftool DB version:");
         exiftoolDBversion.setToolTipText("The exiftool version to build the included database version is not necessarily the same as your installed exiftool version");
-        panel39.add(exiftoolDBversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel40.add(exiftoolDBversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonDBdiagram = new JButton();
         buttonDBdiagram.setText("DB diagram");
         buttonDBdiagram.setToolTipText("Opens a browser displaying the DB diagram");
-        panel39.add(buttonDBdiagram, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel43 = new JPanel();
-        panel43.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
-        panel39.add(panel43, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel43.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        panel40.add(buttonDBdiagram, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel44 = new JPanel();
+        panel44.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
+        panel40.add(panel44, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel44.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         sqlQuerytextField = new JTextField();
-        panel43.add(sqlQuerytextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel44.add(sqlQuerytextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         sqlExecutebutton = new JButton();
         sqlExecutebutton.setText("Go");
-        panel43.add(sqlExecutebutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel44.add(sqlExecutebutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label93 = new JLabel();
         Font label93Font = this.$$$getFont$$$(null, Font.BOLD, -1, label93.getFont());
         if (label93Font != null) label93.setFont(label93Font);
         label93.setText("Your own sql query:");
-        panel43.add(label93, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel44 = new JPanel();
-        panel44.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        rootPanel.add(panel44, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel44.add(label93, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel45 = new JPanel();
+        panel45.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        rootPanel.add(panel45, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         OutputLabel = new JLabel();
         OutputLabel.setText("");
-        panel44.add(OutputLabel);
+        panel45.add(OutputLabel);
         progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
         progressBar.setPreferredSize(new Dimension(100, 15));
         progressBar.setStringPainted(false);
-        panel44.add(progressBar);
+        panel45.add(progressBar);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(CalcNorthRadioButton);
@@ -2234,6 +2250,23 @@ public class mainScreen {
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, HelpTexts.YourCommandsHelp), "Help for the Your Commands panel", JOptionPane.INFORMATION_MESSAGE);
             }
         });
+        AddCommandFavoritebutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (CommandsParameterstextField.getText().length()>0) {
+                    AddFav.showDialog(rootPanel, "Exiftool_Command", CommandsParameterstextField.getText());
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, "No command parameters given", "No parameters", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        LoadCommandFavoritebutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                YourCmnds.LoadCommandFavorite(rootPanel, CommandsParameterstextField);
+            }
+        });
+
 
         // Edit Exif pane buttons
         ExifcopyFromButton.addActionListener(new ActionListener() {
@@ -2963,9 +2996,19 @@ public class mainScreen {
         // database version
         exiftoolDBversion.setText(String.format(ProgramTexts.HTML,100,"exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
         // Special dynamic version string
+        logger.info("check for exiftool version");
         String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         List<String> cmdparams = new ArrayList<>();
-        cmdparams.add(exiftool);
+        Application.OS_NAMES currentOsName = Utils.getCurrentOsName();
+        logger.info("OS name {}", currentOsName);
+        /*if (currentOsName == APPLE) {
+            logger.info("Running on MacOS");
+            cmdparams.add("/bin/bash");
+            cmdparams.add("-exec");
+            //cmdparams.add("-cl");
+            //cmdparams.add("-c");
+        }*/
+        cmdparams.add(exiftool.trim());
         cmdparams.add("-ver");
 
         try {
@@ -2996,6 +3039,8 @@ public class mainScreen {
         xmpRightstextField.setText(ArtCredCopyPrefs[2]);
     }
 
+    // This is where it all starts
+    // initialisation of the Application
     private mainScreen(JFrame frame) {
         boolean preferences = false;
 
@@ -3020,6 +3065,9 @@ public class mainScreen {
         if (!preferences) {
             Utils.checkExifTool(mainScreen.this.rootPanel);
         }
+
+        // Do necessary updates when moving from older versions to newer versions
+        UpdateActions.Updates();
 
         ViewRadiobuttonListener();
         fillAllComboboxes();
@@ -3070,7 +3118,7 @@ public class mainScreen {
             // terms of the folder/file icons and file names returned by FileSystemView!
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception weTried) {
-           logger.error("Could nod start GUI.", weTried);
+           logger.error("Could not start GUI.", weTried);
         }
 
         frame.pack();

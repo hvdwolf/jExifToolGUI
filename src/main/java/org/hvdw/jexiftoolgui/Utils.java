@@ -515,7 +515,15 @@ public class Utils {
         }
         // Need to build exiftool prefs check
         MyVariables.setSelectedImagePath(fpath);
-        cmdparams.add(exiftool);
+        Application.OS_NAMES currentOsName = getCurrentOsName();
+        /*if (currentOsName == Application.OS_NAMES.APPLE) {
+            logger.info("Running on MacOS");
+            cmdparams.add("/bin/bash");
+            cmdparams.add("-exec");
+            //cmdparams.add("-cl");
+            //cmdparams.add("-c");
+        }*/
+        cmdparams.add(exiftool.trim());
         // Check for chosen metadata language
         if (!"".equals(getmetadataLanguage())) {
             cmdparams.add("-lang");
@@ -607,7 +615,7 @@ public class Utils {
         model.setColumnIdentifiers(new String[]{"Group", "Tag", "Value"});
         ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
         ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
-        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(400);
+        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(500);
         model.setRowCount(0);
 
         Object[] row = new Object[1];
@@ -840,6 +848,9 @@ public class Utils {
 
     public static boolean isOsFromMicrosoft() {
         return getCurrentOsName() == Application.OS_NAMES.MICROSOFT;
+    }
+    public static boolean isOsFromApple() {
+        return getCurrentOsName() == Application.OS_NAMES.APPLE;
     }
 
     public static boolean in_Range(int checkvalue, int lower, int upper) {

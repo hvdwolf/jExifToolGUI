@@ -263,7 +263,7 @@ public class EditLensdata {
                         if (!"".equals(queryresult)) { //means we have an error
                             JOptionPane.showMessageDialog(rootpanel, "Encountered an error in updating your lens " + chosenValues[0], "error updating", JOptionPane.ERROR_MESSAGE);
                         } else { //success
-                            JOptionPane.showMessageDialog(rootpanel, "lens " + chosenValues[0] + " saved", "lens saved", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(rootpanel, "lens \"" + chosenValues[0] + "\" saved", "lens saved", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } // result 2 means cancel; do nothing
                 } else {// No name from DB, so a new lens config record
@@ -292,7 +292,7 @@ public class EditLensdata {
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, "Encountered an error inserting your lens " + chosenValues[0], "insert error", JOptionPane.ERROR_MESSAGE);
                     } else { //success
-                        JOptionPane.showMessageDialog(rootpanel, "lens " + chosenValues[0] + " saved", "lens saved", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(rootpanel, "lens \"" + chosenValues[0] + "\" saved", "lens saved", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             } else { // user did not provide a lensname to insert/update
