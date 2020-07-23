@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>jexiftoolgui</id>
+	<metadata_license>CC-BY-SA-3.0</metadata_license>
+	<project_license>GPL-3.0</project_license>
+	<name>jExifToolGUI</name>
+	<summary>Graphic User Interface for command-line tool exiftool</summary>
+	<description>
+		<p>jExifToolGUI is a java/Swing Windows/Linux/MacOS graphical frontend for the excellent command-line ExifTool application by Phil Harvey.</p>
+	</description>
+	<launchable type="desktop-id">jexiftoolgui.desktop</launchable>
+	<url type="homepage">https://hvdwolf.github.io/jExifToolGUI/</url>
+	<screenshots>
+		<screenshot type="default">
+			<image>https://hvdwolf.github.io/jExifToolGUI/screenshots/LinuxXFCE-mainscreen.jpg</image>
+		</screenshot>
+	</screenshots>
+	<provides>
+		<id>jexiftoolgui.desktop</id>
+	</provides>
+</component>

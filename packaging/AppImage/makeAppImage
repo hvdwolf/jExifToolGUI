@@ -33,12 +33,14 @@ printf "Create folders and copy program icon and desktop file\n\n"
 #
 mkdir -p usr/share/jexiftoolgui
 mkdir -p usr/share/applications
+mkdir -p usr/share/metainfo
 
 cp ../jexiftoolgui-48x48.png usr/share/jexiftoolgui
 cp ../jexiftoolgui-48x48.png .
 mv jExifToolGUI.jar usr/share/jexiftoolgui
 cp ../jexiftoolgui.desktop usr/share/applications
 cp ../jexiftoolgui.desktop .
+cp ../jexiftoolgui.appdata.xml usr/share/metainfo
 
 # We will not install exiftool
 #
