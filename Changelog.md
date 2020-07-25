@@ -1,5 +1,17 @@
 # Changelog
 
+## 2020-07-25 1.4.0
+* Add "add favorites/load favorites" to "Your Commands" tab and to "Exiftool Database" tab. You can save your favorite exiftool commands and/or queries to the database.
+* Add option to configure and use RAW image viewer: For all images (clunky on McOS as MacOS wants it own viewer), or only for raw images. Other formats (txt/audio/video/etc) will be opened according mime-type with their default app (if installed).
+* Linux: Set default font to SansSerif instead of Linux/java default Dialog bold. (Will be configurable for MacOS/Windows/Linux in 1.5)
+* Fix: [Issue #36](https://github.com/hvdwolf/jExifToolGUI/issues/36): Fix linewrap in exif:description and xmp:description.
+* Fix: [Issue #37](https://github.com/hvdwolf/jExifToolGUI/issues/37): Tif(f) files not previewed. They are now differently handled based on java version.
+    * tiff images **with** preview/thumbnail images inside are displayed (this was already working).
+    * tiff images **without** preview/thumbnail inside can only be displayed on java V11 or higher. Use a "full jre" version (comes with V11) or install V11 or newer.
+* Add "update" function. This new 1.4 does an extension on the database. You don't want to lose your user data (currently only lens configs if applicable)
+* Internal: add program icon to all windows (top-left)(not on MacOS as MacOS does not allow it).
+* Internal: DB diagram was displayed in external browser window. Is now displayed in internal scroll panel. It is "uncoupled" from the main window so you can keep it open.
+
 ## 2020-07-17 1.3.0
 * Under Help menu: add "System/Program Info" to show some info (in case we need to troubleshoot).
 * Add "XMP_IPTC_Strings+" tab. Currently contains Keywords, Subject and PersonInImage. Allows for more fine-grained options then now in XMP-tab (and might be extended with more).
