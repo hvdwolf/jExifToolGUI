@@ -42,6 +42,7 @@ public class PreferencesDialog extends JDialog {
         setContentPane(contentPanel);
         setModal(true);
         getRootPane().setDefaultButton(buttonSave);
+        this.setIconImage(Utils.getFrameIcon());
 
         buttonSave.addActionListener(e -> onSave());
 

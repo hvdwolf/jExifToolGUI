@@ -489,6 +489,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="500" height="80"/>
+                              <wrapStyleWord value="true"/>
                             </properties>
                           </component>
                           <component id="c5452" class="javax.swing.JCheckBox" binding="ExifDescriptioncheckBox">
@@ -634,6 +635,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="500" height="80"/>
+                          <wrapStyleWord value="true"/>
                         </properties>
                       </component>
                       <component id="767cd" class="javax.swing.JCheckBox" binding="xmpDescriptioncheckBox">

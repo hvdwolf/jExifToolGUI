@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -75,6 +76,7 @@ public class RenamePhotos extends JDialog {
         setContentPane(rootRenamingPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        this.setIconImage(Utils.getFrameIcon());
 
         // button listeners
         buttonOK.addActionListener(new ActionListener() {

@@ -17,6 +17,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,6 +47,22 @@ public class Utils {
     public static boolean containsIndices(int[] selectedIndices) {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());
         return intList.size() != 0;
+    }
+
+
+    /*
+    / Set default font for everything in the Application
+    / from: https://stackoverflow.com/questions/7434845/setting-the-default-font-of-swing-program (Romain Hippeau)
+    / To be called like : Utils.setUIFont (new FontUIResource("SansSerif", Font.PLAIN,12));
+     */
+    public static void setUIFont (javax.swing.plaf.FontUIResource f){
+        java.util.Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get (key);
+            if (value instanceof javax.swing.plaf.FontUIResource)
+                UIManager.put (key, f);
+        }
     }
 
     /*
@@ -366,7 +383,16 @@ public class Utils {
     //static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
         int selectedRow, selectedColumn;
-        String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        String[] SimpleExtensions = {};
+        String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
+        if (jv.startsWith("1.8")) {
+            logger.info("On V8, exact version: {}", jv);
+            SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
+        } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
+            logger.info("On V11 or above, exact version: {}", jv);
+            SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
+        }
         boolean bSimpleExtension = false;
         String thumbfilename = "";
         File thumbfile = null;
@@ -401,7 +427,6 @@ public class Utils {
         int trow = 0;
         int tcolumn = 0;
 
-
         for (File file : files) {
 
             //logger.trace(file.getName().replace("\\", "/"));
@@ -410,7 +435,7 @@ public class Utils {
             //logger.info("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
             for (String ext : SimpleExtensions) {
-                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png
+                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png (or tif(f) on v11 or above)
                     bSimpleExtension = true;
                     break;
                 }
@@ -718,6 +743,18 @@ public class Utils {
     }
 
     /*
+    *
+     */
+     static public BufferedImage getFrameIcon() {
+         BufferedImage frameicon = null;
+         try {
+             frameicon = ImageIO.read(mainScreen.class.getResource("/icons/jexiftoolgui-frameicon.png"));
+         } catch (IOException ioe) {
+             logger.info("erorr loading frame icon {}", ioe.toString());
+         }
+         return frameicon;
+     }
+    /*
 / This method is called from displaySelectedImageInExternalViewer() in case of
 / - no raw viewer defined
 / - default image
@@ -798,7 +835,17 @@ public class Utils {
     / If no raw viewer defined, or we have whatever other extension (can also be normal or raw image), use method viewInDefaultViewer (based on mime type and default app)
      */
     static void displaySelectedImageInExternalViewer() {
-        String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        String[] SimpleExtensions = {};
+        String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
+        if (jv.startsWith("1.8")) {
+            logger.info("On V8, exact version: {}", jv);
+            SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
+        } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
+            logger.info("On V11 or above, exact version: {}", jv);
+            SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
+        }
+
         String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
         boolean AlwaysUseRawViewer = prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false);
         boolean RawExtension = false;

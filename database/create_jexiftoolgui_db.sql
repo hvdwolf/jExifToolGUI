@@ -5,6 +5,10 @@ create table if not exists ExiftoolVersion (
     version text
 );
 
+create table if not exists ApplicationVersion (
+    version text
+);
+
 create table if not exists Family (
     id integer primary key autoincrement,
     family text NOT NULL
@@ -41,7 +45,8 @@ create table if not exists Tags (
     id integer primary key autoincrement, 
     tagname text NOT NULL,
     tagtype text,
-    writable text
+    writable text,
+    flags text
 );
 -- Below index will be created AFTER having added everything to Tags as that makes the initial "filling" faster
 -- create unique index if not exists Tags_Index on Tags(tag);
@@ -60,12 +65,13 @@ create table if not exists tmptags (
   TagName text NOT NULL,
   TagType text NOT NULL,
   Writable text NOT NULL,
+  Flags text NOT NULL,
   G0 text,
   G1 text,
   G2 text
 );
 
-create view if not exists v_tags_groups as select taggroup,tagname,tagtype,writable from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id;
+create view if not exists v_tags_groups as select taggroup,tagname,tagtype,writable,flags from Groups,Tags,tagsingroups where tagsingroups.groupid=Groups.id and tagsingroups.tagid=tags.id;
 --
 -- Create DB part for the custom "things"
 --

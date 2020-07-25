@@ -8,10 +8,18 @@ import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.*;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
+import java.io.IOException;
+
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
+
 
 public class DatabasePanel {
 
@@ -19,6 +27,7 @@ public class DatabasePanel {
     private final static Logger logger = LoggerFactory.getLogger(DatabasePanel.class);
 
     private SelectFavorite SelFav = new SelectFavorite();
+    private DiagramPanel contentPane;
 
     static String convertWritable(String writable) {
         // For some stupid reason SQLJDBC always changes "Yes" or "true" to 1, and "false" or "No" to null.
@@ -88,6 +97,44 @@ public class DatabasePanel {
             String queryresult_unescaped = queryresult.replace("\'", "'"); */
             sqlQuerytextField.setText(queryresult);
         }
+    }
+
+    /*
+    / Below method and class display the database diagram in an "independent" window.
+     */
+    private class DiagramPanel extends JPanel {
+    }
+    public void DisplayDiagram() {
+        BufferedImage img = null;
+
+        JFrame frame = new JFrame("Database diagram");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        contentPane = new DiagramPanel();
+        frame.setContentPane(contentPane);
+        frame.setIconImage(Utils.getFrameIcon());
+
+        try {
+            img = ImageIO.read(DiagramPanel.class.getResource("/jexiftoolgui-diagram.png"));
+        } catch (IOException ioe) {
+            logger.info("erorr loading diagram png {}", ioe.toString());
+        }
+
+        JPanel thePanel = new JPanel(new BorderLayout());
+        thePanel.setBackground(Color.white);
+        thePanel.setOpaque(true);
+        thePanel.add(new JLabel(new ImageIcon(img)), BorderLayout.NORTH);
+
+        JScrollPane theScroller = new JScrollPane(thePanel);
+        theScroller.setPreferredSize(new Dimension(830, 600));
+        frame.add(theScroller);
+
+        frame.setLocationByPlatform(true);
+        // Position to screen center.
+        //Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
+        //setLocation((int) (screen_size.getWidth() - getWidth()) / 2,
+        //        (int) (screen_size.getHeight() - getHeight()) / 2);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }

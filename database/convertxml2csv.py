@@ -40,17 +40,18 @@ for filename in os.listdir(fpath):
         with open(os.path.join(csvPath, prefix_basename[0] + '.csv'), mode='w') as tag_csv_file:
             tag_csv_file_writer = csv.writer(tag_csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             # Write header
-            tag_csv_file_writer.writerow(["TagNameGroup","TagName","TagType","Writable","G0", "G1", "G2"])
+            tag_csv_file_writer.writerow(["TagNameGroup","TagName","TagType","Writable","Flag","G0", "G1", "G2"])
             for child in root:  # The child is the table inside the xml
                 for tags in child.iter('tag'):
                     tag_name = tags.get('name')
                     tag_type = tags.get('type')
                     tag_writable = tags.get('writable')
+                    tag_flags = tags.get('flags')
                     tag_g0 = tags.get('g0')
                     tag_g1 = tags.get('g1')
                     tag_g2 = tags.get('g2')
                     if tag_type <> 'undef':
-		                tag_csv_file_writer.writerow([prefix_basename[0], tag_name, tag_type, tag_writable, tag_g0, tag_g1, tag_g2])
+		                tag_csv_file_writer.writerow([prefix_basename[0], tag_name, tag_type, tag_writable, tag_flags, tag_g0, tag_g1, tag_g2])
 
         with open(os.path.join(csvPath, prefix_basename[0] + '-group.csv'), mode='w') as table_csv_file:
             table_csv_file_writer = csv.writer(table_csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

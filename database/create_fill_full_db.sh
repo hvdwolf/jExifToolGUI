@@ -21,7 +21,7 @@ rm -rf "${XMLDIR}"
 mkdir -p "${XMLDIR}"
 
 DB="${WORKDIR}/jexiftoolgui.db"
-ET="/BigData/Image-ExifTool-12.01/exiftool"
+ET="/media/harryvanderwolf/128GB/software/Image-ExifTool-12.01/exiftool"
 
 printf "\n\nfirst delete current database\n\n"
 rm -rf $DB
@@ -164,15 +164,15 @@ printf "\n\nCreate the xmls for all the groups in ${XMLDIR}\n\n"
 for group in $groups;
 do
     printf "working on ${group}\n"
-    ${ET} -listx "-${group}:all" > "${XMLDIR}"/${group}.xml
+    ${ET} -f -s -listx "-${group}:all" > "${XMLDIR}"/${group}.xml
 done
 
 printf "Remove every xml file smaller than <= 105 bytes\n\n"
 find "${XMLDIR}" -name "*.xml" -size -106c -delete
 
-printf "Start pyhon script to parse the xmls\n"
+printf "Start python script to parse the xmls\n"
 printf "We start it as a background job and wait for it to finish\n"
-nohup ${curdir}/convertxml2csv.py ${XMLDIR} ${CSVDIR} &
+${curdir}/convertxml2csv.py ${XMLDIR} ${CSVDIR} &
 printf "Now wait\n"
 wait
 printf "python script ready. Now remove the ABCD-group.csv files\n"
@@ -181,7 +181,7 @@ printf "Remove every csv file smaller than <= 51 bytes\n\n"
 find "${CSVDIR}" -name "*.csv" -size -50c -delete
 
 #sqlite3 -header -csv $DB tmptags < csv-dir/EXIF.csv tmptags
-for csvfile in ${csvdir}/*.csv;
+for csvfile in ${CSVDIR}/*.csv;
 do
     printf "working on ${csvfile}\n"
     echo -e ".separator ","\n.import ${csvfile} tmptags" | sqlite3 $DB
@@ -191,6 +191,7 @@ sqlite3 $DB "delete from tmptags where rowid not in (select min(rowid) from tmpt
 
 printf "\n\nNow update table TAGS with our collected tagtypes\n"
 sqlite3 $DB "update Tags set tagtype=(select tagtype from tmptags where tmptags.tagname=tags.tagname);"
+sqlite3 $DB "update Tags set flags=(select flags from tmptags where tmptags.tagname=tags.tagname);"
 
 sqlite3 $DB "delete from tmptags;"
 

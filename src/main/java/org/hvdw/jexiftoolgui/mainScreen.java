@@ -15,10 +15,7 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
-import org.hvdw.jexiftoolgui.view.AddFavorite;
-import org.hvdw.jexiftoolgui.view.CreateUpdatemyLens;
-import org.hvdw.jexiftoolgui.view.DatabasePanel;
-import org.hvdw.jexiftoolgui.view.SelectFavorite;
+import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +25,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
+import javax.swing.ImageIcon;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
@@ -824,6 +823,7 @@ public class mainScreen {
         CreativeTags.add(label14, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         ExifDescriptiontextArea = new JTextArea();
         ExifDescriptiontextArea.setPreferredSize(new Dimension(500, 80));
+        ExifDescriptiontextArea.setWrapStyleWord(true);
         CreativeTags.add(ExifDescriptiontextArea, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         ExifDescriptioncheckBox = new JCheckBox();
         ExifDescriptioncheckBox.setSelected(true);
@@ -885,6 +885,7 @@ public class mainScreen {
         panel4.add(label17, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         xmpDescriptiontextArea = new JTextArea();
         xmpDescriptiontextArea.setPreferredSize(new Dimension(500, 80));
+        xmpDescriptiontextArea.setWrapStyleWord(true);
         panel4.add(xmpDescriptiontextArea, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         xmpDescriptioncheckBox = new JCheckBox();
         xmpDescriptioncheckBox.setSelected(true);
@@ -2162,6 +2163,9 @@ public class mainScreen {
                     break;
                 case "Donate":
                     Utils.openBrowser("https://hvdwolf.github.io/jExifToolGUI/donate.html");
+                    // Disable for the time being
+                    //WebPageInPanel WPIP = new WebPageInPanel();
+                    //WPIP.WebPageInPanel(rootPanel,"https://hvdwolf.github.io/jExifToolGUI/donate.html", 700,300);
                     break;
                 // Below this line we will add our Help sub menu containing the helptexts topics in this program
                 case "Edit data -> Exif":
@@ -2711,7 +2715,8 @@ public class mainScreen {
         buttonDBdiagram.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/raw/master/database/jexiftoolgui-diagram.png");
+                //Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/raw/master/database/jexiftoolgui-diagram.png");
+                DBP.DisplayDiagram();
             }
         });
 
@@ -3092,6 +3097,15 @@ public class mainScreen {
             Utils.checkExifTool(mainScreen.this.rootPanel);
         }
 
+        //Utils.setDefaultFont("SansSerif");
+        //Utils.setUIFont (new FontUIResource("Serif",Font.PLAIN,12));
+
+        // Set the text areas correctly
+        ExifDescriptiontextArea.setWrapStyleWord(true);
+        ExifDescriptiontextArea.setLineWrap(true);
+        xmpDescriptiontextArea.setWrapStyleWord(true);
+        xmpDescriptiontextArea.setLineWrap(true);
+
         // Do necessary updates when moving from older versions to newer versions
         UpdateActions.Updates();
 
@@ -3133,12 +3147,14 @@ public class mainScreen {
     }
 
     static void createAndShowGUI() {
+
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + "   (for ExifTool by Phil Harvey)");
+        frame.setIconImage(Utils.getFrameIcon());
         frame.setContentPane(new mainScreen(frame).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        /*frame.setIconImage(
-                new ImageIcon(getClass().getClassLoader().getResource("resources/jexiftoolgui.ico"))
-        );*/
+        // Does not work correctly
+        //Utils.setDefaultFont("SansSerif");
+
         try {
             // Significantly improves the look of the output in
             // terms of the folder/file icons and file names returned by FileSystemView!
