@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-07-26 1.4.1
+* Fix: [Issue #38](https://github.com/hvdwolf/jExifToolGUI/issues/38) "Copy from selected image" adds leading space character for strings. All strings now "trim"-med, removing leading/trailing spaces.
+* Fix: [Issue #42](https://github.com/hvdwolf/jExifToolGUI/issues/42) When running on java 9 or above. You get a warning: "WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance". No problem at all and absolutely no performace impact (stupid log4j warning), but now the jar is converted to a "multi-version" jar.
+
 ## 2020-07-25 1.4.0
 * Add "add favorites/load favorites" to "Your Commands" tab and to "Exiftool Database" tab. You can save your favorite exiftool commands and/or queries to the database.
 * Add option to configure and use RAW image viewer: For all images (clunky on McOS as MacOS wants it own viewer), or only for raw images. Other formats (txt/audio/video/etc) will be opened according mime-type with their default app (if installed).
