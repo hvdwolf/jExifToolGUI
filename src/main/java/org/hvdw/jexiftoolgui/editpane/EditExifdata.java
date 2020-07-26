@@ -77,31 +77,31 @@ public class EditExifdata {
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
             logger.info(SpaceStripped, " ; value: ", cells[1], "\n");
             if (SpaceStripped.contains("Make")) {
-                exifFields[0].setText(cells[1]);
+                exifFields[0].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("CameraModelName")) {
-                exifFields[1].setText(cells[1]);
+                exifFields[1].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("ModifyDate")) {
-                exifFields[2].setText(cells[1]);
+                exifFields[2].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Date/TimeOriginal")) {  /// Date/timeOriginal: / gives issues with contains????
-                exifFields[3].setText(cells[1]);
+                exifFields[3].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("CreateDate")) {
-                exifFields[4].setText(cells[1]);
+                exifFields[4].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Artist")) {
-                exifFields[5].setText(cells[1]);
+                exifFields[5].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Copyright")) {
-                exifFields[6].setText(cells[1]);
+                exifFields[6].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("UserComment")) {
-                exifFields[7].setText(cells[1]);
+                exifFields[7].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("ImageDescription")) {
-                exiftextArea.setText(cells[1]);
+                exiftextArea.setText(cells[1].trim());
             }
         }
 

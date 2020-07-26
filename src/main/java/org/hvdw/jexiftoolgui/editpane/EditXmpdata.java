@@ -79,37 +79,37 @@ public class EditXmpdata {
                 //With ALL spaces removed from the tag we als need to use identiefiers without spaces
                 //xmpCreatortextField, xmpRightstextField,xmpLabeltextField, xmpSubjecttextField, xmpTitletextField, xmpPersontextField, xmpRegionNametextField, xmpRegionTypetextField
                 if (SpaceStripped.contains("Creator")) {
-                    xmpFields[0].setText(cells[1]);
+                    xmpFields[0].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Credit")) {
-                    xmpFields[1].setText(cells[1]);
+                    xmpFields[1].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Rights")) {
-                    xmpFields[2].setText(cells[1]);
+                    xmpFields[2].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Label")) {
-                    xmpFields[3].setText(cells[1]);
+                    xmpFields[3].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Title")) {
-                    xmpFields[4].setText(cells[1]);
+                    xmpFields[4].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Keywords")) {
-                    xmpFields[5].setText(cells[1]);
+                    xmpFields[5].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Subject")) {
-                    xmpFields[6].setText(cells[1]);
+                    xmpFields[6].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("PersonInImage")) {
-                    xmpFields[7].setText(cells[1]);
+                    xmpFields[7].setText(cells[1].trim());
                 }
                 /*if (SpaceStripped.contains("RegionName")) {
-                    xmpFields[7].setText(cells[1]);
+                    xmpFields[7].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("RegionType")) {
-                    xmpFields[8].setText(cells[1]);
+                    xmpFields[8].setText(cells[1].trim());
                 }*/
                 if (SpaceStripped.contains("Description")) { // Our text area
-                    Description.setText(cells[1]);
+                    Description.setText(cells[1].trim());
                 }
             }
 

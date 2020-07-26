@@ -85,13 +85,13 @@ public class EditLensdata {
                 //With ALL spaces removed from the tag we als need to use identifiers without spaces
                 //logger.info("SpaceStripped: " + SpaceStripped);
                 if (SpaceStripped.contains("Make")) {
-                    lensFields[0].setText(cells[1]);
+                    lensFields[0].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("Model")) {
-                    lensFields[1].setText(cells[1]);
+                    lensFields[1].setText(cells[1].trim());
                 }
                 if (SpaceStripped.toLowerCase().contains("serialnumber")) {
-                    lensFields[2].setText(cells[1]);
+                    lensFields[2].setText(cells[1].trim());
                 }
                 if ("FocalLength".equals(SpaceStripped)) {
                     lensFields[3].setText(cells[1].replace(" mm",""));
@@ -100,25 +100,25 @@ public class EditLensdata {
                     lensFields[4].setText(cells[1].replace(" mm",""));
                 }
                 if (SpaceStripped.contains("FNumber")) {
-                    lensFields[5].setText(cells[1]);
+                    lensFields[5].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("MaxApertureValue")) {
-                    lensFields[6].setText(cells[1]);
+                    lensFields[6].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("FocusDistance")) {
-                    lensFields[7].setText(cells[1]);
+                    lensFields[7].setText(cells[1].trim());
                 }
                 if (SpaceStripped.toLowerCase().contains("id")) {
-                    lensFields[8].setText(cells[1]);
+                    lensFields[8].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("ConversionLens")) {
-                    lensFields[9].setText(cells[1]);
+                    lensFields[9].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("LensType")) {
-                    lensFields[10].setText(cells[1]);
+                    lensFields[10].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("LensFirmwareVersion")) {
-                    lensFields[11].setText(cells[1]);
+                    lensFields[11].setText(cells[1].trim());
                 }
                 if (SpaceStripped.contains("MeteringMode")) {
                     // simple set of if statements. somehow the direct cells[1] option does not work
@@ -146,8 +146,8 @@ public class EditLensdata {
                     if (cells[1].toLowerCase().contains("other")) {
                         meteringmodecomboBox.setSelectedItem("Other");
                     }
-                    //meteringmodecomboBox.setSelectedItem(cells[1]);
-                    logger.info("metering mode (SpaceStripped, cells[1]) " + SpaceStripped + " " + cells[1]);
+                    //meteringmodecomboBox.setSelectedItem(cells[1].trim());
+                    //logger.info("metering mode (SpaceStripped, cells[1].trim()) " + SpaceStripped + " " + cells[1].trim());
                 }
             }
 

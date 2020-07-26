@@ -186,11 +186,13 @@ public class StandardFileIO {
         File[] files = null;
         String SelectedFolder;
 
-        String startFolder = getFolderPathToOpenBasedOnPreferences();
+        //String startFolder = getFolderPathToOpenBasedOnPreferences();
+        File startFolder = new File(getFolderPathToOpenBasedOnPreferences());
 
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setDialogTitle("Locate the image folder ...");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
             SelectedFolder = chooser.getSelectedFile().getAbsolutePath();

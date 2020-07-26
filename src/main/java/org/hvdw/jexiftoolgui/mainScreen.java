@@ -337,8 +337,8 @@ public class mainScreen {
 
 
     public File[] files;
-    private int[] selectedIndices;
-    private List<Integer> selectedIndicesList = new ArrayList<Integer>();
+    public int[] selectedIndices;
+    public List<Integer> selectedIndicesList = new ArrayList<Integer>();
     private int SelectedRow;
     public int SelectedCell;
     private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
@@ -451,64 +451,10 @@ public class mainScreen {
         };
     }
 
-
-//////////////////////////////////////////////////////////////////////////////////
-
-
-    //check preferences (a.o. exiftool)
-    private boolean checkPreferences() {
-        boolean exiftool_exists;
-        boolean exiftool_found = false;
-        String res;
-        List<String> cmdparams = new ArrayList<>();
-
-
-        exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
-        logger.info("exiftool_exists reports: {}",exiftool_exists);
-
-
-        if (exiftool_exists) {
-            String exiftool_path = prefs.getByKey(EXIFTOOL_PATH, "");
-            File tmpFile = new File(exiftool_path);
-            boolean exists = tmpFile.exists();
-            if (!exists) {
-                exiftool_path = null;
-                JOptionPane.showMessageDialog(rootPanel, ProgramTexts.ETpreferenceIncorrect, "exiftool preference incorrect", JOptionPane.WARNING_MESSAGE);
-            }
-            logger.info("exists is {}", exists);
-            logger.info("preference exiftool returned: {}",exiftool_path);
-            if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
-                res = Utils.getExiftoolPath();
-            } else {
-                res = exiftool_path;
-                //String[] cmdparams = {res, "-ver"};
-                cmdparams.add(res);
-                cmdparams.add("-ver");
-                try {
-                    String exv = CommandRunner.runCommand(cmdparams).replace("\n", "").replace("\r", "");
-                    OutputLabel.setText("Exiftool available;  Version: " + exv);
-                    MyVariables.setExiftoolVersion(exv);
-                } catch (IOException | InterruptedException ex) {
-                    logger.debug("Error executing command");
-                }
-
-            }
-        } else { // does not exist
-            res = Utils.getExiftoolPath();
-        }
-
-        if (res != null && !res.isEmpty() && !res.toLowerCase().startsWith("info")) {
-            exiftool_found = true;
-            // We already checked that the node did not exist and that it is empty or null
-            // remove all possible line breaks
-            res = res.replace("\n", "").replace("\r", "");
-            if (!exiftool_exists) {
-                prefs.storeByKey(EXIFTOOL_PATH, res);
-            }
-        }
-
-        return exiftool_found;
+    private JCheckBox[] getCopyMetaDatacheckboxes() {
+        return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, CopyMakernotescheckBox};
     }
+
 /////////////////////////// End of Startup checks //////////////////////////
 
     private void loadImages(String loadingType) {
@@ -543,28 +489,6 @@ public class mainScreen {
         }
     }
 
-
-    private static List<Component> getAllComponents(final Container c) {
-        Component[] comps = c.getComponents();
-        List<Component> compList = new ArrayList<Component>();
-        for (Component comp : comps) {
-            compList.add(comp);
-            //logger.info(comp.toString());
-            if (comp instanceof Container) {
-                compList.addAll(getAllComponents((Container) comp));
-            }
-        }
-        return compList;
-    }
-
-    private void setCopyMetaDatacheckboxes(boolean state) {
-        CopyExifcheckBox.setEnabled(state);
-        CopyXmpcheckBox.setEnabled(state);
-        CopyIptccheckBox.setEnabled(state);
-        CopyIcc_profileDataCheckBox.setEnabled(state);
-        CopyGpsCheckBox.setEnabled(state);
-        CopyJfifcheckBox.setEnabled(state);
-    }
 
     private void fillAllComboboxes() {
         // Fill all combo boxes in the View panel
@@ -2023,7 +1947,7 @@ public class mainScreen {
     // endregion
 
     // region Action Listeners and radio button groups
-    class MenuActionListener implements ActionListener {
+    public class MenuActionListener implements ActionListener {
 
         // menuListener
         public void actionPerformed(ActionEvent ev) {
@@ -2496,19 +2420,19 @@ public class mainScreen {
         copyAllMetadataRadiobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                setCopyMetaDatacheckboxes(false);
+                Utils.setCopyMetaDatacheckboxes(false, getCopyMetaDatacheckboxes());
             }
         });
         copyAllMetadataSameGroupsRadiobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                setCopyMetaDatacheckboxes(false);
+                Utils.setCopyMetaDatacheckboxes(false, getCopyMetaDatacheckboxes());
             }
         });
         copySelectiveMetadataradioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                setCopyMetaDatacheckboxes(true);
+                Utils.setCopyMetaDatacheckboxes(true, getCopyMetaDatacheckboxes());
             }
         });
         UseDataFrombutton.addActionListener(new ActionListener() {
@@ -2851,7 +2775,7 @@ public class mainScreen {
     }
     // endregion
 
-    private void createmyMenuBar(JFrame frame) {
+    private void createMenuBar(JFrame frame) {
         menuBar = new JMenuBar();
 
         // File menu
@@ -2977,8 +2901,8 @@ public class mainScreen {
         menuItem = new JMenuItem("ExifTool homepage");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        /*menuItem = new JMenuItem("Manual");
-        myMenu.add(menuItem); */
+        //menuItem = new JMenuItem("Manual");
+        //myMenu.add(menuItem);
         myMenu.addSeparator();
         // Here we add the sub menu with help topics
         myMenu.add(mysubMenu);
@@ -3077,7 +3001,10 @@ public class mainScreen {
 
         Utils.progressStatus(progressBar, false);
 
-        createmyMenuBar(frame);
+        createMenuBar(frame);
+        //CreateMenu CM = new CreateMenu();
+        //menuBar = new JMenuBar();
+        //CM.createMenuBar(frame, rootPanel, menuBar);
 
         // Check if our custom folder exists and create it
         String check_result = checkforjexiftoolguiFolder();
@@ -3092,13 +3019,11 @@ public class mainScreen {
             JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
         }
         // Now check the preferences
-        preferences = checkPreferences();
+        CheckPreferences CP = new CheckPreferences();
+        preferences = CP.checkPreferences(rootPanel, OutputLabel);
         if (!preferences) {
             Utils.checkExifTool(mainScreen.this.rootPanel);
         }
-
-        //Utils.setDefaultFont("SansSerif");
-        //Utils.setUIFont (new FontUIResource("Serif",Font.PLAIN,12));
 
         // Set the text areas correctly
         ExifDescriptiontextArea.setWrapStyleWord(true);
@@ -3152,8 +3077,16 @@ public class mainScreen {
         frame.setIconImage(Utils.getFrameIcon());
         frame.setContentPane(new mainScreen(frame).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Does not work correctly
-        //Utils.setDefaultFont("SansSerif");
+
+        // Should work, but doesn't work
+        /*Application.OS_NAMES os = Utils.getCurrentOsName();
+        if (os == Application.OS_NAMES.APPLE) {
+            logger.info("running on Apple. set correct menu");
+            // take the menu bar off the jframe and put it in the MacOS menu
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            // set the name of the application menu item
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "jExifToolGUI V" + ProgramTexts.Version + "   (for ExifTool by Phil Harvey)");
+        } */
 
         try {
             // Significantly improves the look of the output in

@@ -72,13 +72,13 @@ public class EditGPSdata {
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
             logger.info(SpaceStripped + "; value: " + cells[1], "\n");
             if (SpaceStripped.contains("Latitude")) {
-                gpsFields[0].setText(cells[1]);
+                gpsFields[0].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Longitude")) {
-                gpsFields[1].setText(cells[1]);
+                gpsFields[1].setText(cells[1].trim());
             }
             if ("GPSAltitude".equals(SpaceStripped)) {
-                gpsFields[2].setText(cells[1]);
+                gpsFields[2].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("AltitudeRef")) {
                 if (cells[1].contains("0")) {
@@ -88,16 +88,16 @@ public class EditGPSdata {
                 }
             }
             if (SpaceStripped.contains("Location")) {
-                gpsFields[3].setText(cells[1]);
+                gpsFields[3].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Country")) {
-                gpsFields[4].setText(cells[1]);
+                gpsFields[4].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("State")) {
-                gpsFields[5].setText(cells[1]);
+                gpsFields[5].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("City")) {
-                gpsFields[6].setText(cells[1]);
+                gpsFields[6].setText(cells[1].trim());
             }
         }
 

@@ -84,45 +84,45 @@ public class EditGpanodata {
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
             logger.info(SpaceStripped, " ; value: ", cells[1], "\n");
             if (SpaceStripped.contains("CroppedAreaImageHeightPixels")) {
-                gpanoFields[0].setText(cells[1]);
+                gpanoFields[0].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("CroppedAreaImageWidthPixels")) {
-                gpanoFields[1].setText(cells[1]);
+                gpanoFields[1].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("CroppedAreaLeftPixels")) {
-                gpanoFields[2].setText(cells[1]);
+                gpanoFields[2].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("CroppedAreaTopPixels")) {
-                gpanoFields[3].setText(cells[1]);
+                gpanoFields[3].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("FullPanoHeightPixels")) {
-                gpanoFields[4].setText(cells[1]);
+                gpanoFields[4].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("FullPanoWidthPixels")) {
-                gpanoFields[5].setText(cells[1]);
+                gpanoFields[5].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("ProjectionType")) {
-                gpanoPTCombobox.setSelectedItem(cells[1]);
-                logger.info("projection type", cells[1]);
+                gpanoPTCombobox.setSelectedItem(cells[1].trim());
+                logger.info("projection type", cells[1].trim());
                 //gpanoFields[6].setText(cells[1]);
             }
             if (SpaceStripped.contains("PoseHeadingDegrees")) {
-                gpanoFields[6].setText(cells[1]);
+                gpanoFields[6].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("StitchingSoftware")) {
-                gpanoStitchingSoftwaretextField.setText(cells[1]);
+                gpanoStitchingSoftwaretextField.setText(cells[1].trim());
             }
             if (SpaceStripped.contains("InitialViewHeadingDegrees")) {
-                gpanoFields[7].setText(cells[1]);
+                gpanoFields[7].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("InitialViewPitchDegrees")) {
-                gpanoFields[8].setText(cells[1]);
+                gpanoFields[8].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("InitialViewRollDegrees")) {
-                gpanoFields[9].setText(cells[1]);
+                gpanoFields[9].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("InitialHorizontalFOVDegrees")) {
-                gpanoFields[10].setText(cells[1]);
+                gpanoFields[10].setText(cells[1].trim());
             }
         }
     }

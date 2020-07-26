@@ -72,13 +72,13 @@ public class EditStringdata {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
             String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
             if (SpaceStripped.contains("Keywords")) {
-                stringPlusFields[0].setText(cells[1]);
+                stringPlusFields[0].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Subject")) {
-                stringPlusFields[1].setText(cells[1]);
+                stringPlusFields[1].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("PersonInImage")) {
-                stringPlusFields[2].setText(cells[1]);
+                stringPlusFields[2].setText(cells[1].trim());
             }
         }
 

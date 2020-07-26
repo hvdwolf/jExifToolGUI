@@ -78,6 +78,7 @@ val jar by tasks.getting(Jar::class) {
         attributes["Build-Timestamp"] = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(Date())
         attributes["Created-By"] = "Gradle ${gradle.gradleVersion}"
         attributes["SplashScreen-Image"] = "icons/jexiftoolgui-splashlogo.png"
+        attributes["Multi-Release"] = "true"
     }
 }
 

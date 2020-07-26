@@ -100,21 +100,21 @@ public class EditGeotaggingdata {
         }
         // Check if also the location is to be added
         if (geotaggingBoxes[0].isSelected()) {
-            cmdparams.add("-xmp:Location=" + geotaggingFields[3].getText());
-            cmdparams.add("-iptc:Sub-location=" + geotaggingFields[3].getText());
+            cmdparams.add("-xmp:Location=" + geotaggingFields[3].getText().trim());
+            cmdparams.add("-iptc:Sub-location=" + geotaggingFields[3].getText().trim());
         }
         if (geotaggingBoxes[1].isSelected()) {
-            cmdparams.add("-xmp:Country=" + geotaggingFields[4].getText());
-            cmdparams.add("-iptc:Country-PrimaryLocationName=" + geotaggingFields[4].getText());
+            cmdparams.add("-xmp:Country=" + geotaggingFields[4].getText().trim());
+            cmdparams.add("-iptc:Country-PrimaryLocationName=" + geotaggingFields[4].getText().trim());
 
         }
         if (geotaggingBoxes[2].isSelected()) {
-            cmdparams.add("-xmp:State=" + geotaggingFields[5].getText());
-            cmdparams.add("-iptc:Province-State=" + geotaggingFields[5].getText());
+            cmdparams.add("-xmp:State=" + geotaggingFields[5].getText().trim());
+            cmdparams.add("-iptc:Province-State=" + geotaggingFields[5].getText().trim());
         }
         if (geotaggingBoxes[3].isSelected()) {
-            cmdparams.add("-xmp:City=" + geotaggingFields[6].getText());
-            cmdparams.add("-iptc:City=" + geotaggingFields[6].getText());
+            cmdparams.add("-xmp:City=" + geotaggingFields[6].getText().trim());
+            cmdparams.add("-iptc:City=" + geotaggingFields[6].getText().trim());
         }
 
         if ("".equals(onFolder)) { // Empty folder string which means we use selected files

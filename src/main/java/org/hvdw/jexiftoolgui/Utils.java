@@ -387,10 +387,10 @@ public class Utils {
         String[] SimpleExtensions = {};
         String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
         if (jv.startsWith("1.8")) {
-            logger.info("On V8, exact version: {}", jv);
+            //logger.info("On V8, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
         } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
-            logger.info("On V11 or above, exact version: {}", jv);
+            //logger.info("On V11 or above, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
         }
         boolean bSimpleExtension = false;
@@ -680,7 +680,7 @@ public class Utils {
     }
 
 
-    static String getExiftoolPath() {
+    public static String getExiftoolPath() {
         String res;
         List<String> cmdparams;
         Application.OS_NAMES currentOs = getCurrentOsName();
@@ -745,7 +745,15 @@ public class Utils {
     /*
     *
      */
-     static public BufferedImage getFrameIcon() {
+    static void setCopyMetaDatacheckboxes(boolean state, JCheckBox[] CopyMetaDatacheckboxes) {
+        for (JCheckBox chkbx : CopyMetaDatacheckboxes) {
+            chkbx.setEnabled(state);
+        }
+    }
+    /*
+    / Retrieves the icone that is used for the window bar icons in the app (windows/linux)
+     */
+    static public BufferedImage getFrameIcon() {
          BufferedImage frameicon = null;
          try {
              frameicon = ImageIO.read(mainScreen.class.getResource("/icons/jexiftoolgui-frameicon.png"));
@@ -753,7 +761,7 @@ public class Utils {
              logger.info("erorr loading frame icon {}", ioe.toString());
          }
          return frameicon;
-     }
+    }
     /*
 / This method is called from displaySelectedImageInExternalViewer() in case of
 / - no raw viewer defined
@@ -839,10 +847,10 @@ public class Utils {
         String[] SimpleExtensions = {};
         String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
         if (jv.startsWith("1.8")) {
-            logger.info("On V8, exact version: {}", jv);
+            //logger.info("On V8, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
         } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
-            logger.info("On V11 or above, exact version: {}", jv);
+            //logger.info("On V11 or above, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
         }
 
