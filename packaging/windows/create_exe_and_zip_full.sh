@@ -15,7 +15,7 @@ then
         exit
 fi
 
-Version="$1"
+Version="$1.0"
 
 
 
