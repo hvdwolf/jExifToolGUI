@@ -1,0 +1,93 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+
+<title>Translating jExifToolGUI in your own language</title>
+<META NAME="description" LANG="EN" CONTENT="jExifToolGUI">
+<META NAME="keywords" LANG="EN" CONTENT="jExifToolGUI, photo, exiftool, exif, xmp, iptc, gps, image, rename, gui, gpano, metadata, tags, jpg, jpeg, tif, tiff, png, translation">
+<META NAME="description" LANG="NL" CONTENT="jExifToolGUI">
+<META NAME="keywords" LANG="NL" CONTENT="jExifToolGUI, foto, exiftool, exif, xmp, iptc, gps, image, rename, gui, gpano, metadata, tags, jpg, jpeg, tif, tiff, png">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+<link rel="shortcut icon" href="jexiftoolgui.ico" >
+
+<!-- styles for panos -->
+<link rel="STYLESHEET" type="text/css" href="css/styles.css">
+
+
+
+</head>
+<body> <!--  bgcolor="#FFFFCC"> -->
+<center>
+<H2>Translate jExifToolGUI in your language</H2>
+<table width="940" border="0">
+<tr><td>All the original screen strings and texts for this program are written in English. English is the default language of this program and the default "fall-back" language. The program will start in English if your "locale"  is (some) English, or if your "locale" is not in the supported languages within this program.<br><br>
+<H3>What is a "locale"?</H3>
+<p>You have "localization" and "internationalization" in computer languages and operating systems.<br>
+"Localization" (en_US) or "localisation" (en_GB) determine language, grammar, spelling, number formats and a number of other "things". This is determined by the "locale". (also: I say "program" in "my" English. Others say "programme").
+General English and Spanish is for example "en" and "es". Like shown above you also have en_US, en_GB, en_AU (Australia), en_IN (India) and a few more.
+Same for French (fr_FR, fr_CA, ..) or Spanish (es_ES (Spain), es_AR (Argentina)) or German (de_DE, de_AU (Austria), de_CH (Zwitserland)).<br><br>
+To support translation, java uses "property" files.<br>
+This program uses 2 different files: 
+<ul><li><b>program_strings_&lt;locale&gt;.properties</b> for short(er) screen and program strings.</li>
+<li><b>help_texts_&lt;locale&gt;.properties</b> for long help, info and other long texts.</li>
+</ul>
+This is done to make it easy for translators. Tranlating the program strings can be done quite fast. Translating the long help texts might take more time.<br>
+A properties file is in plain-text format. You can create the file with just about any text editor. In the example the properties files store the translatable text of the messages to be displayed.
+So for example:<br>
+<table border="1">
+<tr><td>en_US</td><td>fr_FR</td><td>de_DE</td></tr>
+<td>
+<tt>greetings = Hello<br>
+farewell = Goodbye<br>
+inquiry = How are you?</tt><br>
+</td><td>
+<tt>greetings = Bonjour.<br>
+farewell = Au revoir.<br>
+inquiry = Comment allez-vous?</tt><br>
+</td><td>
+<tt>greetings = Hallo.<br>
+farewell = Auf Wiedersehen.<br>
+inquiry = Wie gehts?</tt><br>
+</td></tr>
+</table>
+Notice that the values to the right side of the equal sign have been translated, but that the keys on the left side have not been changed. These keys must not change, because they will be referenced when the program fetches the translated text.<br></p>
+</td></tr>
+<tr><td><H3>Example for jExifToolGUI</H3>
+Below you see an example of the (main) "program_strings_en.properties" file.<br>
+Lines starting with # (or multiple ##) are comments.<br>
+You can write "string identifier" = "translation" or "string identifier"="translation". It doesn't matter but the extra space makes it a little clearer.<br>
+Note:<br>
+<ul><li>for an extra "space", you need a "\", like in <tt>"\  (for ExifTool by Phil Harvey)"</tt> where I want two spaces.</li>
+<li>HTML is also used in the (long) texts. Like &lt;big&gt;<big>big text</big>&lt;/big&gt; (big text), &lt;b&gt;<b>bold text</b>&lt;/b&gt; (bold text), &lt;i&gt;<i>italics</i>&lt;/i&gt; (italics), and &lt;br&gt; for a "hard" line end.</li>
+<li>multi-line translations need to be "ended" per line with a "\". (see below)</li>
+<li>single quotes ' need to be "escaped" with a \ as well, like "Phil Harvey's Exiftool" becomes "Phil Harvey\'s Exiftool"</li>
+</ul>
+
+<tt>
+# English (Generic)<br>
+# jExiftoolGUI v1.5<br>
+<br>
+## Window/popup titles<br>
+application.title = \  (for ExifTool by Phil Harvey)<br>
+preferences.title = Preferences<br>
+renamephotos.title = Rename Photos<br>
+createargsfile.title = Create args file(s)<br>
+exportmetadata.title = Export metadata<br>
+<pre>MyCommandsTopText = On this tab you can define your own parameters to "send to" exiftool. The parameters will\
+ be executed on the images you have selected on the left. &lt;br&gt;You can both specify read parameters as well as write parameters. You can also combine\
+ several parameters. &lt;b&gt;Note:&lt;/b&gt; You don\'t need (must not) provide the exiftool command itself. The Gui will take care of that.&lt;br&gt;&lt;br&gt;</pre>
+</tt>
+</td></tr>
+<tr><td><br><p>So please help in translating the tool.<br>
+Please go to <a href="https://github.com/hvdwolf/jExifToolGUI/tree/master/src/main/resources/translations" target="_blank">https://github.com/hvdwolf/jExifToolGUI/tree/master/src/main/resources/translations</a> and download the "program_strings_en.properties" and the "help_texts_en.properties".<br>
+Copy them to your own locale, like "program_strings_pl_PL.properties" (Polish) or "program_strings_ko_KR.properties" (Korean).<br>
+In case of questions: please contact me.
+</table>
+
+</center>
+</body>
+</html>
+
