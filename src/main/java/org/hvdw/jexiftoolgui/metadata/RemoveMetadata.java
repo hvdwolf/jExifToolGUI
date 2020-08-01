@@ -15,8 +15,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class RemoveMetadata extends JDialog {
     private final static Logger logger = LoggerFactory.getLogger(RemoveMetadata.class);
@@ -94,7 +96,7 @@ public class RemoveMetadata extends JDialog {
 
     private void initDialog() {
         //RemoveMetaDataUiText.setContentType("text/html");
-        RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 320, ProgramTexts.RemoveMetaData));
+        RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 320, ResourceBundle.getBundle("translations/program_strings").getString("rmd.toptext")));
 
 
     }
@@ -116,45 +118,45 @@ public class RemoveMetadata extends JDialog {
         List<String> params = new ArrayList<String>();
         params.add(Utils.platformExiftool());
         // which options selected?
-        StringBuilder Message = new StringBuilder("<html>You have selected to remove:<br>");
+        StringBuilder Message = new StringBuilder("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.youhaveselected"));
         if (removeAllMetadataCheckBox.isSelected()) {
-            Message.append("All metadata<br><br>");
+            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("rmd.allmetadata"));
             params.add("-all=");
             atLeastOneSelected = true;
         } else {
             Message.append("<ul>");
             if (removeExifDataCheckBox.isSelected()) {
-                Message.append("<li>the exif data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removeexif") + "</li>");
                 params.add("-exif:all=");
                 atLeastOneSelected = true;
             }
             if (removeXmpDataCheckBox.isSelected()) {
-                Message.append("<li>the xmp data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removexmp") + "</li>");
                 params.add("-xmp:all=");
                 atLeastOneSelected = true;
             }
             if (removeGpsDataCheckBox.isSelected()) {
-                Message.append("<li>the gps data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removegps") + "</li>");
                 params.add("-gps:all=");
                 atLeastOneSelected = true;
             }
             if (removeIptcDataCheckBox.isSelected()) {
-                Message.append("<li>the iptc data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removeiptc") + "</li>");
                 params.add("-iptc:all=");
                 atLeastOneSelected = true;
             }
             if (removeICCDataCheckBox.isSelected()) {
-                Message.append("<li>the ICC data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removeicc") + "</li>");
                 params.add("-icc_profile:all=");
                 atLeastOneSelected = true;
             }
             if (removegeotagDataCheckbox.isSelected()) {
-                Message.append("<li>the geotag data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removegeotag") + "</li>");
                 params.add("-geotag=");
                 atLeastOneSelected = true;
             }
             if (removexmpgeotagDataCheckbox.isSelected()) {
-                Message.append("<li>the xmp geotag data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("rmd.removegexmp") + "</li>");
                 params.add("-xmp:geotag=");
                 atLeastOneSelected = true;
             }
@@ -162,8 +164,8 @@ public class RemoveMetadata extends JDialog {
         }
         Message.append("Is this correct?</html>");
         if (atLeastOneSelected) {
-            String[] options = {"Cancel", "Continue"};
-            int choice = JOptionPane.showOptionDialog(null, Message, "You want to remove metadata",
+            String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue")};
+            int choice = JOptionPane.showOptionDialog(null, Message, ResourceBundle.getBundle("translations/program_strings").getString("rmd.dlgyouwantto"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
                 if (!makeBackupOfOriginalsCheckBox.isSelected()) {
@@ -182,7 +184,7 @@ public class RemoveMetadata extends JDialog {
                 CommandRunner.runCommandWithProgressBar(params, progBar);
             }
         } else {
-            JOptionPane.showMessageDialog(contentPane, ProgramTexts.NoOptionSelected, "No removal option selected", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(contentPane, ResourceBundle.getBundle("translations/program_strings").getString("rmd.dlgnooptiontext"), ResourceBundle.getBundle("translations/program_strings").getString("rmd.dlgnooptiontitle"), JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -196,7 +198,7 @@ public class RemoveMetadata extends JDialog {
         pack();
         //setLocationRelativeTo(null);
         setLocationByPlatform(true);
-        setTitle("Remove metadata");
+        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("removemetadata.title"));
         initDialog();
         setVisible(true);
     }
@@ -228,10 +230,10 @@ public class RemoveMetadata extends JDialog {
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
-        buttonOK.setText("OK");
+        this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
+        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -247,41 +249,85 @@ public class RemoveMetadata extends JDialog {
         contentPane.add(panel4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         makeBackupOfOriginalsCheckBox = new JCheckBox();
         makeBackupOfOriginalsCheckBox.setSelected(true);
-        makeBackupOfOriginalsCheckBox.setText("Make backup of originals");
+        this.$$$loadButtonText$$$(makeBackupOfOriginalsCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "chkbox.makebackup"));
         panel4.add(makeBackupOfOriginalsCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel5, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         removeAllMetadataCheckBox = new JCheckBox();
-        removeAllMetadataCheckBox.setText("Remove all metadata");
+        this.$$$loadButtonText$$$(removeAllMetadataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removeall"));
         panel5.add(removeAllMetadataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridLayoutManager(7, 1, new Insets(0, 30, 0, 0), -1, -1));
         panel5.add(panel6, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
         removeExifDataCheckBox = new JCheckBox();
-        removeExifDataCheckBox.setText("Remove exif data");
+        this.$$$loadButtonText$$$(removeExifDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removeexif"));
         panel6.add(removeExifDataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         removeXmpDataCheckBox = new JCheckBox();
-        removeXmpDataCheckBox.setText("Remove xmp data");
+        this.$$$loadButtonText$$$(removeXmpDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removexmp"));
         panel6.add(removeXmpDataCheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         removeGpsDataCheckBox = new JCheckBox();
-        removeGpsDataCheckBox.setText("Remove gps data");
+        this.$$$loadButtonText$$$(removeGpsDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removegps"));
         panel6.add(removeGpsDataCheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         removeIptcDataCheckBox = new JCheckBox();
-        removeIptcDataCheckBox.setText("Remove iptc data");
+        this.$$$loadButtonText$$$(removeIptcDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removeiptc"));
         panel6.add(removeIptcDataCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         removeICCDataCheckBox = new JCheckBox();
-        removeICCDataCheckBox.setText("Remove ICC data");
+        this.$$$loadButtonText$$$(removeICCDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removeicc"));
         panel6.add(removeICCDataCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         removegeotagDataCheckbox = new JCheckBox();
-        removegeotagDataCheckbox.setText("Remove geotag data");
+        this.$$$loadButtonText$$$(removegeotagDataCheckbox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removegeotag"));
         panel6.add(removegeotagDataCheckbox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         removexmpgeotagDataCheckbox = new JCheckBox();
-        removexmpgeotagDataCheckbox.setText("Remove xmp geotag data");
+        this.$$$loadButtonText$$$(removexmpgeotagDataCheckbox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removegexmp"));
         panel6.add(removexmpgeotagDataCheckbox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel5.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+    }
+
+    private static Method $$$cachedGetBundleMethod$$$ = null;
+
+    private String $$$getMessageFromBundle$$$(String path, String key) {
+        ResourceBundle bundle;
+        try {
+            Class<?> thisClass = this.getClass();
+            if ($$$cachedGetBundleMethod$$$ == null) {
+                Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+                $$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+            }
+            bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+        } catch (Exception e) {
+            bundle = ResourceBundle.getBundle(path);
+        }
+        return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadButtonText$$$(AbstractButton component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

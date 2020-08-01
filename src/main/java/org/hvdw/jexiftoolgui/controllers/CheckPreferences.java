@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
@@ -37,7 +38,7 @@ public class CheckPreferences {
             boolean exists = tmpFile.exists();
             if (!exists) {
                 exiftool_path = null;
-                JOptionPane.showMessageDialog(rootPanel, ProgramTexts.ETpreferenceIncorrect, "exiftool preference incorrect", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 300,ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttitle"), JOptionPane.WARNING_MESSAGE);
             }
             logger.info("exists is {}", exists);
             logger.info("preference exiftool returned: {}",exiftool_path);
@@ -50,7 +51,7 @@ public class CheckPreferences {
                 cmdparams.add("-ver");
                 try {
                     String exv = CommandRunner.runCommand(cmdparams).replace("\n", "").replace("\r", "");
-                    OutputLabel.setText("Exiftool available;  Version: " + exv);
+                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exiftoolavailable") + exv);
                     MyVariables.setExiftoolVersion(exv);
                 } catch (IOException | InterruptedException ex) {
                     logger.debug("Error executing command");

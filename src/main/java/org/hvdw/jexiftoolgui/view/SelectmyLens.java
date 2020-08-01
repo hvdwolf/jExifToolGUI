@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
@@ -100,10 +102,12 @@ public class SelectmyLens extends JDialog {
     }
 
     public String showDialog(JPanel rootpanel) {
-    pack();
+        pack();
         //setLocationRelativeTo(null);
         setLocationByPlatform(true);
-        setTitle("Select a lens config");
+        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("selectlens.title"));
+        // Make table readonly
+        lensnametable.setDefaultEditor(Object.class, null);
         // Get current defined lenses
         String lensnames = loadlensnames();
         logger.info("retrieved lensnames: " + lensnames);
@@ -151,11 +155,55 @@ public class SelectmyLens extends JDialog {
         panel3.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         panel1.add(panel3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         OKbutton = new JButton();
-        OKbutton.setText("OK");
+        this.$$$loadButtonText$$$(OKbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
         panel3.add(OKbutton);
         Cancelbutton = new JButton();
-        Cancelbutton.setText("Cancel");
+        this.$$$loadButtonText$$$(Cancelbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
         panel3.add(Cancelbutton);
+    }
+
+    private static Method $$$cachedGetBundleMethod$$$ = null;
+
+    private String $$$getMessageFromBundle$$$(String path, String key) {
+        ResourceBundle bundle;
+        try {
+            Class<?> thisClass = this.getClass();
+            if ($$$cachedGetBundleMethod$$$ == null) {
+                Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+                $$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+            }
+            bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+        } catch (Exception e) {
+            bundle = ResourceBundle.getBundle(path);
+        }
+        return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadButtonText$$$(AbstractButton component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

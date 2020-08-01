@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class MetaData {
     private final static Logger logger = LoggerFactory.getLogger(MetaData.class);
@@ -21,9 +22,9 @@ public class MetaData {
         File[] files = MyVariables.getSelectedFiles();
 
         List<String> cmdparams = new ArrayList<String>();
-        String[] options = {"No", "Yes"};
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         logger.info("Copy all metadata to xmp format");
-        int choice = JOptionPane.showOptionDialog(null, ProgramTexts.copymetadatatoxmp,"Copy all metadata to xmp format",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 500,ResourceBundle.getBundle("translations/program_strings").getString("cmd.dlgtext")),ResourceBundle.getBundle("translations/program_strings").getString("cmd.dlgtitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something
@@ -64,12 +65,12 @@ public class MetaData {
 
     public void repairJPGMetadata( JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
-        String[] options = {"No", "Yes"};
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
         logger.info("Repair corrupted metadata in JPG(s)");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.REPAIR_JPG_METADATA),"Repair corrupted metadata in JPG(s)",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtext")),ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             cmdparams.add(Utils.platformExiftool());
@@ -112,48 +113,48 @@ public class MetaData {
 
         params.add(fpath);
         // which options selected?
-        StringBuilder Message = new StringBuilder("<html>You have selected to copy:<br>");
+        StringBuilder Message = new StringBuilder("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgyouhaveselected"));
         if (CopyMetaDataRadiobuttons[0].isSelected()) {
-            Message.append("All metadata writing info to same named tags to preferred groups<br><br>");
+            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltopreferred"));
             atLeastOneSelected = true;
         } else if (CopyMetaDataRadiobuttons[1].isSelected()) {
-            Message.append("All metadata preserving the original tag groups<br><br>");
+            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltoorggroup"));
             params.add("-all:all");
             atLeastOneSelected = true;
         } else { // The copySelectiveMetadataradioButton
             Message.append("<ul>");
             if (CopyMetaDataCheckBoxes[0].isSelected()) {
-                Message.append("<li>the exif data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copyexifcheckbox") + "</li>");
                 params.add("-exif:all");
                 atLeastOneSelected = true;
             }
             if (CopyMetaDataCheckBoxes[1].isSelected()) {
-                Message.append("<li>the xmp data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copyxmpcheckbox") + "</li>");
                 params.add("-xmp:all");
                 atLeastOneSelected = true;
             }
             if (CopyMetaDataCheckBoxes[2].isSelected()) {
-                Message.append("<li>the iptc data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copyiptccheckbox") + "</li>");
                 params.add("-iptc:all");
                 atLeastOneSelected = true;
             }
             if (CopyMetaDataCheckBoxes[3].isSelected()) {
-                Message.append("<li>the ICC data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copyicc_profilecheckbox") + "</li>");
                 params.add("-icc_profile:all");
                 atLeastOneSelected = true;
             }
             if (CopyMetaDataCheckBoxes[4].isSelected()) {
-                Message.append("<li>the gps data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copygpscheckbox") + "</li>");
                 params.add("-gps:all");
                 atLeastOneSelected = true;
             }
             if (CopyMetaDataCheckBoxes[5].isSelected()) {
-                Message.append("<li>the jfif (header) data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copyjfifcheckbox") + "</li>");
                 params.add("-jfif:all");
                 atLeastOneSelected = true;
             }
             if (CopyMetaDataCheckBoxes[6].isSelected()) {
-                Message.append("<li>the makernotes data</li>");
+                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.copymakernotescheckbox") + "</li>");
                 params.add("-makernotes:all");
                 atLeastOneSelected = true;
             }
@@ -162,10 +163,10 @@ public class MetaData {
         if (!CopyMetaDataCheckBoxes[7].isSelected()) {
             params.add("-overwrite_original");
         }
-        Message.append("Is this correct?</html>");
+        Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgisthiscorrect" ) + "</html>");
         if (atLeastOneSelected) {
-            String[] options = {"Cancel", "Continue"};
-            int choice = JOptionPane.showOptionDialog(null, Message,"You want to copy metadata",
+            String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue")};
+            int choice = JOptionPane.showOptionDialog(null, Message,ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgtitle"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
                 // Copy metadata

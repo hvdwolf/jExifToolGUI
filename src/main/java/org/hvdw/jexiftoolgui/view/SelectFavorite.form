@@ -69,13 +69,13 @@
               <component id="15f0b" class="javax.swing.JButton" binding="OKbutton">
                 <constraints/>
                 <properties>
-                  <text value="OK"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.ok"/>
                 </properties>
               </component>
               <component id="a67f0" class="javax.swing.JButton" binding="Cancelbutton">
                 <constraints/>
                 <properties>
-                  <text value="Cancel"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.cancel"/>
                 </properties>
               </component>
             </children>

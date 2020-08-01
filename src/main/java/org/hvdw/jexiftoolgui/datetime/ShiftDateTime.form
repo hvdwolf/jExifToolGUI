@@ -36,7 +36,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="OK"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.ok"/>
                 </properties>
               </component>
               <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
@@ -44,7 +44,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Cancel"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.cancel"/>
                 </properties>
               </component>
             </children>
@@ -64,7 +64,7 @@
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Shift forward"/>
+              <text resource-bundle="translations/program_strings" key="sdt.forward"/>
             </properties>
           </component>
           <vspacer id="ad41d">
@@ -77,7 +77,7 @@
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Shift date and/or time for selected images"/>
+              <text resource-bundle="translations/program_strings" key="sdt.shifttext"/>
             </properties>
           </component>
           <component id="bf06d" class="javax.swing.JTextField" binding="ShiftDateTimetextField">
@@ -95,7 +95,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="YYYY:MM:DD hh:mm:ss"/>
+              <text resource-bundle="translations/program_strings" key="sdt.format"/>
             </properties>
           </component>
         </children>
@@ -121,7 +121,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="shift exif:DateTimeOriginal"/>
+              <text resource-bundle="translations/program_strings" key="sdt.shiftdatetimeoriginal"/>
             </properties>
           </component>
           <component id="579fb" class="javax.swing.JCheckBox" binding="ShiftCreateDatecheckBox">
@@ -129,7 +129,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="shift exif:CreateDate"/>
+              <text resource-bundle="translations/program_strings" key="sdt.shiftcreatedate"/>
             </properties>
           </component>
           <component id="7ad98" class="javax.swing.JCheckBox" binding="ShiftModifyDatecheckBox">
@@ -137,7 +137,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Shift exif:ModifyDate"/>
+              <text resource-bundle="translations/program_strings" key="sdt.shiftmodifydate"/>
             </properties>
           </component>
         </children>
@@ -147,7 +147,7 @@
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Make backup of originals"/>
+          <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
         </properties>
       </component>
       <component id="9df6b" class="javax.swing.JCheckBox" binding="UpdatexmpcheckBox">
@@ -156,7 +156,7 @@
         </constraints>
         <properties>
           <selected value="true"/>
-          <text value="Update xmp values as well"/>
+          <text resource-bundle="translations/program_strings" key="sdt.updatexmp"/>
         </properties>
       </component>
     </children>

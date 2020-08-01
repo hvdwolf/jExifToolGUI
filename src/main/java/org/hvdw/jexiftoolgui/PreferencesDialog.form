@@ -7,8 +7,8 @@
     </constraints>
     <properties>
       <maximumSize width="-1" height="-1"/>
-      <minimumSize width="750" height="600"/>
-      <preferredSize width="800" height="650"/>
+      <minimumSize width="800" height="600"/>
+      <preferredSize width="850" height="650"/>
       <requestFocusEnabled value="false"/>
     </properties>
     <border type="none"/>
@@ -39,7 +39,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Save"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.save"/>
                 </properties>
               </component>
               <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
@@ -47,7 +47,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Cancel"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.cancel"/>
                 </properties>
               </component>
             </children>
@@ -68,7 +68,7 @@
             </constraints>
             <properties>
               <font style="1"/>
-              <text value="Exiftool location:"/>
+              <text resource-bundle="translations/program_strings" key="prefs.exiftoolocation"/>
             </properties>
           </component>
           <grid id="56980" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -88,7 +88,7 @@
               <component id="bc131" class="javax.swing.JButton" binding="ExiftoolLocationbutton">
                 <constraints/>
                 <properties>
-                  <text value="Choose"/>
+                  <text resource-bundle="translations/program_strings" key="prefs.btnchoose"/>
                 </properties>
               </component>
             </children>
@@ -101,7 +101,7 @@
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Default image start directory:"/>
+          <text resource-bundle="translations/program_strings" key="prefs.defaultimgstartdir"/>
         </properties>
       </component>
       <grid id="fb879" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -121,7 +121,7 @@
           <component id="26fed" class="javax.swing.JButton" binding="ImgStartFolderButton">
             <constraints/>
             <properties>
-              <text value="Choose"/>
+              <text resource-bundle="translations/program_strings" key="prefs.btnchoose"/>
             </properties>
           </component>
         </children>
@@ -140,7 +140,7 @@
             </constraints>
             <properties>
               <font style="1"/>
-              <text value="Values to always add to your images"/>
+              <text resource-bundle="translations/program_strings" key="prefs.alwaysaddvals"/>
             </properties>
           </component>
           <grid id="5fb51" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -156,7 +156,7 @@
                   <maximumSize width="300" height="18"/>
                   <minimumSize width="220" height="18"/>
                   <preferredSize width="300" height="18"/>
-                  <text value="Artist / Creator  (xmp-dc:creator)"/>
+                  <text resource-bundle="translations/program_strings" key="prefs.artist"/>
                 </properties>
               </component>
               <component id="58c06" class="javax.swing.JTextField" binding="ArtisttextField">
@@ -180,7 +180,7 @@
                   <maximumSize width="300" height="18"/>
                   <minimumSize width="220" height="18"/>
                   <preferredSize width="300" height="18"/>
-                  <text value="Copyrights / Rights (xmp-dc:rights)"/>
+                  <text resource-bundle="translations/program_strings" key="prefs.copyright"/>
                 </properties>
               </component>
               <component id="e06db" class="javax.swing.JTextField" binding="CopyrightstextField">
@@ -204,7 +204,7 @@
                   <maximumSize width="300" height="18"/>
                   <minimumSize width="250" height="18"/>
                   <preferredSize width="300" height="18"/>
-                  <text value="Credits (xmp:credits)"/>
+                  <text resource-bundle="translations/program_strings" key="prefs.credits"/>
                 </properties>
               </component>
               <component id="d837c" class="javax.swing.JTextField" binding="CreditstextField">
@@ -222,7 +222,7 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Always use last opened folder"/>
+          <text resource-bundle="translations/program_strings" key="prefs.alwaysuselastfolder"/>
           <toolTipText value="Selecting this checkbox will overrule the &quot;Default image start directory:&quot;"/>
         </properties>
       </component>
@@ -236,7 +236,7 @@
           <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Check for new jExifToolGUI version on program start"/>
+          <text resource-bundle="translations/program_strings" key="prefs.checknewversion"/>
         </properties>
       </component>
       <grid id="6da7a" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -249,7 +249,7 @@
           <component id="9b473" class="javax.swing.JLabel">
             <constraints/>
             <properties>
-              <text value="Language to use to display metadata tag descriptions"/>
+              <text resource-bundle="translations/program_strings" key="prefs.metdatadisplaylang"/>
             </properties>
           </component>
           <component id="4ce99" class="javax.swing.JComboBox" binding="metadataLanuagecomboBox">
@@ -278,7 +278,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="RAW viewer location (if installed):"/>
+              <text resource-bundle="translations/program_strings" key="prefs.rawviewerlocation"/>
             </properties>
           </component>
           <grid id="8f89b" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -298,7 +298,7 @@
               <component id="195df" class="javax.swing.JButton" binding="RawViewerLocationButton">
                 <constraints/>
                 <properties>
-                  <text value="Choose"/>
+                  <text resource-bundle="translations/program_strings" key="prefs.btnchoose"/>
                 </properties>
               </component>
             </children>
@@ -308,7 +308,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Use the RAW viewer also for non-RAW images"/>
+              <text resource-bundle="translations/program_strings" key="prefs.alwaysuserawviewer"/>
             </properties>
           </component>
           <component id="a8a94" class="javax.swing.JLabel">
@@ -317,7 +317,7 @@
             </constraints>
             <properties>
               <font style="2"/>
-              <text value="&lt;html&gt;MacOS always overrules the &quot;Use the Raw Viewer also for non-Raw images&quot;&lt;br&gt;and launches their own Preview.app next to the raw viewer.&lt;/html&gt;"/>
+              <text resource-bundle="translations/program_strings" key="prefs.macosrawremark"/>
             </properties>
           </component>
         </children>

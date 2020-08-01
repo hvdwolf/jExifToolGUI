@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
@@ -79,7 +81,7 @@ public class PreferencesDialog extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (RawViewerLocationtextField.getText().isEmpty()) {
                     RawViewercheckBox.setSelected(false);
-                    JOptionPane.showMessageDialog(contentPanel, "You can't set a this as default viewer without a RAW viewer configured.", "No RAW viewer selected", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(contentPanel, ResourceBundle.getBundle("translations/program_strings").getString("prefs.chkboxrawtext"), ResourceBundle.getBundle("translations/program_strings").getString("prefs.chkboxrawtitle"), JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -103,17 +105,17 @@ public class PreferencesDialog extends JDialog {
     public void getExiftoolPath(JPanel myComponent, JTextField myExiftoolTextfield, String ePath, String fromWhere) {
         if ("cancelled".equals(ePath)) {
             if ("startup".equals(fromWhere)) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("prefs.etlocatecanceltext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etlocatecanceltitle"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromPrefs, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("prefs.etlocatecanceltext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etlocatecanceltitle"), JOptionPane.WARNING_MESSAGE);
             }
         } else if ("no exiftool binary".equals(ePath)) {
             if ("startup".equals(fromWhere)) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, "Wrong executable", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("prefs.etwrongtext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etwrongtitle"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromPrefs, "Wrong executable", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("prefs.etwrongtext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etwrongtitle"), JOptionPane.WARNING_MESSAGE);
             }
         } else { // Yes. It looks like we have a correct exiftool selected
             // remove all possible line breaks
@@ -128,7 +130,7 @@ public class PreferencesDialog extends JDialog {
         String SelectedFolder;
 
         final JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Locate preferred default image folder ...");
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("prefs.locateprefimgfolder"));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
@@ -145,7 +147,7 @@ public class PreferencesDialog extends JDialog {
         String selectedBinary = "";
 
         final JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Locate your preferred RAW image viewer ...");
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("prefs.locaterawviewer"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
@@ -203,7 +205,7 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", RAW_VIEWER_ALL_IMAGES.key, RawViewercheckBox.isSelected());
         prefs.storeByKey(RAW_VIEWER_ALL_IMAGES, RawViewercheckBox.isSelected());
 
-        JOptionPane.showMessageDialog(contentPanel, "Settings saved", "Settings saved", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(contentPanel, ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), JOptionPane.INFORMATION_MESSAGE);
     }
 
 
@@ -224,6 +226,7 @@ public class PreferencesDialog extends JDialog {
     // The  main" function of this class
     void showDialog() {
         //setSize(750, 600);
+        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("preferences.title"));
         pack();
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();
@@ -256,8 +259,8 @@ public class PreferencesDialog extends JDialog {
         contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayoutManager(13, 1, new Insets(10, 10, 10, 10), -1, -1));
         contentPanel.setMaximumSize(new Dimension(-1, -1));
-        contentPanel.setMinimumSize(new Dimension(750, 600));
-        contentPanel.setPreferredSize(new Dimension(800, 650));
+        contentPanel.setMinimumSize(new Dimension(800, 600));
+        contentPanel.setPreferredSize(new Dimension(850, 650));
         contentPanel.setRequestFocusEnabled(false);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
@@ -268,10 +271,10 @@ public class PreferencesDialog extends JDialog {
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonSave = new JButton();
-        buttonSave.setText("Save");
+        this.$$$loadButtonText$$$(buttonSave, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.save"));
         panel2.add(buttonSave, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
+        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -279,7 +282,7 @@ public class PreferencesDialog extends JDialog {
         final JLabel label1 = new JLabel();
         Font label1Font = this.$$$getFont$$$(null, Font.BOLD, -1, label1.getFont());
         if (label1Font != null) label1.setFont(label1Font);
-        label1.setText("Exiftool location:");
+        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.exiftoolocation"));
         panel3.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -289,12 +292,12 @@ public class PreferencesDialog extends JDialog {
         ExiftoolLocationtextField.setPreferredSize(new Dimension(550, 30));
         panel4.add(ExiftoolLocationtextField);
         ExiftoolLocationbutton = new JButton();
-        ExiftoolLocationbutton.setText("Choose");
+        this.$$$loadButtonText$$$(ExiftoolLocationbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.btnchoose"));
         panel4.add(ExiftoolLocationbutton);
         final JLabel label2 = new JLabel();
         Font label2Font = this.$$$getFont$$$(null, Font.BOLD, -1, label2.getFont());
         if (label2Font != null) label2.setFont(label2Font);
-        label2.setText("Default image start directory:");
+        this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.defaultimgstartdir"));
         contentPanel.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -304,7 +307,7 @@ public class PreferencesDialog extends JDialog {
         ImgStartFoldertextField.setPreferredSize(new Dimension(550, 30));
         panel5.add(ImgStartFoldertextField);
         ImgStartFolderButton = new JButton();
-        ImgStartFolderButton.setText("Choose");
+        this.$$$loadButtonText$$$(ImgStartFolderButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.btnchoose"));
         panel5.add(ImgStartFolderButton);
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridLayoutManager(4, 1, new Insets(0, 10, 0, 0), -1, -1));
@@ -313,7 +316,7 @@ public class PreferencesDialog extends JDialog {
         final JLabel label3 = new JLabel();
         Font label3Font = this.$$$getFont$$$(null, Font.BOLD, -1, label3.getFont());
         if (label3Font != null) label3.setFont(label3Font);
-        label3.setText("Values to always add to your images");
+        this.$$$loadLabelText$$$(label3, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.alwaysaddvals"));
         panel6.add(label3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel7 = new JPanel();
         panel7.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -322,7 +325,7 @@ public class PreferencesDialog extends JDialog {
         label4.setMaximumSize(new Dimension(300, 18));
         label4.setMinimumSize(new Dimension(220, 18));
         label4.setPreferredSize(new Dimension(300, 18));
-        label4.setText("Artist / Creator  (xmp-dc:creator)");
+        this.$$$loadLabelText$$$(label4, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.artist"));
         panel7.add(label4);
         ArtisttextField = new JTextField();
         ArtisttextField.setPreferredSize(new Dimension(350, 30));
@@ -334,7 +337,7 @@ public class PreferencesDialog extends JDialog {
         label5.setMaximumSize(new Dimension(300, 18));
         label5.setMinimumSize(new Dimension(220, 18));
         label5.setPreferredSize(new Dimension(300, 18));
-        label5.setText("Copyrights / Rights (xmp-dc:rights)");
+        this.$$$loadLabelText$$$(label5, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.copyright"));
         panel8.add(label5);
         CopyrightstextField = new JTextField();
         CopyrightstextField.setPreferredSize(new Dimension(350, 30));
@@ -346,25 +349,25 @@ public class PreferencesDialog extends JDialog {
         label6.setMaximumSize(new Dimension(300, 18));
         label6.setMinimumSize(new Dimension(250, 18));
         label6.setPreferredSize(new Dimension(300, 18));
-        label6.setText("Credits (xmp:credits)");
+        this.$$$loadLabelText$$$(label6, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.credits"));
         panel9.add(label6);
         CreditstextField = new JTextField();
         CreditstextField.setPreferredSize(new Dimension(350, 30));
         panel9.add(CreditstextField);
         UseLastOpenedFoldercheckBox = new JCheckBox();
-        UseLastOpenedFoldercheckBox.setText("Always use last opened folder");
+        this.$$$loadButtonText$$$(UseLastOpenedFoldercheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.alwaysuselastfolder"));
         UseLastOpenedFoldercheckBox.setToolTipText("Selecting this checkbox will overrule the \"Default image start directory:\"");
         contentPanel.add(UseLastOpenedFoldercheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         contentPanel.add(spacer2, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         CheckVersioncheckBox = new JCheckBox();
-        CheckVersioncheckBox.setText("Check for new jExifToolGUI version on program start");
+        this.$$$loadButtonText$$$(CheckVersioncheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.checknewversion"));
         contentPanel.add(CheckVersioncheckBox, new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel10 = new JPanel();
         panel10.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         contentPanel.add(panel10, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label7 = new JLabel();
-        label7.setText("Language to use to display metadata tag descriptions");
+        this.$$$loadLabelText$$$(label7, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.metdatadisplaylang"));
         panel10.add(label7);
         metadataLanuagecomboBox = new JComboBox();
         metadataLanuagecomboBox.setPreferredSize(new Dimension(300, 30));
@@ -376,7 +379,7 @@ public class PreferencesDialog extends JDialog {
         contentPanel.add(panel11, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel11.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label8 = new JLabel();
-        label8.setText("RAW viewer location (if installed):");
+        this.$$$loadLabelText$$$(label8, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.rawviewerlocation"));
         panel11.add(label8, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel12 = new JPanel();
         panel12.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -386,15 +389,15 @@ public class PreferencesDialog extends JDialog {
         RawViewerLocationtextField.setPreferredSize(new Dimension(550, 30));
         panel12.add(RawViewerLocationtextField);
         RawViewerLocationButton = new JButton();
-        RawViewerLocationButton.setText("Choose");
+        this.$$$loadButtonText$$$(RawViewerLocationButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.btnchoose"));
         panel12.add(RawViewerLocationButton);
         RawViewercheckBox = new JCheckBox();
-        RawViewercheckBox.setText("Use the RAW viewer also for non-RAW images");
+        this.$$$loadButtonText$$$(RawViewercheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.alwaysuserawviewer"));
         panel11.add(RawViewercheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label9 = new JLabel();
         Font label9Font = this.$$$getFont$$$(null, Font.ITALIC, -1, label9.getFont());
         if (label9Font != null) label9.setFont(label9Font);
-        label9.setText("<html>MacOS always overrules the \"Use the Raw Viewer also for non-Raw images\"<br>and launches their own Preview.app next to the raw viewer.</html>");
+        this.$$$loadLabelText$$$(label9, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.macosrawremark"));
         panel11.add(label9, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
@@ -415,6 +418,77 @@ public class PreferencesDialog extends JDialog {
             }
         }
         return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+    }
+
+    private static Method $$$cachedGetBundleMethod$$$ = null;
+
+    private String $$$getMessageFromBundle$$$(String path, String key) {
+        ResourceBundle bundle;
+        try {
+            Class<?> thisClass = this.getClass();
+            if ($$$cachedGetBundleMethod$$$ == null) {
+                Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+                $$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+            }
+            bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+        } catch (Exception e) {
+            bundle = ResourceBundle.getBundle(path);
+        }
+        return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadButtonText$$$(AbstractButton component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

@@ -89,7 +89,7 @@ public class EditGeotaggingdata {
         }
 
         cmdparams.add(Utils.platformExiftool());
-        if (OverwiteOriginals) {
+        if (!OverwiteOriginals) {
             cmdparams.add("-overwrite_original_in_place");
         }
         cmdparams.add("-geotag");

@@ -17,8 +17,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ShiftDateTime extends JDialog {
     private JPanel shiftDateTimePane;
@@ -61,7 +63,7 @@ public class ShiftDateTime extends JDialog {
 
     private void initDialog() {
 
-        ShiftDateTimeLabel.setText(String.format(ProgramTexts.HTML, 320, ProgramTexts.ShiftDateTimeLabel));
+        ShiftDateTimeLabel.setText(String.format(ProgramTexts.HTML, 320, ResourceBundle.getBundle("translations/program_strings").getString("sdt.toptext")));
     }
 
     private void writeInfo() {
@@ -112,10 +114,10 @@ public class ShiftDateTime extends JDialog {
 
     private void onOK() {
         if ("0000:00:00 00:00:00".equals(ShiftDateTimetextField.getText())) {
-            JOptionPane.showMessageDialog(shiftDateTimePane, "You left the shift value at \"0000:00:00 00:00:00\".\nNothing to do!", "No shift value set", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(shiftDateTimePane, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("sdt.dlgshiftzero")), ResourceBundle.getBundle("translations/program_strings").getString("sdt.dlgnoshift"), JOptionPane.ERROR_MESSAGE);
         } else if ((!ShiftDateTimeOriginalcheckBox.isSelected()) && (!ShiftModifyDatecheckBox.isSelected()) && (!ShiftCreateDatecheckBox.isSelected())) {
             // You did not select any date option
-            JOptionPane.showMessageDialog(shiftDateTimePane, "You did not select any of the date options.\nNothing to do!", "No date option set", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(shiftDateTimePane, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("sdt.dlgshiftzero")), ResourceBundle.getBundle("translations/program_strings").getString("sdt.dlgnoshift"), JOptionPane.ERROR_MESSAGE);
         } else {
             writeInfo();
             dispose();
@@ -135,7 +137,7 @@ public class ShiftDateTime extends JDialog {
 
         pack();
         setLocationByPlatform(true);
-        setTitle("Shift Date/Time");
+        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("sdt.dlgtitle"));
         initDialog();
         setVisible(true);
     }
@@ -167,28 +169,28 @@ public class ShiftDateTime extends JDialog {
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
-        buttonOK.setText("OK");
+        this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
+        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         shiftDateTimePane.add(panel3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         shiftForwardCheckBox = new JCheckBox();
-        shiftForwardCheckBox.setText("Shift forward");
+        this.$$$loadButtonText$$$(shiftForwardCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.forward"));
         panel3.add(shiftForwardCheckBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel3.add(spacer2, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText("Shift date and/or time for selected images");
+        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.shifttext"));
         panel3.add(label1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ShiftDateTimetextField = new JTextField();
         ShiftDateTimetextField.setText("0000:00:00 00:00:00");
         panel3.add(ShiftDateTimetextField, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(120, -1), null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText("YYYY:MM:DD hh:mm:ss");
+        this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.format"));
         panel3.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ShiftDateTimeLabel = new JLabel();
         ShiftDateTimeLabel.setText("ShiftDateTimeLabel");
@@ -198,21 +200,92 @@ public class ShiftDateTime extends JDialog {
         shiftDateTimePane.add(panel4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         ShiftDateTimeOriginalcheckBox = new JCheckBox();
-        ShiftDateTimeOriginalcheckBox.setText("shift exif:DateTimeOriginal");
+        this.$$$loadButtonText$$$(ShiftDateTimeOriginalcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.shiftdatetimeoriginal"));
         panel4.add(ShiftDateTimeOriginalcheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ShiftCreateDatecheckBox = new JCheckBox();
-        ShiftCreateDatecheckBox.setText("shift exif:CreateDate");
+        this.$$$loadButtonText$$$(ShiftCreateDatecheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.shiftcreatedate"));
         panel4.add(ShiftCreateDatecheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ShiftModifyDatecheckBox = new JCheckBox();
-        ShiftModifyDatecheckBox.setText("Shift exif:ModifyDate");
+        this.$$$loadButtonText$$$(ShiftModifyDatecheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.shiftmodifydate"));
         panel4.add(ShiftModifyDatecheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         BackupOfOriginalscheckBox = new JCheckBox();
-        BackupOfOriginalscheckBox.setText("Make backup of originals");
+        this.$$$loadButtonText$$$(BackupOfOriginalscheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "chkbox.makebackup"));
         shiftDateTimePane.add(BackupOfOriginalscheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         UpdatexmpcheckBox = new JCheckBox();
         UpdatexmpcheckBox.setSelected(true);
-        UpdatexmpcheckBox.setText("Update xmp values as well");
+        this.$$$loadButtonText$$$(UpdatexmpcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "sdt.updatexmp"));
         shiftDateTimePane.add(UpdatexmpcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+    }
+
+    private static Method $$$cachedGetBundleMethod$$$ = null;
+
+    private String $$$getMessageFromBundle$$$(String path, String key) {
+        ResourceBundle bundle;
+        try {
+            Class<?> thisClass = this.getClass();
+            if ($$$cachedGetBundleMethod$$$ == null) {
+                Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+                $$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+            }
+            bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+        } catch (Exception e) {
+            bundle = ResourceBundle.getBundle(path);
+        }
+        return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadButtonText$$$(AbstractButton component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

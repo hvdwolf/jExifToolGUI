@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class DateTime {
 
@@ -22,9 +23,9 @@ public class DateTime {
         File[] files = MyVariables.getSelectedFiles();
         List<String> cmdparams = new ArrayList<>();
         StringBuilder tmpcmpstring = new StringBuilder();
-        String[] options = {"No", "Yes"};
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         logger.trace("Set file date/time to DateTimeOriginal?");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 600, ProgramTexts.SET_FILEDATETIME_TO_DATETIMEORIGINAL),"Set file date/time to DateTimeOriginal?",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("sfdt.text")),ResourceBundle.getBundle("translations/program_strings").getString("sfdt.title"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something

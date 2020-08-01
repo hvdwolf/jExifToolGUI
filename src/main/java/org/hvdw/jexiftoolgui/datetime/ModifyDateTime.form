@@ -36,7 +36,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="OK"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.ok"/>
                 </properties>
               </component>
               <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
@@ -44,7 +44,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Cancel"/>
+                  <text resource-bundle="translations/program_strings" key="dlg.cancel"/>
                 </properties>
               </component>
             </children>
@@ -89,7 +89,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="YYYY:MM:DD hh:mm:ss"/>
+                  <text resource-bundle="translations/program_strings" key="mdt.timeformat"/>
                 </properties>
               </component>
               <component id="815b7" class="javax.swing.JLabel">
@@ -98,7 +98,7 @@
                 </constraints>
                 <properties>
                   <font style="1"/>
-                  <text value="Save"/>
+                  <text resource-bundle="translations/program_strings" key="label.save"/>
                 </properties>
               </component>
               <component id="ef36d" class="javax.swing.JLabel">
@@ -106,7 +106,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="ModifyDate"/>
+                  <text resource-bundle="translations/program_strings" key="mdt.modifydate"/>
                 </properties>
               </component>
               <component id="82757" class="javax.swing.JTextField" binding="ModifyDatetextField">
@@ -131,7 +131,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="DateTimeOriginal"/>
+                  <text resource-bundle="translations/program_strings" key="mdt.datetimeoriginal"/>
                 </properties>
               </component>
               <component id="b341a" class="javax.swing.JTextField" binding="DateTimeOriginaltextField">
@@ -156,7 +156,7 @@
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="CreateDate"/>
+                  <text resource-bundle="translations/program_strings" key="mdt.createdate"/>
                 </properties>
               </component>
               <component id="694a1" class="javax.swing.JTextField" binding="CreateDatetextField">
@@ -190,7 +190,7 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="update xmp values as well"/>
+          <text resource-bundle="translations/program_strings" key="mdt.updatexmp"/>
         </properties>
       </component>
       <component id="ad20" class="javax.swing.JCheckBox" binding="BackupOfOriginalscheckBox">
@@ -198,7 +198,7 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Make backup of originals"/>
+          <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
         </properties>
       </component>
     </children>

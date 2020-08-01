@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="1280" height="800"/>
+      <xy x="20" y="20" width="1346" height="800"/>
     </constraints>
     <properties>
       <minimumSize width="1200" height="720"/>
@@ -34,14 +34,14 @@
                 <constraints/>
                 <properties>
                   <iconTextGap value="2"/>
-                  <text value="Load Directory"/>
+                  <text resource-bundle="translations/program_strings" key="btn.loaddirectory"/>
                 </properties>
               </component>
               <component id="24c8f" class="javax.swing.JButton" binding="buttonLoadImages">
                 <constraints/>
                 <properties>
                   <iconTextGap value="2"/>
-                  <text value="Load Images"/>
+                  <text resource-bundle="translations/program_strings" key="btn.loadimages"/>
                   <toolTipText value="Load images for which you want to view or edit metadata"/>
                 </properties>
               </component>
@@ -50,7 +50,7 @@
                 <properties>
                   <enabled value="false"/>
                   <iconTextGap value="2"/>
-                  <text value="Display Image"/>
+                  <text resource-bundle="translations/program_strings" key="btn.displayimages"/>
                   <toolTipText value="Display the selected image in the default image viewer (if supported movies will play in the default movie player)"/>
                 </properties>
                 <clientProperties>
@@ -93,7 +93,7 @@
           <grid id="2f048" binding="ViewDatapanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="View Data"/>
+              <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.viewdata"/>
             </constraints>
             <properties>
               <minimumSize width="-1" height="-1"/>
@@ -112,13 +112,13 @@
                     <constraints/>
                     <properties>
                       <selected value="true"/>
-                      <text value="All"/>
+                      <text resource-bundle="translations/program_strings" key="vdtab.allradiobutton"/>
                     </properties>
                   </component>
                   <component id="5955a" class="javax.swing.JRadioButton" binding="radioButtoncommonTags">
                     <constraints/>
                     <properties>
-                      <text value="Common Tags"/>
+                      <text resource-bundle="translations/program_strings" key="vdtab.commontags"/>
                     </properties>
                   </component>
                   <component id="d472f" class="javax.swing.JComboBox" binding="comboBoxViewCommonTags">
@@ -128,7 +128,7 @@
                   <component id="d5c45" class="javax.swing.JRadioButton" binding="radioButtonByTagName">
                     <constraints/>
                     <properties>
-                      <text value="By Group"/>
+                      <text resource-bundle="translations/program_strings" key="vdtab.bygroup"/>
                     </properties>
                   </component>
                   <component id="74af7" class="javax.swing.JComboBox" binding="comboBoxViewByTagName">
@@ -138,8 +138,8 @@
                   <component id="fdf93" class="javax.swing.JRadioButton" binding="radioButtonCameraMakes">
                     <constraints/>
                     <properties>
-                      <label value="By Camera:"/>
-                      <text value="By Camera:"/>
+                      <label value="per Camera"/>
+                      <text resource-bundle="translations/program_strings" key="vdtab.bycamera"/>
                     </properties>
                   </component>
                   <component id="47bf" class="javax.swing.JComboBox" binding="comboBoxViewCameraMake">
@@ -168,7 +168,7 @@
           <grid id="a0b9f" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Edit Data"/>
+              <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.editdata"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -185,7 +185,7 @@
                   <grid id="f072c" binding="ExifEditpanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="20" bottom="0" right="20"/>
                     <constraints>
-                      <tabbedpane title="Exif"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.exiftab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -204,7 +204,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="Make:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.make"/>
                             </properties>
                           </component>
                           <component id="eadad" class="javax.swing.JTextField" binding="ExifMaketextField">
@@ -230,7 +230,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Save"/>
+                              <text resource-bundle="translations/program_strings" key="label.save"/>
                             </properties>
                           </component>
                           <component id="99790" class="javax.swing.JLabel">
@@ -240,7 +240,7 @@
                             <properties>
                               <font style="1"/>
                               <preferredSize width="650" height="18"/>
-                              <text value="Camera/Equipment"/>
+                              <text resource-bundle="translations/program_strings" key="exif.cameraequip"/>
                             </properties>
                           </component>
                           <component id="50f40" class="javax.swing.JLabel">
@@ -249,7 +249,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="Model:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.model"/>
                             </properties>
                           </component>
                           <component id="c1ef9" class="javax.swing.JTextField" binding="ExifModeltextField">
@@ -286,7 +286,7 @@
                             <properties>
                               <font style="1"/>
                               <preferredSize width="150" height="18"/>
-                              <text value="Date and Time"/>
+                              <text resource-bundle="translations/program_strings" key="exif.datetime"/>
                             </properties>
                           </component>
                           <component id="6999a" class="javax.swing.JLabel">
@@ -295,7 +295,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="500" height="18"/>
-                              <text value="YYYY:MM:DD hh:mm:ss (24Hrs); no checking done"/>
+                              <text resource-bundle="translations/program_strings" key="exif.dtformat"/>
                             </properties>
                           </component>
                           <component id="db6d2" class="javax.swing.JLabel">
@@ -304,7 +304,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="ModifyDate:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.modifydate"/>
                             </properties>
                           </component>
                           <component id="984b4" class="javax.swing.JTextField" binding="ExifModifyDatetextField">
@@ -330,7 +330,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="DateTimeOriginal:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.datetimeoriginal"/>
                             </properties>
                           </component>
                           <component id="9d528" class="javax.swing.JTextField" binding="ExifDateTimeOriginaltextField">
@@ -356,7 +356,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="CreateDate:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.createdate"/>
                             </properties>
                           </component>
                           <component id="c574c" class="javax.swing.JTextField" binding="ExifCreateDatetextField">
@@ -392,7 +392,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="Artist / Creator:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.artist"/>
                             </properties>
                           </component>
                           <component id="a26d2" class="javax.swing.JTextField" binding="ExifArtistCreatortextField">
@@ -418,7 +418,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Creative Tags"/>
+                              <text resource-bundle="translations/program_strings" key="exif.creatags"/>
                             </properties>
                           </component>
                           <component id="fa118" class="javax.swing.JLabel">
@@ -428,7 +428,7 @@
                             <properties>
                               <maximumSize width="250" height="18"/>
                               <preferredSize width="150" height="18"/>
-                              <text value="Copyright:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.copyright"/>
                             </properties>
                           </component>
                           <component id="e9fa7" class="javax.swing.JTextField" binding="ExifCopyrighttextField">
@@ -454,7 +454,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="User comment:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.usercomm"/>
                             </properties>
                           </component>
                           <component id="c76fe" class="javax.swing.JTextField" binding="ExifUsercommenttextField">
@@ -480,7 +480,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="150" height="18"/>
-                              <text value="Description:"/>
+                              <text resource-bundle="translations/program_strings" key="exif.description"/>
                             </properties>
                           </component>
                           <component id="a2194" class="javax.swing.JTextArea" binding="ExifDescriptiontextArea">
@@ -503,7 +503,7 @@
                           </component>
                         </children>
                       </grid>
-                      <grid id="82e8f" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="82e8f" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -513,24 +513,24 @@
                           <component id="a83ee" class="javax.swing.JButton" binding="ExifcopyFromButton">
                             <constraints/>
                             <properties>
-                              <text value="Copy from selected image"/>
+                              <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                             </properties>
                           </component>
                           <component id="453e0" class="javax.swing.JButton" binding="ExifsaveToButton">
                             <constraints/>
                             <properties>
-                              <text value="Save to selected image(s)"/>
+                              <text resource-bundle="translations/program_strings" key="button.saveto"/>
                             </properties>
                           </component>
                           <component id="27a16" class="javax.swing.JCheckBox" binding="ExifBackupOriginalscheckBox">
                             <constraints/>
                             <properties>
-                              <text value="Make backup of originals"/>
+                              <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                             </properties>
                           </component>
                         </children>
                       </grid>
-                      <grid id="fc630" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="fc630" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -540,19 +540,19 @@
                           <component id="c46e0" class="javax.swing.JButton" binding="ExifcopyDefaultsButton">
                             <constraints/>
                             <properties>
-                              <text value="Copy Defaults"/>
+                              <text resource-bundle="translations/program_strings" key="button.copydefaults"/>
                             </properties>
                           </component>
                           <component id="dba10" class="javax.swing.JButton" binding="resetFieldsButton" default-binding="true">
                             <constraints/>
                             <properties>
-                              <text value="Reset fields"/>
+                              <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                             </properties>
                           </component>
                           <component id="55c3f" class="javax.swing.JButton" binding="ExifhelpButton">
                             <constraints/>
                             <properties>
-                              <text value="Help"/>
+                              <text resource-bundle="translations/program_strings" key="button.help"/>
                             </properties>
                           </component>
                         </children>
@@ -562,7 +562,7 @@
                   <grid id="3e98c" layout-manager="GridLayoutManager" row-count="13" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="10" left="20" bottom="10" right="20"/>
                     <constraints>
-                      <tabbedpane title="xmp"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.xmptab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -573,7 +573,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Creator*:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.creator"/>
                         </properties>
                       </component>
                       <component id="7b949" class="javax.swing.JTextField" binding="xmpCreatortextField">
@@ -600,7 +600,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Rights*:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.rights"/>
                         </properties>
                       </component>
                       <component id="1aff8" class="javax.swing.JTextField" binding="xmpRightstextField">
@@ -626,7 +626,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Description:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.description"/>
                         </properties>
                       </component>
                       <component id="44d74" class="javax.swing.JTextArea" binding="xmpDescriptiontextArea">
@@ -653,7 +653,7 @@
                         </constraints>
                         <properties>
                           <font style="1"/>
-                          <text value="Save"/>
+                          <text resource-bundle="translations/program_strings" key="label.save"/>
                         </properties>
                       </component>
                       <component id="f9e14" class="javax.swing.JLabel">
@@ -662,7 +662,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Label:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.label"/>
                         </properties>
                       </component>
                       <component id="5a21f" class="javax.swing.JTextField" binding="xmpLabeltextField">
@@ -688,7 +688,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Subject:***"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.subject"/>
                         </properties>
                       </component>
                       <component id="f35c9" class="javax.swing.JTextField" binding="xmpSubjecttextField">
@@ -714,7 +714,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Person (in image):***"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.pim"/>
                         </properties>
                       </component>
                       <component id="ace75" class="javax.swing.JTextField" binding="xmpPersontextField">
@@ -734,7 +734,7 @@
                           <text value=""/>
                         </properties>
                       </component>
-                      <grid id="e2434" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="e2434" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="11" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -744,24 +744,24 @@
                           <component id="4918" class="javax.swing.JButton" binding="xmpCopyFrombutton">
                             <constraints/>
                             <properties>
-                              <text value="Copy from selected image"/>
+                              <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                             </properties>
                           </component>
                           <component id="ee5b6" class="javax.swing.JButton" binding="xmpSaveTobutton">
                             <constraints/>
                             <properties>
-                              <text value="Save to selected image(s)"/>
+                              <text resource-bundle="translations/program_strings" key="button.saveto"/>
                             </properties>
                           </component>
                           <component id="c6b4b" class="javax.swing.JCheckBox" binding="xmpBackupOriginalscheckBox">
                             <constraints/>
                             <properties>
-                              <text value="Make backup of originals"/>
+                              <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                             </properties>
                           </component>
                         </children>
                       </grid>
-                      <grid id="d7e70" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="d7e70" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="12" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -771,19 +771,19 @@
                           <component id="e90e0" class="javax.swing.JButton" binding="xmpCopyDefaultsbutton">
                             <constraints/>
                             <properties>
-                              <text value="Copy Defaults"/>
+                              <text resource-bundle="translations/program_strings" key="button.copydefaults"/>
                             </properties>
                           </component>
                           <component id="f7175" class="javax.swing.JButton" binding="xmpResetFieldsbutton">
                             <constraints/>
                             <properties>
-                              <text value="Reset fields"/>
+                              <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                             </properties>
                           </component>
                           <component id="512a6" class="javax.swing.JButton" binding="xmpHelpbutton">
                             <constraints/>
                             <properties>
-                              <text value="Help"/>
+                              <text resource-bundle="translations/program_strings" key="button.help"/>
                             </properties>
                           </component>
                         </children>
@@ -795,7 +795,7 @@
                           </grid>
                         </constraints>
                         <properties>
-                          <text value="Credit Line*:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.credline"/>
                         </properties>
                       </component>
                       <component id="7f562" class="javax.swing.JTextField" binding="xmpCredittextField">
@@ -831,7 +831,7 @@
                         </constraints>
                         <properties>
                           <preferredSize width="150" height="18"/>
-                          <text value="Title:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.title"/>
                         </properties>
                       </component>
                       <component id="1d8d2" class="javax.swing.JTextField" binding="xmpTitletextField">
@@ -856,7 +856,7 @@
                           <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Keywords**:"/>
+                          <text resource-bundle="translations/program_strings" key="xmp.keywords"/>
                         </properties>
                       </component>
                       <component id="3f0cf" class="javax.swing.JTextField" binding="xmpKeywordstextField">
@@ -881,7 +881,7 @@
                   <grid id="9f2e1" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="5" left="5" bottom="5" right="10"/>
                     <constraints>
-                      <tabbedpane title="gps"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.gpstab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -900,7 +900,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="XMP/IPTC location"/>
+                              <text resource-bundle="translations/program_strings" key="gps.xmpiptcloc"/>
                             </properties>
                           </component>
                           <component id="5f6a2" class="javax.swing.JLabel">
@@ -908,7 +908,7 @@
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="(Where is/are the photo(s) taken)"/>
+                              <text resource-bundle="translations/program_strings" key="gps.whereis"/>
                             </properties>
                           </component>
                           <component id="12c28" class="javax.swing.JLabel">
@@ -917,7 +917,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Save"/>
+                              <text resource-bundle="translations/program_strings" key="label.save"/>
                             </properties>
                           </component>
                           <component id="337c7" class="javax.swing.JLabel">
@@ -926,7 +926,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="75" height="18"/>
-                              <text value="Location"/>
+                              <text resource-bundle="translations/program_strings" key="gps.location"/>
                             </properties>
                           </component>
                           <component id="5d701" class="javax.swing.JTextField" binding="gpsLocationtextField">
@@ -953,7 +953,7 @@
                               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Country"/>
+                              <text resource-bundle="translations/program_strings" key="gps.country"/>
                             </properties>
                           </component>
                           <component id="dc24b" class="javax.swing.JTextField" binding="gpsCountrytextField">
@@ -978,7 +978,7 @@
                               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="State / Province"/>
+                              <text resource-bundle="translations/program_strings" key="gps.statprov"/>
                             </properties>
                           </component>
                           <component id="fb2ec" class="javax.swing.JTextField" binding="gpsStateProvincetextField">
@@ -1005,7 +1005,7 @@
                               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="City"/>
+                              <text resource-bundle="translations/program_strings" key="gps.city"/>
                             </properties>
                           </component>
                           <component id="503eb" class="javax.swing.JTextField" binding="gpsCitytextField">
@@ -1041,7 +1041,7 @@
                             </constraints>
                             <properties>
                               <selected value="true"/>
-                              <text value="Save Latitude/Longitude/Altitude"/>
+                              <text resource-bundle="translations/program_strings" key="gps.savella"/>
                             </properties>
                           </component>
                           <component id="b07bc" class="javax.swing.JLabel">
@@ -1049,7 +1049,7 @@
                               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="GPS"/>
+                              <text resource-bundle="translations/program_strings" key="gps.gps"/>
                             </properties>
                           </component>
                           <component id="e4641" class="javax.swing.JLabel">
@@ -1057,7 +1057,7 @@
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Decimal"/>
+                              <text resource-bundle="translations/program_strings" key="gps.decimal"/>
                             </properties>
                           </component>
                           <component id="12b74" class="javax.swing.JLabel">
@@ -1065,7 +1065,7 @@
                               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Latitude"/>
+                              <text resource-bundle="translations/program_strings" key="gps.latitude"/>
                             </properties>
                           </component>
                           <component id="b9ec5" class="javax.swing.JTextField" binding="gpsLatDecimaltextField">
@@ -1081,7 +1081,7 @@
                               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Altitude"/>
+                              <text resource-bundle="translations/program_strings" key="gps.altitude"/>
                             </properties>
                           </component>
                           <component id="3f022" class="javax.swing.JLabel">
@@ -1089,7 +1089,7 @@
                               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Longitude"/>
+                              <text resource-bundle="translations/program_strings" key="gps.longitude"/>
                             </properties>
                           </component>
                           <component id="90788" class="javax.swing.JTextField" binding="gpsLonDecimaltextField">
@@ -1114,7 +1114,7 @@
                             </constraints>
                             <properties>
                               <selected value="true"/>
-                              <text value="Above sea level"/>
+                              <text resource-bundle="translations/program_strings" key="gps.above"/>
                             </properties>
                           </component>
                         </children>
@@ -1142,7 +1142,8 @@
                               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Decimal degrees"/>
+                              <text resource-bundle="translations/program_strings" key="gps.decdegrees"/>
+                              <toolTipText resource-bundle="translations/program_strings" key="gps.decdegrees"/>
                             </properties>
                           </component>
                           <component id="24e54" class="javax.swing.JLabel">
@@ -1150,7 +1151,7 @@
                               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="deg"/>
+                              <text resource-bundle="translations/program_strings" key="gps.degrees"/>
                             </properties>
                           </component>
                           <component id="b2ab2" class="javax.swing.JLabel">
@@ -1158,7 +1159,7 @@
                               <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="min"/>
+                              <text resource-bundle="translations/program_strings" key="gps.minutes"/>
                             </properties>
                           </component>
                           <component id="71263" class="javax.swing.JLabel">
@@ -1166,7 +1167,7 @@
                               <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="sec"/>
+                              <text resource-bundle="translations/program_strings" key="gps.seconds"/>
                             </properties>
                           </component>
                           <component id="ce02c" class="javax.swing.JLabel">
@@ -1174,7 +1175,7 @@
                               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Latitude"/>
+                              <text resource-bundle="translations/program_strings" key="gps.latitude"/>
                             </properties>
                           </component>
                           <component id="62427" class="javax.swing.JLabel" binding="CalcLatDecimaltextLabel">
@@ -1219,7 +1220,7 @@
                               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Longitude"/>
+                              <text resource-bundle="translations/program_strings" key="gps.longitude"/>
                             </properties>
                           </component>
                           <component id="48e47" class="javax.swing.JLabel" binding="CalcLonDecimaltextLabel">
@@ -1265,7 +1266,7 @@
                             </constraints>
                             <properties>
                               <selected value="true"/>
-                              <text value="N"/>
+                              <text resource-bundle="translations/program_strings" key="gps.n"/>
                             </properties>
                           </component>
                           <component id="9470d" class="javax.swing.JRadioButton" binding="CalcSouthRadioButton">
@@ -1273,7 +1274,7 @@
                               <grid row="2" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="S"/>
+                              <text resource-bundle="translations/program_strings" key="gps.s"/>
                             </properties>
                           </component>
                           <component id="c5470" class="javax.swing.JRadioButton" binding="CalcEastradioButton">
@@ -1282,7 +1283,7 @@
                             </constraints>
                             <properties>
                               <selected value="true"/>
-                              <text value="E"/>
+                              <text resource-bundle="translations/program_strings" key="gps.e"/>
                             </properties>
                           </component>
                           <component id="4d83c" class="javax.swing.JRadioButton" binding="CalcWestRadioButton">
@@ -1290,7 +1291,7 @@
                               <grid row="3" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="W"/>
+                              <text resource-bundle="translations/program_strings" key="gps.w"/>
                             </properties>
                           </component>
                           <component id="563e9" class="javax.swing.JButton" binding="decimalToMinutesSecondsButton" default-binding="true">
@@ -1308,8 +1309,8 @@
                               <grid row="4" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <label value="Convert to decimal degrees"/>
-                              <text value="Convert to decimal degrees"/>
+                              <label value="Converteer naar decimale graden"/>
+                              <text resource-bundle="translations/program_strings" key="gps.btnconvert"/>
                             </properties>
                           </component>
                           <component id="12440" class="javax.swing.JButton" binding="copyToInputFieldsButton" default-binding="true">
@@ -1317,7 +1318,7 @@
                               <grid row="4" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Copy to input fields"/>
+                              <text resource-bundle="translations/program_strings" key="gps.btncopytoinp"/>
                             </properties>
                           </component>
                           <component id="b38c8" class="javax.swing.JLabel">
@@ -1326,7 +1327,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Calculator"/>
+                              <text resource-bundle="translations/program_strings" key="gps.calc"/>
                             </properties>
                           </component>
                         </children>
@@ -1344,7 +1345,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <grid id="99de7" binding="gpsButtonPanel" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                          <grid id="99de7" binding="gpsButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -1354,24 +1355,24 @@
                               <component id="639a" class="javax.swing.JButton" binding="gpsCopyFrombutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Copy from selected image"/>
+                                  <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                                 </properties>
                               </component>
                               <component id="22155" class="javax.swing.JButton" binding="gpsSaveTobutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Save to selected image(s)"/>
+                                  <text resource-bundle="translations/program_strings" key="button.saveto"/>
                                 </properties>
                               </component>
                               <component id="69c67" class="javax.swing.JCheckBox" binding="gpsBackupOriginalscheckBox">
                                 <constraints/>
                                 <properties>
-                                  <text value="Backup original images"/>
+                                  <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                                 </properties>
                               </component>
                             </children>
                           </grid>
-                          <grid id="58837" binding="gpsButtonPanel2" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                          <grid id="58837" binding="gpsButtonPanel2" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                             <constraints>
                               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -1381,19 +1382,19 @@
                               <component id="c90b7" class="javax.swing.JButton" binding="gpsResetFieldsbutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Reset Fields"/>
+                                  <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                                 </properties>
                               </component>
                               <component id="35a54" class="javax.swing.JButton" binding="gpsMapcoordinatesbutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Open MapCoordinates.net"/>
+                                  <text resource-bundle="translations/program_strings" key="gps.btnopenmapcoords"/>
                                 </properties>
                               </component>
                               <component id="a5b78" class="javax.swing.JButton" binding="gpsHelpbutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Help"/>
+                                  <text resource-bundle="translations/program_strings" key="button.help"/>
                                 </properties>
                               </component>
                             </children>
@@ -1405,7 +1406,7 @@
                   <grid id="9ec6" binding="GeotaggingEditpanel" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="10" left="20" bottom="10" right="20"/>
                     <constraints>
-                      <tabbedpane title="Geotagging"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.geotaggingtab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -1424,7 +1425,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Folder containing the images"/>
+                              <text resource-bundle="translations/program_strings" key="geo.imagefolder"/>
                             </properties>
                           </component>
                           <grid id="c3748" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -1443,7 +1444,7 @@
                               <component id="9b081" class="javax.swing.JButton" binding="geotaggingImgFolderbutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Browse"/>
+                                  <text resource-bundle="translations/program_strings" key="geo.browsebutton"/>
                                 </properties>
                               </component>
                             </children>
@@ -1455,7 +1456,7 @@
                               </grid>
                             </constraints>
                             <properties>
-                              <text value="GeotaggingLeaveFolderEmpty"/>
+                              <text resource-bundle="translations/program_strings" key="geo.folderexplanation"/>
                             </properties>
                           </component>
                         </children>
@@ -1474,7 +1475,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="GPS log file:"/>
+                              <text resource-bundle="translations/program_strings" key="geo.gpslogfile"/>
                             </properties>
                           </component>
                           <grid id="e0bc5" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -1493,7 +1494,7 @@
                               <component id="ce981" class="javax.swing.JButton" binding="geotaggingGPSLogbutton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Browse"/>
+                                  <text resource-bundle="translations/program_strings" key="geo.browsebutton"/>
                                 </properties>
                               </component>
                             </children>
@@ -1514,7 +1515,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Geosync time:"/>
+                              <text resource-bundle="translations/program_strings" key="geo.geosynctime"/>
                             </properties>
                           </component>
                           <grid id="b3b21" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -1534,7 +1535,7 @@
                               <component id="28dbc" class="javax.swing.JLabel">
                                 <constraints/>
                                 <properties>
-                                  <text value="YYYY:MM:DD hh:mm:ss"/>
+                                  <text resource-bundle="translations/program_strings" key="geo.dtformat"/>
                                 </properties>
                               </component>
                             </children>
@@ -1544,12 +1545,12 @@
                               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="geotaggingGeosyncExplainLabel"/>
+                              <text resource-bundle="translations/program_strings" key="geo.geosyncexpl"/>
                             </properties>
                           </component>
                         </children>
                       </grid>
-                      <grid id="d0f5b" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="2">
+                      <grid id="d0f5b" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
                         <constraints>
                           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -1559,19 +1560,19 @@
                           <component id="c01f8" class="javax.swing.JButton" binding="geotaggingWriteInfobutton">
                             <constraints/>
                             <properties>
-                              <text value="Write geotag information to image(s)"/>
+                              <text resource-bundle="translations/program_strings" key="geo.btnwritegeoinfo"/>
                             </properties>
                           </component>
                           <component id="5beec" class="javax.swing.JButton" binding="resetGeotaggingbutton">
                             <constraints/>
                             <properties>
-                              <text value="Reset fields"/>
+                              <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                             </properties>
                           </component>
                           <component id="5f360" class="javax.swing.JButton" binding="geotaggingHelpbutton">
                             <constraints/>
                             <properties>
-                              <text value="Help"/>
+                              <text resource-bundle="translations/program_strings" key="button.help"/>
                             </properties>
                           </component>
                         </children>
@@ -1581,8 +1582,8 @@
                           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <selected value="true"/>
-                          <text value="Overwrite Originals"/>
+                          <selected value="false"/>
+                          <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                         </properties>
                       </component>
                       <grid id="233b0" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -1599,7 +1600,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="XMP/IPTC location"/>
+                              <text resource-bundle="translations/program_strings" key="gps.xmpiptcloc"/>
                             </properties>
                           </component>
                           <component id="dcc5d" class="javax.swing.JLabel">
@@ -1607,7 +1608,7 @@
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="(Where is/are the photo(s) taken)"/>
+                              <text resource-bundle="translations/program_strings" key="gps.whereis"/>
                             </properties>
                           </component>
                           <component id="a581c" class="javax.swing.JLabel">
@@ -1616,7 +1617,7 @@
                             </constraints>
                             <properties>
                               <font style="1"/>
-                              <text value="Save"/>
+                              <text resource-bundle="translations/program_strings" key="label.save"/>
                             </properties>
                           </component>
                           <component id="e1a55" class="javax.swing.JLabel">
@@ -1625,7 +1626,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="75" height="18"/>
-                              <text value="Location"/>
+                              <text resource-bundle="translations/program_strings" key="gps.location"/>
                             </properties>
                           </component>
                           <component id="22399" class="javax.swing.JTextField" binding="geotaggingLocationtextfield">
@@ -1652,7 +1653,7 @@
                               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Country"/>
+                              <text resource-bundle="translations/program_strings" key="gps.country"/>
                             </properties>
                           </component>
                           <component id="f42b0" class="javax.swing.JTextField" binding="geotaggingCountrytextfield">
@@ -1677,7 +1678,7 @@
                               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="State / Province"/>
+                              <text resource-bundle="translations/program_strings" key="gps.statprov"/>
                             </properties>
                           </component>
                           <component id="7966b" class="javax.swing.JTextField" binding="geotaggingStatetextfield">
@@ -1702,7 +1703,7 @@
                               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="City"/>
+                              <text resource-bundle="translations/program_strings" key="gps.city"/>
                             </properties>
                           </component>
                           <component id="67747" class="javax.swing.JTextField" binding="geotaggingCitytextfield">
@@ -1729,7 +1730,7 @@
                               <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="GeotaggingLocationLabel"/>
+                              <text resource-bundle="translations/program_strings" key="geo.geotagexpl"/>
                             </properties>
                           </component>
                         </children>
@@ -1739,7 +1740,7 @@
                   <grid id="9035c" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="10" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <tabbedpane title="Gpano"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.gpanotab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -1749,10 +1750,10 @@
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="1" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="gPanoTopText"/>
+                          <text resource-bundle="translations/program_strings" key="gpano.toptext"/>
                         </properties>
                       </component>
-                      <grid id="6ec44" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="6ec44" layout-manager="GridLayoutManager" row-count="5" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="5" left="5" bottom="5" right="5"/>
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
@@ -1767,7 +1768,7 @@
                               </grid>
                             </constraints>
                             <properties>
-                              <text value="Cropped Area Image Height pixels *"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.croppedareaimageheightpixels"/>
                             </properties>
                           </component>
                           <component id="1084c" class="javax.swing.JFormattedTextField" binding="gpanoCAIHPtextField">
@@ -1783,54 +1784,16 @@
                           </component>
                           <component id="1cf19" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <preferredSize width="200" height="18"/>
-                              <text value="Cropped Area Image Width pixels *"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.croppedareaimagewidthpixels"/>
                             </properties>
                           </component>
                           <component id="aa196" class="javax.swing.JFormattedTextField" binding="gpanoCAIWPtextField">
                             <constraints>
-                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                                <preferred-size width="75" height="25"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <preferredSize width="75" height="30"/>
-                            </properties>
-                          </component>
-                          <component id="a6717" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <preferredSize width="200" height="18"/>
-                              <text value="Cropped Area Left Pixels *"/>
-                            </properties>
-                          </component>
-                          <component id="154ea" class="javax.swing.JFormattedTextField" binding="gpanoCALPtextField">
-                            <constraints>
-                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                                <preferred-size width="75" height="25"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <preferredSize width="75" height="30"/>
-                            </properties>
-                          </component>
-                          <component id="44dd1" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <preferredSize width="200" height="18"/>
-                              <text value="Cropped Area Top Pixels *"/>
-                            </properties>
-                          </component>
-                          <component id="4fdc8" class="javax.swing.JFormattedTextField" binding="gpanoCATPtextField">
-                            <constraints>
-                              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -1844,7 +1807,7 @@
                             </constraints>
                             <properties>
                               <preferredSize width="200" height="18"/>
-                              <text value="Full Pano Height Pixels *"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.fullpanoheightpixels"/>
                             </properties>
                           </component>
                           <component id="27e86" class="javax.swing.JFormattedTextField" binding="gpanoFPHPtextField">
@@ -1859,16 +1822,16 @@
                           </component>
                           <component id="1791a" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <preferredSize width="200" height="18"/>
-                              <text value="Full Pano Width Pixels *"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.fullpanowidthpixels"/>
                             </properties>
                           </component>
                           <component id="5c5df" class="javax.swing.JFormattedTextField" binding="gpanoFPWPtextField">
                             <constraints>
-                              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -1881,7 +1844,7 @@
                               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Projection Type *"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.projectiontype"/>
                             </properties>
                           </component>
                           <component id="98dc" class="javax.swing.JComboBox" binding="gpanoPTcomboBox">
@@ -1895,7 +1858,7 @@
                               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Use panorama viewer *"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.usepanoramaviewer"/>
                             </properties>
                           </component>
                           <component id="ff11b" class="javax.swing.JCheckBox" binding="checkBox1" default-binding="true">
@@ -1908,9 +1871,47 @@
                               <text value=""/>
                             </properties>
                           </component>
+                          <component id="a6717" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.croppedarealeftpixels"/>
+                            </properties>
+                          </component>
+                          <component id="44dd1" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="200" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.croppedareatoppixels"/>
+                            </properties>
+                          </component>
+                          <component id="4fdc8" class="javax.swing.JFormattedTextField" binding="gpanoCATPtextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
+                          <component id="154ea" class="javax.swing.JFormattedTextField" binding="gpanoCALPtextField">
+                            <constraints>
+                              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="75" height="30"/>
+                            </properties>
+                          </component>
                         </children>
                       </grid>
-                      <grid id="f3576" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="f3576" layout-manager="GridLayoutManager" row-count="7" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="5" left="5" bottom="5" right="5"/>
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
@@ -1920,39 +1921,15 @@
                         <children>
                           <component id="1d1d9" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
                               </grid>
                             </constraints>
                             <properties>
-                              <text value="Initial View Heading Degrees ***"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.initialviewheadingdegrees"/>
                             </properties>
                           </component>
                           <component id="cd11d" class="javax.swing.JFormattedTextField" binding="gpanoIVHDtextField">
-                            <constraints>
-                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                                <preferred-size width="75" height="25"/>
-                              </grid>
-                            </constraints>
-                            <properties/>
-                          </component>
-                          <component id="4bb6e" class="javax.swing.JCheckBox" binding="gpanoIVHDCheckBox">
-                            <constraints>
-                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="Save"/>
-                            </properties>
-                          </component>
-                          <component id="2f85c" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="Initial View Pitch Degrees ***"/>
-                            </properties>
-                          </component>
-                          <component id="fc7b6" class="javax.swing.JFormattedTextField" binding="gpanoIVPDtextField">
                             <constraints>
                               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -1960,23 +1937,23 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="200d9" class="javax.swing.JCheckBox" binding="gpanoIVPDCheckBox">
+                          <component id="4bb6e" class="javax.swing.JCheckBox" binding="gpanoIVHDCheckBox">
                             <constraints>
                               <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Save"/>
+                              <text value=""/>
                             </properties>
                           </component>
-                          <component id="8db21" class="javax.swing.JLabel">
+                          <component id="2f85c" class="javax.swing.JLabel">
                             <constraints>
                               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Initial View Roll Degrees ***"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.initialviewpitchdegrees"/>
                             </properties>
                           </component>
-                          <component id="84783" class="javax.swing.JFormattedTextField" binding="gpanoIVRDtextField">
+                          <component id="fc7b6" class="javax.swing.JFormattedTextField" binding="gpanoIVPDtextField">
                             <constraints>
                               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -1984,23 +1961,23 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="f15a0" class="javax.swing.JCheckBox" binding="gpanoIVRDCheckBox">
+                          <component id="200d9" class="javax.swing.JCheckBox" binding="gpanoIVPDCheckBox">
                             <constraints>
                               <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Save"/>
+                              <text value=""/>
                             </properties>
                           </component>
-                          <component id="5a7bf" class="javax.swing.JLabel">
+                          <component id="8db21" class="javax.swing.JLabel">
                             <constraints>
                               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Initial Horizontal FOV Degrees ***"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.initialviewrolldegrees"/>
                             </properties>
                           </component>
-                          <component id="625c" class="javax.swing.JFormattedTextField" binding="gpanoIHFOVDtextField">
+                          <component id="84783" class="javax.swing.JFormattedTextField" binding="gpanoIVRDtextField">
                             <constraints>
                               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
@@ -2008,28 +1985,52 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="bfa20" class="javax.swing.JCheckBox" binding="gpanoIHFOVDtextFieldCheckBox">
+                          <component id="f15a0" class="javax.swing.JCheckBox" binding="gpanoIVRDCheckBox">
                             <constraints>
                               <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Save"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="5a7bf" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text resource-bundle="translations/program_strings" key="gpano.initialhorizontalfovdegrees"/>
+                            </properties>
+                          </component>
+                          <component id="625c" class="javax.swing.JFormattedTextField" binding="gpanoIHFOVDtextField">
+                            <constraints>
+                              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                <preferred-size width="75" height="25"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="bfa20" class="javax.swing.JCheckBox" binding="gpanoIHFOVDtextFieldCheckBox">
+                            <constraints>
+                              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value=""/>
                             </properties>
                           </component>
                           <component id="8b186" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
                               </grid>
                             </constraints>
                             <properties>
                               <preferredSize width="200" height="18"/>
-                              <text value="Stitching Software ***"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.stitchingsoftware"/>
                             </properties>
                           </component>
                           <component id="e3406" class="javax.swing.JTextField" binding="gpanoStitchingSoftwaretextField">
                             <constraints>
-                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="400" height="25"/>
                               </grid>
                             </constraints>
@@ -2039,23 +2040,23 @@
                           </component>
                           <component id="c70b2" class="javax.swing.JCheckBox" binding="gpanoStitchingSoftwarecheckBox">
                             <constraints>
-                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Save"/>
+                              <text value=""/>
                             </properties>
                           </component>
                           <component id="c8381" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Pose Heading Degrees **"/>
+                              <text resource-bundle="translations/program_strings" key="gpano.poseheadingdegrees"/>
                             </properties>
                           </component>
                           <component id="cf9dc" class="javax.swing.JFormattedTextField" binding="gpanoPHDtextField">
                             <constraints>
-                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                                 <preferred-size width="75" height="25"/>
                               </grid>
                             </constraints>
@@ -2063,15 +2064,25 @@
                           </component>
                           <component id="f1aa5" class="javax.swing.JCheckBox" binding="gpanoPHDcheckBox">
                             <constraints>
-                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="Save"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="66b1f" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <requestFocusEnabled value="false"/>
+                              <text resource-bundle="translations/program_strings" key="label.save"/>
                             </properties>
                           </component>
                         </children>
                       </grid>
-                      <grid id="5ef53" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="5ef53" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -2081,26 +2092,26 @@
                           <component id="7f386" class="javax.swing.JButton" binding="gpanoCopyFrombutton">
                             <constraints/>
                             <properties>
-                              <text value="Copy from selected image"/>
+                              <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                             </properties>
                           </component>
                           <component id="42f85" class="javax.swing.JButton" binding="gpanoCopyTobutton">
                             <constraints/>
                             <properties>
-                              <text value="Save to selected image(s)"/>
+                              <text resource-bundle="translations/program_strings" key="button.saveto"/>
                             </properties>
                           </component>
                           <component id="7769c" class="javax.swing.JButton" binding="gpanoResetFieldsbutton">
                             <constraints/>
                             <properties>
-                              <text value="Reset Fields"/>
+                              <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                             </properties>
                           </component>
                           <component id="dd9eb" class="javax.swing.JButton" binding="gpanoHelpbutton">
                             <constraints/>
                             <properties>
                               <label value="Help"/>
-                              <text value="Help"/>
+                              <text resource-bundle="translations/program_strings" key="button.help"/>
                             </properties>
                           </component>
                         </children>
@@ -2110,7 +2121,7 @@
                           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Make backup of originals"/>
+                          <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                         </properties>
                       </component>
                       <component id="b8eef" class="javax.swing.JLabel" binding="gpanoMinVersionText">
@@ -2118,7 +2129,8 @@
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="gpanoMinVersionText"/>
+                          <text resource-bundle="translations/program_strings" key="gpano.googlemapsfields"/>
+                          <visible value="true"/>
                         </properties>
                       </component>
                     </children>
@@ -2126,7 +2138,7 @@
                   <grid id="4207a" layout-manager="GridLayoutManager" row-count="20" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="10" left="20" bottom="10" right="20"/>
                     <constraints>
-                      <tabbedpane title="Lens"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.lenstab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -2136,7 +2148,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Lens make"/>
+                          <text resource-bundle="translations/program_strings" key="lens.lensmake"/>
                         </properties>
                       </component>
                       <component id="554a9" class="javax.swing.JTextField" binding="lensmaketextField">
@@ -2147,7 +2159,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <grid id="6487e" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="6487e" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="16" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -2157,26 +2169,26 @@
                           <component id="ba804" class="javax.swing.JButton" binding="lensCopyFrombutton">
                             <constraints/>
                             <properties>
-                              <text value="Copy from selected image"/>
+                              <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                             </properties>
                           </component>
                           <component id="5fffe" class="javax.swing.JButton" binding="lensSaveTobutton">
                             <constraints/>
                             <properties>
-                              <text value="Save to selected image(s)"/>
+                              <text resource-bundle="translations/program_strings" key="button.saveto"/>
                             </properties>
                           </component>
                           <component id="d3b52" class="javax.swing.JButton" binding="lensResetFieldsbutton">
                             <constraints/>
                             <properties>
-                              <text value="Reset Fields"/>
+                              <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                             </properties>
                           </component>
                           <component id="add49" class="javax.swing.JButton" binding="lensHelpbutton">
                             <constraints/>
                             <properties>
                               <label value="Help"/>
-                              <text value="Help"/>
+                              <text resource-bundle="translations/program_strings" key="button.help"/>
                             </properties>
                           </component>
                         </children>
@@ -2186,7 +2198,7 @@
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="lens Model"/>
+                          <text resource-bundle="translations/program_strings" key="lens.lensmodel"/>
                         </properties>
                       </component>
                       <component id="8bd73" class="javax.swing.JTextField" binding="lensmodeltextField">
@@ -2211,7 +2223,8 @@
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Save"/>
+                          <font style="1"/>
+                          <text resource-bundle="translations/program_strings" key="label.save"/>
                         </properties>
                       </component>
                       <component id="f95d8" class="javax.swing.JCheckBox" binding="lensmakecheckBox">
@@ -2228,7 +2241,7 @@
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="lens serial number"/>
+                          <text resource-bundle="translations/program_strings" key="lens.serialnumber"/>
                         </properties>
                       </component>
                       <component id="fcd7b" class="javax.swing.JTextField" binding="lensserialnumbertextField">
@@ -2244,7 +2257,7 @@
                           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="focal length"/>
+                          <text resource-bundle="translations/program_strings" key="lens.focallength"/>
                         </properties>
                       </component>
                       <component id="e13e9" class="javax.swing.JTextField" binding="focallengthtextField">
@@ -2278,7 +2291,7 @@
                           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="focal length In 35mm format"/>
+                          <text resource-bundle="translations/program_strings" key="lens.focallength35mm"/>
                         </properties>
                       </component>
                       <component id="94163" class="javax.swing.JTextField" binding="focallengthIn35mmformattextField">
@@ -2303,7 +2316,7 @@
                           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="fnumber"/>
+                          <text resource-bundle="translations/program_strings" key="lens.fnumber"/>
                         </properties>
                       </component>
                       <component id="70a7f" class="javax.swing.JTextField" binding="fnumbertextField">
@@ -2328,7 +2341,7 @@
                           <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="max. Aperture value"/>
+                          <text resource-bundle="translations/program_strings" key="lens.maxaperturevalue"/>
                         </properties>
                       </component>
                       <component id="aa6e2" class="javax.swing.JTextField" binding="maxaperturevaluetextField">
@@ -2353,7 +2366,7 @@
                           <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="metering mode"/>
+                          <text resource-bundle="translations/program_strings" key="lens.meteringmode"/>
                         </properties>
                       </component>
                       <component id="1659c" class="javax.swing.JComboBox" binding="meteringmodecomboBox">
@@ -2376,7 +2389,7 @@
                           <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="focus distance"/>
+                          <text resource-bundle="translations/program_strings" key="lens.focusdistance"/>
                         </properties>
                       </component>
                       <component id="1b085" class="javax.swing.JTextField" binding="focusdistancetextField">
@@ -2401,7 +2414,7 @@
                           <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="lens id"/>
+                          <text resource-bundle="translations/program_strings" key="lens.lensid"/>
                         </properties>
                       </component>
                       <component id="b2280" class="javax.swing.JTextField" binding="lensidtextField">
@@ -2426,7 +2439,7 @@
                           <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="conversion lens"/>
+                          <text resource-bundle="translations/program_strings" key="lens.conversionlens"/>
                         </properties>
                       </component>
                       <component id="ebf51" class="javax.swing.JTextField" binding="conversionlenstextField">
@@ -2451,7 +2464,7 @@
                           <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="lens type"/>
+                          <text resource-bundle="translations/program_strings" key="lens.lenstype"/>
                         </properties>
                       </component>
                       <component id="2681a" class="javax.swing.JTextField" binding="lenstypetextField">
@@ -2476,7 +2489,7 @@
                           <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="lens firmware version"/>
+                          <text resource-bundle="translations/program_strings" key="lens.firmwarevers"/>
                         </properties>
                       </component>
                       <component id="e65f3" class="javax.swing.JTextField" binding="lensfirmwareversiontextField">
@@ -2501,7 +2514,7 @@
                           <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Make backup of originals"/>
+                          <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                         </properties>
                       </component>
                       <vspacer id="c2df">
@@ -2512,7 +2525,7 @@
                           </grid>
                         </constraints>
                       </vspacer>
-                      <grid id="34682" binding="saveloadlensconfigpanel" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="34682" binding="saveloadlensconfigpanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="19" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -2522,14 +2535,14 @@
                           <component id="689c" class="javax.swing.JButton" binding="saveLensConfigurationbutton">
                             <constraints/>
                             <properties>
-                              <text value="Save this lens configuration"/>
+                              <text resource-bundle="translations/program_strings" key="lens.btnconfigsave"/>
                               <toolTipText value="This allows you to save lens configurations for future use"/>
                             </properties>
                           </component>
                           <component id="23aa0" class="javax.swing.JButton" binding="loadLensConfigurationButton">
                             <constraints/>
                             <properties>
-                              <text value="Load a lens configuration"/>
+                              <text resource-bundle="translations/program_strings" key="lens.btnconfigload"/>
                             </properties>
                           </component>
                         </children>
@@ -2544,7 +2557,7 @@
                           <grid row="18" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Label"/>
+                          <text resource-bundle="translations/program_strings" key="lens.saveloadconfig"/>
                         </properties>
                       </component>
                     </children>
@@ -2552,7 +2565,7 @@
                   <grid id="6c184" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="10" left="20" bottom="10" right="20"/>
                     <constraints>
-                      <tabbedpane title="XMP_IPTC_String+"/>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.xmpiptcstringtab"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -2580,7 +2593,7 @@
                               </grid>
                             </constraints>
                             <properties>
-                              <text value="Keywords"/>
+                              <text resource-bundle="translations/program_strings" key="xis.keywords"/>
                             </properties>
                           </component>
                           <component id="dda96" class="javax.swing.JTextField" binding="StringsKeywordstextField">
@@ -2617,32 +2630,32 @@
                               <component id="fa647" class="javax.swing.JLabel">
                                 <constraints/>
                                 <properties>
-                                  <text value="Action:"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.action"/>
                                 </properties>
                               </component>
                               <component id="f7c1a" class="javax.swing.JRadioButton" binding="StringsKeywOverwriteradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Overwrite"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.overwrite"/>
                                 </properties>
                               </component>
                               <component id="42dad" class="javax.swing.JRadioButton" binding="StringsKeywAppendradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Append"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.append"/>
                                 </properties>
                               </component>
                               <component id="23c9e" class="javax.swing.JRadioButton" binding="StringsKeywRemoveradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Remove"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.remove"/>
                                 </properties>
                               </component>
                               <component id="269c9" class="javax.swing.JRadioButton" binding="StringsKeywDontSaveradioButton">
                                 <constraints/>
                                 <properties>
                                   <selected value="true"/>
-                                  <text value="Don't save"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.dontsave"/>
                                 </properties>
                               </component>
                             </children>
@@ -2664,7 +2677,7 @@
                               </grid>
                             </constraints>
                             <properties>
-                              <text value="Subject"/>
+                              <text resource-bundle="translations/program_strings" key="xis.subject"/>
                             </properties>
                           </component>
                           <component id="f1f0c" class="javax.swing.JTextField" binding="StringsSubjecttextField">
@@ -2680,7 +2693,7 @@
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="(Only XMP)"/>
+                              <text resource-bundle="translations/program_strings" key="xis.onlyxmp"/>
                             </properties>
                           </component>
                           <grid id="a0e86" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -2693,32 +2706,32 @@
                               <component id="84f46" class="javax.swing.JLabel">
                                 <constraints/>
                                 <properties>
-                                  <text value="Action:"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.action"/>
                                 </properties>
                               </component>
                               <component id="48ac5" class="javax.swing.JRadioButton" binding="StringsSubjectOverwriteradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Overwrite"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.overwrite"/>
                                 </properties>
                               </component>
                               <component id="2513e" class="javax.swing.JRadioButton" binding="StringsSubjectAppendradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Append"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.append"/>
                                 </properties>
                               </component>
                               <component id="ef6c6" class="javax.swing.JRadioButton" binding="StringsSubjectRemoveradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Remove"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.remove"/>
                                 </properties>
                               </component>
                               <component id="2438e" class="javax.swing.JRadioButton" binding="StringsSubjectDontSaveradioButton">
                                 <constraints/>
                                 <properties>
                                   <selected value="true"/>
-                                  <text value="Don't save"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.dontsave"/>
                                 </properties>
                               </component>
                             </children>
@@ -2740,7 +2753,7 @@
                               </grid>
                             </constraints>
                             <properties>
-                              <text value="Person In Image"/>
+                              <text resource-bundle="translations/program_strings" key="xis.pim"/>
                             </properties>
                           </component>
                           <component id="67e21" class="javax.swing.JTextField" binding="StringsPIItextField">
@@ -2756,7 +2769,7 @@
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
-                              <text value="(only XMP)"/>
+                              <text resource-bundle="translations/program_strings" key="xis.onlyxmp"/>
                             </properties>
                           </component>
                           <grid id="7583e" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -2769,32 +2782,32 @@
                               <component id="e61a7" class="javax.swing.JLabel">
                                 <constraints/>
                                 <properties>
-                                  <text value="Action:"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.action"/>
                                 </properties>
                               </component>
                               <component id="35698" class="javax.swing.JRadioButton" binding="StringsIIPOverwriteradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Overwrite"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.overwrite"/>
                                 </properties>
                               </component>
                               <component id="a443" class="javax.swing.JRadioButton" binding="StringsIIPAppendradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Append"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.append"/>
                                 </properties>
                               </component>
                               <component id="f95cb" class="javax.swing.JRadioButton" binding="StringsIIPRemoveradioButton">
                                 <constraints/>
                                 <properties>
-                                  <text value="Remove"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.remove"/>
                                 </properties>
                               </component>
                               <component id="a9f23" class="javax.swing.JRadioButton" binding="StringsIIPDontSaveradioButton">
                                 <constraints/>
                                 <properties>
                                   <selected value="true"/>
-                                  <text value="Don't save"/>
+                                  <text resource-bundle="translations/program_strings" key="xis.dontsave"/>
                                 </properties>
                               </component>
                             </children>
@@ -2806,10 +2819,10 @@
                           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Make backup of originals"/>
+                          <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                         </properties>
                       </component>
-                      <grid id="17f45" layout-manager="FlowLayout" hgap="25" vgap="5" flow-align="1">
+                      <grid id="17f45" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                         <constraints>
                           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -2819,19 +2832,19 @@
                           <component id="1e8f8" class="javax.swing.JButton" binding="stringPlusCopyFrombutton">
                             <constraints/>
                             <properties>
-                              <text value="Copy from selected image"/>
+                              <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                             </properties>
                           </component>
                           <component id="b0cee" class="javax.swing.JButton" binding="stringPlusSaveTobutton">
                             <constraints/>
                             <properties>
-                              <text value="Save to selected image(s)"/>
+                              <text resource-bundle="translations/program_strings" key="button.saveto"/>
                             </properties>
                           </component>
                           <component id="38af4" class="javax.swing.JButton" binding="stringPlusResetFieldsbutton">
                             <constraints/>
                             <properties>
-                              <text value="Reset Fields"/>
+                              <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                             </properties>
                           </component>
                           <component id="68b86" class="javax.swing.JButton" binding="stringPlusHelpbutton">
@@ -2863,7 +2876,7 @@
           <grid id="d419c" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="5" right="5"/>
             <constraints>
-              <tabbedpane title="Copy Data"/>
+              <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.copydata"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -2873,7 +2886,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="&lt;html&gt;Copy the values of all writable tags from the source image to the target image(s), writing the information to same-named tags in the preferred groups&lt;/html&gt;"/>
+                  <text resource-bundle="translations/program_strings" key="copyd.copyallmetadatasame"/>
                 </properties>
               </component>
               <component id="6c211" class="javax.swing.JRadioButton" binding="copyAllMetadataSameGroupsRadiobutton">
@@ -2906,7 +2919,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Copy exif data (-exif:all)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copyexifcheckbox"/>
                     </properties>
                   </component>
                   <component id="8f73c" class="javax.swing.JCheckBox" binding="CopyXmpcheckBox">
@@ -2914,7 +2927,7 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Copy xmp data (-xmp:all)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copyxmpcheckbox"/>
                     </properties>
                   </component>
                   <component id="a0ea9" class="javax.swing.JCheckBox" binding="CopyIptccheckBox">
@@ -2922,7 +2935,7 @@
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Copy IPTC data (-iptc:all)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copyiptccheckbox"/>
                     </properties>
                   </component>
                   <component id="787e3" class="javax.swing.JCheckBox" binding="CopyIcc_profileDataCheckBox">
@@ -2931,7 +2944,7 @@
                     </constraints>
                     <properties>
                       <actionCommand value=""/>
-                      <text value="Copy ICC(_profile) data (-icc_profile:all)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copyicc_profilecheckbox"/>
                     </properties>
                   </component>
                   <component id="d0b44" class="javax.swing.JCheckBox" binding="CopyGpsCheckBox">
@@ -2939,7 +2952,7 @@
                       <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Copy gps data (-gps:all)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copygpscheckbox"/>
                     </properties>
                   </component>
                   <component id="79abf" class="javax.swing.JCheckBox" binding="CopyJfifcheckBox">
@@ -2947,7 +2960,7 @@
                       <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Copy JFIF data (from the jpeg JFIF header)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copyjfifcheckbox"/>
                     </properties>
                   </component>
                   <component id="8fd41" class="javax.swing.JCheckBox" binding="CopyMakernotescheckBox">
@@ -2955,7 +2968,7 @@
                       <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Copy makernotes (-makernotes:all)"/>
+                      <text resource-bundle="translations/program_strings" key="copyd.copymakernotescheckbox"/>
                     </properties>
                   </component>
                 </children>
@@ -2965,7 +2978,7 @@
                   <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Make backup of originals"/>
+                  <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
                 </properties>
               </component>
               <grid id="f756a" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -2978,19 +2991,19 @@
                   <component id="4c804" class="javax.swing.JButton" binding="UseDataFrombutton">
                     <constraints/>
                     <properties>
-                      <text value="Use data from selected image"/>
+                      <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
                     </properties>
                   </component>
                   <component id="af514" class="javax.swing.JButton" binding="CopyDataCopyTobutton">
                     <constraints/>
                     <properties>
-                      <text value="Copy to selected image(s)"/>
+                      <text resource-bundle="translations/program_strings" key="button.saveto"/>
                     </properties>
                   </component>
                   <component id="d8e21" class="javax.swing.JButton" binding="CopyHelpbutton">
                     <constraints/>
                     <properties>
-                      <text value="Help"/>
+                      <text resource-bundle="translations/program_strings" key="button.help"/>
                     </properties>
                   </component>
                 </children>
@@ -3000,7 +3013,7 @@
           <grid id="e08b" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
-              <tabbedpane title="Your Commands"/>
+              <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.yourcommands"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -3025,7 +3038,7 @@
                     </constraints>
                     <properties>
                       <font style="1"/>
-                      <text value="Parameters:"/>
+                      <text resource-bundle="translations/program_strings" key="yc.parameters"/>
                     </properties>
                   </component>
                   <grid id="84329" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
@@ -3038,25 +3051,25 @@
                       <component id="538cc" class="javax.swing.JButton" binding="CommandsclearParameterSFieldButton">
                         <constraints/>
                         <properties>
-                          <text value="Clear parameter(s) field"/>
+                          <text resource-bundle="translations/program_strings" key="yc.btnclrparamfield"/>
                         </properties>
                       </component>
                       <component id="dd07f" class="javax.swing.JButton" binding="CommandsclearOutputFieldButton">
                         <constraints/>
                         <properties>
-                          <text value="Clear output field"/>
+                          <text resource-bundle="translations/program_strings" key="yc.btnclroutput"/>
                         </properties>
                       </component>
                       <component id="322b7" class="javax.swing.JButton" binding="CommandsgoButton">
                         <constraints/>
                         <properties>
-                          <text value="Go"/>
+                          <text resource-bundle="translations/program_strings" key="yc.btngo"/>
                         </properties>
                       </component>
                       <component id="5c958" class="javax.swing.JButton" binding="CommandshelpButton">
                         <constraints/>
                         <properties>
-                          <text value="Help"/>
+                          <text resource-bundle="translations/program_strings" key="button.help"/>
                         </properties>
                       </component>
                       <hspacer id="27a7c">
@@ -3073,13 +3086,13 @@
                           <component id="629d7" class="javax.swing.JButton" binding="AddCommandFavoritebutton">
                             <constraints/>
                             <properties>
-                              <text value="Add favorite"/>
+                              <text resource-bundle="translations/program_strings" key="yc.btnaddfav"/>
                             </properties>
                           </component>
                           <component id="260d0" class="javax.swing.JButton" binding="LoadCommandFavoritebutton">
                             <constraints/>
                             <properties>
-                              <text value="Load favorite"/>
+                              <text resource-bundle="translations/program_strings" key="yc.btnloadfav"/>
                             </properties>
                           </component>
                         </children>
@@ -3099,7 +3112,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="The final output will be displayed below:"/>
+                          <text resource-bundle="translations/program_strings" key="yc.labeloutput"/>
                           <verticalTextPosition value="1"/>
                         </properties>
                       </component>
@@ -3110,7 +3123,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="a9f61" class="javax.swing.JTextArea" binding="YourCommandsOutputTextArea">
+                          <component id="46ae8" class="javax.swing.JTextArea" binding="YourCommandsOutputTextArea">
                             <constraints/>
                             <properties>
                               <text value=""/>
@@ -3129,13 +3142,13 @@
                             <constraints/>
                             <properties>
                               <selected value="true"/>
-                              <text value="Use a non-proportional &quot;monospaced&quot; font"/>
+                              <text resource-bundle="translations/program_strings" key="yc.radbtnmonospace"/>
                             </properties>
                           </component>
                           <component id="f8208" class="javax.swing.JRadioButton" binding="UsePropFontradioButton">
                             <constraints/>
                             <properties>
-                              <text value="Use a proportional font"/>
+                              <text resource-bundle="translations/program_strings" key="yc.radbtnproportional"/>
                             </properties>
                           </component>
                         </children>
@@ -3159,7 +3172,7 @@
           <grid id="ae6cf" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
-              <tabbedpane title="Exiftool Database"/>
+              <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.exiftooldb"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -3190,7 +3203,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Label"/>
+                      <text resource-bundle="translations/program_strings" key="edb.toptext"/>
                     </properties>
                   </component>
                 </children>
@@ -3206,7 +3219,7 @@
                     <constraints/>
                     <properties>
                       <selected value="true"/>
-                      <text value="By Group"/>
+                      <text resource-bundle="translations/program_strings" key="vdtab.bygroup"/>
                     </properties>
                   </component>
                   <component id="cf1ea" class="javax.swing.JComboBox" binding="comboBoxQueryByTagName">
@@ -3216,7 +3229,7 @@
                   <component id="bf285" class="javax.swing.JRadioButton" binding="radiobuttonQueryByCameraMake">
                     <constraints/>
                     <properties>
-                      <text value="Camera make:"/>
+                      <text resource-bundle="translations/program_strings" key="vdtab.bycamera"/>
                     </properties>
                   </component>
                   <component id="eb4c3" class="javax.swing.JComboBox" binding="comboBoxQueryCameraMake">
@@ -3235,7 +3248,7 @@
                   <component id="254b2" class="javax.swing.JLabel">
                     <constraints/>
                     <properties>
-                      <text value="Where tag like:"/>
+                      <text resource-bundle="translations/program_strings" key="edb.wheretaglike"/>
                     </properties>
                   </component>
                   <component id="e9041" class="javax.swing.JTextField" binding="queryTagLiketextField">
@@ -3247,7 +3260,7 @@
                   <component id="b9dd5" class="javax.swing.JButton" binding="searchLikebutton">
                     <constraints/>
                     <properties>
-                      <text value="Search like"/>
+                      <text resource-bundle="translations/program_strings" key="edb.btnsearchlike"/>
                     </properties>
                   </component>
                 </children>
@@ -3257,7 +3270,7 @@
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Help"/>
+                  <text resource-bundle="translations/program_strings" key="button.help"/>
                 </properties>
               </component>
               <component id="ff67e" class="javax.swing.JLabel" binding="exiftoolDBversion">
@@ -3266,7 +3279,7 @@
                 </constraints>
                 <properties>
                   <font style="2"/>
-                  <text value="exiftool DB version:"/>
+                  <text resource-bundle="translations/program_strings" key="edb.edbversion"/>
                   <toolTipText value="The exiftool version to build the included database version is not necessarily the same as your installed exiftool version"/>
                 </properties>
               </component>
@@ -3275,7 +3288,7 @@
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="DB diagram"/>
+                  <text resource-bundle="translations/program_strings" key="edb.btndiagram"/>
                   <toolTipText value="Opens a browser displaying the DB diagram"/>
                 </properties>
               </component>
@@ -3299,7 +3312,7 @@
                     </constraints>
                     <properties>
                       <font style="1"/>
-                      <text value="Your own sql query:"/>
+                      <text resource-bundle="translations/program_strings" key="edb.ownquery"/>
                     </properties>
                   </component>
                   <component id="b90cc" class="javax.swing.JButton" binding="sqlExecutebutton">
@@ -3307,7 +3320,7 @@
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Go"/>
+                      <text resource-bundle="translations/program_strings" key="yc.btngo"/>
                     </properties>
                   </component>
                   <component id="a3caa" class="javax.swing.JButton" binding="SaveQuerybutton">
@@ -3315,7 +3328,7 @@
                       <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Add Favorite"/>
+                      <text resource-bundle="translations/program_strings" key="yc.btnaddfav"/>
                     </properties>
                   </component>
                   <component id="8b2d7" class="javax.swing.JButton" binding="loadQuerybutton">
@@ -3323,7 +3336,7 @@
                       <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Load Favorite"/>
+                      <text resource-bundle="translations/program_strings" key="yc.btnloadfav"/>
                     </properties>
                   </component>
                   <hspacer id="d6737">

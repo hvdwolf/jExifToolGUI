@@ -18,8 +18,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
@@ -136,7 +138,7 @@ public class RenamePhotos extends JDialog {
 
         String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
         final JFileChooser chooser = new JFileChooser(startFolder);
-        chooser.setDialogTitle("Locate the image folder ...");
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("rph.locateimgfolder"));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
@@ -150,8 +152,8 @@ public class RenamePhotos extends JDialog {
 
     // Start of the methods
     public void initDialog() {
-        RenamingGeneralText.setText(String.format(ProgramTexts.HTML, 650, ProgramTexts.RenamingGeneralText));
-        RenamingDuplicateNames.setText(String.format(ProgramTexts.HTML, 370, ProgramTexts.RenamingDuplicateNames));
+        RenamingGeneralText.setText(String.format(ProgramTexts.HTML, 650, ResourceBundle.getBundle("translations/program_strings").getString("rph.toptext")));
+        RenamingDuplicateNames.setText(String.format(ProgramTexts.HTML, 370, ResourceBundle.getBundle("translations/program_strings").getString("rph.duplicatestext")));
         RenamingSourceFoldertextField.setText("");
 
         for (String item : MyConstants.DATES_TIMES_STRINGS) {
@@ -165,8 +167,8 @@ public class RenamePhotos extends JDialog {
         for (int digit = 2; digit <= 6; digit++) {
             DigitscomboBox.addItem(digit);
         }
-        StartOnImgcomboBox.addItem("start counting on 1st image");
-        StartOnImgcomboBox.addItem("start counting on 2nd image");
+        StartOnImgcomboBox.addItem(ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitsone"));
+        StartOnImgcomboBox.addItem(ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitstwo"));
     }
 
     private void rename_photos() {
@@ -199,7 +201,7 @@ public class RenamePhotos extends JDialog {
 
 
         if (("".equals(RenamingSourceFoldertextField.getText())) && (!selected_files)) { // Empty folder string and no files selected
-            JOptionPane.showMessageDialog(null, "No image folder path selected\nand/or\nNo images selected in the main screen", "No path or selected files", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 350, ResourceBundle.getBundle("translations/program_strings").getString("rph.noimgsnopathtext")), ResourceBundle.getBundle("translations/program_strings").getString("rph.noimgsnopathtitle"), JOptionPane.WARNING_MESSAGE);
         } else {
             // analyze what prefix radio button has been chosen
             if (prefixDate_timeradioButton.isSelected()) {
@@ -316,40 +318,40 @@ public class RenamePhotos extends JDialog {
             // Now the extension: Does the user want lowercase, uppercase or doesn't care (leave as is)?
             if (extLeaveradioButton.isSelected()) {
                 rename_extension = ".%e";
-                extension_message = "Leave as is";
+                extension_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.fileextleave");
             } else if (makeLowerCaseRadioButton.isSelected()) {
                 rename_extension = ".%le";
-                extension_message = "Make lowercase";
+                extension_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.fileextlower");
             } else if (makeUpperCaseRadioButton.isSelected()) {
                 rename_extension = ".%ue";
-                extension_message = "Make uppercase";
+                extension_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.fileextupper");
             }
 
             // Finally: Does the user want to start counting as of the first image or starting on the second image
             if (StartOnImgcomboBox.getSelectedIndex() == 0) {
                 startcounting = "nc";
                 logger.info("start counting on 1st image");
-                startcounting_message = "start counting on 1st image";
+                startcounting_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitsone");
             } else {
                 startcounting = "c";
                 logger.info("start counting on 2nd image");
-                startcounting_message = "start counting on 2nd image";
+                startcounting_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitstwo");
             }
 
             // Now ask the user whether the selected options are really what he/she wants
-            String dialogMessage = "You selected:\n\nAs prefix:  ";
+            String dialogMessage = ResourceBundle.getBundle("translations/program_strings").getString("rph.youselected") + "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("rph.asprefix") + " ";
             dialogMessage += prefix_message;
             if (!suffixDonNotUseradioButton.isSelected()) {
-                dialogMessage += "\n\nAnd as suffix:  ";
+                dialogMessage += "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("rph.assuffix") + " ";
                 dialogMessage += suffix_message;
             }
-            dialogMessage += "\n\nFor counting:  ";
+            dialogMessage += "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("rph.forcounting") + " ";
             dialogMessage += startcounting_message;
-            dialogMessage += "\n\nFor the extension:  ";
+            dialogMessage += "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("rph.forextension") + " ";
             dialogMessage += extension_message;
 
-            String[] options = {"Continue", "Cancel"};
-            int choice = JOptionPane.showOptionDialog(null, dialogMessage, "Selected options",
+            String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+            int choice = JOptionPane.showOptionDialog(null, dialogMessage, ResourceBundle.getBundle("translations/program_strings").getString("rph.selectedoptionstitle"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             if (choice == 0) { //Continue
@@ -512,6 +514,7 @@ public class RenamePhotos extends JDialog {
         pack();
         //setLocationRelativeTo(null);
         setLocationByPlatform(true);
+        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("renamephotos.title"));
         initDialog();
         setVisible(true);
 
@@ -542,10 +545,10 @@ public class RenamePhotos extends JDialog {
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
-        buttonOK.setText("OK");
+        this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Close");
+        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.close"));
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -554,9 +557,9 @@ public class RenamePhotos extends JDialog {
         Font label1Font = this.$$$getFont$$$(null, Font.BOLD | Font.ITALIC, -1, label1.getFont());
         if (label1Font != null) label1.setFont(label1Font);
         label1.setForeground(new Color(-16776961));
-        label1.setMinimumSize(new Dimension(235, 17));
-        label1.setPreferredSize(new Dimension(235, 17));
-        label1.setText("Name: Prefix_Suffix.extension");
+        label1.setMinimumSize(new Dimension(400, 17));
+        label1.setPreferredSize(new Dimension(400, 17));
+        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.nameexample"));
         panel3.add(label1);
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
@@ -570,24 +573,24 @@ public class RenamePhotos extends JDialog {
         panel5.setLayout(new GridLayoutManager(3, 1, new Insets(10, 0, 10, 0), -1, -1));
         panel4.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         RenamingGeneralText = new JLabel();
-        RenamingGeneralText.setText("RenamingGeneralText");
+        this.$$$loadLabelText$$$(RenamingGeneralText, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.toptext"));
         panel5.add(RenamingGeneralText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
         Font label2Font = this.$$$getFont$$$(null, Font.BOLD, -1, label2.getFont());
         if (label2Font != null) label2.setFont(label2Font);
-        label2.setText("Source folder:");
+        this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.sourcefolder"));
         panel5.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         panel5.add(panel6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         renamingInfobutton = new JButton();
-        renamingInfobutton.setText("Help");
+        this.$$$loadButtonText$$$(renamingInfobutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel6.add(renamingInfobutton);
         RenamingSourceFoldertextField = new JTextField();
         RenamingSourceFoldertextField.setPreferredSize(new Dimension(600, 30));
         panel6.add(RenamingSourceFoldertextField);
         RenamingSourceFolderbutton = new JButton();
-        RenamingSourceFolderbutton.setText("Browse");
+        this.$$$loadButtonText$$$(RenamingSourceFolderbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.browsebutton"));
         panel6.add(RenamingSourceFolderbutton);
         final JPanel panel7 = new JPanel();
         panel7.setLayout(new GridLayoutManager(1, 2, new Insets(10, 0, 10, 0), -1, -1));
@@ -599,12 +602,12 @@ public class RenamePhotos extends JDialog {
         final JLabel label3 = new JLabel();
         Font label3Font = this.$$$getFont$$$(null, Font.BOLD, -1, label3.getFont());
         if (label3Font != null) label3.setFont(label3Font);
-        label3.setText("Select rename options:");
+        this.$$$loadLabelText$$$(label3, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.selrenameoptions"));
         RenamingOptions.add(label3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label4 = new JLabel();
         Font label4Font = this.$$$getFont$$$(null, Font.BOLD, -1, label4.getFont());
         if (label4Font != null) label4.setFont(label4Font);
-        label4.setText("Prefix:");
+        this.$$$loadLabelText$$$(label4, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.prefix"));
         RenamingOptions.add(label4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel8 = new JPanel();
         panel8.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -612,7 +615,7 @@ public class RenamePhotos extends JDialog {
         prefixDate_timeradioButton = new JRadioButton();
         prefixDate_timeradioButton.setPreferredSize(new Dimension(140, 19));
         prefixDate_timeradioButton.setSelected(true);
-        prefixDate_timeradioButton.setText("Date_time");
+        this.$$$loadButtonText$$$(prefixDate_timeradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.datetime"));
         panel8.add(prefixDate_timeradioButton);
         prefixDate_timecomboBox = new JComboBox();
         panel8.add(prefixDate_timecomboBox);
@@ -622,7 +625,7 @@ public class RenamePhotos extends JDialog {
         prefixDateradioButton = new JRadioButton();
         prefixDateradioButton.setPreferredSize(new Dimension(140, 19));
         prefixDateradioButton.setRolloverEnabled(false);
-        prefixDateradioButton.setText("Date");
+        this.$$$loadButtonText$$$(prefixDateradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.date"));
         panel9.add(prefixDateradioButton);
         prefixDatecomboBox = new JComboBox();
         panel9.add(prefixDatecomboBox);
@@ -631,7 +634,7 @@ public class RenamePhotos extends JDialog {
         RenamingOptions.add(panel10, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         prefixStringradioButton = new JRadioButton();
         prefixStringradioButton.setPreferredSize(new Dimension(140, 19));
-        prefixStringradioButton.setText("String");
+        this.$$$loadButtonText$$$(prefixStringradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.string"));
         panel10.add(prefixStringradioButton);
         prefixStringtextField = new JTextField();
         prefixStringtextField.setPreferredSize(new Dimension(200, 30));
@@ -641,7 +644,7 @@ public class RenamePhotos extends JDialog {
         RenamingOptions.add(panel11, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         prefixCameramodelradioButton = new JRadioButton();
         prefixCameramodelradioButton.setPreferredSize(new Dimension(145, 19));
-        prefixCameramodelradioButton.setText("Camera model");
+        this.$$$loadButtonText$$$(prefixCameramodelradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.cammodel"));
         panel11.add(prefixCameramodelradioButton);
         final JLabel label5 = new JLabel();
         label5.setText("${Exif:Model}");
@@ -652,7 +655,7 @@ public class RenamePhotos extends JDialog {
         final JLabel label6 = new JLabel();
         Font label6Font = this.$$$getFont$$$(null, Font.BOLD, -1, label6.getFont());
         if (label6Font != null) label6.setFont(label6Font);
-        label6.setText("Suffix:");
+        this.$$$loadLabelText$$$(label6, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.suffix"));
         RenamingsuffixPanel.add(label6, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel12 = new JPanel();
         panel12.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -660,14 +663,14 @@ public class RenamePhotos extends JDialog {
         suffixDonNotUseradioButton = new JRadioButton();
         suffixDonNotUseradioButton.setMinimumSize(new Dimension(190, 19));
         suffixDonNotUseradioButton.setSelected(true);
-        suffixDonNotUseradioButton.setText("Do not use");
+        this.$$$loadButtonText$$$(suffixDonNotUseradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.donotuse"));
         panel12.add(suffixDonNotUseradioButton);
         final JPanel panel13 = new JPanel();
         panel13.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel13, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixStringradioButton = new JRadioButton();
-        suffixStringradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixStringradioButton.setText("String");
+        suffixStringradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixStringradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.string"));
         panel13.add(suffixStringradioButton);
         suffixStringtextField = new JTextField();
         suffixStringtextField.setPreferredSize(new Dimension(200, 30));
@@ -676,8 +679,8 @@ public class RenamePhotos extends JDialog {
         panel14.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel14, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixDatetimeradioButton = new JRadioButton();
-        suffixDatetimeradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixDatetimeradioButton.setText("Date_time");
+        suffixDatetimeradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixDatetimeradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.datetime"));
         panel14.add(suffixDatetimeradioButton);
         suffixDatetimecomboBox = new JComboBox();
         panel14.add(suffixDatetimecomboBox);
@@ -685,8 +688,8 @@ public class RenamePhotos extends JDialog {
         panel15.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel15, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixDateradioButton = new JRadioButton();
-        suffixDateradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixDateradioButton.setText("Date");
+        suffixDateradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixDateradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.date"));
         panel15.add(suffixDateradioButton);
         suffixDatecomboBox = new JComboBox();
         panel15.add(suffixDatecomboBox);
@@ -694,8 +697,8 @@ public class RenamePhotos extends JDialog {
         panel16.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel16, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixCameramodelradioButton = new JRadioButton();
-        suffixCameramodelradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixCameramodelradioButton.setText("Camera model");
+        suffixCameramodelradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixCameramodelradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.cammodel"));
         panel16.add(suffixCameramodelradioButton);
         final JLabel label7 = new JLabel();
         label7.setText("${Exif:Model}");
@@ -704,8 +707,8 @@ public class RenamePhotos extends JDialog {
         panel17.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel17, new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixOriginalFilenameradioButton = new JRadioButton();
-        suffixOriginalFilenameradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixOriginalFilenameradioButton.setText("Original filename");
+        suffixOriginalFilenameradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixOriginalFilenameradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.orgfilename"));
         panel17.add(suffixOriginalFilenameradioButton);
         final JLabel label8 = new JLabel();
         label8.setText("${filename}");
@@ -714,8 +717,8 @@ public class RenamePhotos extends JDialog {
         panel18.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel18, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixCityNameradioButton = new JRadioButton();
-        suffixCityNameradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixCityNameradioButton.setText("City name");
+        suffixCityNameradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixCityNameradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.cityname"));
         panel18.add(suffixCityNameradioButton);
         final JLabel label9 = new JLabel();
         label9.setText("${Xmp:City}");
@@ -724,8 +727,8 @@ public class RenamePhotos extends JDialog {
         panel19.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel19, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixLocationradioButton = new JRadioButton();
-        suffixLocationradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixLocationradioButton.setText("Location");
+        suffixLocationradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixLocationradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.location"));
         panel19.add(suffixLocationradioButton);
         final JLabel label10 = new JLabel();
         label10.setText("${Xmp:Location}");
@@ -734,8 +737,8 @@ public class RenamePhotos extends JDialog {
         panel20.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel20, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixISOradioButton = new JRadioButton();
-        suffixISOradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixISOradioButton.setText("ISO value");
+        suffixISOradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixISOradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.iso"));
         panel20.add(suffixISOradioButton);
         final JLabel label11 = new JLabel();
         label11.setText("${Exif:ISO}");
@@ -744,8 +747,8 @@ public class RenamePhotos extends JDialog {
         panel21.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingsuffixPanel.add(panel21, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         suffixFocalLengthradioButton = new JRadioButton();
-        suffixFocalLengthradioButton.setPreferredSize(new Dimension(190, 19));
-        suffixFocalLengthradioButton.setText("Focal length in 35 mm");
+        suffixFocalLengthradioButton.setPreferredSize(new Dimension(300, 19));
+        this.$$$loadButtonText$$$(suffixFocalLengthradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.foclength35mm"));
         panel21.add(suffixFocalLengthradioButton);
         final JLabel label12 = new JLabel();
         label12.setText("${exif:focallengthin35mmformat}");
@@ -760,14 +763,14 @@ public class RenamePhotos extends JDialog {
         RenamingDuplicateNames = new JLabel();
         Font RenamingDuplicateNamesFont = this.$$$getFont$$$(null, -1, -1, RenamingDuplicateNames.getFont());
         if (RenamingDuplicateNamesFont != null) RenamingDuplicateNames.setFont(RenamingDuplicateNamesFont);
-        RenamingDuplicateNames.setText("RenamingDuplicateNames");
-        RenamingNumberingPanel.add(RenamingDuplicateNames, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        this.$$$loadLabelText$$$(RenamingDuplicateNames, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.duplicatestext"));
+        RenamingNumberingPanel.add(RenamingDuplicateNames, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel23 = new JPanel();
         panel23.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         RenamingNumberingPanel.add(panel23, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label13 = new JLabel();
         label13.setPreferredSize(new Dimension(140, 18));
-        label13.setText("No. of digits");
+        this.$$$loadLabelText$$$(label13, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.noofdigits"));
         panel23.add(label13);
         DigitscomboBox = new JComboBox();
         panel23.add(DigitscomboBox);
@@ -779,17 +782,17 @@ public class RenamePhotos extends JDialog {
         final JLabel label14 = new JLabel();
         Font label14Font = this.$$$getFont$$$(null, Font.BOLD, -1, label14.getFont());
         if (label14Font != null) label14.setFont(label14Font);
-        label14.setText("File extension:");
+        this.$$$loadLabelText$$$(label14, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.filextension"));
         RenamingFileExtPanel.add(label14, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         extLeaveradioButton = new JRadioButton();
         extLeaveradioButton.setSelected(true);
-        extLeaveradioButton.setText("Leave as is");
+        this.$$$loadButtonText$$$(extLeaveradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.fileextleave"));
         RenamingFileExtPanel.add(extLeaveradioButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         makeLowerCaseRadioButton = new JRadioButton();
-        makeLowerCaseRadioButton.setText("Make lower case");
+        this.$$$loadButtonText$$$(makeLowerCaseRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.fileextlower"));
         RenamingFileExtPanel.add(makeLowerCaseRadioButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         makeUpperCaseRadioButton = new JRadioButton();
-        makeUpperCaseRadioButton.setText("Make upper case");
+        this.$$$loadButtonText$$$(makeUpperCaseRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.fileextupper"));
         RenamingFileExtPanel.add(makeUpperCaseRadioButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
@@ -831,6 +834,77 @@ public class RenamePhotos extends JDialog {
             }
         }
         return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+    }
+
+    private static Method $$$cachedGetBundleMethod$$$ = null;
+
+    private String $$$getMessageFromBundle$$$(String path, String key) {
+        ResourceBundle bundle;
+        try {
+            Class<?> thisClass = this.getClass();
+            if ($$$cachedGetBundleMethod$$$ == null) {
+                Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+                $$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+            }
+            bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+        } catch (Exception e) {
+            bundle = ResourceBundle.getBundle(path);
+        }
+        return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadButtonText$$$(AbstractButton component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

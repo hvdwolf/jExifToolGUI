@@ -28,9 +28,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -274,7 +272,7 @@ public class Utils {
             if ( version_compare > 0 ) { // This means the version on the web is newer
             //if (Float.valueOf(web_version) > Float.valueOf(ProgramTexts.Version)) {
                 String[] options = {"No", "Yes"};
-                int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ProgramTexts.newVersionText), "New version found",
+                int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversion"),
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (choice == 1) { //Yes
                     // Do something
@@ -284,7 +282,7 @@ public class Utils {
 
             } else {
                 if (fromWhere.equals("menu")) {
-                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ProgramTexts.LatestVersionText), "No newer version", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversion"), JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         }
@@ -637,7 +635,9 @@ public class Utils {
         // This will display the exif info in the right panel
 
         DefaultTableModel model = (DefaultTableModel) ListexiftoolInfotable.getModel();
-        model.setColumnIdentifiers(new String[]{"Group", "Tag", "Value"});
+        model.setColumnIdentifiers(new String[]{ ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tablegroup"),
+                ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tabletag"),
+                ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tablevalue")});
         ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
         ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
         ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(500);
@@ -663,10 +663,10 @@ public class Utils {
     public static void displaySelectedImageInDefaultViewer(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         if (isOsFromMicrosoft()) {
-            fpath = files[selectedRow].getPath().replace("\\", "/");
+            fpath = "\"" + files[selectedRow].getPath().replace("\\", "/") + "\"";
             logger.trace("fpath is now: {}", fpath);
         } else {
-            fpath = files[selectedRow].getPath();
+            fpath = "\"" + files[selectedRow].getPath() + "\"";
         }
         BufferedImage img = ImageIO.read(new File(fpath));
         // resize it
@@ -771,29 +771,53 @@ public class Utils {
     static void viewInRawViewer(String RawViewerPath) {
         String command = ""; // macos/linux
         String[] commands = {}; // windows
+        List<String> cmdparams = new ArrayList<String>();
+        logger.info("bestand {} ", MyVariables.getSelectedImagePath());
+        String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
         logger.info("RAW viewer started (trying to start)");
         Application.OS_NAMES currentOsName = getCurrentOsName();
         Runtime runtime = Runtime.getRuntime();
+        ProcessBuilder builder = new ProcessBuilder(cmdparams);
+        Process process;
         try {
             switch (currentOsName) {
                 case APPLE:
                     String file_ext = getFileExtension(RawViewerPath);
                     if ("app".equals(file_ext)) {
-                        command = "open " + RawViewerPath + " " + MyVariables.getSelectedImagePath();
+                        command = "open " + RawViewerPath + " \"" + correctedPath + "\"";
+                        cmdparams.add("open");
+                        cmdparams.add(RawViewerPath);
+                        cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
+                        commands = new String[] {"open", RawViewerPath, MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
                     } else {
-                        command = RawViewerPath + " " + MyVariables.getSelectedImagePath();
+                        command = RawViewerPath + " \"" + correctedPath + "\"";
+                        cmdparams.add(RawViewerPath);
+                        cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
                     }
-                    runtime.exec(command);
+                    //runtime.exec(command);
+                    runtime.exec(commands);
+                    //process = builder.start();
                     return;
                 case MICROSOFT:
-                    String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
+                    String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
                     commands = new String[] {RawViewerPath, convImg};
-                    runtime.exec(commands);
+                    //runtime.exec(commands);
+                    cmdparams.add(RawViewerPath);
+                    cmdparams.add(convImg);
+                    process = builder.start();
                     return;
                 case LINUX:
                     command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    command = RawViewerPath + " \"" + correctedPath + "\"";
+                    logger.info(currentOsName.toString() + " " + command);
                     runtime.exec(command);
+                    commands = new String[] {RawViewerPath, "\"" + MyVariables.getSelectedImagePath() + "\""};
+                    //runtime.exec(commands);
+                    cmdparams.add(RawViewerPath);
+                    cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
+                    //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                    //process = builder.start();
                     return;
             }
         } catch (IOException e) {
@@ -810,26 +834,50 @@ public class Utils {
     static void viewInDefaultViewer() {
         String command = ""; // macos/linux
         String[] commands = {}; // windows
+        List<String> cmdparams = new ArrayList<String>();
+        String[] params = {};
+        logger.info("bestand {} ", MyVariables.getSelectedImagePath());
+        String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
         logger.info("default viewer started (trying to start)");
         Application.OS_NAMES currentOsName = getCurrentOsName();
         Runtime runtime = Runtime.getRuntime();
+        //ProcessBuilder builder = new ProcessBuilder(cmdparams);
+        //Process process;
         try {
             switch (currentOsName) {
                 case APPLE:
-                    command = "open /Applications/Preview.app " + MyVariables.getSelectedImagePath();
-                    runtime.exec(command);
+                    command = "open /Applications/Preview.app \"" + correctedPath + "\"";
+                    commands = new String[] {"open", "/Applications/Preview.app", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
+                    runtime.exec(commands);
+                    //runtime.exec(command);
+                    /*cmdparams.add("open");
+                    cmdparams.add("/Applications/Preview.app");
+                    cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
+                    process = builder.start(); */
                     return;
                 case MICROSOFT:
-                    String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
+                    String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
                     commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
                     runtime.exec(commands);
                     return;
                 case LINUX:
-                    String selectedImagePath = MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                    logger.trace("xdg-open {}", selectedImagePath);
-                    command = "xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                    runtime.exec(command);
+                    String selectedImagePath = correctedPath.replace(" ", "\\ ");
+                    //logger.info("xdg-open {}", selectedImagePath);
+                    command = "/usr/bin/xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    params = new String[] {"/usr/bin/xdg-open", " ", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
+                    //command = "xdg-open \"" + correctedPath + "\"";
+                    //command = "xdg-open \"" + MyVariables.getSelectedImagePath() + "\"";
+                    //logger.info(currentOsName.toString() + " " + command);
+                    //runtime.exec(command);
+                    //runtime.exec(params);
+                    cmdparams.add("/usr/bin/xdg-open");
+                    //cmdparams.add(" ");
+                    //cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
+                    cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                    logger.info("cmdparam {}", cmdparams.toString());
+                    ProcessBuilder builder = new ProcessBuilder(cmdparams);
+                    Process process = builder.start();
                     return;
             }
         } catch (IOException e) {
@@ -996,7 +1044,7 @@ public class Utils {
         // tmpPath is optional and only used to create previews of raw images which can't be displayed directly
         List<String> cmdparams = new ArrayList<String>();
         File myFilePath;
-        String[] options = {"No", "Yes"};
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
