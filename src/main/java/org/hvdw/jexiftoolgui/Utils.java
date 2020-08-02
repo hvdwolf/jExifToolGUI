@@ -6,6 +6,7 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
+import org.hvdw.jexiftoolgui.view.JavaImageViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.*;
 
@@ -266,6 +268,8 @@ public class Utils {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
+            logger.info("Using java version {}: ", jv);
             logger.info("Version on the web: " + web_version);
             logger.info("This version: " + ProgramTexts.Version);
             int version_compare = web_version.compareTo(ProgramTexts.Version);
@@ -376,12 +380,52 @@ public class Utils {
     }
 
     /*
+    / On Mac we let sips do the conversion of tif and heic images to previews
+    / like "sips -s format JPEG -Z 160 test.heic --out test.jpg"
+     */
+    static String sipsConvertToJPG(File file) {
+        //ImageIcon icon = null;
+        //Runtime runtime = Runtime.getRuntime();
+        List<String> cmdparams = new ArrayList<String>();
+        String exportResult = "Success";
+
+        cmdparams.add("/usr/bin/sips");
+        cmdparams.add("-s");
+        cmdparams.add("format");
+        cmdparams.add("JPEG");
+        cmdparams.add("-Z");
+        cmdparams.add("160");
+        // Get the file
+        cmdparams.add(file.getPath().replace(" ", "\\ "));
+        cmdparams.add("--out");
+
+        // Get the temporary directory
+        String tempWorkDir = MyVariables.gettmpWorkFolder();
+        // Get the file name without extension
+        String fileName = file.getName();
+        int pos = fileName.lastIndexOf(".");
+        if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+            fileName = fileName.substring(0, pos);
+        }
+        cmdparams.add(tempWorkDir + File.separator + fileName +".jpg");
+        logger.info("final sips command: " + cmdparams.toString());
+
+        try {
+            String cmdResult = CommandRunner.runCommand(cmdparams);
+            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing sipd command to convert to jpg");
+        }
+        return exportResult;
+    }
+    /*
      * Display the loaded files with icon and name
      */
-    //static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview, File[] files) {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
         int selectedRow, selectedColumn;
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
+        boolean tifextension = false;
+        boolean heicextension = false;
         String[] SimpleExtensions = {};
         String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
         if (jv.startsWith("1.8")) {
@@ -425,20 +469,42 @@ public class Utils {
         int trow = 0;
         int tcolumn = 0;
 
+        Application.OS_NAMES currentOsName = getCurrentOsName();
         for (File file : files) {
-
             //logger.trace(file.getName().replace("\\", "/"));
             bSimpleExtension = false;
             filename = file.getName().replace("\\", "/");
             //logger.info("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
+            if (filenameExt.toLowerCase().equals("tiff") || filenameExt.toLowerCase().equals("tif") ) {
+                tifextension = true;
+            }
+            if (filenameExt.toLowerCase().equals("heic")) {
+                heicextension = true;
+            }
             for (String ext : SimpleExtensions) {
                 if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png (or tif(f) on v11 or above)
                     bSimpleExtension = true;
                     break;
                 }
             }
-            if (bSimpleExtension) {
+            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
+                String exportResult = sipsConvertToJPG(file);
+                if ("Success".equals(exportResult)) {
+                    //Hoping we have a thumbnail
+                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
+                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    if (thumbfile.exists()) {
+                        // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
+                        //logger.info("create thumb nr1");
+                        icon = createIcon(thumbfile);
+                        if (icon != null) {
+                            // display our created icon from the thumbnail
+                            ImgFilenameRow[0] = icon;
+                        }
+                    }
+                }
+            } else if (bSimpleExtension) {
                 icon = createIcon(file);
                 ImgFilenameRow[0] = icon;
             } else { //We have a RAW image extension or tiff or something else like audio/video
@@ -836,7 +902,7 @@ public class Utils {
         String[] commands = {}; // windows
         List<String> cmdparams = new ArrayList<String>();
         String[] params = {};
-        logger.info("bestand {} ", MyVariables.getSelectedImagePath());
+        //logger.info("bestand {} ", MyVariables.getSelectedImagePath());
         String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
         logger.info("default viewer started (trying to start)");
@@ -844,23 +910,30 @@ public class Utils {
         Runtime runtime = Runtime.getRuntime();
         //ProcessBuilder builder = new ProcessBuilder(cmdparams);
         //Process process;
-        try {
+        //try {
             switch (currentOsName) {
                 case APPLE:
                     command = "open /Applications/Preview.app \"" + correctedPath + "\"";
                     commands = new String[] {"open", "/Applications/Preview.app", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
-                    runtime.exec(commands);
+                    //runtime.exec(commands);
                     //runtime.exec(command);
-                    /*cmdparams.add("open");
+                    cmdparams.add("open");
                     cmdparams.add("/Applications/Preview.app");
-                    cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
-                    process = builder.start(); */
-                    return;
+                    //cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
+                    cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                    //process = builder.start(); */
+                    //String cmdResult = CommandRunner.runCommand(cmdparams);
+                    //return;
                 case MICROSOFT:
                     String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
                     commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
-                    runtime.exec(commands);
-                    return;
+                    cmdparams.add("cmd.exe");
+                    cmdparams.add("/c");
+                    cmdparams.add("start");
+                    cmdparams.add("\"DummyTitle\"");
+                    cmdparams.add(String.format("\"%s\"", convImg));
+                    //runtime.exec(commands);
+                    //return;
                 case LINUX:
                     String selectedImagePath = correctedPath.replace(" ", "\\ ");
                     //logger.info("xdg-open {}", selectedImagePath);
@@ -875,14 +948,22 @@ public class Utils {
                     //cmdparams.add(" ");
                     //cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
                     cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                    logger.info("cmdparam {}", cmdparams.toString());
-                    ProcessBuilder builder = new ProcessBuilder(cmdparams);
-                    Process process = builder.start();
-                    return;
+                    //return;
             }
-        } catch (IOException e) {
+            logger.info("default viewer; after switch statement: " + cmdparams.toString());
+            //String cmdResult = CommandRunner.runCommand(cmdparams);
+            JavaImageViewer JIV = new JavaImageViewer();
+            JIV.ViewImageInFullscreenFrame();
+        /*} catch (IOException | InterruptedException e) {
             logger.error("Could not open image app.", e);
-        }
+        }*/
+    }
+
+    /*
+    / Try to display image in full-screen java window
+     */
+    static void displayInJavaWindow () {
+
     }
     /*
     / This method is called from main screen. It needs to detect if we have a raw image, a bmp/gif/jpg/png image, or whatever other kind of file
@@ -893,13 +974,15 @@ public class Utils {
     static void displaySelectedImageInExternalViewer() {
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
         String[] SimpleExtensions = {};
+        boolean jv11 = false;
         String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
         if (jv.startsWith("1.8")) {
             //logger.info("On V8, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
         } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
-            //logger.info("On V11 or above, exact version: {}", jv);
+            logger.info("On V11 or above, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
+            jv11 = true;
         }
 
         String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
@@ -919,7 +1002,7 @@ public class Utils {
         }
         if (!RawExtension) { //check if we have another image
             for (String ext : SimpleExtensions) {
-                if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image
+                if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image or tif(f) on java11
                     defaultImg = true;
                     logger.info("default image is true");
                     break;
@@ -944,7 +1027,7 @@ public class Utils {
 
     public static Application.OS_NAMES getCurrentOsName() {
         String OS = SystemPropertyFacade.getPropertyByKey(OS_NAME).toLowerCase();
-        if (OS.contains("mac")) return Application.OS_NAMES.APPLE;
+        if (OS.contains("mac")) return APPLE;
         if (OS.contains("windows")) return Application.OS_NAMES.MICROSOFT;
         return Application.OS_NAMES.LINUX;
     }
@@ -953,7 +1036,7 @@ public class Utils {
         return getCurrentOsName() == Application.OS_NAMES.MICROSOFT;
     }
     public static boolean isOsFromApple() {
-        return getCurrentOsName() == Application.OS_NAMES.APPLE;
+        return getCurrentOsName() == APPLE;
     }
 
     public static boolean in_Range(int checkvalue, int lower, int upper) {
@@ -979,7 +1062,7 @@ public class Utils {
             coordinate = Float.parseFloat(input_lat_lon[2]) / (float) 60;
             logger.info("converted seconds: " + coordinate);
         } else {
-            JOptionPane.showMessageDialog(rootPanel, "seconds must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcsecerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
             return lat_lon;
         }
@@ -987,7 +1070,7 @@ public class Utils {
             coordinate = (Float.parseFloat( input_lat_lon[1]) + coordinate) / (float) 60;
             logger.info("converted mins + secs: " + coordinate);
         } else {
-            JOptionPane.showMessageDialog(rootPanel, "minutes must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcminerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
             return lat_lon;
         }
@@ -999,7 +1082,7 @@ public class Utils {
             logger.info("decimal lat: " + coordinate);
             lat_lon[0] = String.valueOf(coordinate);
         } else {
-            JOptionPane.showMessageDialog(rootPanel, "degrees must fall in the range 0 to <90", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcdegerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
             return lat_lon;
         }
@@ -1009,7 +1092,7 @@ public class Utils {
             coordinate = Float.parseFloat(input_lat_lon[6]) / (float) 60;
             logger.info("converted seconds: " + coordinate);
         } else {
-            JOptionPane.showMessageDialog(rootPanel, "seconds must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcsecerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
             return lat_lon;
         }
@@ -1017,7 +1100,7 @@ public class Utils {
             coordinate = (Float.parseFloat( input_lat_lon[5]) + coordinate) / (float) 60;
             logger.info("converted mins + secs: " + coordinate);
         } else {
-            JOptionPane.showMessageDialog(rootPanel, "minutes must fall in the range 0 to <60", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcminerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
             return lat_lon;
         }
@@ -1029,7 +1112,7 @@ public class Utils {
             lat_lon[1] = String.valueOf(coordinate);
             logger.info("decimal lon: " + coordinate);
         } else {
-            JOptionPane.showMessageDialog(rootPanel, "degrees must fall in the range 0 to <90", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcdegerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
             return lat_lon;
         }
@@ -1049,7 +1132,7 @@ public class Utils {
         File[] files = MyVariables.getSelectedFiles();
 
         logger.info("Export previews/thumbnails..");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.ExportPreviewsThumbnails),"Extract previews/thumbnails",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("ept.dlgtext")),ResourceBundle.getBundle("translations/program_strings").getString("ept.dlgtitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             cmdparams.add(Utils.platformExiftool());
@@ -1115,7 +1198,7 @@ public class Utils {
             //logger.info("cmd result from export previews for single RAW" + cmdResult);
         } catch (IOException | InterruptedException ex) {
             logger.debug("Error executing command to export previes for one RAW");
-            exportResult = (" Failed to create previews");
+            exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
         }
         return exportResult;
     }
