@@ -389,6 +389,9 @@ public class Utils {
         List<String> cmdparams = new ArrayList<String>();
         String exportResult = "Success";
 
+        //cmdparams.add("/bin/bash");
+        //cmdparams.add("-l");
+        cmdparams.add("-c");
         cmdparams.add("/usr/bin/sips");
         cmdparams.add("-s");
         cmdparams.add("format");
@@ -397,6 +400,7 @@ public class Utils {
         cmdparams.add("160");
         // Get the file
         cmdparams.add(file.getPath().replace(" ", "\\ "));
+        //cmdparams.add("\"" + file.getPath() + "\"");
         cmdparams.add("--out");
 
         // Get the temporary directory
@@ -426,10 +430,13 @@ public class Utils {
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
         boolean tifextension = false;
         boolean heicextension = false;
+        boolean pnmextension = false; // For pnm types: PBM, PGM, PPM
+        boolean jv8 = false;
         String[] SimpleExtensions = {};
         String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
         if (jv.startsWith("1.8")) {
             //logger.info("On V8, exact version: {}", jv);
+            jv8 = true;
             SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
         } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
             //logger.info("On V11 or above, exact version: {}", jv);
@@ -488,9 +495,13 @@ public class Utils {
                     break;
                 }
             }
-            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
+
+            if ( (heicextension) && currentOsName == APPLE) { // For Apple we deviate
+//            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
+                logger.info("do sipsConvertToJPG for {}", filename);
                 String exportResult = sipsConvertToJPG(file);
                 if ("Success".equals(exportResult)) {
+                    logger.info("back from sipsconvert: result {}", exportResult);
                     //Hoping we have a thumbnail
                     thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
                     thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
@@ -505,8 +516,20 @@ public class Utils {
                     }
                 }
             } else if (bSimpleExtension) {
-                icon = createIcon(file);
-                ImgFilenameRow[0] = icon;
+                /*if (tifextension && jv8) { // We need the jai imageio jar
+                    try {
+                        final BufferedImage tif = ImageIO.read(new File(file.getPath().replace("\\", "/")));
+
+                    } catch (IOException ex) {
+                        logger.error("Error loading image", ex);
+                        icon = null;
+                    }
+                } else if (pnmextension) {
+
+                } else { */// just a plain normal jpg/png/bmp/gif
+                    icon = createIcon(file);
+                    ImgFilenameRow[0] = icon;
+                //}
             } else { //We have a RAW image extension or tiff or something else like audio/video
                 // Export previews for current (RAW) image to tempWorkfolder
                 String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);
@@ -902,61 +925,76 @@ public class Utils {
         String[] commands = {}; // windows
         List<String> cmdparams = new ArrayList<String>();
         String[] params = {};
+        boolean tifextension = false;
+        boolean jv8 = false;
         //logger.info("bestand {} ", MyVariables.getSelectedImagePath());
         String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
-        logger.info("default viewer started (trying to start)");
-        Application.OS_NAMES currentOsName = getCurrentOsName();
-        Runtime runtime = Runtime.getRuntime();
-        //ProcessBuilder builder = new ProcessBuilder(cmdparams);
-        //Process process;
-        //try {
-            switch (currentOsName) {
-                case APPLE:
-                    command = "open /Applications/Preview.app \"" + correctedPath + "\"";
-                    commands = new String[] {"open", "/Applications/Preview.app", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
-                    //runtime.exec(commands);
-                    //runtime.exec(command);
-                    cmdparams.add("open");
-                    cmdparams.add("/Applications/Preview.app");
-                    //cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
-                    cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                    //process = builder.start(); */
-                    //String cmdResult = CommandRunner.runCommand(cmdparams);
-                    //return;
-                case MICROSOFT:
-                    String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
-                    commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
-                    cmdparams.add("cmd.exe");
-                    cmdparams.add("/c");
-                    cmdparams.add("start");
-                    cmdparams.add("\"DummyTitle\"");
-                    cmdparams.add(String.format("\"%s\"", convImg));
-                    //runtime.exec(commands);
-                    //return;
-                case LINUX:
-                    String selectedImagePath = correctedPath.replace(" ", "\\ ");
-                    //logger.info("xdg-open {}", selectedImagePath);
-                    command = "/usr/bin/xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                    params = new String[] {"/usr/bin/xdg-open", " ", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
-                    //command = "xdg-open \"" + correctedPath + "\"";
-                    //command = "xdg-open \"" + MyVariables.getSelectedImagePath() + "\"";
-                    //logger.info(currentOsName.toString() + " " + command);
-                    //runtime.exec(command);
-                    //runtime.exec(params);
-                    cmdparams.add("/usr/bin/xdg-open");
-                    //cmdparams.add(" ");
-                    //cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
-                    cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                    //return;
+        String filenameExt = getFileExtension(MyVariables.getSelectedImagePath());
+        if (filenameExt.toLowerCase().equals("tiff") || filenameExt.toLowerCase().equals("tif")) {
+            tifextension = true;
+        }
+        String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
+        if (jv.startsWith("1.8")) {
+            //logger.info("On V8, exact version: {}", jv);
+            jv8 = true;
+        }
+
+        if (tifextension && jv8) { // We have to try the external default viewer
+            logger.info("default viewer started (trying to start)");
+            Application.OS_NAMES currentOsName = getCurrentOsName();
+            Runtime runtime = Runtime.getRuntime();
+            //ProcessBuilder builder = new ProcessBuilder(cmdparams);
+            //Process process;
+            try {
+                switch (currentOsName) {
+                    case APPLE:
+                        command = "open /Applications/Preview.app \"" + correctedPath + "\"";
+                        //commands = new String[] {"open", "/Applications/Preview.app", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
+                        //runtime.exec(commands);
+                        runtime.exec(command);
+                        /*cmdparams.add("open");
+                        cmdparams.add("/Applications/Preview.app");
+                        //cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
+                        cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                        //process = builder.start();
+                        //String cmdResult = CommandRunner.runCommand(cmdparams); */
+                        return;
+                    case MICROSOFT:
+                        String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
+                        commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
+                        /*cmdparams.add("cmd.exe");
+                        cmdparams.add("/c");
+                        cmdparams.add("start");
+                        cmdparams.add("\"DummyTitle\"");
+                        cmdparams.add(String.format("\"%s\"", convImg)); */
+                        runtime.exec(commands);
+                        return;
+                    case LINUX:
+                        /*String selectedImagePath = correctedPath.replace(" ", "\\ ");
+                        //logger.info("xdg-open {}", selectedImagePath); */
+                        command = "/usr/bin/xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        /*params = new String[] {"/usr/bin/xdg-open", " ", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
+                        //command = "xdg-open \"" + correctedPath + "\"";
+                        //command = "xdg-open \"" + MyVariables.getSelectedImagePath() + "\"";
+                        //logger.info(currentOsName.toString() + " " + command); */
+                        runtime.exec(command);
+                        /*runtime.exec(params);
+                        cmdparams.add("/usr/bin/xdg-open");
+                        //cmdparams.add(" ");
+                        //cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
+                        cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ ")); */
+                        return;
+                }
+                //logger.info("default viewer; after switch statement: " + cmdparams.toString());
+                //String cmdResult = CommandRunner.runCommand(cmdparams);
+            } catch (IOException e) {
+                logger.error("Could not open image app.", e);
             }
-            logger.info("default viewer; after switch statement: " + cmdparams.toString());
-            //String cmdResult = CommandRunner.runCommand(cmdparams);
+        } else { // No tiff or on V11 or above
             JavaImageViewer JIV = new JavaImageViewer();
             JIV.ViewImageInFullscreenFrame();
-        /*} catch (IOException | InterruptedException e) {
-            logger.error("Could not open image app.", e);
-        }*/
+        }
     }
 
     /*

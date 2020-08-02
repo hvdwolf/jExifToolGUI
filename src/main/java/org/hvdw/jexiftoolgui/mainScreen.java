@@ -2168,6 +2168,9 @@ public class mainScreen {
                 case "Check for new version":
                     Utils.checkForNewVersion("menu");
                     break;
+                case "Translate":
+                    Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/src/main/resources/translations/Readme.md");
+                    break;
                 case "Donate":
                     Utils.openBrowser("https://hvdwolf.github.io/jExifToolGUI/donate.html");
                     // Disable for the time being
