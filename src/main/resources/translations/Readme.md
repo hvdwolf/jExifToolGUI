@@ -1,6 +1,6 @@
 # (Help) Translate jExifToolGUI into your own language
 
-Download the program_strings_en.properties file to your computer.
+Download the program_strings.properties and program_help_texts.properties file to your computer.
 
 Look at the  [Java 11 supported locales](https://www.oracle.com/java/technologies/javase/jdk11-suported-locales.html) page to see what your country locale is.
 
