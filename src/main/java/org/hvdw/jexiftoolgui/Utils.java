@@ -862,51 +862,51 @@ public class Utils {
         String[] commands = {}; // windows
         List<String> cmdparams = new ArrayList<String>();
         logger.info("bestand {} ", MyVariables.getSelectedImagePath());
-        String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
+        //String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
         logger.info("RAW viewer started (trying to start)");
         Application.OS_NAMES currentOsName = getCurrentOsName();
         Runtime runtime = Runtime.getRuntime();
-        ProcessBuilder builder = new ProcessBuilder(cmdparams);
-        Process process;
+        //ProcessBuilder builder = new ProcessBuilder(cmdparams);
+        //Process process;
         try {
             switch (currentOsName) {
                 case APPLE:
                     String file_ext = getFileExtension(RawViewerPath);
                     if ("app".equals(file_ext)) {
-                        command = "open " + RawViewerPath + " \"" + correctedPath + "\"";
-                        cmdparams.add("open");
+                        command = "open " + RawViewerPath + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        /*cmdparams.add("open");
                         cmdparams.add(RawViewerPath);
                         cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
-                        commands = new String[] {"open", RawViewerPath, MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
+                        commands = new String[] {"open", RawViewerPath, MyVariables.getSelectedImagePath().replace(" ", "\\ ")}; */
                     } else {
-                        command = RawViewerPath + " \"" + correctedPath + "\"";
-                        cmdparams.add(RawViewerPath);
-                        cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
+                        command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        /* cmdparams.add(RawViewerPath);
+                        cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\""); */
                     }
-                    //runtime.exec(command);
-                    runtime.exec(commands);
+                    runtime.exec(command);
+                    //runtime.exec(commands);
                     //process = builder.start();
                     return;
                 case MICROSOFT:
-                    String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
+                    String convImg = "\"" + MyVariables.getSelectedImagePath().replace("/", "\\") + "\"";
                     commands = new String[] {RawViewerPath, convImg};
-                    //runtime.exec(commands);
-                    cmdparams.add(RawViewerPath);
+                    runtime.exec(commands);
+                    /*cmdparams.add(RawViewerPath);
                     cmdparams.add(convImg);
-                    process = builder.start();
+                    process = builder.start(); */
                     return;
                 case LINUX:
                     command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                    command = RawViewerPath + " \"" + correctedPath + "\"";
-                    logger.info(currentOsName.toString() + " " + command);
+                    /*command = RawViewerPath + " \"" + correctedPath + "\"";
+                    logger.info(currentOsName.toString() + " " + command); */
                     runtime.exec(command);
-                    commands = new String[] {RawViewerPath, "\"" + MyVariables.getSelectedImagePath() + "\""};
+                    /*commands = new String[] {RawViewerPath, "\"" + MyVariables.getSelectedImagePath() + "\""};
                     //runtime.exec(commands);
                     cmdparams.add(RawViewerPath);
                     cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
                     //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                    //process = builder.start();
+                    //process = builder.start(); */
                     return;
             }
         } catch (IOException e) {
