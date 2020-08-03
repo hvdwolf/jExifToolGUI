@@ -51,7 +51,28 @@ dependencies {
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
 
     // Thumnailator: easy library to create thumbnails. Might going to use it in the future
-    implementation(group = "net.coobird", name = "thumbnailator", version = "0.4.11")
+    //implementation(group = "net.coobird", name = "thumbnailator", version = "0.4.11")
+
+    // jai-imageio-core. ONLY necessary on java8 to convert tif to jpg
+    //implementation(group = "com.github.jai-imageio", name = "jai-imageio-core", version = "1.4.0")
+
+    // Twelve monkeys imageio (supports bmp, jpeg, jpeg-2000, PNM (PBM/PGM/PPM/PAM), PSD, TIFF, HDR, IFF, PCX
+    // PICT, SGI, TGA, ICNS, ICO & CUR, SVG, WMF)
+    implementation("com.twelvemonkeys.imageio:imageio-core:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-metadata:3.6")
+    //implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.6")
+    //implementation("com.twelvemonkeys.imageio:imageio-psd:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-pnm:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-pcx:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-sgi:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-tga:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-icns:3.6")
+    implementation("com.twelvemonkeys.imageio:imageio-hdr:3.6")
+
+    // Minimal json (35Kb), to be used for Nominatim queries (not yet)
+    //implementation(group = "com.eclipsesource.minimal-jsono", name = "minimal-json", version = "0.9.5")
+    implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
 
     // sqlite
     implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")

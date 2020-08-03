@@ -428,12 +428,12 @@ public class Utils {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
         int selectedRow, selectedColumn;
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
-        boolean tifextension = false;
+        //boolean tifextension = false;
         boolean heicextension = false;
-        boolean pnmextension = false; // For pnm types: PBM, PGM, PPM
-        boolean jv8 = false;
-        String[] SimpleExtensions = {};
-        String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
+        //boolean pnmextension = false; // For pnm types: PBM, PGM, PPM
+        //boolean jv8 = false;
+        String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
+        /*String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
         if (jv.startsWith("1.8")) {
             //logger.info("On V8, exact version: {}", jv);
             jv8 = true;
@@ -441,7 +441,7 @@ public class Utils {
         } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
             //logger.info("On V11 or above, exact version: {}", jv);
             SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
-        }
+        }*/
         boolean bSimpleExtension = false;
         String thumbfilename = "";
         File thumbfile = null;
@@ -483,14 +483,14 @@ public class Utils {
             filename = file.getName().replace("\\", "/");
             //logger.info("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
-            if (filenameExt.toLowerCase().equals("tiff") || filenameExt.toLowerCase().equals("tif") ) {
+            /*if (filenameExt.toLowerCase().equals("tiff") || filenameExt.toLowerCase().equals("tif") ) {
                 tifextension = true;
-            }
+            }*/
             if (filenameExt.toLowerCase().equals("heic")) {
                 heicextension = true;
             }
             for (String ext : SimpleExtensions) {
-                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png (or tif(f) on v11 or above)
+                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png or tif(f)
                     bSimpleExtension = true;
                     break;
                 }
@@ -516,20 +516,8 @@ public class Utils {
                     }
                 }
             } else if (bSimpleExtension) {
-                /*if (tifextension && jv8) { // We need the jai imageio jar
-                    try {
-                        final BufferedImage tif = ImageIO.read(new File(file.getPath().replace("\\", "/")));
-
-                    } catch (IOException ex) {
-                        logger.error("Error loading image", ex);
-                        icon = null;
-                    }
-                } else if (pnmextension) {
-
-                } else { */// just a plain normal jpg/png/bmp/gif
-                    icon = createIcon(file);
-                    ImgFilenameRow[0] = icon;
-                //}
+                icon = createIcon(file);
+                ImgFilenameRow[0] = icon;
             } else { //We have a RAW image extension or tiff or something else like audio/video
                 // Export previews for current (RAW) image to tempWorkfolder
                 String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);
@@ -940,50 +928,52 @@ public class Utils {
             jv8 = true;
         }
 
-        if (tifextension && jv8) { // We have to try the external default viewer
+        boolean pipo = false;
+        // We might use this later, hopefully not
+//        if (tifextension && jv8) { // We have to try the external default viewer
             logger.info("default viewer started (trying to start)");
-            Application.OS_NAMES currentOsName = getCurrentOsName();
+            //Application.OS_NAMES currentOsName = getCurrentOsName();
             Runtime runtime = Runtime.getRuntime();
             //ProcessBuilder builder = new ProcessBuilder(cmdparams);
             //Process process;
-            try {
+            /*try {
                 switch (currentOsName) {
                     case APPLE:
                         command = "open /Applications/Preview.app \"" + correctedPath + "\"";
                         //commands = new String[] {"open", "/Applications/Preview.app", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
                         //runtime.exec(commands);
                         runtime.exec(command);
-                        /*cmdparams.add("open");
-                        cmdparams.add("/Applications/Preview.app");
+                        //cmdparams.add("open");
+                        //cmdparams.add("/Applications/Preview.app");
                         //cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
-                        cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                        //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
                         //process = builder.start();
-                        //String cmdResult = CommandRunner.runCommand(cmdparams); */
+                        //String cmdResult = CommandRunner.runCommand(cmdparams);
                         return;
                     case MICROSOFT:
                         String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
                         commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
-                        /*cmdparams.add("cmd.exe");
-                        cmdparams.add("/c");
-                        cmdparams.add("start");
-                        cmdparams.add("\"DummyTitle\"");
-                        cmdparams.add(String.format("\"%s\"", convImg)); */
+                        //cmdparams.add("cmd.exe");
+                        //cmdparams.add("/c");
+                        //cmdparams.add("start");
+                        //cmdparams.add("\"DummyTitle\"");
+                        //cmdparams.add(String.format("\"%s\"", convImg));
                         runtime.exec(commands);
                         return;
                     case LINUX:
-                        /*String selectedImagePath = correctedPath.replace(" ", "\\ ");
-                        //logger.info("xdg-open {}", selectedImagePath); */
+                        //tring selectedImagePath = correctedPath.replace(" ", "\\ ");
+                        //logger.info("xdg-open {}", selectedImagePath);
                         command = "/usr/bin/xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                        /*params = new String[] {"/usr/bin/xdg-open", " ", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
+                        //params = new String[] {"/usr/bin/xdg-open", " ", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
                         //command = "xdg-open \"" + correctedPath + "\"";
                         //command = "xdg-open \"" + MyVariables.getSelectedImagePath() + "\"";
-                        //logger.info(currentOsName.toString() + " " + command); */
+                        //logger.info(currentOsName.toString() + " " + command);
                         runtime.exec(command);
-                        /*runtime.exec(params);
-                        cmdparams.add("/usr/bin/xdg-open");
+                        //runtime.exec(params);
+                        //cmdparams.add("/usr/bin/xdg-open");
                         //cmdparams.add(" ");
                         //cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
-                        cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ ")); */
+                        //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
                         return;
                 }
                 //logger.info("default viewer; after switch statement: " + cmdparams.toString());
@@ -991,10 +981,10 @@ public class Utils {
             } catch (IOException e) {
                 logger.error("Could not open image app.", e);
             }
-        } else { // No tiff or on V11 or above
-            JavaImageViewer JIV = new JavaImageViewer();
-            JIV.ViewImageInFullscreenFrame();
-        }
+        } else { // No tiff or on V11 or above */
+        JavaImageViewer JIV = new JavaImageViewer();
+        JIV.ViewImageInFullscreenFrame();
+        //}
     }
 
     /*
@@ -1011,17 +1001,7 @@ public class Utils {
      */
     static void displaySelectedImageInExternalViewer() {
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
-        String[] SimpleExtensions = {};
-        boolean jv11 = false;
-        String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
-        if (jv.startsWith("1.8")) {
-            //logger.info("On V8, exact version: {}", jv);
-            SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
-        } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
-            logger.info("On V11 or above, exact version: {}", jv);
-            SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
-            jv11 = true;
-        }
+        String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;;
 
         String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
         boolean AlwaysUseRawViewer = prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false);
@@ -1040,7 +1020,7 @@ public class Utils {
         }
         if (!RawExtension) { //check if we have another image
             for (String ext : SimpleExtensions) {
-                if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image or tif(f) on java11
+                if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image or tif(f)
                     defaultImg = true;
                     logger.info("default image is true");
                     break;

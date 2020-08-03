@@ -26,7 +26,7 @@ public class CommandRunner {
             builder.redirectErrorStream(true);
             Process process = builder.start();
             //Use a buffered reader to prevent hangs on Windows
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 res.append(line).append(System.lineSeparator());
