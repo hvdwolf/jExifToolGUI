@@ -1,8 +1,10 @@
 package org.hvdw.jexiftoolgui;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import com.twelvemonkeys.imageio.metadata.Directory;
+import com.twelvemonkeys.imageio.metadata.Entry;
+import com.twelvemonkeys.imageio.metadata.tiff.TIFFReader;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -335,7 +338,7 @@ public class Utils {
         return value.substring(adjustedPosA, posB);
     }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
-    private static String getFileExtension(String filename) {
+    public static String getFileExtension(String filename) {
 
         int lastIndexOf = filename.lastIndexOf(".") + 1;
         if (lastIndexOf == -1) {
@@ -349,33 +352,35 @@ public class Utils {
     */
     static ImageIcon createIcon(File file) {
         ImageIcon icon = null;
+        int[] basicdata = {0, 0, 0};
+        boolean bde = false;
         try {
-            //logger.info("Trying to display: " + filename);
+            try {
+                basicdata = ImageFunctions.getbasicImageData(file);
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+                bde = true;
+
+            }
+            //logger.info("after getbasicdata");
+            if (bde) {
+                // We had some error. Mostly this is the orientation
+                basicdata[2]= 1;
+            }
             BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
-            // resize it
-            BufferedImage resizedImg = new BufferedImage(160, 120, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = resizedImg.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2.drawImage(img, 0, 0, 160, 120, null);
-            g2.dispose();
+            BufferedImage resizedImg =  ImageFunctions.scaleImageToContainer(img, 160, 160);
+            //logger.info("after scaleImageToContainer");
+            resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
+            //logger.info("after rotate");
 
             icon = new ImageIcon(resizedImg);
             return icon;
         } catch (IIOException iex) {
-            /*String strfile = file.toString();
-            //logger.debug("Error javax.imageio.IIOException: " + iex + " for image: " + strfile);
-            // Use the cantdisplay.png for this preview. We can't do anything with this image
-            File thumbfile = new File(MyVariables.getcantdisplaypng());
-            if (thumbfile.exists()) {
-                // Create icon of this Preview
-                icon = createIcon(thumbfile);
-            } */
             icon = null;
         } catch (IOException ex) {
             logger.error("Error loading image", ex);
             icon = null;
         }
-
         return icon;
     }
 
@@ -383,7 +388,7 @@ public class Utils {
     / On Mac we let sips do the conversion of tif and heic images to previews
     / like "sips -s format JPEG -Z 160 test.heic --out test.jpg"
      */
-    static String sipsConvertToJPG(File file) {
+    static String sipsConvertToJPG(File file, String size) {
         //ImageIcon icon = null;
         //Runtime runtime = Runtime.getRuntime();
         List<String> cmdparams = new ArrayList<String>();
@@ -391,13 +396,15 @@ public class Utils {
 
         //cmdparams.add("/bin/bash");
         //cmdparams.add("-l");
-        cmdparams.add("-c");
+        //cmdparams.add("-c");
         cmdparams.add("/usr/bin/sips");
         cmdparams.add("-s");
         cmdparams.add("format");
         cmdparams.add("JPEG");
-        cmdparams.add("-Z");
-        cmdparams.add("160");
+        if (size.toLowerCase().equals("thumb")) {
+            cmdparams.add("-Z");
+            cmdparams.add("160");
+        }
         // Get the file
         cmdparams.add(file.getPath().replace(" ", "\\ "));
         //cmdparams.add("\"" + file.getPath() + "\"");
@@ -499,7 +506,7 @@ public class Utils {
             if ( (heicextension) && currentOsName == APPLE) { // For Apple we deviate
 //            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
                 logger.info("do sipsConvertToJPG for {}", filename);
-                String exportResult = sipsConvertToJPG(file);
+                String exportResult = sipsConvertToJPG(file, "thumb");
                 if ("Success".equals(exportResult)) {
                     logger.info("back from sipsconvert: result {}", exportResult);
                     //Hoping we have a thumbnail
@@ -515,6 +522,8 @@ public class Utils {
                         }
                     }
                 }
+                //reset our heic flag
+                heicextension = false;
             } else if (bSimpleExtension) {
                 icon = createIcon(file);
                 ImgFilenameRow[0] = icon;
@@ -524,7 +533,7 @@ public class Utils {
                 if ("Success".equals(exportResult)) {
                     //Hoping we have a thumbnail
                     thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                     //logger.info("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                     if (thumbfile.exists()) {
                         // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
@@ -862,13 +871,15 @@ public class Utils {
                 case APPLE:
                     String file_ext = getFileExtension(RawViewerPath);
                     if ("app".equals(file_ext)) {
-                        command = "open " + RawViewerPath + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        //command = "open " + RawViewerPath + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        command = "open " + RawViewerPath + " " + StandardFileIO.noSpacePath();
                         /*cmdparams.add("open");
                         cmdparams.add(RawViewerPath);
                         cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
                         commands = new String[] {"open", RawViewerPath, MyVariables.getSelectedImagePath().replace(" ", "\\ ")}; */
                     } else {
-                        command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        //command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        command = RawViewerPath + " " + StandardFileIO.noSpacePath();
                         /* cmdparams.add(RawViewerPath);
                         cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\""); */
                     }
@@ -877,7 +888,8 @@ public class Utils {
                     //process = builder.start();
                     return;
                 case MICROSOFT:
-                    String convImg = "\"" + MyVariables.getSelectedImagePath().replace("/", "\\") + "\"";
+                    //String convImg = "\"" + MyVariables.getSelectedImagePath().replace("/", "\\") + "\"";
+                    String convImg = "\"" + StandardFileIO.noSpacePath().replace("/", "\\") + "\"";
                     commands = new String[] {RawViewerPath, convImg};
                     runtime.exec(commands);
                     /*cmdparams.add(RawViewerPath);
@@ -885,7 +897,8 @@ public class Utils {
                     process = builder.start(); */
                     return;
                 case LINUX:
-                    command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    //command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                    command = RawViewerPath + " " + StandardFileIO.noSpacePath();
                     /*command = RawViewerPath + " \"" + correctedPath + "\"";
                     logger.info(currentOsName.toString() + " " + command); */
                     runtime.exec(command);
@@ -909,90 +922,11 @@ public class Utils {
     / - whatever other file type we encounter
      */
     static void viewInDefaultViewer() {
-        String command = ""; // macos/linux
-        String[] commands = {}; // windows
-        List<String> cmdparams = new ArrayList<String>();
-        String[] params = {};
-        boolean tifextension = false;
-        boolean jv8 = false;
-        //logger.info("bestand {} ", MyVariables.getSelectedImagePath());
-        String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
-        String filenameExt = getFileExtension(MyVariables.getSelectedImagePath());
-        if (filenameExt.toLowerCase().equals("tiff") || filenameExt.toLowerCase().equals("tif")) {
-            tifextension = true;
-        }
-        String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
-        if (jv.startsWith("1.8")) {
-            //logger.info("On V8, exact version: {}", jv);
-            jv8 = true;
-        }
-
-        boolean pipo = false;
-        // We might use this later, hopefully not
-//        if (tifextension && jv8) { // We have to try the external default viewer
-            logger.info("default viewer started (trying to start)");
-            //Application.OS_NAMES currentOsName = getCurrentOsName();
-            Runtime runtime = Runtime.getRuntime();
-            //ProcessBuilder builder = new ProcessBuilder(cmdparams);
-            //Process process;
-            /*try {
-                switch (currentOsName) {
-                    case APPLE:
-                        command = "open /Applications/Preview.app \"" + correctedPath + "\"";
-                        //commands = new String[] {"open", "/Applications/Preview.app", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
-                        //runtime.exec(commands);
-                        runtime.exec(command);
-                        //cmdparams.add("open");
-                        //cmdparams.add("/Applications/Preview.app");
-                        //cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
-                        //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                        //process = builder.start();
-                        //String cmdResult = CommandRunner.runCommand(cmdparams);
-                        return;
-                    case MICROSOFT:
-                        String convImg = "\"" + correctedPath.replace("/", "\\") + "\"";
-                        commands = new String[] {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
-                        //cmdparams.add("cmd.exe");
-                        //cmdparams.add("/c");
-                        //cmdparams.add("start");
-                        //cmdparams.add("\"DummyTitle\"");
-                        //cmdparams.add(String.format("\"%s\"", convImg));
-                        runtime.exec(commands);
-                        return;
-                    case LINUX:
-                        //tring selectedImagePath = correctedPath.replace(" ", "\\ ");
-                        //logger.info("xdg-open {}", selectedImagePath);
-                        command = "/usr/bin/xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
-                        //params = new String[] {"/usr/bin/xdg-open", " ", MyVariables.getSelectedImagePath().replace(" ", "\\ ")};
-                        //command = "xdg-open \"" + correctedPath + "\"";
-                        //command = "xdg-open \"" + MyVariables.getSelectedImagePath() + "\"";
-                        //logger.info(currentOsName.toString() + " " + command);
-                        runtime.exec(command);
-                        //runtime.exec(params);
-                        //cmdparams.add("/usr/bin/xdg-open");
-                        //cmdparams.add(" ");
-                        //cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
-                        //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                        return;
-                }
-                //logger.info("default viewer; after switch statement: " + cmdparams.toString());
-                //String cmdResult = CommandRunner.runCommand(cmdparams);
-            } catch (IOException e) {
-                logger.error("Could not open image app.", e);
-            }
-        } else { // No tiff or on V11 or above */
         JavaImageViewer JIV = new JavaImageViewer();
         JIV.ViewImageInFullscreenFrame();
-        //}
     }
 
-    /*
-    / Try to display image in full-screen java window
-     */
-    static void displayInJavaWindow () {
-
-    }
     /*
     / This method is called from main screen. It needs to detect if we have a raw image, a bmp/gif/jpg/png image, or whatever other kind of file
     / If it is a raw image and we have a raw viewer configured, use method viewInRawViewer
@@ -1008,6 +942,7 @@ public class Utils {
         boolean RawExtension = false;
         boolean defaultImg = false;
 
+        Application.OS_NAMES currentOsName = getCurrentOsName();
         // check first if we have a raw image (can also be audio/video/whatever)
         String[] raw_images = MyConstants.RAW_IMAGES;
         String filenameExt = getFileExtension(MyVariables.getSelectedImagePath());
@@ -1022,8 +957,14 @@ public class Utils {
             for (String ext : SimpleExtensions) {
                 if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image or tif(f)
                     defaultImg = true;
-                    logger.info("default image is true");
+                    //logger.info("default image is true");
                     break;
+                } else if ( filenameExt.toLowerCase().equals("heic") && (currentOsName == APPLE) ) { // We first need to use sips to convert
+                    File file = new File (MyVariables.getSelectedImagePath());
+                    String filename = file.getName();
+                    String exportResult = sipsConvertToJPG(file, "full");
+                    String dispfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
+                    File dispfile = new File(MyVariables.gettmpWorkFolder() + File.separator + dispfilename);
                 }
             }
         }

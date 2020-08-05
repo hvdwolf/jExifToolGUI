@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,7 +31,7 @@ public class StandardFileIO {
         Path resourceFile = Paths.get(strjexiftoolguifolder + File.separator);
 
         try {
-            InputStream fileStream =StandardFileIO.getResourceAsStream(resourcePath);
+            InputStream fileStream = StandardFileIO.getResourceAsStream(resourcePath);
             if(fileStream == null)
                 return null;
 
@@ -330,7 +331,8 @@ public class StandardFileIO {
         }
         // Now (re)create our tmpfolder
         try {
-            Files.createDirectories(Paths.get(tempWorkDir + File.separator + "jexiftoolgui"));
+            //Files.createDirectories(Paths.get(tempWorkDir + File.separator + "jexiftoolgui"));
+            Files.createDirectories(Paths.get(tempWorkDir));
         } catch (IOException ioe) {
             ioe.printStackTrace();
             result = "Creating folder \"" + tempWorkDir + File.separator + "jexiftoolgui failed";
@@ -342,4 +344,39 @@ public class StandardFileIO {
         return result;
     }
 
+    public static String noSpacePath () throws IOException {
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
+
+        String checkPath = MyVariables.getSelectedImagePath();
+        if (checkPath.contains(" ")) { //Only checks for first space in string, but that's enough. Even one space is too much
+            logger.info("path contains spaces {}", checkPath);
+            File imgfile = new File(MyVariables.getSelectedImagePath());
+            String filename = imgfile.getName();
+            File targetfile = new File(MyVariables.gettmpWorkFolder() + File.separator + filename);
+            if (targetfile.exists()) {
+                return MyVariables.gettmpWorkFolder() + File.separator + filename;
+            } else {
+                try {
+                    //Files.copy(imgfile, targetfile);
+                    sourceChannel = new FileInputStream(imgfile).getChannel();
+                    destChannel = new FileOutputStream(targetfile).getChannel();
+                    destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+                }finally {
+                    sourceChannel.close();
+                    destChannel.close();
+                }
+                /*} catch (IOException e) {
+                    // simply return original path. What else can we do?
+                    return checkPath;
+                }*/
+                return targetfile.getPath();
+            }
+        } else {
+            // simply return original path. Nothing to do
+            logger.info("No spaces in {}", checkPath);
+            return checkPath;
+        }
+        //return checkPath;
+    }
 }

@@ -2051,6 +2051,7 @@ public class mainScreen {
                     prefdialog.showDialog();
                     break;
                 case "Exit":
+                    StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
                     System.exit(0);
                     break;
                 case "Rename photos":
@@ -3220,7 +3221,17 @@ public class mainScreen {
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
         frame.setIconImage(Utils.getFrameIcon());
         frame.setContentPane(new mainScreen(frame).rootPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Do not simply exit on closing the window. First delete our temp stuff
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
+                System.exit(0);
+            }
+        });
 
         // Should work, but doesn't work
         /*Application.OS_NAMES os = Utils.getCurrentOsName();
