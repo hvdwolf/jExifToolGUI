@@ -48,7 +48,6 @@ public class EditExifdata {
         //First clean the fields
         resetFields(exifFields, exiftextArea);
 
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
         } else {

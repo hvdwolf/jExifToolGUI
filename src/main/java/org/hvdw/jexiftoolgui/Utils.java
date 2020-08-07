@@ -1,8 +1,5 @@
 package org.hvdw.jexiftoolgui;
 
-import com.twelvemonkeys.imageio.metadata.Directory;
-import com.twelvemonkeys.imageio.metadata.Entry;
-import com.twelvemonkeys.imageio.metadata.tiff.TIFFReader;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
@@ -28,10 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -398,9 +392,6 @@ public class Utils {
         List<String> cmdparams = new ArrayList<String>();
         String exportResult = "Success";
 
-        //cmdparams.add("/bin/bash");
-        //cmdparams.add("-l");
-        //cmdparams.add("-c");
         cmdparams.add("/usr/bin/sips");
         cmdparams.add("-s");
         cmdparams.add("format");
@@ -604,11 +595,8 @@ public class Utils {
         int selectedRow = MyVariables.getSelectedRow();
 
         //logger.info("selectedRow: {}", String.valueOf(selectedRow));
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
-            //logger.info("fpath is now: " + fpath);
-            exiftool = exiftool.replace("\\", "/");
         } else {
             fpath = files[selectedRow].getPath();
         }
@@ -620,14 +608,8 @@ public class Utils {
         // Need to build exiftool prefs check
         MyVariables.setSelectedImagePath(fpath);
         Application.OS_NAMES currentOsName = getCurrentOsName();
-        /*if (currentOsName == Application.OS_NAMES.APPLE) {
-            logger.info("Running on MacOS");
-            cmdparams.add("/bin/bash");
-            cmdparams.add("-exec");
-            //cmdparams.add("-cl");
-            //cmdparams.add("-c");
-        }*/
-        cmdparams.add(exiftool.trim());
+
+        cmdparams.add(Utils.platformExiftool().trim());
         // Check for chosen metadata language
         if (!"".equals(getmetadataLanguage())) {
             cmdparams.add("-lang");
@@ -866,43 +848,20 @@ public class Utils {
                 case APPLE:
                     String file_ext = getFileExtension(RawViewerPath);
                     if ("app".equals(file_ext)) {
-                        //command = "open " + RawViewerPath + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
                         command = "open " + RawViewerPath + " " + StandardFileIO.noSpacePath();
-                        /*cmdparams.add("open");
-                        cmdparams.add(RawViewerPath);
-                        cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\"");
-                        commands = new String[] {"open", RawViewerPath, MyVariables.getSelectedImagePath().replace(" ", "\\ ")}; */
                     } else {
-                        //command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
                         command = RawViewerPath + " " + StandardFileIO.noSpacePath();
-                        /* cmdparams.add(RawViewerPath);
-                        cmdparams.add("\"" + MyVariables.getSelectedImagePath() + "\""); */
                     }
                     runtime.exec(command);
-                    //runtime.exec(commands);
-                    //process = builder.start();
                     return;
                 case MICROSOFT:
-                    //String convImg = "\"" + MyVariables.getSelectedImagePath().replace("/", "\\") + "\"";
                     String convImg = "\"" + StandardFileIO.noSpacePath().replace("/", "\\") + "\"";
                     commands = new String[] {RawViewerPath, convImg};
                     runtime.exec(commands);
-                    /*cmdparams.add(RawViewerPath);
-                    cmdparams.add(convImg);
-                    process = builder.start(); */
                     return;
                 case LINUX:
-                    //command = RawViewerPath + " " + MyVariables.getSelectedImagePath().replace(" ", "\\ ");
                     command = RawViewerPath + " " + StandardFileIO.noSpacePath();
-                    /*command = RawViewerPath + " \"" + correctedPath + "\"";
-                    logger.info(currentOsName.toString() + " " + command); */
                     runtime.exec(command);
-                    /*commands = new String[] {RawViewerPath, "\"" + MyVariables.getSelectedImagePath() + "\""};
-                    //runtime.exec(commands);
-                    cmdparams.add(RawViewerPath);
-                    cmdparams.add("'" + MyVariables.getSelectedImagePath() + "'");
-                    //cmdparams.add(MyVariables.getSelectedImagePath().replace(" ", "\\ "));
-                    //process = builder.start(); */
                     return;
             }
         } catch (IOException e) {

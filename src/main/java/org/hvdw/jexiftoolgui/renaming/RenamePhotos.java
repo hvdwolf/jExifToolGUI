@@ -193,11 +193,8 @@ public class RenamePhotos extends JDialog {
         boolean date_used = true;
 
         // exiftool on windows or other
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
+        String exiftool = Utils.platformExiftool();
         boolean isWindows = Utils.isOsFromMicrosoft();
-        if (isWindows) {
-            exiftool = exiftool.replace("\\", "/");
-        }
 
 
         if (("".equals(RenamingSourceFoldertextField.getText())) && (!selected_files)) { // Empty folder string and no files selected

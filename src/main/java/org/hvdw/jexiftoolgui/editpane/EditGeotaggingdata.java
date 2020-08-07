@@ -80,13 +80,7 @@ public class EditGeotaggingdata {
         String geosync = geotaggingFields[2].getText().trim();
         logger.info("onFolder: " + onFolder);
 
-        // exiftool on windows or other
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         boolean isWindows = Utils.isOsFromMicrosoft();
-        if (isWindows) {
-            exiftool = exiftool.replace("\\", "/");
-            gpslogfile = gpslogfile.replace("\\", "/");
-        }
 
         cmdparams.add(Utils.platformExiftool());
         if (!OverwiteOriginals) {

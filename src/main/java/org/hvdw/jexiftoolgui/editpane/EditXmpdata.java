@@ -49,15 +49,13 @@ public class EditXmpdata {
         //First clean the fields
         resetFields(xmpFields, Description);
 
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
-            exiftool = exiftool.replace("\\", "/");
         } else {
             fpath = files[SelectedRow].getPath();
         }
         logger.info(fpath);
-        cmdparams.add(exiftool);
+        cmdparams.add(Utils.platformExiftool());
         cmdparams.addAll(Arrays.asList(xmpcopyparams));
         cmdparams.add(fpath);
         try {

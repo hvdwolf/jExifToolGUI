@@ -55,10 +55,8 @@ public class EditLensdata {
         //First clean the fields
         resetFields(lensFields, lensBoxes, meteringmodecomboBox);
 
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
-            exiftool = exiftool.replace("\\", "/");
         } else {
             fpath = files[SelectedRow].getPath();
         }
