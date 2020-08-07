@@ -185,9 +185,15 @@ public class JavaImageViewer {
             }
             try {
                 img = ImageIO.read(new File(image.getPath().replace("\\", "/")));
-                resizedImg =  ImageFunctions.scaleImageToContainer(img, scrwidth, scrheight);
+                if (basicdata[2] > 1) {
+                    resizedImg = ImageFunctions.rotate(img, basicdata[2]);
+                    resizedImg = ImageFunctions.scaleImageToContainer(resizedImg, scrwidth, scrheight);
+                } else { // No rotation necessary
+                    resizedImg = ImageFunctions.scaleImageToContainer(img, scrwidth, scrheight);
+                }
                 //logger.info("after scaleImageToContainer");
-                resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
+
+
                 panelWidth = resizedImg.getWidth();
                 panelHeight = resizedImg.getHeight();
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -196,6 +202,7 @@ public class JavaImageViewer {
                 panelWidth = imgWidth;
                 panelHeight = imgHeight;
             }
+            
 
         }
         logger.info("Image: {} ; Width {} ; Height {}", fileName, panelWidth, panelHeight);

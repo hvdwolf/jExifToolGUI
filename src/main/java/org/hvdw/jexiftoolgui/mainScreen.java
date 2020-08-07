@@ -3081,7 +3081,7 @@ public class mainScreen {
         exiftoolDBversion.setText(String.format(ProgramTexts.HTML,100,"exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
         // Special dynamic version string
         logger.info("check for exiftool version");
-        String exiftool = prefs.getByKey(EXIFTOOL_PATH, "");
+        String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<>();
         Application.OS_NAMES currentOsName = Utils.getCurrentOsName();
         logger.info("OS name {}", currentOsName);

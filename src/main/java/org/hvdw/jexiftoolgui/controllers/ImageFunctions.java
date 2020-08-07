@@ -1,19 +1,45 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.twelvemonkeys.image.AffineTransformOp;
 
-import com.twelvemonkeys.imageio.metadata.Directory;
+import com.twelvemonkeys.imageio.metadata.CompoundDirectory;
+//import com.twelvemonkeys.imageio.metadata.Directory;
 import com.twelvemonkeys.imageio.metadata.Entry;
 import com.twelvemonkeys.imageio.metadata.tiff.TIFFReader;
+import com.twelvemonkeys.imageio.plugins.jpeg.JPEGImageReader;
+import com.twelvemonkeys.imageio.plugins.jpeg.JPEGImageReaderSpi;
+import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import static javax.imageio.ImageIO.createImageInputStream;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class ImageFunctions {
     // Almost 100% copied from Dennis Damico's FastPhotoTagger
@@ -23,35 +49,94 @@ public class ImageFunctions {
     private final static Logger logger = LoggerFactory.getLogger(ImageFunctions.class);
 
     public static int[] getbasicImageData (File file) {
-        int[] basicdata = {0, 0, 0};
+        int[] basicdata = {0, 0, 999};
         long tmpvalue;
         String tmpValue;
+        //Directory metadata = null;
+        String filename = file.getName().replace("\\", "/");
+        //logger.info("Now working on image: " +filename);
+       /*String filenameExt = Utils.getFileExtension(filename);
         try {
-            Directory metadata = new TIFFReader().read(new FileImageInputStream(file));
-            for (Entry entry: metadata) {
-                switch (entry.getFieldName()) {
-                    case "ImageWidth":
-                        tmpValue = entry.getValueAsString();
-                        basicdata[0] = Integer.parseInt(tmpValue);
-                        break;
-                    case "ImageHeight":
-                        tmpValue = entry.getValueAsString();
-                        basicdata[1] = Integer.parseInt(tmpValue);
-                        break;
-                    case "Orientation":
-                        tmpValue = entry.getValueAsString();
-                        basicdata[2] = Integer.parseInt(tmpValue);
-                        break;
+            ImageInputStream input = ImageIO.createImageInputStream(file);
+
+            try {
+                // Get the reader
+                Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
+
+                if (!readers.hasNext()) {
+                    logger.info("No reader for: {}", file.toString());
+                    throw new IllegalArgumentException("No reader for: " + file);
                 }
-                // logger.info("fieldname {} value {}", entry.getFieldName(), entry.getValueAsString());
+
+                ImageReader reader = readers.next();
+
+                try {
+                    reader.setInput(input);
+
+                    ImageReadParam param = reader.getDefaultReadParam();
+                    basicdata[0] = (int) reader.getWidth(0);
+                    basicdata[1] = (int) reader.getHeight(0);
+                    logger.info("Width {} Height {} AspectRatio {}", reader.getWidth(0), reader.getHeight(0), reader.getAspectRatio(0));
+                    logger.info("metadata {}", reader.getStreamMetadata());
+
+                } finally {
+                    // Dispose reader in finally block to avoid memory leaks
+                    reader.dispose();
+                }
+            } finally {
+                // Close stream in finally block to avoid resource leaks
+                input.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            basicdata[2] = 999;
-            return basicdata;
+        } */
+        // metadata extractor
+        /*try {
+            Metadata metadata = ImageMetadataReader.readMetadata(file);
+            for (Directory directory : metadata.getDirectories()) {
+                for (Tag tag : directory.getTags()) {
+                    System.out.println(tag);
+                }
+            }
+            /ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+            for (Tag tag : directory.getTags()) {
+                System.out.println(tag);
+            }
+            ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            for (Tag tag : directory.getTags()) {
+                System.out.println(tag);
+            }
+
+        } catch (IOException | ImageProcessingException e) {
+            e.printStackTrace();
+        }*/
+
+        // I can't solve it yet with TwelveMonkeys, so do it with exiftool
+        String exiftool = Utils.platformExiftool();
+        List<String> cmdparams = new ArrayList<String>();
+        cmdparams.add(exiftool.trim());
+        cmdparams.addAll(Arrays.asList(MyConstants.WIDTH_HEIGHT_ORIENTATION));
+        cmdparams.add(file.getPath());
+        int counter = 0;
+        String who ="";
+
+        try {
+            who = CommandRunner.runCommand(cmdparams);
+            logger.trace("res is {}", who);
+        } catch (IOException | InterruptedException ex) {
+            logger.error("Error executing command", ex);
         }
 
-        return basicdata;
+        if (who.length() > 0) {
+            String[] lines = who.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+            for (String line : lines) {
+                String[] parts = line.split(":", 2);
+                //logger.info("getbasicdata parts0 {} parts1 {}", parts[0], parts[1]);
+                basicdata[counter] = Integer.parseInt(parts[1].trim());
+                counter++;
+            }
+        }
+            return basicdata;
     }
 
     /**

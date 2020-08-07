@@ -20,6 +20,7 @@ public class MyConstants {
     public static final String[] LENS_PARAMS = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-makernotes:lensserialnumber","-exif:focallength","-exif:focallengthIn35mmformat","-exif:fnumber","-exif:maxaperturevalue","-exif:meteringmode","-composite:lensid","-composite:lens","-makernotes:focusdistance","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensfirmwareversion","-G", "-tab"};
     public static final String[] REF_IMAGE_DATETIME = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
     public static final String[] GPANO_PROJECTIONS = {"equirectangular", "cylindrical", "rectilinear"};
+    public static final String[] WIDTH_HEIGHT_ORIENTATION = {"-n", "-S", "-imagewidth", "-imageheight", "-orientation"};
 
     // exiftool image modification parameters
     public static final String[] SET_FILEDATETIME_TO_DATETIMEORIGINAL = {"-FileModifyDate<DateTimeOriginal"};

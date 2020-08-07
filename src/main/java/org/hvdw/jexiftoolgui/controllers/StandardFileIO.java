@@ -106,17 +106,17 @@ public class StandardFileIO {
 
     // Reads a text file from resources
     public static String readTextFileAsStringFromResource(String fileName) {
+        String strCurrentLine;
         String strFileContents = "";
 
         try {
             InputStream is = getResourceAsStream(fileName);
-            byte[] contents = new byte[1024];
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
-            int bytesRead = 0;
-            while((bytesRead = is.read(contents)) != -1) {
-                strFileContents += new String(contents, 0, bytesRead);
+            strFileContents = "";
+            while ((strCurrentLine = reader.readLine()) != null) {
+                strFileContents += strCurrentLine + "\r\n";
             }
-
         } catch(FileNotFoundException ex) {
             logger.debug("Unable to open file '{}'", fileName);
         } catch(IOException ex) {

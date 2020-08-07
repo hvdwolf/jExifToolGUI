@@ -357,6 +357,7 @@ public class Utils {
         try {
             try {
                 basicdata = ImageFunctions.getbasicImageData(file);
+                //logger.info("Width {} Height {} Orientation {}", String.valueOf(basicdata[0]), String.valueOf(basicdata[1]), String.valueOf(basicdata[2]));
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
                 bde = true;
@@ -370,7 +371,10 @@ public class Utils {
             BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
             BufferedImage resizedImg =  ImageFunctions.scaleImageToContainer(img, 160, 160);
             //logger.info("after scaleImageToContainer");
-            resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
+            if (basicdata[2] > 1) {
+                resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
+            }
+
             //logger.info("after rotate");
 
             icon = new ImageIcon(resizedImg);
@@ -434,21 +438,10 @@ public class Utils {
      */
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
         int selectedRow, selectedColumn;
-        //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
-        //boolean tifextension = false;
+
         boolean heicextension = false;
-        //boolean pnmextension = false; // For pnm types: PBM, PGM, PPM
-        //boolean jv8 = false;
         String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
-        /*String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
-        if (jv.startsWith("1.8")) {
-            //logger.info("On V8, exact version: {}", jv);
-            jv8 = true;
-            SimpleExtensions = MyConstants.JAVA8_IMG_EXTENSIONS;
-        } else if ( (jv.startsWith("11")) || (jv.startsWith("12")) || (jv.startsWith("13")) || (jv.startsWith("14")) || (jv.startsWith("15")) ) {
-            //logger.info("On V11 or above, exact version: {}", jv);
-            SimpleExtensions = MyConstants.JAVA11_IMG_EXTENSIONS;
-        }*/
+
         boolean bSimpleExtension = false;
         String thumbfilename = "";
         File thumbfile = null;
@@ -490,9 +483,6 @@ public class Utils {
             filename = file.getName().replace("\\", "/");
             //logger.info("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
-            /*if (filenameExt.toLowerCase().equals("tiff") || filenameExt.toLowerCase().equals("tif") ) {
-                tifextension = true;
-            }*/
             if (filenameExt.toLowerCase().equals("heic")) {
                 heicextension = true;
             }
@@ -622,6 +612,11 @@ public class Utils {
         } else {
             fpath = files[selectedRow].getPath();
         }
+        //Testje metadata extractor
+        /*logger.info("\n\nStart of test metadata extractor {}\n\n", fpath);
+        File imgfile = new File(files[selectedRow].getPath());
+        ImageFunctions.getbasicImageData(imgfile); */
+
         // Need to build exiftool prefs check
         MyVariables.setSelectedImagePath(fpath);
         Application.OS_NAMES currentOsName = getCurrentOsName();
