@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.controllers.ExifTool;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class PreferencesDialog extends JDialog {
 
         ExiftoolLocationbutton.addActionListener(actionEvent -> {
             String ETpath = "";
-            ETpath = Utils.whereIsExiftool(contentPanel);
+            ETpath = ExifTool.whereIsExiftool(contentPanel);
             getExiftoolPath(contentPanel, ExiftoolLocationtextField, ETpath, "preferences");
         });
 

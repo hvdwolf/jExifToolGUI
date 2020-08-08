@@ -3160,7 +3160,7 @@ public class mainScreen {
         CheckPreferences CP = new CheckPreferences();
         preferences = CP.checkPreferences(rootPanel, OutputLabel);
         if (!preferences) {
-            Utils.checkExifTool(mainScreen.this.rootPanel);
+            ExifTool.checkExifTool(mainScreen.this.rootPanel);
         }
 
         // Set the text areas correctly
