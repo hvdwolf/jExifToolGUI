@@ -119,7 +119,7 @@ public class RenamePhotos extends JDialog {
         renamingInfobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootRenamingPane, String.format(ProgramTexts.HTML, 700, HelpTexts.RenamingInfoText), "Renaming info", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootRenamingPane, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("renamingtext")), ResourceBundle.getBundle("translations/program_help_texts").getString("renamingtitle"), JOptionPane.INFORMATION_MESSAGE);
             }
         });
         RenamingSourceFolderbutton.addActionListener(new ActionListener() {

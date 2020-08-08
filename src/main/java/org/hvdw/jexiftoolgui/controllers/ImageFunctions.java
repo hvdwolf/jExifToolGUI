@@ -1,32 +1,13 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifIFD0Directory;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.twelvemonkeys.image.AffineTransformOp;
 
-import com.twelvemonkeys.imageio.metadata.CompoundDirectory;
-//import com.twelvemonkeys.imageio.metadata.Directory;
-import com.twelvemonkeys.imageio.metadata.Entry;
-import com.twelvemonkeys.imageio.metadata.tiff.TIFFReader;
-import com.twelvemonkeys.imageio.plugins.jpeg.JPEGImageReader;
-import com.twelvemonkeys.imageio.plugins.jpeg.JPEGImageReaderSpi;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -34,11 +15,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
-import static javax.imageio.ImageIO.createImageInputStream;
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class ImageFunctions {
@@ -54,6 +33,11 @@ public class ImageFunctions {
         String tmpValue;
         //Directory metadata = null;
         String filename = file.getName().replace("\\", "/");
+
+        /*String[] readerFormatNames = ImageIO.getReaderFormatNames();
+        for (String reader : readerFormatNames) {
+            logger.info("reader {}", reader);
+        }*/
         //logger.info("Now working on image: " +filename);
        /*String filenameExt = Utils.getFileExtension(filename);
         try {
@@ -89,7 +73,7 @@ public class ImageFunctions {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } */
+        }*/
         // metadata extractor
         /*try {
             Metadata metadata = ImageMetadataReader.readMetadata(file);

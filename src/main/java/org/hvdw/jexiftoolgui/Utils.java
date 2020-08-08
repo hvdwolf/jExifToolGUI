@@ -217,7 +217,7 @@ public class Utils {
         String returnValue = "";
         String[] options = {"specify location", "Download", "Stop"};
         //JOptionPane.showOptionDialog(null,"I can not find exiftool in the preferences or I can not find exiftool at all","exiftool missing",JOptionPane.ERROR_MESSAGE);
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ProgramTexts.noExifTool), "exiftool missing",
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("noexiftool")), ResourceBundle.getBundle("translations/program_help_texts").getString("noexiftooltitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         if (choice == 0) {
             // open file chooser
