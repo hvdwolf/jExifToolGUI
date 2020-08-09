@@ -13,7 +13,9 @@ public interface IPreferencesFacade {
         EXIFTOOL_PATH("exiftool"),
         METADATA_LANGUAGE("metadatalanguage"),
         RAW_VIEWER_PATH("rawviewer"),
-        RAW_VIEWER_ALL_IMAGES("rawviewerallimages");
+        RAW_VIEWER_ALL_IMAGES("rawviewerallimages"),
+        PREFERRED_APP_LANGUAGE("System default"),
+        PREFERRED_FILEDIALOG("jfilechooser");
 
         public final String key;
         PreferenceKey(String key) {

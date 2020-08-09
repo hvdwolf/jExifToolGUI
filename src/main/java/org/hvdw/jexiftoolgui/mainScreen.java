@@ -49,6 +49,7 @@ import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.OS_NAME;
 
 
@@ -467,14 +468,21 @@ public class mainScreen {
 
 
     public void loadImages(String loadingType) {
+        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
         if ("images".equals(loadingType)) {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages"));
-            //files = StandardFileIO.getFileNamesAwt(rootPanel);
-            files = StandardFileIO.getFileNames(rootPanel);
+            if ("jfilechooser".equals(prefFileDialog)) {
+                files = StandardFileIO.getFileNames(rootPanel);
+            } else {
+                files = StandardFileIO.getFileNamesAwt(rootPanel);
+            }
         } else if ("folder".equals(loadingType)) { // loadingType = folder
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingdirectory"));
-            files = StandardFileIO.getFolderFiles(rootPanel);
-            //files = StandardFileIO.getFolderFilesAwt(rootPanel);
+            if ("jfilechooser".equals(prefFileDialog)) {
+                files = StandardFileIO.getFolderFiles(rootPanel);
+            } else {
+                files = StandardFileIO.getFolderFilesAwt(rootPanel);
+            }
         } else { // files dropped onto our app
             OutputLabel.setText("Files dropped on the app");
             files = MyVariables.getSelectedFiles();

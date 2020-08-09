@@ -3,6 +3,7 @@
 ToDir="/media/harryvanderwolf/128GB/software/jExifToolGUI/src/main/resources/translations"
 for i in *.properties;
 do
+    printf "$i\n"
     native2ascii -encoding utf8 $i "${ToDir}"/$i
 done
 
