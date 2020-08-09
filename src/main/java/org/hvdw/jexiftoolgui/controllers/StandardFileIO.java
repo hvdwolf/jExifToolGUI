@@ -1,8 +1,6 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
@@ -11,12 +9,15 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
+import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.LAST_OPENED_FOLDER;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
@@ -157,15 +158,18 @@ public class StandardFileIO {
         File[] files = null;
 
         String startFolder = getFolderPathToOpenBasedOnPreferences();
+        logger.info("startfolder {}", startFolder);
 
         final JFileChooser chooser = new JFileChooser(startFolder);
+        //final JFileChooser chooser = new NativeJFileChooser(startFolder);
+
         //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
-        javax.swing.filechooser.FileFilter imgFilter = new FileNameExtensionFilter("(images)", MyConstants.SUPPORTED_IMAGES);
-        FileFilter audioFormats = new FileNameExtensionFilter("(audio formats)", MyConstants.SUPPORTED_AUDIOS);
-        FileFilter videoFormats = new FileNameExtensionFilter("(video formats)", MyConstants.SUPPORTED_VIDEOS);
-        FileFilter supFormats = new FileNameExtensionFilter("(all supported formats)", MyConstants.SUPPORTED_FORMATS);
+        javax.swing.filechooser.FileFilter imgFilter = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.images"), MyConstants.SUPPORTED_IMAGES);
+        FileFilter audioFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.audioformats"), MyConstants.SUPPORTED_AUDIOS);
+        FileFilter videoFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.videoformats"), MyConstants.SUPPORTED_VIDEOS);
+        FileFilter supFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.allformats"), MyConstants.SUPPORTED_FORMATS);
         chooser.setMultiSelectionEnabled(true);
-        chooser.setDialogTitle("Load Image(s)... (or select other file filter)");
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadimages"));
         chooser.setFileFilter(imgFilter);
         chooser.addChoosableFileFilter(audioFormats);
         chooser.addChoosableFileFilter(videoFormats);
@@ -175,10 +179,45 @@ public class StandardFileIO {
         if (status == JFileChooser.APPROVE_OPTION) {
             files = chooser.getSelectedFiles();
             MyVariables.setSelectedFiles(files);
-            prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getSelectedFile().getAbsolutePath());
+            prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getCurrentDirectory().getAbsolutePath());
         }
         return files;
     }
+
+    public static File[] getFileNamesAwt(JPanel myComponent) {
+
+        JFrame dialogframe = new JFrame("");
+        String startFolder = getFolderPathToOpenBasedOnPreferences();
+
+        //logger.info("startfolder {}", startFolder);
+        FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadimages"), FileDialog.LOAD);
+        chooser.setDirectory(startFolder);
+        chooser.setMultipleMode(true);
+        chooser.setFilenameFilter(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String ext) {
+                for (int i = 0; i < MyConstants.SUPPORTED_FORMATS.length; i++) {
+                    if (ext.toLowerCase().endsWith(MyConstants.SUPPORTED_FORMATS[i])) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        chooser.setVisible(true);
+
+        File[] files = chooser.getFiles();
+        //File[] files = chooser.getSelectedFiles();
+        if ( files.length == 0) {
+            // no selection
+            files = null;
+        }
+        MyVariables.setSelectedFiles(files);
+        prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getDirectory());
+        return files;
+    }
+
 
     /*
     * Get the files from a folder via the "Load Dirextory"
@@ -187,11 +226,10 @@ public class StandardFileIO {
         File[] files = null;
         String SelectedFolder;
 
-        //String startFolder = getFolderPathToOpenBasedOnPreferences();
         File startFolder = new File(getFolderPathToOpenBasedOnPreferences());
 
         final JFileChooser chooser = new JFileChooser(startFolder);
-        chooser.setDialogTitle("Locate the image folder ...");
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
         int status = chooser.showOpenDialog(myComponent);
@@ -201,11 +239,43 @@ public class StandardFileIO {
             //files = listFiles(SelectedFolder);
             files = folder.listFiles();
             MyVariables.setSelectedFiles(files);
-            prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getSelectedFile().getAbsolutePath());
+            prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getCurrentDirectory().getAbsolutePath());
         }
 
         return files;
     }
+
+    public static File[] getFolderFilesAwt(JPanel myComponent) {
+        File[] files = null;
+        String SelectedFolder;
+
+        JFrame dialogframe = new JFrame("");
+        String startFolder = getFolderPathToOpenBasedOnPreferences();
+
+        //logger.info("startfolder {}", startFolder);
+        FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
+        chooser.setDirectory(startFolder);
+        chooser.setMultipleMode(false);
+        Application.OS_NAMES os = Utils.getCurrentOsName();
+        /*if (os == APPLE) {
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
+        }*/
+        chooser.setVisible(true);
+
+        SelectedFolder = chooser.getDirectory();
+        if (SelectedFolder == null) {
+            files = null;
+        }
+        File folder = new File(SelectedFolder);
+        files = folder.listFiles();
+        MyVariables.setSelectedFiles(files);
+        prefs.storeByKey(LAST_OPENED_FOLDER, chooser.getDirectory());
+        /*if (os == APPLE) {
+            System.setProperty("apple.awt.fileDialogForDirectories", "false");
+        }*/
+        return files;
+    }
+
     /*File folder = new File("/Users/you/folder/");
       File[] listOfFiles = folder.listFiles();
 
