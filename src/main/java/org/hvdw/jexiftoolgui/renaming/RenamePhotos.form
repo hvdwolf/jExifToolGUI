@@ -121,10 +121,10 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="3569c" class="javax.swing.JButton" binding="renamingInfobutton">
+                  <component id="873e4" class="javax.swing.JButton" binding="RenamingSourceFolderbutton">
                     <constraints/>
                     <properties>
-                      <text resource-bundle="translations/program_strings" key="button.help"/>
+                      <text resource-bundle="translations/program_strings" key="geo.browsebutton"/>
                     </properties>
                   </component>
                   <component id="3a4b0" class="javax.swing.JTextField" binding="RenamingSourceFoldertextField">
@@ -133,10 +133,10 @@
                       <preferredSize width="600" height="30"/>
                     </properties>
                   </component>
-                  <component id="873e4" class="javax.swing.JButton" binding="RenamingSourceFolderbutton">
+                  <component id="3569c" class="javax.swing.JButton" binding="renamingInfobutton">
                     <constraints/>
                     <properties>
-                      <text resource-bundle="translations/program_strings" key="geo.browsebutton"/>
+                      <text resource-bundle="translations/program_strings" key="button.help"/>
                     </properties>
                   </component>
                 </children>
