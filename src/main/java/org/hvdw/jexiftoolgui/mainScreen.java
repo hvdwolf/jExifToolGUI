@@ -31,6 +31,9 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -46,11 +49,13 @@ import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.OS_NAME;
 
 
 public class mainScreen {
     private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
+    private final DropTargetListener FileDragDropListener = null;
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -346,6 +351,8 @@ public class mainScreen {
     public int SelectedCell;
     private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
 
+    public boolean droppedready = false;
+
     public String exiftool_path = "";
     private ListSelectionModel listSelectionModel;
 
@@ -364,6 +371,7 @@ public class mainScreen {
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
+    //DragDropListener DDL = new DragDropListener();
 
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
@@ -458,15 +466,26 @@ public class mainScreen {
         return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, CopyMakernotescheckBox};
     }
 
-/////////////////////////// End of Startup checks //////////////////////////
 
-    private void loadImages(String loadingType) {
+    public void loadImages(String loadingType) {
+        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
         if ("images".equals(loadingType)) {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages"));
-            files = StandardFileIO.getFileNames(rootPanel);
-        } else { // loadingType = folder
+            if ("jfilechooser".equals(prefFileDialog)) {
+                files = StandardFileIO.getFileNames(rootPanel);
+            } else {
+                files = StandardFileIO.getFileNamesAwt(rootPanel);
+            }
+        } else if ("folder".equals(loadingType)) { // loadingType = folder
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingdirectory"));
-            files = StandardFileIO.getFolderFiles(rootPanel);
+            if ("jfilechooser".equals(prefFileDialog)) {
+                files = StandardFileIO.getFolderFiles(rootPanel);
+            } else {
+                files = StandardFileIO.getFolderFilesAwt(rootPanel);
+            }
+        } else { // files dropped onto our app
+            OutputLabel.setText("Files dropped on the app");
+            files = MyVariables.getSelectedFiles();
         }
         if (files != null) {
             Executor executor = Executors.newSingleThreadExecutor();
@@ -2845,6 +2864,14 @@ public class mainScreen {
         }
     }
 
+    public void rootPanelDropListener () {
+        //Listen to drop events
+        DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
+        new DropTarget(rootPanel, fileDragDropListener);
+        logger.info("Something was dropped");
+    }
+
+
     void fileNamesTableMouseListener() {
         // Use the mouse listener for the single cell double-click selection for the left table to be able to
         // display the image in the default viewer
@@ -3134,7 +3161,8 @@ public class mainScreen {
 
     // This is where it all starts
     // initialisation of the Application
-    private mainScreen(JFrame frame) {
+    // private mainScreen(JFrame frame) {
+    public mainScreen(JFrame frame) {
         boolean preferences = false;
 
         Utils.progressStatus(progressBar, false);
@@ -3183,6 +3211,11 @@ public class mainScreen {
         tableListfiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(new SharedListSelectionHandler());
         //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
+
+        //Listen to drop events
+       /*DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
+        new DropTarget(rootPanel, fileDragDropListener); */
+        rootPanelDropListener();
 
         // Make left "tableListfiles" and right "ListexiftoolInfotable" tables read-only (un-editable)
         // This also fixex the double-click bug on the image where it retrieves the object name of the images on double-click
