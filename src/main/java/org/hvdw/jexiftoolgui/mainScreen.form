@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="1346" height="800"/>
+      <xy x="20" y="20" width="1510" height="833"/>
     </constraints>
     <properties>
       <minimumSize width="1200" height="720"/>
@@ -1068,7 +1068,7 @@
                               <text resource-bundle="translations/program_strings" key="gps.latitude"/>
                             </properties>
                           </component>
-                          <component id="b9ec5" class="javax.swing.JTextField" binding="gpsLatDecimaltextField">
+                          <component id="4e5c" class="javax.swing.JFormattedTextField" binding="gpsLatDecimaltextField">
                             <constraints>
                               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="100" height="25"/>
@@ -1092,7 +1092,7 @@
                               <text resource-bundle="translations/program_strings" key="gps.longitude"/>
                             </properties>
                           </component>
-                          <component id="90788" class="javax.swing.JTextField" binding="gpsLonDecimaltextField">
+                          <component id="efb59" class="javax.swing.JFormattedTextField" binding="gpsLonDecimaltextField">
                             <constraints>
                               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="100" height="25"/>
@@ -1100,7 +1100,7 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="a5c03" class="javax.swing.JTextField" binding="gpsAltDecimaltextField">
+                          <component id="522f4" class="javax.swing.JFormattedTextField" binding="gpsAltDecimaltextField">
                             <constraints>
                               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="100" height="25"/>
@@ -1188,7 +1188,7 @@
                               <text value="00.00000"/>
                             </properties>
                           </component>
-                          <component id="3e946" class="javax.swing.JTextField" binding="CalcLatDegtextField">
+                          <component id="d6e50" class="javax.swing.JFormattedTextField" binding="CalcLatDegtextField">
                             <constraints>
                               <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="30" height="25"/>
@@ -1197,7 +1197,7 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="268ee" class="javax.swing.JTextField" binding="CalcLatMintextField">
+                          <component id="2246a" class="javax.swing.JFormattedTextField" binding="CalcLatMintextField">
                             <constraints>
                               <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="30" height="25"/>
@@ -1206,7 +1206,7 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="851b" class="javax.swing.JTextField" binding="CalcLatSectextField">
+                          <component id="98f1c" class="javax.swing.JFormattedTextField" binding="CalcLatSectextField">
                             <constraints>
                               <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="30" height="25"/>
@@ -1233,7 +1233,7 @@
                               <text value="00.00000"/>
                             </properties>
                           </component>
-                          <component id="b1868" class="javax.swing.JTextField" binding="CalcLonDegtextField">
+                          <component id="1d4b1" class="javax.swing.JFormattedTextField" binding="CalcLonDegtextField">
                             <constraints>
                               <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="30" height="25"/>
@@ -1242,7 +1242,7 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="4d7f1" class="javax.swing.JTextField" binding="CalcLonMintextField">
+                          <component id="c8f08" class="javax.swing.JFormattedTextField" binding="CalcLonMintextField">
                             <constraints>
                               <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="30" height="25"/>
@@ -1251,7 +1251,7 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="1ff83" class="javax.swing.JTextField" binding="CalcLonSectextField">
+                          <component id="5fe90" class="javax.swing.JFormattedTextField" binding="CalcLonSectextField">
                             <constraints>
                               <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="30" height="25"/>
@@ -3357,6 +3357,13 @@
         <properties/>
         <border type="none"/>
         <children>
+          <component id="3b759" class="javax.swing.JLabel" binding="JLabelDropReady">
+            <constraints/>
+            <properties>
+              <text value=""/>
+              <visible value="false"/>
+            </properties>
+          </component>
           <component id="5fca6" class="javax.swing.JLabel" binding="OutputLabel">
             <constraints/>
             <properties>

@@ -9,11 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
@@ -26,14 +32,51 @@ public class EditGPSdata {
     //textfields:  gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField
     //checkboxes:  SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox
 
-    public void resetFields(JTextField[] gpsFields) {
+    public void setFormattedFieldMasks(JFormattedTextField[] gpsNumFields, JFormattedTextField[] gpsCalcFields) {
+        Locale currentLocale = Locale.getDefault();
+        NumberFormat latlonformatter = NumberFormat.getNumberInstance(currentLocale );
+        // Latitude / Longitude
+        latlonformatter.setMaximumIntegerDigits(2);
+        latlonformatter.setMaximumFractionDigits(6);
+        gpsNumFields[0].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(latlonformatter)));
+        gpsNumFields[1].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(latlonformatter)));
+        //Altitude
+        NumberFormat altformatter = NumberFormat.getNumberInstance(currentLocale );
+        altformatter.setMaximumIntegerDigits(5);
+        altformatter.setMaximumFractionDigits(2);
+        gpsNumFields[2].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(altformatter)));
+        //GPS calc fields
+        NumberFormat degminsecformatter = NumberFormat.getNumberInstance(currentLocale );
+        degminsecformatter.setMaximumIntegerDigits(2);
+        degminsecformatter.setMaximumFractionDigits(0);
+        for (JFormattedTextField field : gpsCalcFields) {
+            field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(degminsecformatter)));
+        }
 
-        for (JTextField field: gpsFields) {
+        /*try {
+            MaskFormatter latlonmask = new MaskFormatter("##.########");
+            MaskFormatter altmask = new MaskFormatter("#####.##");
+            MaskFormatter degminsecmask = new MaskFormatter("##");
+            gpsNumFields[0] = new JFormattedTextField(latlonmask);
+            gpsNumFields[1] = new JFormattedTextField(latlonmask);
+            gpsNumFields[2] = new JFormattedTextField(altmask);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } */
+    }
+
+    public void resetFields(JFormattedTextField[] gpsNumFields, JTextField[] gpsLocationFields) {
+
+        for (JFormattedTextField field: gpsNumFields) {
+            field.setText("");
+        }
+        for (JTextField field: gpsLocationFields) {
             field.setText("");
         }
     }
 
-    public void copyGPSFromSelected(JTextField[] gpsFields, JCheckBox[] gpsBoxes) {
+    public void copyGPSFromSelected(JFormattedTextField[] gpsNumFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes) {
         File[] files = MyVariables.getSelectedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         // Use "-n" for numerical values, like GPSAltitudeRef 0/1, instead of Above Sea Level/Below Sea Level
@@ -43,7 +86,7 @@ public class EditGPSdata {
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetFields(gpsFields);
+        resetFields(gpsNumFields, gpsLocationFields);
 
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
@@ -60,11 +103,11 @@ public class EditGPSdata {
             logger.debug("Error executing command");
         }
         if (res.length() > 0) {
-            displayCopiedInfo(gpsFields, gpsBoxes, res);
+            displayCopiedInfo(gpsNumFields, gpsLocationFields, gpsBoxes, res);
         }
     }
 
-    public void displayCopiedInfo(JTextField[] gpsFields, JCheckBox[] gpsBoxes, String exiftoolInfo) {
+    public void displayCopiedInfo(JFormattedTextField[] gpsNumFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes, String exiftoolInfo) {
         String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
         for (String line : lines) {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
@@ -72,13 +115,13 @@ public class EditGPSdata {
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
             logger.info(SpaceStripped + "; value: " + cells[1], "\n");
             if (SpaceStripped.contains("Latitude")) {
-                gpsFields[0].setText(cells[1].trim());
+                gpsNumFields[0].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Longitude")) {
-                gpsFields[1].setText(cells[1].trim());
+                gpsNumFields[1].setText(cells[1].trim());
             }
             if ("GPSAltitude".equals(SpaceStripped)) {
-                gpsFields[2].setText(cells[1].trim());
+                gpsNumFields[2].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("AltitudeRef")) {
                 if (cells[1].contains("0")) {
@@ -88,23 +131,23 @@ public class EditGPSdata {
                 }
             }
             if (SpaceStripped.contains("Location")) {
-                gpsFields[3].setText(cells[1].trim());
+                gpsLocationFields[0].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("Country")) {
-                gpsFields[4].setText(cells[1].trim());
+                gpsLocationFields[1].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("State")) {
-                gpsFields[5].setText(cells[1].trim());
+                gpsLocationFields[2].setText(cells[1].trim());
             }
             if (SpaceStripped.contains("City")) {
-                gpsFields[6].setText(cells[1].trim());
+                gpsLocationFields[3].setText(cells[1].trim());
             }
         }
 
     }
 
 
-    public void writeGPSTags(JTextField[] gpsFields, JCheckBox[] gpsBoxes, JProgressBar progressBar) {
+    public void writeGPSTags(JFormattedTextField[] gpsNumFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes, JProgressBar progressBar) {
 
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
@@ -118,22 +161,22 @@ public class EditGPSdata {
         if (gpsBoxes[0].isSelected()) { // LatLonAlt
             // Exiftool prefers to only set one tag (exif or xmp) and retrieve with composite,
             // but I prefer to set both to satisfy every user
-            cmdparams.add("-exif:GPSLatitude=" + gpsFields[0].getText().trim());
-            if (Float.parseFloat(gpsFields[0].getText().trim()) > 0 ) {
+            cmdparams.add("-exif:GPSLatitude=" + gpsNumFields[0].getText().trim());
+            if (Float.parseFloat(gpsNumFields[0].getText().trim()) > 0 ) {
                 cmdparams.add("-exif:GPSLatitudeREF=N");
             } else {
                 cmdparams.add("-exif:GPSLatitudeREF=S");
             }
-            cmdparams.add("-exif:GPSLongitude=" + gpsFields[1].getText().trim());
-            if (Float.parseFloat(gpsFields[1].getText().trim()) > 0 ) {
+            cmdparams.add("-exif:GPSLongitude=" + gpsNumFields[1].getText().trim());
+            if (Float.parseFloat(gpsNumFields[1].getText().trim()) > 0 ) {
                 cmdparams.add("-exif:GPSLongitudeREF=E");
             } else {
                 cmdparams.add("-exif:GPSLongitudeREF=W");
             }
-            cmdparams.add("-exif:GPSAltitude=" + gpsFields[2].getText().trim());
-            cmdparams.add("-xmp:GPSLatitude=" + gpsFields[0].getText().trim());
-            cmdparams.add("-xmp:GPSLongitude=" + gpsFields[1].getText().trim());
-            cmdparams.add("-xmp:GPSAltitude=" + gpsFields[2].getText().trim());
+            cmdparams.add("-exif:GPSAltitude=" + gpsNumFields[2].getText().trim());
+            cmdparams.add("-xmp:GPSLatitude=" + gpsNumFields[0].getText().trim());
+            cmdparams.add("-xmp:GPSLongitude=" + gpsNumFields[1].getText().trim());
+            cmdparams.add("-xmp:GPSAltitude=" + gpsNumFields[2].getText().trim());
             if (gpsBoxes[1].isSelected()) { //Altitude positive
                 cmdparams.add("-exif:GPSAltitudeREF=above");
             } else {
@@ -142,20 +185,20 @@ public class EditGPSdata {
         }
         // Again: exiftool prefers to only set one tag, but I set both
         if (gpsBoxes[2].isSelected()) {
-            cmdparams.add("-xmp:Location=" + gpsFields[3].getText().trim());
-            cmdparams.add("-iptc:Sub-location=" + gpsFields[3].getText().trim());
+            cmdparams.add("-xmp:Location=" + gpsLocationFields[0].getText().trim());
+            cmdparams.add("-iptc:Sub-location=" + gpsLocationFields[0].getText().trim());
         }
         if (gpsBoxes[3].isSelected()) {
-            cmdparams.add("-xmp:Country=" + gpsFields[4].getText().trim());
-            cmdparams.add("-iptc:Country-PrimaryLocationName=" + gpsFields[4].getText().trim());
+            cmdparams.add("-xmp:Country=" + gpsLocationFields[1].getText().trim());
+            cmdparams.add("-iptc:Country-PrimaryLocationName=" + gpsLocationFields[1].getText().trim());
         }
         if (gpsBoxes[4].isSelected()) {
-            cmdparams.add("-xmp:State=" + gpsFields[5].getText().trim());
-            cmdparams.add("-iptc:Province-State=" + gpsFields[5].getText().trim());
+            cmdparams.add("-xmp:State=" + gpsLocationFields[2].getText().trim());
+            cmdparams.add("-iptc:Province-State=" + gpsLocationFields[2].getText().trim());
         }
         if (gpsBoxes[5].isSelected()) {
-            cmdparams.add("-xmp:City=" + gpsFields[6].getText().trim());
-            cmdparams.add("-iptc:City=" + gpsFields[6].getText().trim());
+            cmdparams.add("-xmp:City=" + gpsLocationFields[3].getText().trim());
+            cmdparams.add("-iptc:City=" + gpsLocationFields[3].getText().trim());
         }
 
 

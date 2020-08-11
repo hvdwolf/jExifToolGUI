@@ -8,17 +8,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditGpanodata {
     private final static Logger logger = LoggerFactory.getLogger(EditGpanodata.class);
+
+    public void setFormattedFieldFormats(JFormattedTextField[] theFields) {
+        Locale currentLocale = Locale.getDefault();
+        NumberFormat formatter = NumberFormat.getNumberInstance(currentLocale );
+        formatter.setMaximumFractionDigits(4);
+        for (JFormattedTextField field : theFields) {
+            field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(formatter)));
+        }
+    }
 
 
     public void resetFields(JFormattedTextField[] gpanoFields, JTextField gpanoStitchingSoftwaretextField,  JCheckBox[] gpanoBoxes) {

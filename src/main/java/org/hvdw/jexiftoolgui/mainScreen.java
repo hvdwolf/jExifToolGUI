@@ -3,7 +3,6 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.sun.java.swing.plaf.gtk.GTKLookAndFeel;
 import org.hvdw.jexiftoolgui.controllers.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
@@ -19,6 +18,7 @@ import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.html.HTMLBodyElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,7 +27,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
 import javax.swing.ImageIcon;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
@@ -35,6 +34,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,14 +48,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.OS_NAME;
 
 
 public class mainScreen {
     private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
-    private final DropTargetListener FileDragDropListener = null;
+    //private final DropTargetListener FileDragDropListener = null;
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -163,8 +162,8 @@ public class mainScreen {
     private JTextField gpsLocationtextField;
     private JCheckBox gpsLocationcheckBox;
     private JCheckBox SaveLatLonAltcheckBox;
-    private JTextField gpsLatDecimaltextField;
-    private JTextField gpsLonDecimaltextField;
+    private JFormattedTextField gpsLatDecimaltextField;
+    private JFormattedTextField gpsLonDecimaltextField;
     private JCheckBox gpsAboveSealevelcheckBox;
     private JPanel gpsLatLonAltPanel;
     private JTextField gpsCountrytextField;
@@ -175,13 +174,13 @@ public class mainScreen {
     private JCheckBox gpsCitycheckBox;
     private JButton copyToInputFieldsButton;
     private JLabel CalcLatDecimaltextLabel;
-    private JTextField CalcLatDegtextField;
-    private JTextField CalcLatMintextField;
-    private JTextField CalcLatSectextField;
+    private JFormattedTextField CalcLatDegtextField;
+    private JFormattedTextField CalcLatMintextField;
+    private JFormattedTextField CalcLatSectextField;
     private JLabel CalcLonDecimaltextLabel;
-    private JTextField CalcLonDegtextField;
-    private JTextField CalcLonMintextField;
-    private JTextField CalcLonSectextField;
+    private JFormattedTextField CalcLonDegtextField;
+    private JFormattedTextField CalcLonMintextField;
+    private JFormattedTextField CalcLonSectextField;
     private JRadioButton CalcNorthRadioButton;
     private JRadioButton CalcSouthRadioButton;
     private JRadioButton CalcEastradioButton;
@@ -221,7 +220,7 @@ public class mainScreen {
     private JLabel GeotaggingLocationLabel;
     private JButton resetGeotaggingbutton;
     private JLabel GeotaggingGeosyncExplainLabel;
-    private JTextField gpsAltDecimaltextField;
+    private JFormattedTextField gpsAltDecimaltextField;
     private JLabel gPanoTopText;
     private JFormattedTextField gpanoCAIHPtextField;
     private JFormattedTextField gpanoCAIWPtextField;
@@ -336,6 +335,7 @@ public class mainScreen {
     private JButton LoadCommandFavoritebutton;
     private JButton SaveQuerybutton;
     private JButton loadQuerybutton;
+    private JLabel JLabelDropReady;
     private JButton button;
     private JPanel gps;
     private JTextField ExiftoolLocationtextField;
@@ -373,6 +373,21 @@ public class mainScreen {
     private AddFavorite AddFav = new AddFavorite();
     //DragDropListener DDL = new DragDropListener();
 
+
+
+    /*    ImgDropReady imgDropReady = new ImgDropReady();
+
+        imgDropReady.setDropReadyProperty().addListener(new ChangeListener() {
+            @Override public void changed(
+                    ObservableValue 0,
+                    Object OldVal,
+                    Object newVal
+            ){
+                logger.info("ImgDropReady has changed");
+            }
+        }); */
+
+
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
     // creates way more code which doesn't make it clearer either.
@@ -406,11 +421,18 @@ public class mainScreen {
     private JRadioButton[] getCopyMetaDataRadiobuttons() {return new JRadioButton[] {copyAllMetadataRadiobutton, copyAllMetadataSameGroupsRadiobutton, copySelectiveMetadataradioButton}; }
     private JCheckBox[] getCopyMetaDataCheckBoxes() {return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, CopyMakernotescheckBox, BackupOriginalscheckBox}; }
 
-    private JTextField[] getGPSFields() {
-        return new JTextField[] {gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField};
+    private JFormattedTextField[] getNumGPSFields() {
+        return new JFormattedTextField[] {gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField};
+    }
+    private JTextField[] getGPSLocationFields() {
+        return new JTextField[] {gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField};
     }
     private JCheckBox[] getGpsBoxes() {
         return new JCheckBox[] {SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox};
+    }
+
+    private JFormattedTextField[] getGPScalcFields() {
+        return new JFormattedTextField[] {CalcLatDegtextField, CalcLatMintextField, CalcLatSectextField, CalcLonDegtextField, CalcLonMintextField, CalcLonSectextField};
     }
 
     private JFormattedTextField[] getGpanoFields() {
@@ -1008,7 +1030,7 @@ public class mainScreen {
         final JLabel label34 = new JLabel();
         this.$$$loadLabelText$$$(label34, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.latitude"));
         gpsLatLonAltPanel.add(label34, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpsLatDecimaltextField = new JTextField();
+        gpsLatDecimaltextField = new JFormattedTextField();
         gpsLatLonAltPanel.add(gpsLatDecimaltextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(100, 25), null, 0, false));
         final JLabel label35 = new JLabel();
         this.$$$loadLabelText$$$(label35, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.altitude"));
@@ -1016,9 +1038,9 @@ public class mainScreen {
         final JLabel label36 = new JLabel();
         this.$$$loadLabelText$$$(label36, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.longitude"));
         gpsLatLonAltPanel.add(label36, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gpsLonDecimaltextField = new JTextField();
+        gpsLonDecimaltextField = new JFormattedTextField();
         gpsLatLonAltPanel.add(gpsLonDecimaltextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(100, 25), null, 0, false));
-        gpsAltDecimaltextField = new JTextField();
+        gpsAltDecimaltextField = new JFormattedTextField();
         gpsLatLonAltPanel.add(gpsAltDecimaltextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(100, 25), null, 0, false));
         gpsAboveSealevelcheckBox = new JCheckBox();
         gpsAboveSealevelcheckBox.setSelected(true);
@@ -1050,11 +1072,11 @@ public class mainScreen {
         CalcLatDecimaltextLabel = new JLabel();
         CalcLatDecimaltextLabel.setText("00.00000");
         gpsCalculationPanel.add(CalcLatDecimaltextLabel, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
-        CalcLatDegtextField = new JTextField();
+        CalcLatDegtextField = new JFormattedTextField();
         gpsCalculationPanel.add(CalcLatDegtextField, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
-        CalcLatMintextField = new JTextField();
+        CalcLatMintextField = new JFormattedTextField();
         gpsCalculationPanel.add(CalcLatMintextField, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
-        CalcLatSectextField = new JTextField();
+        CalcLatSectextField = new JFormattedTextField();
         gpsCalculationPanel.add(CalcLatSectextField, new GridConstraints(2, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         final JLabel label42 = new JLabel();
         this.$$$loadLabelText$$$(label42, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.longitude"));
@@ -1062,11 +1084,11 @@ public class mainScreen {
         CalcLonDecimaltextLabel = new JLabel();
         CalcLonDecimaltextLabel.setText("00.00000");
         gpsCalculationPanel.add(CalcLonDecimaltextLabel, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 25), null, 0, false));
-        CalcLonDegtextField = new JTextField();
+        CalcLonDegtextField = new JFormattedTextField();
         gpsCalculationPanel.add(CalcLonDegtextField, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
-        CalcLonMintextField = new JTextField();
+        CalcLonMintextField = new JFormattedTextField();
         gpsCalculationPanel.add(CalcLonMintextField, new GridConstraints(3, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
-        CalcLonSectextField = new JTextField();
+        CalcLonSectextField = new JFormattedTextField();
         gpsCalculationPanel.add(CalcLonSectextField, new GridConstraints(3, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, 25), new Dimension(40, -1), 0, false));
         CalcNorthRadioButton = new JRadioButton();
         CalcNorthRadioButton.setSelected(true);
@@ -1899,6 +1921,10 @@ public class mainScreen {
         final JPanel panel45 = new JPanel();
         panel45.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         rootPanel.add(panel45, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        JLabelDropReady = new JLabel();
+        JLabelDropReady.setText("");
+        JLabelDropReady.setVisible(false);
+        panel45.add(JLabelDropReady);
         OutputLabel = new JLabel();
         OutputLabel.setText("");
         panel45.add(OutputLabel);
@@ -2443,14 +2469,14 @@ public class mainScreen {
         gpsCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGPSd.copyGPSFromSelected(getGPSFields(), getGpsBoxes());
+                EGPSd.copyGPSFromSelected(getNumGPSFields(), getGPSLocationFields(), getGpsBoxes());
             }
         });
         gpsSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (selectedIndicesList.size() > 0) {
-                    EGPSd.writeGPSTags(getGPSFields(), getGpsBoxes(), progressBar);
+                    EGPSd.writeGPSTags(getNumGPSFields(), getGPSLocationFields(), getGpsBoxes(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
@@ -2460,7 +2486,7 @@ public class mainScreen {
         gpsResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGPSd.resetFields(getGPSFields());
+                EGPSd.resetFields(getNumGPSFields(), getGPSLocationFields());
             }
         });
         gpsMapcoordinatesbutton.addActionListener(new ActionListener() {
@@ -2864,11 +2890,69 @@ public class mainScreen {
         }
     }
 
-    public void rootPanelDropListener () {
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    public static class FileDragDropListener implements DropTargetListener {
+
+        @Override
+        public void drop(DropTargetDropEvent event)  {
+
+            DragDropListener DDL = new DragDropListener();
+            // Accept copy drops
+            event.acceptDrop(DnDConstants.ACTION_COPY);
+            // Get the transfer which can provide the dropped item data
+            Transferable transferable = event.getTransferable();
+            // Get the data formats of the dropped item
+            DataFlavor[] flavors = transferable.getTransferDataFlavors();
+            // Loop through the flavors
+            for (DataFlavor flavor : flavors) {
+                try {
+                    // If the drop items are files
+                    if (flavor.isFlavorJavaFileListType()) {
+                        // Get all of the dropped files
+                        List <File> files = (List) transferable.getTransferData(flavor);
+                        //logger.info("length of list {}", files.size());
+                        File[] imgs = new File[files.size()];
+                        int counter = 0;
+                        // Loop them through
+                        for (File file : files) {
+                            // Print out the file path
+                            logger.info("File path is: {}", file.getPath());
+                            imgs[ counter ] = file;
+                            counter++;
+                        }
+                        MyVariables.setSelectedFiles(imgs);
+                        //loadImages("dropped");
+                    }
+                } catch (Exception e) {
+                    // Print out the error stack
+                    e.printStackTrace();
+                }
+            }
+            MyVariables.setDropReady(true);
+            // Inform that the drop is complete
+            event.dropComplete(true);
+        }
+
+        @Override
+        public void dragEnter(DropTargetDragEvent event) {
+        }
+        @Override
+        public void dragExit(DropTargetEvent event) {
+        }
+        @Override
+        public void dragOver(DropTargetDragEvent event) {
+        }
+        @Override
+        public void dropActionChanged(DropTargetDragEvent event) {
+        }
+    }
+
+    public void rootPanelDropListener() {
         //Listen to drop events
-        DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
+        //DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
+        //make it mainScreen to be able to access all GUI elements
+        FileDragDropListener fileDragDropListener = new FileDragDropListener();
         new DropTarget(rootPanel, fileDragDropListener);
-        logger.info("Something was dropped");
     }
 
 
@@ -3140,15 +3224,6 @@ public class mainScreen {
 
     }
 
-    private void setFormattedFieldFormats(JFormattedTextField[] theFields) {
-        Locale currentLocale = Locale.getDefault();
-        NumberFormat formatter = NumberFormat.getNumberInstance(currentLocale );
-        formatter.setMaximumFractionDigits(4);
-        for (JFormattedTextField field : theFields) {
-            field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(formatter)));
-        }
-    }
-
     private void setArtistCreditsCopyrightDefaults() {
         // Try to set the defaults for artist, credit and copyrights in the edit exif/xmp panes if prefs available
         String[] ArtCredCopyPrefs = Utils.checkPrefsArtistCreditsCopyRights();
@@ -3203,6 +3278,7 @@ public class mainScreen {
         ViewRadiobuttonListener();
         fillAllComboboxes();
 
+
         // Use the mouselistener for the double-click to display the image
         fileNamesTableMouseListener();
         //Use the table listener for theselection of multiple cells
@@ -3239,9 +3315,14 @@ public class mainScreen {
         // Some texts
         setProgramScreenTexts();
         // Set formatting for the JFormatted textFields
-        setFormattedFieldFormats(getGpanoFields());
+        EGpanod.setFormattedFieldFormats(getGpanoFields());
+        // Set jFormattedFields
+        EGPSd.setFormattedFieldMasks(getNumGPSFields(), getGPScalcFields());
+
 
         Utils.checkForNewVersion("startup");
+        //JLabelDropReady.addPropertyChangeListener(new PropertyChangeListener() {
+        //});
     }
 
     static void createAndShowGUI() {
