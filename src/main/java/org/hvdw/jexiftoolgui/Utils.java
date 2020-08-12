@@ -157,7 +157,7 @@ public class Utils {
      * Checks whether the artist (xmp-dc:creator) and Copyright (xmp-dc:rights) and Credits (xmp:credits) preference exists
      * and uses these in the edit exif/xmp panes
      */
-    static String[] checkPrefsArtistCreditsCopyRights() {
+    public static String[] checkPrefsArtistCreditsCopyRights() {
         String[] ArtCredCopyPrefs = {
                 prefs.getByKey(ARTIST, ""),
                 prefs.getByKey(CREDIT, ""),
