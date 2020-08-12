@@ -142,6 +142,7 @@
                     <constraints/>
                     <properties>
                       <text resource-bundle="translations/program_strings" key="emd.xmp"/>
+                      <visible value="false"/>
                     </properties>
                   </component>
                   <component id="a25a6" class="javax.swing.JRadioButton" binding="csvRadioButton" default-binding="true">

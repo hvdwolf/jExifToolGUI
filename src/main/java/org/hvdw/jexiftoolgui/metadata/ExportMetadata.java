@@ -13,7 +13,10 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,7 @@ public class ExportMetadata extends JDialog {
     public int[] selectedFilenamesIndices;
     public File[] files;
     public JProgressBar progBar;
+    public BufferedWriter writer;
 
     public ExportMetadata() {
         setContentPane(contentPane);
@@ -177,7 +181,7 @@ public class ExportMetadata extends JDialog {
         if (atLeastOneSelected) {
             String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue")};
             int choice = JOptionPane.showOptionDialog(null, Message, ResourceBundle.getBundle("translations/program_strings").getString("emd.dlgtitle"),
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
             if (choice == 1) { //Yes
                 // Check with export file format has been chosen
                 if (txtRadioButton.isSelected()) {
@@ -195,8 +199,8 @@ public class ExportMetadata extends JDialog {
                     params.add("-h");
                     params.add("-w!");
                     params.add("html");
-                } else if (xmpRadioButton.isSelected()) {
-                    params.add("xmpexport");
+                /*} else if (xmpRadioButton.isSelected()) {
+                    params.add("xmpexport"); */
                 } else if (csvRadioButton.isSelected()) {
                     params.add("-csv");
                 }
@@ -216,19 +220,22 @@ public class ExportMetadata extends JDialog {
                     filepath = files[index].getParent();
                 }
 
-                // for csv we need the > character which we need to treat specially and differently on unixes and windows.
-                // We also really need the shell for it otherwise the > is seen as a file
+                // Originally for csv we needed the > character to redirect output to a csv file, which we need to treat specially and differently on unixes and windows.
+                // We also really needed the shell for it otherwise the > is seen as a file
+                // We now read the output into a string and write tht string to file with a bufferedwriter
                 if (csvRadioButton.isSelected()) {
                     if (isWindows) {
                         //params.add(" > " + filepath.replace("\\", "/") + "/out.csv");
-                        cmdparams.add("cmd");
-                        cmdparams.add("/c");
-                        cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > \"" + filepath.replace("\\", "/") + "/out.csv\" ");
+                        //cmdparams.add("cmd");
+                        //cmdparams.add("/c");
+                        //cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > \"" + filepath.replace("\\", "/") + "/out.csv\" ");
+                        cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " "));
                     } else {
                         // logger.info("params to string: {}", params.toString());
-                        cmdparams.add("/bin/sh");
-                        cmdparams.add("-c");
-                        cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > " + filepath + "/out.csv ");
+                        //cmdparams.add("/bin/sh");
+                        //cmdparams.add("-c");
+                        //cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > " + filepath + "/out.csv");
+                        cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " "));
                     }
                 } else {
                     cmdparams = params;
@@ -237,7 +244,22 @@ public class ExportMetadata extends JDialog {
 
 
                 // Export metadata
-                CommandRunner.runCommandWithProgressBar(params, progBar);
+                if (!csvRadioButton.isSelected()) {
+                    CommandRunner.runCommandWithProgressBar(params, progBar);
+                } else {
+                    try {
+                        String result = CommandRunner.runCommand(params);
+                        if (isWindows) {
+                            writer = new BufferedWriter(new FileWriter(filepath.replace("\\", "/") + File.separator + "out.csv"));
+                        } else {
+                            writer = new BufferedWriter(new FileWriter(filepath + File.separator + "out.csv"));
+                        }
+                        writer.write(result);
+                        writer.close();
+                    } catch (InterruptedException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } else {
             JOptionPane.showMessageDialog(contentPane, ResourceBundle.getBundle("translations/program_strings").getString("emd.dlgnoexporttext"), ResourceBundle.getBundle("translations/program_strings").getString("emd.dlgnoexporttitle"), JOptionPane.WARNING_MESSAGE);
@@ -330,6 +352,7 @@ public class ExportMetadata extends JDialog {
         panel6.add(htmlRadioButton);
         xmpRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(xmpRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.xmp"));
+        xmpRadioButton.setVisible(false);
         panel6.add(xmpRadioButton);
         csvRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(csvRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.csv"));
