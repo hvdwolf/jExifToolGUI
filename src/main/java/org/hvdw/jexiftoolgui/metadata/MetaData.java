@@ -16,7 +16,7 @@ public class MetaData {
     private final static Logger logger = LoggerFactory.getLogger(MetaData.class);
 
     public void copyToXmp() {
-        String fpath ="";
+        String fpath = "";
         StringBuilder TotalOutput = new StringBuilder();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
@@ -24,7 +24,7 @@ public class MetaData {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         logger.info("Copy all metadata to xmp format");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 500,ResourceBundle.getBundle("translations/program_strings").getString("cmd.dlgtext")),ResourceBundle.getBundle("translations/program_strings").getString("cmd.dlgtitle"),
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("cmd.dlgtext")), ResourceBundle.getBundle("translations/program_strings").getString("cmd.dlgtitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something
@@ -32,7 +32,7 @@ public class MetaData {
 
             String exiftool = Utils.platformExiftool();
 
-            for (int index: selectedIndices) {
+            for (int index : selectedIndices) {
                 // Unfortunately we need to do this file by file. It also means we need to initialize everything again and again
                 //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 cmdparams.clear();
@@ -54,7 +54,7 @@ public class MetaData {
                     String res = CommandRunner.runCommand(cmdparams);
                     logger.info("res is\n{}", res);
                     TotalOutput.append(res);
-                } catch(IOException | InterruptedException ex) {
+                } catch (IOException | InterruptedException ex) {
                     logger.debug("Error executing command");
                 }
             }
@@ -63,14 +63,14 @@ public class MetaData {
 
     }
 
-    public void repairJPGMetadata( JProgressBar progressBar) {
+    public void repairJPGMetadata(JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
         logger.info("Repair corrupted metadata in JPG(s)");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtext")),ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtitle"),
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtext")), ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             cmdparams.add(Utils.platformExiftool());
@@ -80,7 +80,7 @@ public class MetaData {
             }
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            for (int index: selectedIndices) {
+            for (int index : selectedIndices) {
                 //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
@@ -99,7 +99,7 @@ public class MetaData {
         File[] files = MyVariables.getSelectedFiles();
 
         boolean atLeastOneSelected = false;
-        String fpath ="";
+        String fpath = "";
 
         List<String> params = new ArrayList<String>();
         params.add(Utils.platformExiftool());
@@ -163,15 +163,15 @@ public class MetaData {
         if (!CopyMetaDataCheckBoxes[7].isSelected()) {
             params.add("-overwrite_original");
         }
-        Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgisthiscorrect" ) + "</html>");
+        Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgisthiscorrect") + "</html>");
         if (atLeastOneSelected) {
             String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue")};
-            int choice = JOptionPane.showOptionDialog(null, Message,ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgtitle"),
+            int choice = JOptionPane.showOptionDialog(null, Message, ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgtitle"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
                 // Copy metadata
                 String[] etparams = params.toArray(new String[0]);
-                for (int index: selectedIndices) {
+                for (int index : selectedIndices) {
                     //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         params.add(files[index].getPath().replace("\\", "/"));
@@ -183,9 +183,107 @@ public class MetaData {
                 CommandRunner.runCommandWithProgressBar(params, progressBar);
             }
         } else {
-            JOptionPane.showMessageDialog(null, ProgramTexts.NoOptionSelected,"No copy option selected",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, ProgramTexts.NoOptionSelected, "No copy option selected", JOptionPane.WARNING_MESSAGE);
         }
     }
 
+    public void exportXMPSidecar(JProgressBar progressBar) {
+        String commandstring = "";
+        String pathwithoutextension = "";
+        List<String> cmdparams = new ArrayList<String>();
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmp"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        //String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
 
+        logger.info("Create xmp sidecar");
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (!(choice == 2)) {
+            // choice 0: exiftool -tagsfromfile SRC.EXT DST.xmp
+            // choice 1: exiftool -tagsfromfile SRC.EXT -xmp DST.xmp
+            // choice 2: Cancel
+            boolean isWindows = Utils.isOsFromMicrosoft();
+
+            for (int index : selectedIndices) {
+                commandstring = "";
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                cmdparams = new ArrayList<String>();; // initialize on every file
+                cmdparams.add(Utils.platformExiftool());
+                commandstring += Utils.platformExiftool();
+                //cmdparams.add("-overwrite_original");
+                cmdparams.add("-tagsfromfile");
+                commandstring += " -tagsfromfile ";
+
+                if (isWindows) {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    commandstring += files[index].getPath().replace("\\", "/");
+                    if (choice == 1) {
+                        cmdparams.add("-xmp");
+                        commandstring += " -xmp ";
+                    }
+                    cmdparams.add(pathwithoutextension + ".xmp");
+                    commandstring += pathwithoutextension + ".xmp";
+                } else {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                    cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                    commandstring += files[index].getPath().replace(" ", "\\ ");
+                    if (choice == 1) {
+                        cmdparams.add("-xmp");
+                        commandstring += " -xmp ";
+                    }
+                    cmdparams.add((pathwithoutextension + ".xmp").replace(" ", "\\ "));
+                    commandstring += (pathwithoutextension + ".xmp").replace(" ", "\\ ");
+                }
+                // export metadata
+                logger.info("exportxmpsidecar cmdparams: {}", cmdparams);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,false);
+                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+            }
+        }
+    }
+
+    public void exportExifSidecar(JProgressBar progressBar) {
+        String commandstring = "";
+        String pathwithoutextension = "";
+        List<String> cmdparams = new ArrayList<String>();
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
+
+        logger.info("Create exif sidecar");
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftitle"),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if ((choice == 0)) {
+            // choice 0: exiftool -tagsfromfile SRC.EXT -exif DST.exif
+            // choice 1: Cancel
+            boolean isWindows = Utils.isOsFromMicrosoft();
+
+            for (int index : selectedIndices) {
+                cmdparams = new ArrayList<String>();; // initialize on every file
+                cmdparams.add(Utils.platformExiftool());
+                cmdparams.add("-tagsfromfile");
+
+                if (isWindows) {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add("-exif");
+                    cmdparams.add(pathwithoutextension + ".exif");
+                } else {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                    cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                    commandstring += files[index].getPath().replace(" ", "\\ ");
+                    cmdparams.add("-exif");
+                    cmdparams.add((pathwithoutextension + ".exif").replace(" ", "\\ "));
+                }
+                // export metadata
+                logger.info("exportexifsidecar cmdparams: {}", cmdparams);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,false);
+                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+            }
+        }
+    }
 }
