@@ -261,6 +261,13 @@ public class Utils {
         }
         return filename.substring(lastIndexOf);
     }
+    public static String getFileNameWithoutExtension(String filename) {
+        return filename.replaceFirst("[.][^.]+$", "");
+    }
+    public static String getFilePathWithoutExtension(String filepath) {
+        // Duplicate of above, but makes it easier when working with file paths or only file names
+        return filepath.replaceFirst("[.][^.]+$", "");
+    }
 
     /*
     * Create the icon

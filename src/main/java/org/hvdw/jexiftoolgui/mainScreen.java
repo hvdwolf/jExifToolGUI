@@ -18,7 +18,6 @@ import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.html.HTMLBodyElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,22 +26,17 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
 import javax.swing.ImageIcon;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -371,6 +365,7 @@ public class mainScreen {
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
+    private MetadataViewPanel MD = new MetadataViewPanel();
     //DragDropListener DDL = new DragDropListener();
 
 
@@ -488,6 +483,9 @@ public class mainScreen {
         return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, CopyMakernotescheckBox};
     }
 
+    private JPanel getRootPanel() {
+        return rootPanel;
+    }
 
     public void loadImages(String loadingType) {
         String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
@@ -2093,8 +2091,10 @@ public class mainScreen {
                     loadImages("folder");
                     break;
                 case "Preferences":
-                    PreferencesDialog prefdialog = new PreferencesDialog();
-                    prefdialog.showDialog();
+                    prefsDialog.showDialog();
+                    break;
+                case "Metadata":
+                    MD.showDialog();
                     break;
                 case "Exit":
                     StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
@@ -2131,6 +2131,24 @@ public class mainScreen {
                     if (selectedIndicesList.size() > 0) {
                         ExportMetadata expMetadata = new ExportMetadata();
                         expMetadata.showDialog(selectedIndices, files, progressBar);
+                    } else {
+                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                    }
+                    break;
+                case "exportexivsidecar":
+                    if (selectedIndicesList.size() > 0) {
+                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
+                        metaData.exportExifSidecar(progressBar);
+                        OutputLabel.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                    }
+                    break;
+                case "exportxmpsidecar":
+                    if (selectedIndicesList.size() > 0) {
+                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
+                        metaData.exportXMPSidecar(progressBar);
+                        OutputLabel.setText("");
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                     }
@@ -2891,69 +2909,15 @@ public class mainScreen {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
-    public static class FileDragDropListener implements DropTargetListener {
 
-        @Override
-        public void drop(DropTargetDropEvent event)  {
-
-            DragDropListener DDL = new DragDropListener();
-            // Accept copy drops
-            event.acceptDrop(DnDConstants.ACTION_COPY);
-            // Get the transfer which can provide the dropped item data
-            Transferable transferable = event.getTransferable();
-            // Get the data formats of the dropped item
-            DataFlavor[] flavors = transferable.getTransferDataFlavors();
-            // Loop through the flavors
-            for (DataFlavor flavor : flavors) {
-                try {
-                    // If the drop items are files
-                    if (flavor.isFlavorJavaFileListType()) {
-                        // Get all of the dropped files
-                        List <File> files = (List) transferable.getTransferData(flavor);
-                        //logger.info("length of list {}", files.size());
-                        File[] imgs = new File[files.size()];
-                        int counter = 0;
-                        // Loop them through
-                        for (File file : files) {
-                            // Print out the file path
-                            logger.info("File path is: {}", file.getPath());
-                            imgs[ counter ] = file;
-                            counter++;
-                        }
-                        MyVariables.setSelectedFiles(imgs);
-                        //loadImages("dropped");
-                    }
-                } catch (Exception e) {
-                    // Print out the error stack
-                    e.printStackTrace();
-                }
-            }
-            MyVariables.setDropReady(true);
-            // Inform that the drop is complete
-            event.dropComplete(true);
-        }
-
-        @Override
-        public void dragEnter(DropTargetDragEvent event) {
-        }
-        @Override
-        public void dragExit(DropTargetEvent event) {
-        }
-        @Override
-        public void dragOver(DropTargetDragEvent event) {
-        }
-        @Override
-        public void dropActionChanged(DropTargetDragEvent event) {
-        }
-    }
-
-    public void rootPanelDropListener() {
+    /*public void rootPanelDropListener() {
         //Listen to drop events
         //DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
         //make it mainScreen to be able to access all GUI elements
         FileDragDropListener fileDragDropListener = new FileDragDropListener();
+        fileDragDropListener.setDerived_rootPanel(getRootPanel());
         new DropTarget(rootPanel, fileDragDropListener);
-    }
+    } */
 
 
     void fileNamesTableMouseListener() {
@@ -2996,6 +2960,10 @@ public class mainScreen {
         menuItem.setActionCommand("Preferences");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
+        menuItem = new JMenuItem("Custom Metadata View");
+        menuItem.setActionCommand("Metadata");
+        menuItem.addActionListener(new MenuActionListener());
+        myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));
         menuItem.setMnemonic(KeyEvent.VK_X);
         menuItem.setActionCommand("Exit");
@@ -3011,6 +2979,17 @@ public class mainScreen {
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
 
+        JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exif"));
+        menuItem.setActionCommand("exportexivsidecar");
+        menuItem.addActionListener(new MenuActionListener());
+        exportSidecarSubMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.xmp"));
+        menuItem.setActionCommand("exportxmpsidecar");
+        menuItem.addActionListener(new MenuActionListener());
+        exportSidecarSubMenu.add(menuItem);
+
+
         // metadata menu
         myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.metadata"));
         myMenu.setMnemonic(KeyEvent.VK_M);
@@ -3020,6 +2999,7 @@ public class mainScreen {
         menuItem.setActionCommand("Export metadata");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
+        myMenu.add(exportSidecarSubMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.copyallmetadatatoxmpformat"));
         menuItem.setActionCommand("Copy all metadata to xmp format");
         menuItem.addActionListener(new MenuActionListener());
@@ -3069,49 +3049,49 @@ public class mainScreen {
         //menuItem = new JMenuItem("Query the exiftool groups/tags database");
         //menuItem.addActionListener(new MenuActionListener());
         // this will be a sub menu of the Help menu containing the help dialogs for the several buttons
-        JMenu mysubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.helptopicsprogram"));
+        JMenu helpSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.helptopicsprogram"));
         //menuItem.setActionCommand("Remove metadata");
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdataexif"));
         menuItem.setActionCommand("editdataexif");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdataxmp"));
         menuItem.setActionCommand("editdataxmp");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatagps"));
         menuItem.setActionCommand("editdatagps");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatageotag"));
         menuItem.setActionCommand("editdatageotag");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatagpano"));
         menuItem.setActionCommand("editdatagpano");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatalens"));
         menuItem.setActionCommand("editdatalens");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.copydata"));
         menuItem.setActionCommand("copydata");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.yourcommands"));
         menuItem.setActionCommand("yourcommands");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.exiftooldb"));
         menuItem.setActionCommand("exiftooldb");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
-        mysubMenu.addSeparator();
+        helpSubMenu.add(menuItem);
+        helpSubMenu.addSeparator();
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.menurenaminginfo"));
         menuItem.setActionCommand("menurenaminginfo");
         menuItem.addActionListener(new MenuActionListener());
-        mysubMenu.add(menuItem);
+        helpSubMenu.add(menuItem);
 
 
 
@@ -3131,7 +3111,7 @@ public class mainScreen {
         //myMenu.add(menuItem);
         myMenu.addSeparator();
         // Here we add the sub menu with help topics
-        myMenu.add(mysubMenu);
+        myMenu.add(helpSubMenu);
         myMenu.addSeparator();
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"));
         menuItem.setActionCommand("Credits");
@@ -3291,10 +3271,10 @@ public class mainScreen {
         //Listen to drop events
        /*DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
         new DropTarget(rootPanel, fileDragDropListener); */
-        rootPanelDropListener();
+        //rootPanelDropListener();
 
         // Make left "tableListfiles" and right "ListexiftoolInfotable" tables read-only (un-editable)
-        // This also fixex the double-click bug on the image where it retrieves the object name of the images on double-click
+        // This also fixes the double-click bug on the image where it retrieves the object name of the images on double-click
         tableListfiles.setDefaultEditor(Object.class, null);
         ListexiftoolInfotable.setDefaultEditor(Object.class, null);
         // Make all tables read-only unless ....

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
 
 public class RenamePhotos extends JDialog {
     private JPanel rootRenamingPane;
@@ -135,6 +136,7 @@ public class RenamePhotos extends JDialog {
 
     public String getImagePath(JPanel myComponent) {
         String SelectedFolder;
+        //String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
 
         String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
         final JFileChooser chooser = new JFileChooser(startFolder);

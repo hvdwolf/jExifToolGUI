@@ -12,15 +12,14 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
-
-
-// I had specified for the array in mainScreen:
-// JTextField[] geotaggingFields = {geotaggingImgFoldertextField, geotaggingGPSLogtextField, geotaggingGeosynctextField};
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
 
 
 public class EditGeotaggingdata {
@@ -31,17 +30,33 @@ public class EditGeotaggingdata {
 
     public String getImagePath(JPanel myComponent) {
         String SelectedFolder;
+        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
 
         String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
-        final JFileChooser chooser = new JFileChooser(startFolder);
-        chooser.setDialogTitle("Locate the image folder ...");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int status = chooser.showOpenDialog(myComponent);
-        if (status == JFileChooser.APPROVE_OPTION) {
-            SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
-            return SelectedFolder;
+        if ("jfilechooser".equals(prefFileDialog)) {
+            final JFileChooser chooser = new JFileChooser(startFolder);
+            chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"));
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int status = chooser.showOpenDialog(myComponent);
+            if (status == JFileChooser.APPROVE_OPTION) {
+                SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
+                return SelectedFolder;
+            } else {
+                return "";
+            }
         } else {
-            return "";
+            JFrame dialogframe = new JFrame("");
+            FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
+            chooser.setDirectory(startFolder);
+            chooser.setMultipleMode(false);
+            chooser.setVisible(true);
+
+            SelectedFolder = chooser.getDirectory();
+            if (SelectedFolder == null) {
+                return "";
+            } else {
+                return SelectedFolder;
+            }
         }
     }
 

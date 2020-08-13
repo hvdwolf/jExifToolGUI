@@ -56,6 +56,7 @@ public class CommandRunner {
 
     /*
      * This executes the commands via runCommand and shows/hides the progress bar
+     * This one is special for the output windows and has 2 parameters
      */
     public static void runCommandWithProgressBar(List<String> cmdparams, JProgressBar progressBar) {
         // Create executor thread to be able to update my gui when longer methods run
@@ -79,8 +80,37 @@ public class CommandRunner {
                 progressBar.setVisible(true);
             }
         });
-
-
     }
+
+    /*
+     * This executes the commands via runCommand and shows/hides the progress bar
+     * This one has a 3rd parameter to enable/disable output. It should replace the above one (when I find the time)
+     */
+    public static void runCommandWithProgressBar(List<String> cmdparams, JProgressBar progressBar, boolean output) {
+        // Create executor thread to be able to update my gui when longer methods run
+        Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String res = runCommand(cmdparams);
+                    logger.debug("res is\n{}", res);
+                    progressBar.setVisible(false);
+                    if (output) {
+                        outputAfterCommand(res);
+                    }
+                } catch (IOException | InterruptedException ex) {
+                    logger.debug("Error executing command");
+                }
+
+            }
+        });
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                progressBar.setVisible(true);
+            }
+        });
+    }
+
 
 }

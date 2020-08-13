@@ -276,35 +276,6 @@ public class StandardFileIO {
         return files;
     }
 
-    /*File folder = new File("/Users/you/folder/");
-      File[] listOfFiles = folder.listFiles();
-
-      for (File file : listOfFiles) {
-          if (file.isFile()) {
-              System.out.println(file.getName());
-          }
-      }
-    */
-    /*public void listFilesForFolder(final File folder) {
-        for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                listFilesForFolder(fileEntry);
-            } else {
-                System.out.println(fileEntry.getName());
-            }
-        }
-    }
-
-    final File folder = new File("/home/you/Desktop");
-    listFilesForFolder(folder); 
-
-    // As from java 8
-    try (Stream<Path> paths = Files.walk(Paths.get("/home/you/Desktop"))) {
-        paths
-            .filter(Files::isRegularFile)
-            .forEach(System.out::println);
-    } 
-*/
 
     // Check if we have a jexiftoolgui_custom folder in $HOME with defaults
     public static String checkforjexiftoolguiFolder() {

@@ -135,14 +135,29 @@ public class PreferencesDialog extends JDialog {
     // Locate the default image path, if the user wants it
     public void getDefaultImagePath(JPanel myComponent, JTextField defImgFolder) {
         String SelectedFolder;
+        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
 
-        final JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("prefs.locateprefimgfolder"));
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int status = chooser.showOpenDialog(myComponent);
-        if (status == JFileChooser.APPROVE_OPTION) {
-            SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
-            defImgFolder.setText(SelectedFolder);
+        if ("jfilechooser".equals(prefFileDialog)) {
+            final JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("prefs.locateprefimgfolder"));
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int status = chooser.showOpenDialog(myComponent);
+            if (status == JFileChooser.APPROVE_OPTION) {
+                SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
+                defImgFolder.setText(SelectedFolder);
+            }
+        } else {
+            JFrame dialogframe = new JFrame("");
+            FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
+            //chooser.setDirectory(startFolder);
+            chooser.setMultipleMode(false);
+            chooser.setVisible(true);
+
+            SelectedFolder = chooser.getDirectory();
+            if (!(SelectedFolder == null)) {
+                defImgFolder.setText(SelectedFolder);
+            }
+
         }
     }
 
