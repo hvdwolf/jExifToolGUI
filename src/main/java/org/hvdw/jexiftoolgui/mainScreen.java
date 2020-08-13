@@ -365,7 +365,7 @@ public class mainScreen {
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
-    private MetadataViewPanel MD = new MetadataViewPanel();
+    //private MetadataViewPanel MD = new MetadataViewPanel();
     //DragDropListener DDL = new DragDropListener();
 
 
@@ -2093,9 +2093,9 @@ public class mainScreen {
                 case "Preferences":
                     prefsDialog.showDialog();
                     break;
-                case "Metadata":
+                /*case "Metadata":
                     MD.showDialog();
-                    break;
+                    break; */
                 case "Exit":
                     StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
                     System.exit(0);
