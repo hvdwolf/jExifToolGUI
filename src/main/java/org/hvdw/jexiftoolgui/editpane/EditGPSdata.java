@@ -34,12 +34,16 @@ public class EditGPSdata {
 
     public void setFormattedFieldMasks(JFormattedTextField[] gpsNumFields, JFormattedTextField[] gpsCalcFields) {
         Locale currentLocale = Locale.getDefault();
-        NumberFormat latlonformatter = NumberFormat.getNumberInstance(currentLocale );
-        // Latitude / Longitude
-        latlonformatter.setMaximumIntegerDigits(2);
-        latlonformatter.setMaximumFractionDigits(6);
-        gpsNumFields[0].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(latlonformatter)));
-        gpsNumFields[1].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(latlonformatter)));
+        NumberFormat latformatter = NumberFormat.getNumberInstance(currentLocale );
+        // Latitude 0-90
+        latformatter.setMaximumIntegerDigits(2);
+        latformatter.setMaximumFractionDigits(6);
+        gpsNumFields[0].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(latformatter)));
+        NumberFormat lonformatter = NumberFormat.getNumberInstance(currentLocale );
+        // Longitude 0-180
+        lonformatter.setMaximumIntegerDigits(3);
+        lonformatter.setMaximumFractionDigits(6);
+        gpsNumFields[1].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(lonformatter)));
         //Altitude
         NumberFormat altformatter = NumberFormat.getNumberInstance(currentLocale );
         altformatter.setMaximumIntegerDigits(5);

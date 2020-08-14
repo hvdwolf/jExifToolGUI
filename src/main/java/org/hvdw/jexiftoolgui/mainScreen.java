@@ -2533,6 +2533,11 @@ public class mainScreen {
                 String[] calc_lat_lon = new String[2];
                 String[] input_lat_lon = new String[8];
 
+                for (JFormattedTextField calcfield : getGPScalcFields()) {
+                    if (calcfield.getText().isEmpty()) {
+                        calcfield.setText("0");
+                    }
+                }
                 input_lat_lon[0] = CalcLatDegtextField.getText();
                 input_lat_lon[1] = CalcLatMintextField.getText();
                 input_lat_lon[2] = CalcLatSectextField.getText();
