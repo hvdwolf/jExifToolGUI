@@ -2965,10 +2965,10 @@ public class mainScreen {
         menuItem.setActionCommand("Preferences");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        menuItem = new JMenuItem("Custom Metadata View");
+        /*menuItem = new JMenuItem("Custom Metadata View");
         menuItem.setActionCommand("Metadata");
         menuItem.addActionListener(new MenuActionListener());
-        myMenu.add(menuItem);
+        myMenu.add(menuItem); */
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));
         menuItem.setMnemonic(KeyEvent.VK_X);
         menuItem.setActionCommand("Exit");
