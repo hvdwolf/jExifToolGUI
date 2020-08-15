@@ -14,7 +14,7 @@ fi
 Version="$1"
 
 printf "Do initial cleanup\n\n"
-rm -rvf jExifToolGUI.app tmp *.dmg
+rm -rvf jExifToolGUI.app tmp *.dmg *.zip
 # Create the app bundle
 # full bundle with jre
 printf "Create the bundle from the base bundle\n\n"

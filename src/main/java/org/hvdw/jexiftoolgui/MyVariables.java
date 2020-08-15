@@ -25,6 +25,7 @@ public class MyVariables {
     private String tmpWorkFolder;
     private File CurrentWorkFile;
     private String ExiftoolVersion;
+    private boolean DropReady;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -99,5 +100,6 @@ public class MyVariables {
         staticInstance.ExiftoolVersion = exv;
     }
 
-
+    public static boolean getDropReady() { return staticInstance.DropReady; }
+    public static void setDropReady(boolean dropready) { staticInstance.DropReady = dropready; }
 }
