@@ -1,5 +1,26 @@
 # Changelog
 
+## 2020-08-15 1.5.0
+* Make app translatable: Change (almost) all "fixed" texts to "property based" translatable texts.
+    * Translated into German => Big thanks to Karsten Günther.
+    * Translated into Spanish => Big thanks to Martin Gersbach.
+    * Translated into Dutch.
+    * Preferences Language tab: Select your language of preference. By default in English if jExifToolGUI is not translated for your language yet.  But you can select Spanish, German or Dutch if your system is in Chinese ;) 
+* Preferences -> Look & Feel tab: File dialog (open/select files/folder) Option to select JFileChooser (shows same dialog on all systems) and Awt Filedialog (looks more "native Operating system" like)
+* Added the TwelveMonkeys imageIO library. Adds (additional) display support for bmp/jpeg/jpeg-2000/PNM (PBM/PGM/PPM/PAM)/PSD/TIFF/HDR/IFF/PCX/PICT/SGI/TGA/SVG/WMF
+* Complete rewrite of previews (with correct aspect ratio and rotation) and image view. Change default viewer to internal java viewer ("Display Image" or double-click preview). It will show the image resized to full-screen (unless smaller). RAW images are displayed in "external" RAW Image viewer (if configured in Preferences). 
+* MacOS: Use sips on "High Sierra" and newer to convert heic to a jpg preview (and image view). This is very alpha and mostly doesn't work.
+* Preferences window now "tabbed". Currently pretty empty but supposed to grow.
+* Fix: [issue #53](https://github.com/hvdwolf/jExifToolGUI/issues/53) xmpexport missing? Over the years this has changed to "Sidecar exports". Now added under (menu) Metadata: "Export Exif sidecar file(s)" and "Export XMP sidecar file(s)".(Known shortcoming: currently only works on paths and images without spaces. It does work on other places: why not here? something in exiftool?)
+* Fix: [Issue #54](https://github.com/hvdwolf/jExifToolGUI/issues/54) Repair csv output (export metadata).
+* Implemented [Issue #51](https://github.com/hvdwolf/jExifToolGUI/issues/51) Reverse buttons in Rename Photos window
+* Fix (MacOS): [Issue #40](https://github.com/hvdwolf/jExifToolGUI/issues/40) Load directory don't work on OSX.
+* Implemented [Issue #43](https://github.com/hvdwolf/jExifToolGUI/issues/43) Edit Data->Gpano layout
+* Fix: RAW viewer could not be called correctly when path or file name contains spaces.
+* Fix: UTF-8 was not used in Preferences dropdown for "Language to use to display metadata tag names/descriptions".
+* Fix: UTF-8 was not used for output in "View data" tab in the table table and neither in "Your commands".
+
+
 ## 2020-07-26 1.4.1
 * Fix: [Issue #38](https://github.com/hvdwolf/jExifToolGUI/issues/38) "Copy from selected image" adds leading space character for strings. All strings now "trim"-med, removing leading/trailing spaces.
 * Fix: [Issue #42](https://github.com/hvdwolf/jExifToolGUI/issues/42) When running on java 9 or above. You get a warning: "WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance". No problem at all and absolutely no performace impact (stupid log4j warning), but now the jar is converted to a "multi-version" jar.
