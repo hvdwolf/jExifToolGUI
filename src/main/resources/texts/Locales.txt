@@ -1,0 +1,6 @@
+System default - default
+de_DE - Deutsch
+en_US - English
+es_ES - Español
+nl_NL - Nederlands
+
