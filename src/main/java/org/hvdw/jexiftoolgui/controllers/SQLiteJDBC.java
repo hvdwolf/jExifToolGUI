@@ -124,6 +124,16 @@ public class SQLiteJDBC {
         return singleFieldQuery(sql, "lens_name");
     }
 
+    static public String getdefinedCustomSets() {
+        String sql = "select customset_name from CustomMetadataset order by customset_name";
+        return singleFieldQuery(sql, "customset_name");
+    }
+
+    static public String deleteCustomSetRows( String setName) {
+        String sql = "delete from CustomMetadatasetLines where customset_name='" + setName + "'";
+        return insertUpdateQuery(sql);
+    }
+
     static public String queryByTagname(String searchString, boolean likequery) {
         String sqlresult = "";
         String sql = "";

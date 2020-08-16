@@ -75,68 +75,21 @@ create view if not exists v_tags_groups as select taggroup,tagname,tagtype,writa
 --
 -- Create DB part for the custom "things"
 --
-Create table if not exists CustomView (
+Create table if not exists CustomMetadataset (
     id integer primary key autoincrement,
-    viewname text NOT NULL UNIQUE,
-    description text,
-    unique (id, viewname)
+    customset_name text NOT NULL UNIQUE,
+    unique (id, customset_name)
 );
 
-Create table if not exists CustomViewLines (
+Create table if not exists CustomMetadatasetLines (
     id integer primary key autoincrement,
-    parent_id integer,
-    displayname text NOT NULL,
+    customset_name text NOT NULL,
+    screen_label text NOT NULL,
     tag text NOT NULL,
-    description text,
-    UNIQUE (parent_id, displayname),
-    foreign key(parent_id) references CustomView(id)
+    default_value text,
+    UNIQUE (customset_name, tag),
+    foreign key(customset_name) references CustomMetadataset(customset_name)
 );
-
-Create table if not exists CustomEdit (
-    id integer primary key autoincrement,
-    editname text NOT NULL UNIQUE,
-    description text,
-    unique (id, editname)
-);
-Create table if not exists CustomEditLines (
-    id integer primary key autoincrement,
-    parent_id integer,
-    displayname text NOT NULL,
-    tag text NOT NULL,
-    description text,
-    foreign key(parent_id) references CustomEdit(id)
-    UNIQUE (parent_id, displayname)
-);
---
--- Add some example data in the CustomViewLines table
---
-insert into CustomView(viewname,description) values('custom','default custom view');
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Make','-exif:Make','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Model','-exif:Model','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'LensModel','-exif:LensModel','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'ExposureTime','-exif:ExposureTime','[1/50] or [0.02]' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'FNumber','-exif:FNumber','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'ISO','-exif:ISO','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'FocalLength','-exif:FocalLength','[28] -mm not necessary' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'FocalLengthin35mmformat','-exif:FocalLengthin35mmformat','[200] -mm not necessary' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Flash#','-exif:Flash','[ 0 ]=>No flash, [ 1 ]=>Flash fired' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Orientation#','-exif:Orientation','[ 1 ]=>0°, [ 3 ]=>180°, [ 6 ]=>+90°, [ 8 ]=>-90°' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'DateTimeOriginal','-exif:DateTimeOriginal','[2012:01:14 20:00:00]' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'CreateDate','-exif:CreateDate','[2012:01:14 20:00:00]' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Artist*','-exif:Artist','Harry van der Wolf' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Copyright','-exif:Copyright','2019-2020©' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Software','-exif:Software','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Latitide','-Gps:-GpsLatitude','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Longitude','-Gps:-GpsLongitude','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Altitude','-Gps:-GpsAltitude','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Orientation/Type±','-xmp-dc:Type','[Landscape] or [Studio+Portrait] ..' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Event','-xmp-iptcExt:Event','[Vacations] or [Trip] ..' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'PersonInImage±','-xmp:PersonInImage','[Phil] or [Harry+Sally] or [-Peter] ..' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Keywords±','-xmp-dc:Subject','[tree] or [flower+rose] or [-fish] or [+bird-fish] ..' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Country','-xmp:Country','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Province','-xmp:State','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'City','-xmp:City','' from CustomView where viewname='custom';
-insert into CustomViewLines(parent_id,displayname,tag, description) select CustomView.id,'Location','-xmp:location','' from CustomView where viewname='custom';
 
 --
 -- Create a myLenses table

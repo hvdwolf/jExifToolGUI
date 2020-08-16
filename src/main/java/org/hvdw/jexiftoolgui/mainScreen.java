@@ -365,7 +365,7 @@ public class mainScreen {
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
-    //private MetadataViewPanel MD = new MetadataViewPanel();
+    private MetadataViewPanel MD = new MetadataViewPanel();
     //DragDropListener DDL = new DragDropListener();
 
 
@@ -2093,9 +2093,9 @@ public class mainScreen {
                 case "Preferences":
                     prefsDialog.showDialog();
                     break;
-                /*case "Metadata":
-                    MD.showDialog();
-                    break; */
+                case "Metadata":
+                    MD.showDialog(rootPanel);
+                    break;
                 case "Exit":
                     StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
                     System.exit(0);
@@ -2965,10 +2965,10 @@ public class mainScreen {
         menuItem.setActionCommand("Preferences");
         menuItem.addActionListener(new MenuActionListener());
         myMenu.add(menuItem);
-        /*menuItem = new JMenuItem("Custom Metadata View");
+        menuItem = new JMenuItem("User defined Metadata Combis");
         menuItem.setActionCommand("Metadata");
         menuItem.addActionListener(new MenuActionListener());
-        myMenu.add(menuItem); */
+        myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));
         menuItem.setMnemonic(KeyEvent.VK_X);
         menuItem.setActionCommand("Exit");
