@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-08-16 1.5.1
+* Fix error in git repository. No influence on released apps.
+
 ## 2020-08-15 1.5.0
 * Make app translatable: Change (almost) all "fixed" texts to "property based" translatable texts.
     * Translated into German => Big thanks to Karsten Günther.
