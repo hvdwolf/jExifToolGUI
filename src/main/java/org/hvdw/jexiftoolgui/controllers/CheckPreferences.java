@@ -29,7 +29,7 @@ public class CheckPreferences {
 
 
         exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
-        logger.info("exiftool_exists reports: {}",exiftool_exists);
+        logger.trace("exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
@@ -40,7 +40,7 @@ public class CheckPreferences {
                 exiftool_path = null;
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 300,ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttitle"), JOptionPane.WARNING_MESSAGE);
             }
-            logger.info("exists is {}", exists);
+            logger.trace("exists is {}", exists);
             logger.info("preference exiftool returned: {}",exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
                 res = Utils.getExiftoolPath();

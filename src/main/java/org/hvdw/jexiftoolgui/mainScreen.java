@@ -366,6 +366,7 @@ public class mainScreen {
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
     private MetadataViewPanel MD = new MetadataViewPanel();
+    private WebView WV = new WebView();
     //DragDropListener DDL = new DragDropListener();
 
 
@@ -2205,7 +2206,8 @@ public class mainScreen {
                     }
                     break;
                 case "About jExifToolGUI":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);
+                    //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);
+                    WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext"), 500, 450);
                     break;
                 case "About ExifTool":
                     JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("aboutexiftool")), ResourceBundle.getBundle("translations/program_help_texts").getString("aboutexiftooltitle"), JOptionPane.INFORMATION_MESSAGE);
@@ -2265,7 +2267,8 @@ public class mainScreen {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "yourcommands":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
+//                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
+                    WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
                     break;
                 case "exiftooldb":
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
@@ -2336,7 +2339,8 @@ public class mainScreen {
         CommandshelpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
+                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
             }
         });
         AddCommandFavoritebutton.addActionListener(new ActionListener() {
@@ -3177,7 +3181,7 @@ public class mainScreen {
         // database version
         exiftoolDBversion.setText(String.format(ProgramTexts.HTML,100,"exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
         // Special dynamic version string
-        logger.info("check for exiftool version");
+        logger.trace("check for exiftool version");
         String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<>();
         Application.OS_NAMES currentOsName = Utils.getCurrentOsName();
