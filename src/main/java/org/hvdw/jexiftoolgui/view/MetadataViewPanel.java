@@ -329,7 +329,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             if (queryresultcounter == 0) {
                 loadCurrentSets("fill_combo");
                 customSetcomboBox.setSelectedItem(setName);
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.savedb"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.savedb"), JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
