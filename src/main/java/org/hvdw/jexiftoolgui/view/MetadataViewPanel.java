@@ -146,9 +146,6 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
         DefaultTableModel model = ((DefaultTableModel) (metadataTable.getModel()));
         List<String> cells = new ArrayList<String>();
         List<List> tableRowsCells = new ArrayList<List>();
-        /*List<tableRow> tableRowList = new ArrayList<tableRow>();
-        tableRowList.add( new tableRow(1, 2, 3)); */
-        String[][] trows = new String[255][3];
 
         if ((model.getRowCount() == 0)) {
             haveData = "no data";
@@ -157,12 +154,8 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             for (int count = 0; count < model.getRowCount(); count++) {
                 cells = new ArrayList<String>();
                 cells.add(model.getValueAt(count, 0).toString());
-                trows[count][0] = model.getValueAt(count, 0).toString();
                 cells.add(model.getValueAt(count, 1).toString());
-                trows[count][1] = model.getValueAt(count, 1).toString();
                 cells.add(model.getValueAt(count, 2).toString());
-                trows[count][2] = model.getValueAt(count, 2).toString();
-                logger.trace("row {} data: {}, {}, {}", count, model.getValueAt(count, 0).toString(), model.getValueAt(count, 1).toString(), model.getValueAt(count, 2).toString());
                 if ((!cells.get(0).isEmpty()) && (!cells.get(1).isEmpty())) {
                     tableRowsCells.add(cells);
                 } else if ((!cells.get(0).isEmpty()) && (cells.get(1).isEmpty()) || (cells.get(0).isEmpty()) && (!cells.get(1).isEmpty())) {

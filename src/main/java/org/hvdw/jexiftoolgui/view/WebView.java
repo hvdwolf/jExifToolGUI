@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 public class WebView extends JDialog {
-    //public class WebView extends JPanel {
+
     private JButton OKbutton;
     private JEditorPane webEditorPane;
     private JScrollPane webScrollPane;
