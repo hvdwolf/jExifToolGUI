@@ -14,12 +14,12 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 
 public class EditUserDefinedCombis {
     private final static Logger logger = LoggerFactory.getLogger(EditUserDefinedCombis.class);
+    JTable usercombiTable;
 
     /*
     / This option makes only the 3rd column (0, 1, 2) editable
     / column 1 & 2 are ready-only
      */
-//    public class MyTableModel extends DefaultTableModel {
     public class MyTableModel extends DefaultTableModel {
         public boolean isCellEditable(int row, int column){
             return column == 2;
@@ -31,9 +31,8 @@ public class EditUserDefinedCombis {
      */
     public void UpdateTable(JPanel rootpanel, JComboBox combicombobox, JScrollPane userCombiPane) {
 
-        JTable usercombiTable = new JTable(new MyTableModel());
+        usercombiTable = new JTable(new MyTableModel());
 
-        //DefaultTableModel model = ((DefaultTableModel) (metadataTable.getModel()));
         MyTableModel model = ((MyTableModel) (usercombiTable.getModel()));
         model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mct.columnlabel"),
                 ResourceBundle.getBundle("translations/program_strings").getString("mct.columntag"),
@@ -52,7 +51,22 @@ public class EditUserDefinedCombis {
                 model.addRow(new Object[]{cells[0], cells[1], cells[2]});
             }
         }
-        //userCombiPane.add(usercombiTable);
         userCombiPane.setViewportView(usercombiTable);
+    }
+
+    public void UpdateCustomConfigLabel(JComboBox combicombobox, JLabel customconfiglabel) {
+        String setName = combicombobox.getSelectedItem().toString();
+        String sql = "select custom_config from custommetadataset where customset_name='" + setName.trim() + "'";
+        String queryResult = SQLiteJDBC.singleFieldQuery(sql, "custom_config").trim();
+        if ("".equals(queryResult) || queryResult.isEmpty() || "null".equals(queryResult)) {
+            customconfiglabel.setVisible(false);
+        } else {
+            customconfiglabel.setText("This set used custom config file: " + queryResult);
+            customconfiglabel.setVisible(true);
+        }
+    }
+
+    public void ResetFields(JScrollPane userCombiPane) {
+        
     }
 }

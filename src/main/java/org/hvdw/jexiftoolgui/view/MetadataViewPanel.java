@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.view;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.TablePasteAdapter;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
@@ -86,16 +87,16 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                 // First check whether we have data
                 String haveData = haveTableData();
                 if ("complete".equals(haveData)) {
-                    String[] name_writetype = {"", ""};
+                    String[] name_writetype = {"", "", ""};
                     String setName = customSetcomboBox.getSelectedItem().toString();
                     if (setName.isEmpty()) { // We never saved anything or did not select anything
                         name_writetype = getSetName();
                         if (!name_writetype[0].isEmpty()) {
                             // We have a name
-                            saveMetadata(name_writetype[0], name_writetype[1]);
+                            saveMetadata(name_writetype[0], name_writetype[1], name_writetype[2]);
                         } // If not: do nothing
                     } else { // we have a setname and simply overwrite
-                        saveMetadata(setName, "update");
+                        saveMetadata(setName, name_writetype[1], "update");
                     }
                 } // if incomplete (or empty): do nothing
             }
@@ -109,7 +110,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                 if ("complete".equals(haveData)) {
                     String[] name_writetype = getSetName();
                     if (!"".equals(name_writetype[0])) {
-                        saveMetadata(name_writetype[0], name_writetype[1]);
+                        saveMetadata(name_writetype[0], name_writetype[1], name_writetype[2]);
                     }
                 }// if incomplete (or empty): do nothing
             }
@@ -188,8 +189,10 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
     /
      */
     private String[] getSetName() {
-        String[] name_writetype = {"", ""};
-        String chosenName = JOptionPane.showInputDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.inpdlgname"));
+        String[] name_writetype = {"", "", ""};
+        String chosenName = "";
+        String custom_config = "";
+/*        String chosenName = JOptionPane.showInputDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.inpdlgname"));
         if (!(chosenName == null)) { // null on cancel
             String[] checkNames = loadCurrentSets("");
             // We expect a new name here
@@ -214,7 +217,72 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
         } else { //Cancelled; no name
             name_writetype[0] = "";
             name_writetype[1] = "";
+        } */
+
+        JTextField customset_name_field = new JTextField(15);
+        JTextField custom_config_field = new JTextField(15);
+        String explanation = "In case you want to add custom tags not known to exiftool, you need to provide "
+                + "a custom configuration. Provide the complete name for it (without path) and copy this file "
+                + "yourself(!) inside your user home folder into the folder \"jexftoolgui_data\".";
+
+        JPanel myPanel = new JPanel();
+        myPanel.setLayout(new BorderLayout());
+        JPanel nameRow = new JPanel();
+        nameRow.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        JLabel ccname = new JLabel();
+        ccname.setPreferredSize(new Dimension(150, 25));
+        ccname.setText("Name");
+        //nameRow.add(new JLabel("Name:"));
+        nameRow.add(ccname);
+        nameRow.add(customset_name_field);
+        myPanel.add(nameRow, BorderLayout.PAGE_START);
+        myPanel.add(new JLabel(String.format(ProgramTexts.HTML, 450, explanation)), BorderLayout.CENTER);
+        JPanel customconfigRow = new JPanel();
+        customconfigRow.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        JLabel cco = new JLabel();
+        cco.setPreferredSize(new Dimension(150, 25));
+        cco.setText("Custom config (optional):");
+        //customconfigRow.add(new JLabel("Custom config (optional):"));
+        customconfigRow.add(cco);
+        customconfigRow.add(custom_config_field);
+        myPanel.add(customconfigRow, BorderLayout.PAGE_END);
+
+        int result = JOptionPane.showConfirmDialog(metadatapanel, myPanel,
+                "Please Enter a Name for the set and optionally a config file", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            chosenName = customset_name_field.getText();
+            custom_config = custom_config_field.getText();
         }
+        if ((!(chosenName == null)) && (!(chosenName.isEmpty()))) { // null on cancel
+            String[] checkNames = loadCurrentSets("");
+            // We expect a new name here
+            for (String name : checkNames) {
+                if (name.equals(chosenName)) {
+                    // We have this name already (so why did user select "Save As" anyway?
+                    result = JOptionPane.showConfirmDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.overwrite") + chosenName + "\"?",
+                            ResourceBundle.getBundle("translations/program_strings").getString("acv.overwriteconfirm"), JOptionPane.OK_CANCEL_OPTION);
+                    if (result == 0) { // user OK with overwrite
+                        name_writetype[0] = chosenName;
+                        name_writetype[1] = custom_config;
+                        name_writetype[2] = "update";
+                        break;
+                    } else {
+                        name_writetype[0] = "";
+                        name_writetype[1] = "";
+                        name_writetype[2] = "";
+                    }
+                } else { // We have a new name
+                    name_writetype[0] = chosenName;
+                    name_writetype[1] = custom_config;
+                    name_writetype[2] = "insert";
+                }
+            }
+        } else { //Cancelled; no name
+            name_writetype[0] = "";
+            name_writetype[1] = "";
+            name_writetype[2] = "";
+        }
+
         return name_writetype;
     }
 
@@ -263,7 +331,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
      * In case of update we simply remove all records from the setName from CustomMetaDataSetLines
      * and then insert new lines
      */
-    private void saveMetadata(String setName, String writetype) {
+    private void saveMetadata(String setName, String custom_config, String writetype) {
         String sql;
         String queryresult;
         int queryresultcounter = 0;
@@ -275,7 +343,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             logger.trace(cells.toString());
         }
         if ("insert".equals(writetype)) {
-            sql = "insert into CustomMetadataset(customset_name) values('" + setName + "')";
+            sql = "insert into CustomMetadataset(customset_name, custom_config) values('" + setName + "','" + custom_config +  "')";
             queryresult = SQLiteJDBC.insertUpdateQuery(sql);
             if (!"".equals(queryresult)) { //means we have an error
                 JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttitel"), JOptionPane.ERROR_MESSAGE);

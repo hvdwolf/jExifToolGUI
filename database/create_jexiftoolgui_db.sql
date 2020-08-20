@@ -78,6 +78,7 @@ create view if not exists v_tags_groups as select taggroup,tagname,tagtype,writa
 Create table if not exists CustomMetadataset (
     id integer primary key autoincrement,
     customset_name text NOT NULL UNIQUE,
+    custom_config text,
     unique (id, customset_name)
 );
 

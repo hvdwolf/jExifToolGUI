@@ -2903,6 +2903,13 @@
                                   <text resource-bundle="translations/program_strings" key="udc.crbutton"/>
                                 </properties>
                               </component>
+                              <component id="3302c" class="javax.swing.JLabel" binding="CustomConfiglabel">
+                                <constraints/>
+                                <properties>
+                                  <text value=""/>
+                                  <visible value="false"/>
+                                </properties>
+                              </component>
                             </children>
                           </grid>
                           <scrollpane id="5ac8b" binding="UserCombiScrollPane">

@@ -337,6 +337,7 @@ public class mainScreen {
     private JButton udcResetFieldsbutton;
     private JButton udcHelpbutton;
     private JScrollPane UserCombiScrollPane;
+    private JLabel CustomConfiglabel;
     private JLabel user;
     private JButton button;
     private JPanel gps;
@@ -1742,6 +1743,10 @@ public class mainScreen {
         udcCreateNewButton = new JButton();
         this.$$$loadButtonText$$$(udcCreateNewButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "udc.crbutton"));
         panel33.add(udcCreateNewButton);
+        CustomConfiglabel = new JLabel();
+        CustomConfiglabel.setText("");
+        CustomConfiglabel.setVisible(false);
+        panel33.add(CustomConfiglabel);
         UserCombiScrollPane = new JScrollPane();
         panel32.add(UserCombiScrollPane, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         UserCombiTable = new JTable();
@@ -2870,6 +2875,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 EUDC.UpdateTable(rootPanel, UserCombiscomboBox, UserCombiScrollPane);
+                EUDC.UpdateCustomConfigLabel(UserCombiscomboBox, CustomConfiglabel);
             }
         });
         udcCopyFrombutton.addActionListener(new ActionListener() {

@@ -50,6 +50,7 @@ public class UpdateActions {
         String sql = "Create table if not exists CustomMetadataset (" +
                 "    id integer primary key autoincrement," +
                 "    customset_name text NOT NULL UNIQUE," +
+                "    custom_config text," +
                 "    unique (id, customset_name))";
         do_Update(sql, "creating the table CustomMetadataset (1.6)");
         sql = "Create table if not exists CustomMetadatasetLines (" +
