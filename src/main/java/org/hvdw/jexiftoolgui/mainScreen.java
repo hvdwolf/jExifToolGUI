@@ -2152,6 +2152,9 @@ public class mainScreen {
                     break;
                 case "Metadata":
                     MD.showDialog(rootPanel);
+                    String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+                    String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+                    UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                     break;
                 case "Exit":
                     StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );

@@ -28,11 +28,11 @@ public class UpdateActions {
         String queryresult = "";
         // Version 1.4
         // Add the userFavorites table and functionality for "Own commands" and "SQL queries"
-        String sql = "Create table if not exists userFavorites ("
-                +"id integer primary key autoincrement,"
-                +"favorite_type text NOT NULL,"
-                +"favorite_name text NOT NULL,"
-                +"command_query text NOT NULL,"
+        String sql = "Create table if not exists userFavorites (\n"
+                +"id integer primary key autoincrement,\n"
+                +"favorite_type text NOT NULL,\n"
+                +"favorite_name text NOT NULL,\n"
+                +"command_query text NOT NULL,\n"
                 +"UNIQUE (favorite_type, favorite_name));";
         do_Update(sql, "creating the table userFavorites (1.4)");
 
@@ -46,20 +46,27 @@ public class UpdateActions {
     static void update_1_6() {
         String queryresult = "";
         // version 1.6
+        // First drop some unused tables
+        do_Update("drop table if exists CustomView","drop table CustomView");
+        do_Update("drop table if exists CustomViewLines","drop table CustomViewLines");
+        do_Update("drop table if exists CustomEdit","drop table CustomEdit");
+        do_Update("drop table if exists CustomEditLines","drop table CustomEditLines");
+        
         // Add the User defined custom metadata set combinations tables
-        String sql = "Create table if not exists CustomMetadataset (" +
-                "    id integer primary key autoincrement," +
-                "    customset_name text NOT NULL UNIQUE," +
-                "    custom_config text," +
+        String sql = "Create table if not exists CustomMetadataset (\n" +
+                "    id integer primary key autoincrement,\n" +
+                "    customset_name text NOT NULL UNIQUE,\n" +
+                "    custom_config text,\n" +
                 "    unique (id, customset_name))";
         do_Update(sql, "creating the table CustomMetadataset (1.6)");
-        sql = "Create table if not exists CustomMetadatasetLines (" +
-                "    id integer primary key autoincrement," +
-                "    customset_name text NOT NULL," +
-                "    screen_label text NOT NULL," +
-                "    tag text NOT NULL," +
-                "    default_value text," +
-                "    UNIQUE (customset_name, tag)," +
+        sql = "Create table if not exists CustomMetadatasetLines (\n" +
+                "    id integer primary key autoincrement,\n" +
+                "    customset_name text NOT NULL,\n" +
+                "    rowcount integer,\n" +
+                "    screen_label text NOT NULL,\n" +
+                "    tag text NOT NULL,\n" +
+                "    default_value text,\n" +
+                "    UNIQUE (customset_name, tag),\n" +
                 "    foreign key(customset_name) references CustomMetadataset(customset_name))";
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
     }

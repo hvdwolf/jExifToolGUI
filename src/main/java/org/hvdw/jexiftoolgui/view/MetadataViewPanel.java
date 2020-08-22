@@ -46,6 +46,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
 
+    // The graphic components for the MetadataViewPanel.form
     private JScrollPane aScrollPanel;
     private JTable metadataTable;
     private JButton saveasButton;
@@ -57,6 +58,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
     private JButton closeButton;
 
     private JPanel rootpanel;
+
 
     /**
      * Object to enable paste into the table.
@@ -335,6 +337,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
         String sql;
         String queryresult;
         int queryresultcounter = 0;
+        int rowcount = 0;
 
         // We get the rowcells from the getter without checking. We would not be here if we had not checked already
         //List<String> cells = new ArrayList<String>();
@@ -351,15 +354,17 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             } else {
                 logger.info("no of tablerowcells {}", tableRowsCells.size());
                 // inserting the setName went OK, now all the table fields
+                rowcount = 0;
                 for (List<String> cells : tableRowsCells) {
-                    sql = "insert into CustomMetadatasetLines(customset_name, screen_label, tag, default_value) "
-                            + "values('" + setName + "','" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
+                    sql = "insert into CustomMetadatasetLines(customset_name, rowcount, screen_label, tag, default_value) "
+                            + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
                     logger.info(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                         queryresultcounter += 1;
                     }
+                    rowcount++;
                 }
             }
             //Finally
@@ -375,15 +380,17 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             } else {
                 logger.info("no of tablerowcells {}", tableRowsCells.size());
                 // deleting the old records went OK, now (re)insert the rows
+                rowcount = 0;
                 for (List<String> cells : tableRowsCells) {
                     sql = "insert into CustomMetadatasetLines(customset_name, screen_label, tag, default_value) "
-                            + "values('" + setName + "','" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
+                            + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
                     logger.info(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);
                         queryresultcounter += 1;
                     }
+                    rowcount++;
                 }
             }
             //Finally
@@ -545,17 +552,17 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
      * When the metadata table is sorted update the model rows to match
      * the screen view.  This will generate a tableChanged event.
      */
-    class MySortListener implements RowSorterListener {
+//    class MySortListener implements RowSorterListener {
         /**
          * Metadata table was sorted.
          */
-        @Override
+/*        @Override
         public void sorterChanged(RowSorterEvent e) {
             if (e.getType() == RowSorterEvent.Type.SORTED) {
                 reorderRows();
             }
         }
-    }
+    }*/
 
 
     /**
@@ -782,7 +789,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             model.addRow(new Object[]{"Copyrights", "xmp:copyright", ArtCredCopyPrefs[2]});
         } else {
             String setName = customSetcomboBox.getSelectedItem().toString();
-            String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "'";
+            String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "' order by rowcount";
             String queryResult = SQLiteJDBC.generalQuery(sql);
             if (queryResult.length() > 0) {
                 String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));

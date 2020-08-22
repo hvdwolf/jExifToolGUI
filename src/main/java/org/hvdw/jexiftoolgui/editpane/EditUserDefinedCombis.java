@@ -41,7 +41,7 @@ public class EditUserDefinedCombis {
         Object[] row = new Object[1];
 
         String setName = combicombobox.getSelectedItem().toString();
-        String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "'";
+        String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "' order by rowcount";
         String queryResult = SQLiteJDBC.generalQuery(sql);
         if (queryResult.length() > 0) {
             String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));

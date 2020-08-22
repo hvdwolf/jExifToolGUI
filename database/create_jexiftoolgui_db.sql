@@ -85,6 +85,7 @@ Create table if not exists CustomMetadataset (
 Create table if not exists CustomMetadatasetLines (
     id integer primary key autoincrement,
     customset_name text NOT NULL,
+    rowcount integer,
     screen_label text NOT NULL,
     tag text NOT NULL,
     default_value text,
