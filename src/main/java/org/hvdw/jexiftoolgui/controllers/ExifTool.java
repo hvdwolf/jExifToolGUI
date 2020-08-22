@@ -89,7 +89,7 @@ public class ExifTool {
         } else if (choice == 1) {
             JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ProgramTexts.downloadInstallET), "Download ExifTool", JOptionPane.INFORMATION_MESSAGE);
             // open exiftool site
-            Utils.openBrowser("https://www.sno.phy.queensu.ca/~phil/exiftool/");
+            Utils.openBrowser("https://exiftool.org/");
             System.exit(0);
         } else {
             // exit program

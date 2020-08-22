@@ -29,7 +29,7 @@ public class CheckPreferences {
 
 
         exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
-        logger.info("exiftool_exists reports: {}",exiftool_exists);
+        logger.info("preference check exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
@@ -40,10 +40,11 @@ public class CheckPreferences {
                 exiftool_path = null;
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 300,ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttitle"), JOptionPane.WARNING_MESSAGE);
             }
-            logger.info("exists is {}", exists);
+            logger.trace("exists is {}", exists);
             logger.info("preference exiftool returned: {}",exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
                 res = Utils.getExiftoolPath();
+                logger.trace("result from getExiftoolPath(): {}", res);
             } else {
                 res = exiftool_path;
                 //String[] cmdparams = {res, "-ver"};
@@ -67,11 +68,12 @@ public class CheckPreferences {
             // We already checked that the node did not exist and that it is empty or null
             // remove all possible line breaks
             res = res.replace("\n", "").replace("\r", "");
-            if (!exiftool_exists) {
+            if (exiftool_found) {
                 prefs.storeByKey(EXIFTOOL_PATH, res);
             }
         }
 
+        logger.info("exiftool_found mentions: {}", exiftool_found);
         return exiftool_found;
     }
 }
