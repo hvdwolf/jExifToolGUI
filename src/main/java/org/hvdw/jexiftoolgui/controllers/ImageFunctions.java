@@ -8,6 +8,7 @@ import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -95,6 +96,17 @@ public class ImageFunctions {
             e.printStackTrace();
         }*/
 
+        try {
+            BufferedImage bimg = ImageIO.read(file);
+            int width = bimg.getWidth();
+            int height = bimg.getHeight();
+            basicdata[0] = bimg.getWidth();
+            basicdata[1] = bimg.getHeight();
+            logger.trace("bimg width {} height {}", bimg.getWidth(), bimg.getHeight());
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.trace("bimg reading error {}", e);
+        }
         // I can't solve it yet with TwelveMonkeys, so do it with exiftool
         String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<String>();
@@ -115,8 +127,20 @@ public class ImageFunctions {
             String[] lines = who.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
             for (String line : lines) {
                 String[] parts = line.split(":", 2);
-                //logger.info("getbasicdata parts0 {} parts1 {}", parts[0], parts[1]);
-                basicdata[counter] = Integer.parseInt(parts[1].trim());
+                if (parts[1].trim().matches("[0-9]+")) {
+                    /*if ( (basicdata[0] == 0 && parts[0].contains("Width")) || (basicdata[1]  == 0 && parts[0].contains("Height")) ) {
+                        logger.info("getbasicdata parts0 {} parts1 *{}*", parts[0], parts[1].trim());
+                        basicdata[counter] = Integer.parseInt(parts[1].trim());
+                    }*/
+                    try {
+                        if (parts[0].contains("Orientation")) {
+                            basicdata[2] = Integer.parseInt(parts[1].trim());
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        logger.info("error Integer.parseInt {}", e);
+                    }
+                }
                 counter++;
             }
         }
