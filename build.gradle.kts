@@ -41,8 +41,8 @@ dependencies {
     //// Log4J and SLF4J configuration dependencies.
     implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
     implementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
-    //implementation(group = "org.apache.logging.log4j", name = "log4j-slf4j-impl", version = "2.11.2")
-    implementation(group = "ch.qos.logback", name = "logback-core", version = "1.2.3")
+    implementation(files("$projectDir/libs/logback-core-1.2.3.jar"))
+    implementation(files("$projectDir/libs/logback-classic-1.2.3.jar"))
     implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = "2.9.9")
     implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.9.9")
     // Add dependencies of forms
@@ -86,6 +86,9 @@ dependencies {
     testImplementation(group = "junit", name = "junit", version = "4.12")
     testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
     //testImplementation(group = "ch.qos.logback", name = "logback-core", version = "1.2.3")
+    //testImplementation(group = "ch.qos.logback", name = "logback-classic", version = "1.2.3")
+    testImplementation(files("$projectDir/libs/logback-core-1.2.3.jar"))
+    testImplementation(files("$projectDir/libs/logback-classic-1.2.3.jar"))
 
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
-    <property name="JTG_LOG" value="/tmp/jExifToolGUI.log" />
     <property name="LOG_PATH" value="logs"/>
+    <timestamp key="byMinute" datePattern="yyyyMMdd'-'HHmm"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -13,16 +13,16 @@
     </appender>
  
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOG_PATH}/jexiftoolgui-${timestamp-by-second}.log</file>
+        <file>${LOG_PATH}/jexiftoolgui_${byMinute}.log</file>
         <append>true</append>
         <immediateFlush>true</immediateFlush>
         <encoder>
-            <pattern>%msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader>
         </encoder>
     </appender>
     
-    <logger name="org.hvdw.jexiftoolgui" level="INFO" additivity="false">
+    <logger name="org.hvdw.jexiftoolgui" level="info" additivity="false">
         <appender-ref ref="FILE" /> 
         <appender-ref ref="STDOUT" /> 
     </logger> 

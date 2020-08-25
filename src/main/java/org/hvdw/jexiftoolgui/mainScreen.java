@@ -493,15 +493,19 @@ public class mainScreen {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages"));
             if ("jfilechooser".equals(prefFileDialog)) {
                 files = StandardFileIO.getFileNames(rootPanel);
+                logger.debug("load images pushed or menu load images using jfilechooser");
             } else {
                 files = StandardFileIO.getFileNamesAwt(rootPanel);
+                logger.debug("load images pushed or menu load images using AWT file dialog");
             }
         } else if ("folder".equals(loadingType)) { // loadingType = folder
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingdirectory"));
             if ("jfilechooser".equals(prefFileDialog)) {
                 files = StandardFileIO.getFolderFiles(rootPanel);
+                logger.debug("load folder pushed or menu load folder using jfilechooser");
             } else {
                 files = StandardFileIO.getFolderFilesAwt(rootPanel);
+                logger.debug("load folder pushed or menu load folder using AWT file dialog");
             }
         } else { // files dropped onto our app
             OutputLabel.setText("Files dropped on the app");
@@ -3226,6 +3230,8 @@ public class mainScreen {
         boolean preferences = false;
 
         Utils.progressStatus(progressBar, false);
+
+        //logger.info("check logback {}", getClass().getClassLoader().getResource("Logback.xml"));
 
         createMenuBar(frame);
         //CreateMenu CM = new CreateMenu();
