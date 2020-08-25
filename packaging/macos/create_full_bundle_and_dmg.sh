@@ -24,13 +24,13 @@ printf "Update the VersionString to $Version\n\n"
 sed -i "s+VersionString+$Version+" $App/Contents/Info.plist
 
 printf "Now copy the jre and the jar into the app\n\n" 
-cp -a jre $App/Contents/MacOS
+cp -a jre $App/Contents/MacOS/jre
 cp ../../jExifToolGUI.jar $App/Contents/MacOS/
 
-printf "Create the 135MB (full) dmg\n\n"
+printf "Create the 140MB (full) dmg\n\n"
 mkdir -p tmp/dmg
 # 125MB dmg
-dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=135
+dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=140
 
 mkfs.hfsplus -v "jExifToolGUI-x86_64 $Version" tmp/jExifToolGUI.dmg
 
