@@ -63,7 +63,7 @@ public class StandardFileIO {
         }
         if ("".equals(copyresult)) {
             copyresult = "success";
-            logger.info("success");
+            logger.info("success copying {}", resourcePath);
         }
         return copyresult;
     }
@@ -83,7 +83,7 @@ public class StandardFileIO {
                     new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                logger.info(line);
+                logger.debug(line);
                 totalText.append(line);
             }
 
@@ -158,7 +158,7 @@ public class StandardFileIO {
         File[] files = null;
 
         String startFolder = getFolderPathToOpenBasedOnPreferences();
-        logger.info("startfolder {}", startFolder);
+        logger.debug("startfolder {}", startFolder);
 
         final JFileChooser chooser = new JFileChooser(startFolder);
         //final JFileChooser chooser = new NativeJFileChooser(startFolder);
@@ -319,7 +319,7 @@ public class StandardFileIO {
             }
         } else { // the DB already exists
             method_result = "exists";
-            logger.info("the database already exists.");
+            logger.debug("the database already exists.");
             MyVariables.setjexiftoolguiDBPath(fileToBecopied);
         }
         // Now check if our "cantdisplay.png" already exists which is the placeholder for non-displayable RAW formats
@@ -330,11 +330,11 @@ public class StandardFileIO {
             method_result = extract_resource_to_jexiftoolguiFolder("cantdisplay.png", strjexiftoolguifolder);
             if ("success".equals(method_result)) {
                 MyVariables.setcantdisplaypng(fileToBecopied);
-                logger.info("copied cantdisplay.png");
+                logger.debug("copied cantdisplay.png");
             }
         } else { // the png already exists
             method_result = "exists";
-            logger.info("the cantdisplay.png already exists.");
+            logger.debug("the cantdisplay.png already exists.");
             MyVariables.setcantdisplaypng(fileToBecopied);
         }
 
@@ -391,7 +391,7 @@ public class StandardFileIO {
 
         String checkPath = MyVariables.getSelectedImagePath();
         if (checkPath.contains(" ")) { //Only checks for first space in string, but that's enough. Even one space is too much
-            logger.info("path contains spaces {}", checkPath);
+            logger.debug("path contains spaces {}", checkPath);
             File imgfile = new File(MyVariables.getSelectedImagePath());
             String filename = imgfile.getName();
             File targetfile = new File(MyVariables.gettmpWorkFolder() + File.separator + filename);
@@ -415,7 +415,7 @@ public class StandardFileIO {
             }
         } else {
             // simply return original path. Nothing to do
-            logger.info("No spaces in {}", checkPath);
+            logger.debug("No spaces in {}", checkPath);
             return checkPath;
         }
         //return checkPath;

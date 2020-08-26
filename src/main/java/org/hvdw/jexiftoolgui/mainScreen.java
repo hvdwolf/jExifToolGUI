@@ -2812,7 +2812,7 @@ public class mainScreen {
         radioButtonViewAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //logger.info("button selected: {}", radioButtonViewAll.getText());
+                logger.trace("radiobutton selected: {}", radioButtonViewAll.getText());
                 Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
             }
         });
@@ -2909,7 +2909,7 @@ public class mainScreen {
                 Utils.getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
-                //logger.info("Selected indices: {}", tmpselectedIndices);
+                logger.trace("Selected indices: {}", tmpselectedIndices);
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
             }
@@ -3230,8 +3230,6 @@ public class mainScreen {
         boolean preferences = false;
 
         Utils.progressStatus(progressBar, false);
-
-        //logger.info("check logback {}", getClass().getClassLoader().getResource("Logback.xml"));
 
         createMenuBar(frame);
         //CreateMenu CM = new CreateMenu();
