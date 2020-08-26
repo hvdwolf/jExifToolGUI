@@ -382,7 +382,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                 // deleting the old records went OK, now (re)insert the rows
                 rowcount = 0;
                 for (List<String> cells : tableRowsCells) {
-                    sql = "insert into CustomMetadatasetLines(customset_name, screen_label, tag, default_value) "
+                    sql = "insert into CustomMetadatasetLines(customset_name, rowcount, screen_label, tag, default_value) "
                             + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
                     logger.info(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
