@@ -4,7 +4,9 @@ package org.hvdw.jexiftoolgui;
 // The only option I know is to drag these variables through all methods
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MyVariables {
 
@@ -25,7 +27,7 @@ public class MyVariables {
     private String tmpWorkFolder;
     private File CurrentWorkFile;
     private String ExiftoolVersion;
-    private boolean DropReady;
+    private List<List> tableRowsCells;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -100,6 +102,7 @@ public class MyVariables {
         staticInstance.ExiftoolVersion = exv;
     }
 
-    public static boolean getDropReady() { return staticInstance.DropReady; }
-    public static void setDropReady(boolean dropready) { staticInstance.DropReady = dropready; }
+    public static List<List> gettableRowsCells() { return staticInstance.tableRowsCells; }
+    public static void settableRowsCells (List<List> tblRwsClls) {staticInstance.tableRowsCells = tblRwsClls; }
+
 }

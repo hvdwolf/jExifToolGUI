@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="1510" height="833"/>
+      <xy x="20" y="20" width="1373" height="825"/>
     </constraints>
     <properties>
       <minimumSize width="1200" height="720"/>
@@ -165,7 +165,7 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="a0b9f" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="a0b9f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.editdata"/>
@@ -2864,13 +2864,131 @@
                       </vspacer>
                     </children>
                   </grid>
+                  <grid id="b02cf" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="10" left="20" bottom="10" right="20"/>
+                    <constraints>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.usercombis"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="74b2d" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="57954" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="5a6c" class="javax.swing.JLabel">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="udc.sets"/>
+                                </properties>
+                              </component>
+                              <component id="eb869" class="javax.swing.JComboBox" binding="UserCombiscomboBox">
+                                <constraints/>
+                                <properties/>
+                              </component>
+                              <component id="d6bf0" class="javax.swing.JButton" binding="udcCreateNewButton">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="udc.crbutton"/>
+                                </properties>
+                              </component>
+                              <component id="3302c" class="javax.swing.JLabel" binding="CustomConfiglabel">
+                                <constraints/>
+                                <properties>
+                                  <text value=""/>
+                                  <visible value="false"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <scrollpane id="5ac8b" binding="UserCombiScrollPane">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="6cee3" class="javax.swing.JTable" binding="UserCombiTable">
+                                <constraints/>
+                                <properties/>
+                              </component>
+                            </children>
+                          </scrollpane>
+                          <grid id="be5f8" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="4781d" class="javax.swing.JCheckBox" binding="udcOverwriteOriginalscheckBox">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="chkbox.makebackup"/>
+                                </properties>
+                              </component>
+                              <component id="56f33" class="javax.swing.JButton" binding="udcCopyFrombutton">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="button.copyfrom"/>
+                                </properties>
+                              </component>
+                              <component id="2b1fc" class="javax.swing.JButton" binding="udcCopyTobutton">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="button.saveto"/>
+                                </properties>
+                              </component>
+                              <component id="27adf" class="javax.swing.JButton" binding="udcResetFieldsbutton">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="button.resetfields"/>
+                                </properties>
+                              </component>
+                              <component id="ed833" class="javax.swing.JButton" binding="udcHelpbutton">
+                                <constraints/>
+                                <properties>
+                                  <label value="Help"/>
+                                  <text resource-bundle="translations/program_strings" key="button.help"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <component id="e8491" class="javax.swing.JLabel" binding="UserCombiTopText">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text resource-bundle="translations/program_strings" key="udc.toptext"/>
+                            </properties>
+                          </component>
+                          <vspacer id="db38e">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                        </children>
+                      </grid>
+                      <vspacer id="f4af9">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </vspacer>
+                    </children>
+                  </grid>
                 </children>
               </tabbedpane>
-              <vspacer id="911b4">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </vspacer>
             </children>
           </grid>
           <grid id="d419c" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

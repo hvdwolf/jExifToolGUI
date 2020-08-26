@@ -29,7 +29,7 @@ public class CheckPreferences {
 
 
         exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
-        logger.info("preference check exiftool_exists reports: {}",exiftool_exists);
+        logger.trace("preference check exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
