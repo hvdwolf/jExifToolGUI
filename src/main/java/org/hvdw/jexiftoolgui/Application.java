@@ -1,8 +1,13 @@
 package org.hvdw.jexiftoolgui;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.util.StatusPrinter;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
-import org.slf4j.Logger;
+import ch.qos.logback.classic.Level;
+//import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//import org.slf4j.event.Level;
+
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -21,12 +26,18 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRE
  * May also start several threads
  */
 public class Application {
-    private final static Logger logger = LoggerFactory.getLogger(Application.class);
+    //private final static Logger logger = LoggerFactory.getLogger(Application.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Application.class);
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public static void main(String[] args) {
 
         //Locale.setDefault(new Locale("es", "ES"));
+        //LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        //StatusPrinter.print(lc);
+        //logger.setLevel(Level.TRACE);
+        logger.info("Start application");
+
         String prefLocale = prefs.getByKey(PREFERRED_APP_LANGUAGE, "System default");
         if (!prefLocale.contains("default")) {
             String[] localearray = prefLocale.split("-");
@@ -41,7 +52,6 @@ public class Application {
 //        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         // print logback's internal status
 //        StatusPrinter.print(lc);
-        logger.info("Start application");
         Application.OS_NAMES os = Utils.getCurrentOsName();
         if (os == OS_NAMES.LINUX) {
             Utils.setUIFont (new FontUIResource("SansSerif", Font.PLAIN,12));

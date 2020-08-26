@@ -40,7 +40,7 @@ public class SQLiteJDBC {
 
         // get the fields that are being queried on and immediately remove spaces
         String queryFields = Utils.stringBetween(sql.toLowerCase(), "select", "from").replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \;
-        //logger.info("the queryfields returned string: " + queryFields);
+        logger.debug("the general query queryfields returned string: " + queryFields);
         String[] dbFields = queryFields.split(",");
 
         try (Connection conn = connect();
@@ -88,6 +88,7 @@ public class SQLiteJDBC {
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
+        logger.trace("singlefieldQuery result {}", sbresult.toString());
         return sbresult.toString();
     }
 
@@ -103,6 +104,7 @@ public class SQLiteJDBC {
             logger.error(e.getMessage());
             queryresult = e.getMessage();
         }
+        logger.trace("insertUpdateQueryResult {}", queryresult);
         return queryresult;
     }
     // ################### End of the basic necessary stuff ###################

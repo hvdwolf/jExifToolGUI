@@ -15,7 +15,8 @@ public interface IPreferencesFacade {
         RAW_VIEWER_PATH("rawviewer"),
         RAW_VIEWER_ALL_IMAGES("rawviewerallimages"),
         PREFERRED_APP_LANGUAGE("System default"),
-        PREFERRED_FILEDIALOG("jfilechooser");
+        PREFERRED_FILEDIALOG("jfilechooser"),
+        LOG_LEVEL("info");
 
         public final String key;
         PreferenceKey(String key) {

@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>/media/harryvanderwolf/128GB/software/jExifToolGUI/src/main/resources/icons/jexiftoolgui.ico</icon>
+  <icon>../../src/main/resources/icons/jexiftoolgui.ico</icon>
   <jre>
     <path>jre</path>
     <bundledJre64Bit>true</bundledJre64Bit>

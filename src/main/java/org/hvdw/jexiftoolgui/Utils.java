@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -229,7 +226,7 @@ public class Utils {
             return "";
         } else {
             String[] parts = metadatalanguage.split(" - ");
-            //logger.debug("metadatalanguage: " + parts[0]);
+            logger.debug("metadatalanguage: " + parts[0]);
             //return "-lang " + parts[0];
             return parts[0];
         }
@@ -285,19 +282,19 @@ public class Utils {
                 bde = true;
 
             }
-            //logger.info("after getbasicdata");
+            logger.trace("after getbasicdata");
             if (bde) {
                 // We had some error. Mostly this is the orientation
                 basicdata[2]= 1;
             }
             BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
             BufferedImage resizedImg =  ImageFunctions.scaleImageToContainer(img, 160, 160);
-            //logger.info("after scaleImageToContainer");
+            logger.trace("after scaleImageToContainer");
             if (basicdata[2] > 1) {
                 resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
             }
 
-            //logger.info("after rotate");
+            logger.trace("after rotate");
 
             icon = new ImageIcon(resizedImg);
             return icon;
@@ -346,7 +343,7 @@ public class Utils {
 
         try {
             String cmdResult = CommandRunner.runCommand(cmdparams);
-            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+            logger.trace("cmd result from export previews for single RAW" + cmdResult);
         } catch (IOException | InterruptedException ex) {
             logger.debug("Error executing sipd command to convert to jpg");
         }
@@ -400,7 +397,7 @@ public class Utils {
             //logger.trace(file.getName().replace("\\", "/"));
             bSimpleExtension = false;
             filename = file.getName().replace("\\", "/");
-            //logger.info("Now working on image: " +filename);
+            logger.trace("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
             if (filenameExt.toLowerCase().equals("heic")) {
                 heicextension = true;
@@ -423,7 +420,7 @@ public class Utils {
                     thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                     if (thumbfile.exists()) {
                         // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
-                        //logger.info("create thumb nr1");
+                        logger.trace("create thumb nr1");
                         icon = createIcon(thumbfile);
                         if (icon != null) {
                             // display our created icon from the thumbnail
@@ -443,10 +440,10 @@ public class Utils {
                     //Hoping we have a thumbnail
                     thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
                     thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                    //logger.info("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    logger.trace("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                     if (thumbfile.exists()) {
                         // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
-                        //logger.info("create thumb nr1");
+                        logger.trace("create thumb nr1");
                         icon = createIcon(thumbfile);
                         if (icon != null) {
                             // display our created icon from the thumbnail
@@ -457,7 +454,7 @@ public class Utils {
                         thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                         if (thumbfile.exists()) {
                             // Create icon of this Preview
-                            //logger.info("create thumb nr2");
+                            logger.trace("create thumb nr2");
                             icon = createIcon(thumbfile);
                             if (icon != null) {
                                 // display our created icon from the preview
@@ -522,7 +519,7 @@ public class Utils {
         List<String> cmdparams = new ArrayList<String>();
         int selectedRow = MyVariables.getSelectedRow();
 
-        //logger.info("selectedRow: {}", String.valueOf(selectedRow));
+        logger.debug("selectedRow: {}", String.valueOf(selectedRow));
         if (isOsFromMicrosoft()) {
             fpath = files[selectedRow].getPath().replace("\\", "/");
         } else {
@@ -839,7 +836,7 @@ public class Utils {
             for (String ext : SimpleExtensions) {
                 if ( filenameExt.toLowerCase().equals(ext)) { // it is a bmp, gif, jpg, png image or tif(f)
                     defaultImg = true;
-                    //logger.info("default image is true");
+                    logger.debug("default image is true");
                     break;
                 } else if ( filenameExt.toLowerCase().equals("heic") && (currentOsName == APPLE) ) { // We first need to use sips to convert
                     File file = new File (MyVariables.getSelectedImagePath());
@@ -994,7 +991,7 @@ public class Utils {
 
 
             for (int index: selectedIndices) {
-                //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                logger.trace("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
