@@ -36,6 +36,7 @@ cp copyright $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/
 #cp copyright $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/ # results in obsolete location warning
  
 cp *.jar $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
+cp logback.xml $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
 cp $PACKAGE_NAME $TEMP_DIR/debian/usr/bin
  
 echo "$PACKAGE_NAME ($PACKAGE_VERSION) trusty; urgency=low" > changelog
