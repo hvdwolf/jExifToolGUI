@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+    <property name="LOG_PATH" value="${HOME}"/>
+    <timestamp key="byMinute" datePattern="yyyyMMdd'-'HHmm"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+ 
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${HOME}/jexiftoolgui_${byMinute}.log</file>
+        <append>true</append>
+        <immediateFlush>true</immediateFlush>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+        </encoder>
+    </appender>
+    
+    <logger name="org.hvdw.jexiftoolgui" level="info" additivity="false">
+        <appender-ref ref="FILE" /> 
+        <appender-ref ref="STDOUT" /> 
+    </logger> 
+ 
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
+
