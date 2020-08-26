@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
@@ -366,11 +367,11 @@ public class mainScreen {
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
     //private MetadataViewPanel MD = new MetadataViewPanel();
-    //DragDropListener DDL = new DragDropListener();
+    DragDropListener DDL = new DragDropListener();
 
 
 
-    /*    ImgDropReady imgDropReady = new ImgDropReady();
+        /*ImgDropReady imgDropReady = new ImgDropReady();
 
         imgDropReady.setDropReadyProperty().addListener(new ChangeListener() {
             @Override public void changed(
@@ -2918,15 +2919,14 @@ public class mainScreen {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
-
-    /*public void rootPanelDropListener() {
+    public void rootPanelDropListener() {
         //Listen to drop events
         //DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
         //make it mainScreen to be able to access all GUI elements
-        FileDragDropListener fileDragDropListener = new FileDragDropListener();
-        fileDragDropListener.setDerived_rootPanel(getRootPanel());
+        DragDropListener fileDragDropListener = new DragDropListener();
+        //fileDragDropListener.setDerived_rootPanel(getRootPanel());
         new DropTarget(rootPanel, fileDragDropListener);
-    } */
+    }
 
 
     void fileNamesTableMouseListener() {
@@ -3280,7 +3280,7 @@ public class mainScreen {
         //Listen to drop events
        /*DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
         new DropTarget(rootPanel, fileDragDropListener); */
-        //rootPanelDropListener();
+        rootPanelDropListener();
 
         // Make left "tableListfiles" and right "ListexiftoolInfotable" tables read-only (un-editable)
         // This also fixes the double-click bug on the image where it retrieves the object name of the images on double-click
