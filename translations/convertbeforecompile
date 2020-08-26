@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ToDir="/media/harryvanderwolf/128GB/software/jExifToolGUI/src/main/resources/translations"
+ToDir="../src/main/resources/translations"
 for i in *.properties;
 do
     printf "$i\n"

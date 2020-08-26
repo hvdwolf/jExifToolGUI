@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
 import javax.swing.ImageIcon;
 import java.awt.*;
+import java.awt.dnd.DropTarget;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -378,7 +379,7 @@ public class mainScreen {
     private MetadataViewPanel MD = new MetadataViewPanel();
     private WebView WV = new WebView();
     private EditUserDefinedCombis EUDC = new EditUserDefinedCombis();
-    DragDropListener DDL = new DragDropListener();
+    private DragDropListener DDL = new DragDropListener();
 
 
 
