@@ -222,10 +222,10 @@ public class PreferencesDialog extends JDialog {
             prefs.storeByKey(RAW_VIEWER_PATH, RawViewerLocationtextField.getText());
         }
         if (JFilechooserradioButton.isSelected()) {
-            logger.trace("Preferred file dialog", "jfilechooser");
+            logger.trace("Preferred file dialog: jfilechooser");
             prefs.storeByKey(PREFERRED_FILEDIALOG, "jfilechooser");
         } else {
-            logger.trace("Preferred file dialog", "awtdialog");
+            logger.trace("Preferred file dialog: awtdialog");
             prefs.storeByKey(PREFERRED_FILEDIALOG, "awtdialog");
         }
 

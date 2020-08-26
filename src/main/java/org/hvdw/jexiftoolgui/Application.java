@@ -35,7 +35,7 @@ public class Application {
         //Locale.setDefault(new Locale("es", "ES"));
         //LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         //StatusPrinter.print(lc);
-        logger.setLevel(Level.INFO);
+        //logger.setLevel(Level.TRACE);
         logger.info("Start application");
 
         String prefLocale = prefs.getByKey(PREFERRED_APP_LANGUAGE, "System default");
