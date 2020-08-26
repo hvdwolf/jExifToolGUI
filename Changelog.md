@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-08-26 1.5.2
+* Fix: (old) error in exiftool detection when exiftool is removed or moved to other folder.
+* "Fix" (Linux KDE/QT): KDE/QT based window managers deliver "strange" strings for imagewidth and imageheight out of exiftool. The values are not integers and can't be converted to integers either. Now using java based approach, and better "error trapping" in case it still errors out.
+* Logging to file enabled. In the folder where jExifToolGUI is started, a folder "logs" is created where log files are stored per jExifToolGUI session. This does not work for MacOS bundles. Therefore the logs are written inside a logs folder into the user HOME folder. In case of issues extensive logging can be started to pinpoint the issue.
+
 ## 2020-08-16 1.5.1
 * Fix error in git repository. No influence on released apps.
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
-    <property name="LOG_PATH" value="${HOME}"/>
+    <property name="LOG_PATH" value="${HOME}/logs"/>
     <timestamp key="byMinute" datePattern="yyyyMMdd'-'HHmm"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -13,7 +13,7 @@
     </appender>
  
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${HOME}/jexiftoolgui_${byMinute}.log</file>
+        <file>${HOME}/logs/jexiftoolgui_${byMinute}.log</file>
         <append>true</append>
         <immediateFlush>true</immediateFlush>
         <encoder>
