@@ -28,13 +28,19 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
 import javax.swing.ImageIcon;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+//import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
@@ -547,6 +553,7 @@ public class mainScreen {
             });
         }
     }
+
 
 
     private void fillAllComboboxes() {
@@ -3027,11 +3034,44 @@ public class mainScreen {
     //////////////////////////////////////////////////////////////////////////////////////////////
     public void rootPanelDropListener() {
         //Listen to drop events
-        //DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
-        //make it mainScreen to be able to access all GUI elements
-        DragDropListener fileDragDropListener = new DragDropListener();
-        //fileDragDropListener.setDerived_rootPanel(getRootPanel());
-        new DropTarget(rootPanel, fileDragDropListener);
+        /*Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Path path = Paths.get(System.getProperty("user.home") + File.separator + "jexiftoolgui_data");
+                logger.info("Watching directory {}", path);
+                //WatchDirectory watchJTGdataFolder = new WatchDirectory(path);
+                try {
+                    //String change = new WatchDirectory(path).processEvents();
+                    new WatchDirectory(path).processEvents();
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                    logger.error("Error starting the Watch directory Service {} ", e);
+                }
+            }
+        }); */
+
+         /*DragDropListener fileDragDropListener = new DragDropListener();
+        new DropTarget(rootPanel, fileDragDropListener);*/
+
+        rootPanel.setDropTarget(new DropTarget() {
+            public synchronized void drop(DropTargetDropEvent evt) {
+                try {
+                    evt.acceptDrop(DnDConstants.ACTION_COPY);
+                    List<File> droppedFiles = (List<File>)
+                            evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    for (File file : droppedFiles) {
+                        logger.debug("File path is: {}", file.getPath());
+                    }
+                    File[] droppedFilesArray = (File[]) droppedFiles.toArray(new File[droppedFiles.size()]);
+                    MyVariables.setSelectedFiles(droppedFilesArray);
+                    loadImages("dropped files");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    logger.error("Drag drop on rootpanel error {}", ex);
+                }
+            }
+        });
     }
 
 
@@ -3333,7 +3373,7 @@ public class mainScreen {
     // This is where it all starts
     // initialisation of the Application
     // private mainScreen(JFrame frame) {
-    public mainScreen(JFrame frame) {
+    public mainScreen(JFrame frame) throws IOException, InterruptedException {
         boolean preferences = false;
 
         $$$setupUI$$$();
@@ -3386,8 +3426,6 @@ public class mainScreen {
         //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
 
         //Listen to drop events
-       /*DragDropListener.FileDragDropListener fileDragDropListener = new DragDropListener.FileDragDropListener();
-        new DropTarget(rootPanel, fileDragDropListener); */
         rootPanelDropListener();
 
         // Make left "tableListfiles" and right "ListexiftoolInfotable" tables read-only (un-editable)
@@ -3427,7 +3465,12 @@ public class mainScreen {
 
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
         frame.setIconImage(Utils.getFrameIcon());
-        frame.setContentPane(new mainScreen(frame).rootPanel);
+        try {
+            frame.setContentPane(new mainScreen(frame).rootPanel);
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+            logger.error("InterruptedException or IOException: {}", e);
+        }
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Do not simply exit on closing the window. First delete our temp stuff

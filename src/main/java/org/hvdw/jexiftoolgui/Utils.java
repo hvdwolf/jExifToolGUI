@@ -338,7 +338,7 @@ public class Utils {
         if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
             fileName = fileName.substring(0, pos);
         }
-        cmdparams.add(tempWorkDir + File.separator + fileName +".jpg");
+        cmdparams.add(tempWorkDir + File.separator + fileName + ".jpg");
         logger.info("final sips command: " + cmdparams.toString());
 
         try {
@@ -349,6 +349,7 @@ public class Utils {
         }
         return exportResult;
     }
+
     /*
      * Display the loaded files with icon and name
      */
