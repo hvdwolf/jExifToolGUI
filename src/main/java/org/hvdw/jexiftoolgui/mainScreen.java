@@ -53,7 +53,6 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 
 public class mainScreen {
     private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
-    //private final DropTargetListener FileDragDropListener = null;
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -385,7 +384,6 @@ public class mainScreen {
     private MetadataViewPanel MD = new MetadataViewPanel();
     private WebView WV = new WebView();
     private EditUserDefinedCombis EUDC = new EditUserDefinedCombis();
-    private DragDropListener DDL = new DragDropListener();
 
 
 
@@ -3034,25 +3032,6 @@ public class mainScreen {
     //////////////////////////////////////////////////////////////////////////////////////////////
     public void rootPanelDropListener() {
         //Listen to drop events
-        /*Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                Path path = Paths.get(System.getProperty("user.home") + File.separator + "jexiftoolgui_data");
-                logger.info("Watching directory {}", path);
-                //WatchDirectory watchJTGdataFolder = new WatchDirectory(path);
-                try {
-                    //String change = new WatchDirectory(path).processEvents();
-                    new WatchDirectory(path).processEvents();
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
-                    logger.error("Error starting the Watch directory Service {} ", e);
-                }
-            }
-        }); */
-
-         /*DragDropListener fileDragDropListener = new DragDropListener();
-        new DropTarget(rootPanel, fileDragDropListener);*/
 
         rootPanel.setDropTarget(new DropTarget() {
             public synchronized void drop(DropTargetDropEvent evt) {
