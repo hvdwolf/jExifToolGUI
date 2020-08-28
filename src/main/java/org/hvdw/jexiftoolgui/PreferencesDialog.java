@@ -47,7 +47,7 @@ public class PreferencesDialog extends JDialog {
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     private static final Logger logger = LoggerFactory.getLogger(PreferencesDialog.class);
 
-    PreferencesDialog() {
+    public PreferencesDialog() {
         setContentPane(contentPanel);
         setModal(true);
         getRootPane().setDefaultButton(buttonSave);
@@ -272,7 +272,7 @@ public class PreferencesDialog extends JDialog {
     }
 
     // The  main" function of this class
-    void showDialog() {
+    public void showDialog() {
         //setSize(750, 600);
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("preferences.title"));
         pack();

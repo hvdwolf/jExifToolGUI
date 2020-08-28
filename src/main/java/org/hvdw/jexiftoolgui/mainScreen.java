@@ -5,16 +5,9 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.controllers.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
-import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
-import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
 import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
-import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
-import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
-import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
-import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuListener;
@@ -37,8 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 //import java.util.Arrays;
 import java.util.List;
@@ -48,11 +38,11 @@ import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
-import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.OS_NAME;
 
 
 public class mainScreen {
     private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
+    //public static Object buttonLoadImages;
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -384,20 +374,6 @@ public class mainScreen {
     private MetadataViewPanel MD = new MetadataViewPanel();
     private WebView WV = new WebView();
     private EditUserDefinedCombis EUDC = new EditUserDefinedCombis();
-
-
-
-        /*ImgDropReady imgDropReady = new ImgDropReady();
-
-        imgDropReady.setDropReadyProperty().addListener(new ChangeListener() {
-            @Override public void changed(
-                    ObservableValue 0,
-                    Object OldVal,
-                    Object newVal
-            ){
-                logger.info("ImgDropReady has changed");
-            }
-        }); */
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -2142,9 +2118,12 @@ public class mainScreen {
     // endregion
 
     // region Action Listeners and radio button groups
-    public class MenuActionListener implements ActionListener {
+    /*
+    / The menu linstemer is for the special function loadImages that is so tightly integrated
+    / with the Gui that we can't take it out.
+     */
+    public class SpecialMenuActionListener implements ActionListener {
 
-        // menuListener
         public void actionPerformed(ActionEvent ev) {
             String[] dummy = null;
             logger.info("Selected: {}", ev.getActionCommand());
@@ -2158,207 +2137,28 @@ public class mainScreen {
                     // identical to button "Load Directory"
                     loadImages("folder");
                     break;
-                case "Preferences":
-                    prefsDialog.showDialog();
-                    break;
-                case "Metadata":
-                    MD.showDialog(rootPanel);
-                    String sqlsets = SQLiteJDBC.getdefinedCustomSets();
-                    String[] views = sqlsets.split("\\r?\\n"); // split on new lines
-                    UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
-                    break;
-                case "Exit":
-                    StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
-                    System.exit(0);
-                    break;
-                case "Rename photos":
-                    RenamePhotos renPhotos = new RenamePhotos();
-                    //renPhotos.setTitle(ResourceBundle.getBundle("translations/program_strings").getString("renamephotos.title"));
-                    if (selectedIndicesList.size() > 0) {
-                        renPhotos.showDialog(true);
-                    } else {
-                        renPhotos.showDialog(false);
-                    }
-                    break;
-                case "Copy all metadata to xmp format":
-                    if (selectedIndicesList.size() > 0) {
-                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.copyallxmpdata"));
-                        metaData.copyToXmp();
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Repair JPGs with corrupted metadata":
-                    if (selectedIndicesList.size() > 0) {
-                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.repairjpgs"));
-                        metaData.repairJPGMetadata( progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Export metadata":
-                    if (selectedIndicesList.size() > 0) {
-                        ExportMetadata expMetadata = new ExportMetadata();
-                        expMetadata.showDialog(selectedIndices, files, progressBar);
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "exportexivsidecar":
-                    if (selectedIndicesList.size() > 0) {
-                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
-                        metaData.exportExifSidecar(progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "exportxmpsidecar":
-                    if (selectedIndicesList.size() > 0) {
-                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
-                        metaData.exportXMPSidecar(progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Remove metadata":
-                    if (selectedIndicesList.size() > 0) {
-                        RemoveMetadata rmMetadata = new RemoveMetadata();
-                        rmMetadata.showDialog(progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Shift Date/time":
-                    if (selectedIndicesList.size() > 0) {
-                        ShiftDateTime SDT = new ShiftDateTime();
-                        SDT.showDialog(progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Modify Date/time":
-                    if (selectedIndicesList.size() > 0) {
-                        ModifyDateTime MDT = new ModifyDateTime();
-                        MDT.showDialog(progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Set file date to DateTimeOriginal":
-                    if (selectedIndicesList.size() > 0) {
-                        dateTime.setFileDateTimeToDateTimeOriginal(progressBar);
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Create args file(s)":
-                    if (selectedIndicesList.size() > 0) {
-                        CreateArgsFile CAF = new CreateArgsFile();
-                        CAF.showDialog(selectedIndices, files, progressBar);
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "Export all previews/thumbs from selected":
-                    if (selectedIndicesList.size() > 0) {
-                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.extractpreviewsthumbs"));
-                        Utils.ExportPreviewsThumbnails(progressBar);
-                        OutputLabel.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case "About jExifToolGUI":
-                    //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);
-                    WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext"), 500, 450);
-                    break;
-                case "About ExifTool":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("aboutexiftool")), ResourceBundle.getBundle("translations/program_help_texts").getString("aboutexiftooltitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "jExifToolGUI homepage":
-                    Utils.openBrowser(ProgramTexts.ProjectWebSite);
-                    break;
-                case "ExifTool homepage":
-                    Utils.openBrowser("https://exiftool.org/");
-                    break;
-                case "Credits":
-                    JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "System/Program info":
-                    String os = SystemPropertyFacade.getPropertyByKey(OS_NAME);
-                    if (os.contains("APPLE") || os.contains("Mac") ) {
-                        JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 650, Utils.systemProgramInfo()), "System and Program Information", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 500, Utils.systemProgramInfo()), "System and Program Information", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    break;
-                case "License":
-                    Utils.showLicense(mainScreen.this.rootPanel);
-                    break;
-                case "Check for new version":
-                    Utils.checkForNewVersion("menu");
-                    break;
-                case "Translate":
-                    Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/translations/Readme.md");
-                    break;
-                case "Donate":
-                    Utils.openBrowser("https://hvdwolf.github.io/jExifToolGUI/donate.html");
-                    // Disable for the time being
-                    //WebPageInPanel WPIP = new WebPageInPanel();
-                    //WPIP.WebPageInPanel(rootPanel,"https://hvdwolf.github.io/jExifToolGUI/donate.html", 700,300);
-                    break;
-                // Below this line we will add our Help sub menu containing the helptexts topics in this program
-                case "editdataexif":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("exifhelptitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "editdataxmp":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("xmphelptitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "editdatagps":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelptitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "editdatageotag":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelptitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "editdatagpano":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelptitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "editdatalens":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "copydata":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "yourcommands":
-//                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
-                    WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
-                    break;
-                case "exiftooldb":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "menurenaminginfo":
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("renamingtext")), ResourceBundle.getBundle("translations/program_help_texts").getString("renamingtitle"), JOptionPane.INFORMATION_MESSAGE);
-                    break;
                 default:
                     break;
             }
-
         }
     }
 
 
+    /*
+    / the programButtonListeners functions brings all buttons from the main screen together in one method.
+    / where possible the actionlistener will put externally to the GuiActionListeners class.
+    / Only the buttons that are too "intimately" coupled to the Gui and can' t be moved, will be dealt with
+    / directly in this method. Unfortunately that are quite some buttons, also because the help buttons
+    / all have the same (translated) text.
+     */
     private void programButtonListeners() {
+
+        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel);
         // Main screen left panel
         buttonLoadImages.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.debug("buttonLoadImages pressed");
                 //File opener: Load the images; identical to Menu option Load Images.
                 loadImages("images");
             }
@@ -2366,16 +2166,13 @@ public class mainScreen {
         buttonLoadDirectory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.debug("buttonLoadFolder pressed");
                 //File opener: Load folder with images; identical to Menu option Load Directory.
                 loadImages("folder");
             }
         });
-        buttonShowImage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                Utils.displaySelectedImageInExternalViewer();
-            }
-        });
+        buttonShowImage.setActionCommand("bSI");
+        buttonShowImage.addActionListener(gal);
 
         // Your Commands pane buttons
         CommandsclearParameterSFieldButton.addActionListener(new ActionListener() {
@@ -2406,13 +2203,9 @@ public class mainScreen {
                 }
             }
         });
-        CommandshelpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
-                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
-            }
-        });
+        CommandshelpButton.setActionCommand("CommandshB");
+        CommandshelpButton.addActionListener(gal);
+
         AddCommandFavoritebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2460,12 +2253,8 @@ public class mainScreen {
                 EEd.resetFields(getExifFields(), ExifDescriptiontextArea);
             }
         });
-        ExifhelpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("exifhelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        ExifhelpButton.setActionCommand("ExifhB");
+        ExifhelpButton.addActionListener(gal);
 
 
         // Edit xmp buttons
@@ -2497,12 +2286,8 @@ public class mainScreen {
                 EXd.resetFields(getXmpFields(), xmpDescriptiontextArea);
             }
         });
-        xmpHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("xmphelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        xmpHelpbutton.setActionCommand("xmpHB");
+        xmpHelpbutton.addActionListener(gal);
 
 
         // Edit geotagging buttons
@@ -2550,12 +2335,8 @@ public class mainScreen {
                 EGd.ResetFields(getGeotaggingFields(), getGeotaggingBoxes());
             }
         });
-        geotaggingHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        geotaggingHelpbutton.setActionCommand("geotHb");
+        geotaggingHelpbutton.addActionListener(gal);
 
         // Edit gps buttons
         gpsCopyFrombutton.addActionListener(new ActionListener() {
@@ -2581,18 +2362,12 @@ public class mainScreen {
                 EGPSd.resetFields(getNumGPSFields(), getGPSLocationFields());
             }
         });
-        gpsMapcoordinatesbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                Utils.openBrowser("https://www.mapcoordinates.net/en");
-            }
-        });
-        gpsHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        gpsMapcoordinatesbutton.setActionCommand("gpsMcb");
+        gpsMapcoordinatesbutton.addActionListener(gal);
+
+        gpsHelpbutton.addActionListener(gal);
+        gpsHelpbutton.setActionCommand("gpsHb");
+
         decimalToMinutesSecondsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2678,12 +2453,8 @@ public class mainScreen {
                 metaData.copyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, progressBar);
             }
         });
-        CopyHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        CopyHelpbutton.setActionCommand("CopyHb");
+        CopyHelpbutton.addActionListener(gal);
 
         // The buttons from the Gpano edit tab
         gpanoCopyFrombutton.addActionListener(new ActionListener() {
@@ -2715,12 +2486,8 @@ public class mainScreen {
                 EGpanod.resetFields(getGpanoFields(), gpanoStitchingSoftwaretextField, getGpanoCheckBoxes());
             }
         });
-        gpanoHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        gpanoHelpbutton.setActionCommand("gpanoHb");
+        gpanoHelpbutton.addActionListener(gal);
 
         // The buttons from the lens tab
         lensCopyFrombutton.addActionListener(new ActionListener() {
@@ -2751,17 +2518,12 @@ public class mainScreen {
                 ELd.resetFields(getLensFields(), getLensCheckBoxes(), meteringmodecomboBox);
             }
         });
-        lensHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        lensHelpbutton.setActionCommand("lensHb");
+        lensHelpbutton.addActionListener(gal);
+
         saveLensConfigurationbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //CUL.showDialog(getLensFields(), meteringmodecomboBox, rootPanel);
-                //CreateUpdatemyLens.showDialog(getLensFields(), meteringmodecomboBox, rootPanel);
                 ELd.saveLensconfig(getLensFields(), meteringmodecomboBox, rootPanel);
             }
         });
@@ -2791,12 +2553,8 @@ public class mainScreen {
                 ESd.resetFields(getstringPlusFields(), getstringPlusBoxes() );
             }
         });
-        stringPlusHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, HelpTexts.lensHelpText), "Help for the Edit lens data panel", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        stringPlusHelpbutton.setActionCommand("sPHb");
+        stringPlusHelpbutton.addActionListener(gal);
 
 
         // buttons and the like on database panel
@@ -2829,12 +2587,9 @@ public class mainScreen {
                 }
             }
         });
-        edbHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        edbHelpbutton.setActionCommand("edbHb");
+        edbHelpbutton.addActionListener(gal);
+
         sqlExecutebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2863,16 +2618,12 @@ public class mainScreen {
         loadQuerybutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
                 DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
             }
         });
-        buttonDBdiagram.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/raw/master/database/jexiftoolgui-diagram.png");
-                DBP.DisplayDiagram();
-            }
-        });
+        buttonDBdiagram.setActionCommand("bDBb");
+        buttonDBdiagram.addActionListener(gal);
 
         // Button listeners fro the User defined metadata combinations tab
         udcCreateNewButton.addActionListener(new ActionListener() {
@@ -2895,7 +2646,6 @@ public class mainScreen {
         udcCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
             }
         });
         udcCopyTobutton.addActionListener(new ActionListener() {
@@ -3072,9 +2822,13 @@ public class mainScreen {
     }
     // endregion
 
+    /*
+    / This creates the menu with the listener in its own external MenuActionListener class
+     */
     private void createMenuBar(JFrame frame) {
         menuBar = new JMenuBar();
 
+        MenuActionListener mal = new MenuActionListener(rootPanel, menuBar, OutputLabel, progressBar, UserCombiscomboBox);
         // File menu
         myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.file"));
         myMenu.setMnemonic(KeyEvent.VK_F);
@@ -3082,26 +2836,27 @@ public class mainScreen {
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loadimages"));
         myMenu.setMnemonic(KeyEvent.VK_L);
         menuItem.setActionCommand("Load Images");
-        menuItem.addActionListener(new MenuActionListener());
+        //menuItem.addActionListener(mal);
+        menuItem.addActionListener(new SpecialMenuActionListener());
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loaddirectory"));
         menuItem.setActionCommand("Load Directory");
         myMenu.setMnemonic(KeyEvent.VK_D);
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(new SpecialMenuActionListener());
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.preferences"));
         myMenu.setMnemonic(KeyEvent.VK_P);
         menuItem.setActionCommand("Preferences");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem("User defined Metadata Combis");
         menuItem.setActionCommand("Metadata");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));
         menuItem.setMnemonic(KeyEvent.VK_X);
         menuItem.setActionCommand("Exit");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 
         // Rename photos menu
@@ -3110,17 +2865,17 @@ public class mainScreen {
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("rmenu.renamephotos"));
         menuItem.setActionCommand("Rename photos");
         //myMenu.setMnemonic(KeyEvent.VK_R);
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 
         JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exif"));
         menuItem.setActionCommand("exportexivsidecar");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         exportSidecarSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.xmp"));
         menuItem.setActionCommand("exportxmpsidecar");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         exportSidecarSubMenu.add(menuItem);
 
 
@@ -3131,16 +2886,16 @@ public class mainScreen {
         //myMenu.addSeparator();
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportmetadata"));
         menuItem.setActionCommand("Export metadata");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         myMenu.add(exportSidecarSubMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.copyallmetadatatoxmpformat"));
         menuItem.setActionCommand("Copy all metadata to xmp format");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.removemetadata"));
         menuItem.setActionCommand("Remove metadata");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 
         // Date/time menu
@@ -3148,15 +2903,15 @@ public class mainScreen {
         menuBar.add(myMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.shiftdatetime"));
         menuItem.setActionCommand("Shift Date/time");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.modifydatetime"));
         menuItem.setActionCommand("Modify Date/time");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.setfiledatetodatetimeoriginal"));
         menuItem.setActionCommand("Set file date to DateTimeOriginal");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         //myMenu.addSeparator();
 
@@ -3165,15 +2920,15 @@ public class mainScreen {
         menuBar.add(myMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.repairjpgs"));
         menuItem.setActionCommand("Repair JPGs with corrupted metadata");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.createargfiles"));
         menuItem.setActionCommand("Create args file(s)");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.exportallpreviews"));
         menuItem.setActionCommand("Export all previews/thumbs from selected");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 
 
@@ -3181,50 +2936,50 @@ public class mainScreen {
         //myMenu = new JMenu("Database");
         //menuBar.add(myMenu);
         //menuItem = new JMenuItem("Query the exiftool groups/tags database");
-        //menuItem.addActionListener(new MenuActionListener());
+        //menuItem.addActionListener(mal);
         // this will be a sub menu of the Help menu containing the help dialogs for the several buttons
         JMenu helpSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.helptopicsprogram"));
         //menuItem.setActionCommand("Remove metadata");
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdataexif"));
         menuItem.setActionCommand("editdataexif");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdataxmp"));
         menuItem.setActionCommand("editdataxmp");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatagps"));
         menuItem.setActionCommand("editdatagps");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatageotag"));
         menuItem.setActionCommand("editdatageotag");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatagpano"));
         menuItem.setActionCommand("editdatagpano");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatalens"));
         menuItem.setActionCommand("editdatalens");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.copydata"));
         menuItem.setActionCommand("copydata");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.yourcommands"));
         menuItem.setActionCommand("yourcommands");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.exiftooldb"));
         menuItem.setActionCommand("exiftooldb");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         helpSubMenu.addSeparator();
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.menurenaminginfo"));
         menuItem.setActionCommand("menurenaminginfo");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
 
 
@@ -3235,11 +2990,11 @@ public class mainScreen {
         menuBar.add(myMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.jexiftoolguihomepage"));
         menuItem.setActionCommand("jExifToolGUI homepage");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.exiftoolhomepage"));
         menuItem.setActionCommand("ExifTool homepage");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         //menuItem = new JMenuItem("Manual");
         //myMenu.add(menuItem);
@@ -3250,40 +3005,41 @@ public class mainScreen {
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"));
         menuItem.setActionCommand("Credits");
         myMenu.add(menuItem);
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.donate"));
         menuItem.setActionCommand("Donate");
         myMenu.add(menuItem);
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.license"));
         menuItem.setActionCommand("License");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.translate"));
         menuItem.setActionCommand("Translate");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         myMenu.addSeparator();
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.sysproginfo"));
         menuItem.setActionCommand("System/Program info");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.checkfornewversion"));
         menuItem.setActionCommand("Check for new version");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.aboutexiftool"));
         menuItem.setActionCommand("About ExifTool");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.aboutjexiftoolgui"));
         menuItem.setActionCommand("About jExifToolGUI");
-        menuItem.addActionListener(new MenuActionListener());
+        menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 
         // Finally add menubar to the frame
         frame.setJMenuBar(menuBar);
     }
+
 
     // Sets the necessary screen texts. We choose this way as we have now more control over width
     // without bothering the translators with <html></html> and/or <br> codes or length of total string(s).

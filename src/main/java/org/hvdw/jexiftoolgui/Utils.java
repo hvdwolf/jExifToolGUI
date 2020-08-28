@@ -123,7 +123,7 @@ public class Utils {
     }
 
     // Displays the license in an option pane
-    static void showLicense(JPanel myComponent) {
+    public static void showLicense(JPanel myComponent) {
 
         String license = StandardFileIO.readTextFileAsStringFromResource("COPYING");
         JTextArea textArea = new JTextArea(license);
@@ -168,7 +168,7 @@ public class Utils {
      * This method checks for a new version on the repo.
      * It can be called from startup (preferences setting) or from the Help menu
      */
-    static void checkForNewVersion(String fromWhere) {
+    public static void checkForNewVersion(String fromWhere) {
         String web_version = "";
         boolean versioncheck = prefs.getByKey(VERSION_CHECK, false);
 
@@ -813,7 +813,7 @@ public class Utils {
     / if it is an image (whatever) and we always want to use the raw viewer, use method viewInRawViewer
     / If no raw viewer defined, or we have whatever other extension (can also be normal or raw image), use method viewInDefaultViewer (based on mime type and default app)
      */
-    static void displaySelectedImageInExternalViewer() {
+    public static void displaySelectedImageInExternalViewer() {
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
         String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;;
 
