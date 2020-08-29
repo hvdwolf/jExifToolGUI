@@ -187,7 +187,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.exiftab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="511"/>
+                      <preferredSize width="820" height="575"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <grid id="9b5ed" binding="Camera_Equipment" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -564,7 +567,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.xmptab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="464"/>
+                      <preferredSize width="820" height="575"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="eb42c" class="javax.swing.JLabel">
@@ -883,7 +889,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.gpstab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="600"/>
+                      <preferredSize width="820" height="550"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <grid id="873fb" binding="gpsLocationPanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -1408,7 +1417,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.geotaggingtab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="651"/>
+                      <preferredSize width="820" height="550"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <grid id="feffa" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -1742,7 +1754,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.gpanotab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="567"/>
+                      <preferredSize width="820" height="550"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="773ac" class="javax.swing.JLabel" binding="gPanoTopText">
@@ -2140,7 +2155,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.lenstab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="688"/>
+                      <preferredSize width="820" height="550"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="dd896" class="javax.swing.JLabel">
@@ -2567,7 +2585,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.xmpiptcstringtab"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="397"/>
+                      <preferredSize width="820" height="397"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="6c641" class="javax.swing.JLabel" binding="StringsTopText">
@@ -2869,7 +2890,10 @@
                     <constraints>
                       <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.usercombis"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <minimumSize width="750" height="204"/>
+                      <preferredSize width="820" height="550"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <grid id="74b2d" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -2996,7 +3020,9 @@
             <constraints>
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.copydata"/>
             </constraints>
-            <properties/>
+            <properties>
+              <preferredSize width="820" height="500"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="31e02" class="javax.swing.JRadioButton" binding="copyAllMetadataRadiobutton">
@@ -3133,7 +3159,9 @@
             <constraints>
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.yourcommands"/>
             </constraints>
-            <properties/>
+            <properties>
+              <preferredSize width="820" height="253"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="82967" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -3292,7 +3320,9 @@
             <constraints>
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.exiftooldb"/>
             </constraints>
-            <properties/>
+            <properties>
+              <preferredSize width="820" height="550"/>
+            </properties>
             <border type="none"/>
             <children>
               <scrollpane id="333ca" binding="databaseScrollPanel">

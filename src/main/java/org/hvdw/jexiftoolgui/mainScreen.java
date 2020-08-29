@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+
 import org.hvdw.jexiftoolgui.controllers.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.editpane.*;
@@ -42,7 +43,6 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRE
 
 public class mainScreen {
     private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
-    //public static Object buttonLoadImages;
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -653,6 +653,8 @@ public class mainScreen {
         panel1.add(tabbedPaneEditfunctions, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         ExifEditpanel = new JPanel();
         ExifEditpanel.setLayout(new GridLayoutManager(5, 1, new Insets(0, 20, 0, 20), -1, -1));
+        ExifEditpanel.setMinimumSize(new Dimension(750, 511));
+        ExifEditpanel.setPreferredSize(new Dimension(820, 575));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.exiftab"), ExifEditpanel);
         Camera_Equipment = new JPanel();
         Camera_Equipment.setLayout(new GridLayoutManager(3, 3, new Insets(5, 0, 5, 0), -1, -1));
@@ -816,6 +818,8 @@ public class mainScreen {
         panel3.add(ExifhelpButton);
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(13, 3, new Insets(10, 20, 10, 20), -1, -1));
+        panel4.setMinimumSize(new Dimension(750, 464));
+        panel4.setPreferredSize(new Dimension(820, 575));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.xmptab"), panel4);
         final JLabel label15 = new JLabel();
         label15.setPreferredSize(new Dimension(150, 18));
@@ -949,6 +953,8 @@ public class mainScreen {
         panel4.add(xmpKeywordscheckBox, new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel7 = new JPanel();
         panel7.setLayout(new GridLayoutManager(6, 2, new Insets(5, 5, 5, 10), -1, -1));
+        panel7.setMinimumSize(new Dimension(750, 600));
+        panel7.setPreferredSize(new Dimension(820, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.gpstab"), panel7);
         gpsLocationPanel = new JPanel();
         gpsLocationPanel.setLayout(new GridLayoutManager(5, 3, new Insets(5, 5, 5, 5), -1, -1));
@@ -1145,6 +1151,8 @@ public class mainScreen {
         gpsButtonPanel2.add(gpsHelpbutton);
         GeotaggingEditpanel = new JPanel();
         GeotaggingEditpanel.setLayout(new GridLayoutManager(8, 1, new Insets(10, 20, 10, 20), -1, -1));
+        GeotaggingEditpanel.setMinimumSize(new Dimension(750, 651));
+        GeotaggingEditpanel.setPreferredSize(new Dimension(820, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.geotaggingtab"), GeotaggingEditpanel);
         final JPanel panel9 = new JPanel();
         panel9.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 20, 0), -1, -1));
@@ -1281,6 +1289,8 @@ public class mainScreen {
         panel16.add(GeotaggingLocationLabel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel17 = new JPanel();
         panel17.setLayout(new GridLayoutManager(6, 1, new Insets(10, 0, 0, 0), -1, -1));
+        panel17.setMinimumSize(new Dimension(750, 567));
+        panel17.setPreferredSize(new Dimension(820, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.gpanotab"), panel17);
         gPanoTopText = new JLabel();
         this.$$$loadLabelText$$$(gPanoTopText, this.$$$getMessageFromBundle$$$("translations/program_strings", "gpano.toptext"));
@@ -1429,6 +1439,8 @@ public class mainScreen {
         panel17.add(gpanoMinVersionText, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel21 = new JPanel();
         panel21.setLayout(new GridLayoutManager(20, 3, new Insets(10, 20, 10, 20), -1, -1));
+        panel21.setMinimumSize(new Dimension(750, 688));
+        panel21.setPreferredSize(new Dimension(820, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.lenstab"), panel21);
         final JLabel label70 = new JLabel();
         this.$$$loadLabelText$$$(label70, this.$$$getMessageFromBundle$$$("translations/program_strings", "lens.lensmake"));
@@ -1591,6 +1603,8 @@ public class mainScreen {
         panel21.add(lensSaveLoadConfigLabel, new GridConstraints(18, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel23 = new JPanel();
         panel23.setLayout(new GridLayoutManager(7, 1, new Insets(10, 20, 10, 20), -1, -1));
+        panel23.setMinimumSize(new Dimension(750, 397));
+        panel23.setPreferredSize(new Dimension(820, 397));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.xmpiptcstringtab"), panel23);
         StringsTopText = new JLabel();
         StringsTopText.setText("StringstopText");
@@ -1715,6 +1729,8 @@ public class mainScreen {
         panel23.add(spacer4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel31 = new JPanel();
         panel31.setLayout(new GridLayoutManager(2, 1, new Insets(10, 20, 10, 20), -1, -1));
+        panel31.setMinimumSize(new Dimension(750, 204));
+        panel31.setPreferredSize(new Dimension(820, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.usercombis"), panel31);
         final JPanel panel32 = new JPanel();
         panel32.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -1766,6 +1782,7 @@ public class mainScreen {
         panel31.add(spacer6, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel35 = new JPanel();
         panel35.setLayout(new GridLayoutManager(6, 1, new Insets(10, 10, 5, 5), -1, -1));
+        panel35.setPreferredSize(new Dimension(820, 500));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.copydata"), panel35);
         copyAllMetadataRadiobutton = new JRadioButton();
         this.$$$loadButtonText$$$(copyAllMetadataRadiobutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "copyd.copyallmetadatasame"));
@@ -1820,6 +1837,7 @@ public class mainScreen {
         panel37.add(CopyHelpbutton);
         final JPanel panel38 = new JPanel();
         panel38.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        panel38.setPreferredSize(new Dimension(820, 253));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.yourcommands"), panel38);
         final JPanel panel39 = new JPanel();
         panel39.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -1886,6 +1904,7 @@ public class mainScreen {
         panel38.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
         final JPanel panel44 = new JPanel();
         panel44.setLayout(new GridLayoutManager(5, 2, new Insets(10, 10, 10, 10), -1, -1));
+        panel44.setPreferredSize(new Dimension(820, 550));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exiftooldb"), panel44);
         databaseScrollPanel = new JScrollPane();
         panel44.add(databaseScrollPanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -2119,7 +2138,7 @@ public class mainScreen {
 
     // region Action Listeners and radio button groups
     /*
-    / The menu linstemer is for the special function loadImages that is so tightly integrated
+    / The SpecialMenuActionListener is a menu linstener for the special function loadImages that is so tightly integrated
     / with the Gui that we can't take it out.
      */
     public class SpecialMenuActionListener implements ActionListener {
@@ -2146,14 +2165,14 @@ public class mainScreen {
 
     /*
     / the programButtonListeners functions brings all buttons from the main screen together in one method.
-    / where possible the actionlistener will put externally to the GuiActionListeners class.
-    / Only the buttons that are too "intimately" coupled to the Gui and can' t be moved, will be dealt with
-    / directly in this method. Unfortunately that are quite some buttons, also because the help buttons
-    / all have the same (translated) text.
+    / Where possible, the actionlistener will be put externally to the GuiActionListeners class.
+    / Only the buttons that are too "intimately" coupled to the Gui and can't be moved, will be dealt with
+    / directly in this method. Unfortunately that are quite some buttons.
      */
     private void programButtonListeners() {
 
-        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel);
+        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, sqlQuerytextField);
+
         // Main screen left panel
         buttonLoadImages.addActionListener(new ActionListener() {
             @Override
@@ -2175,12 +2194,8 @@ public class mainScreen {
         buttonShowImage.addActionListener(gal);
 
         // Your Commands pane buttons
-        CommandsclearParameterSFieldButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                CommandsParameterstextField.setText("");
-            }
-        });
+        CommandsclearParameterSFieldButton.setActionCommand("CommandsclearPSFB");
+        CommandsclearParameterSFieldButton.addActionListener(gal);
         CommandsclearOutputFieldButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2206,22 +2221,11 @@ public class mainScreen {
         CommandshelpButton.setActionCommand("CommandshB");
         CommandshelpButton.addActionListener(gal);
 
-        AddCommandFavoritebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (CommandsParameterstextField.getText().length()>0) {
-                    AddFav.showDialog(rootPanel, "Exiftool_Command", CommandsParameterstextField.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        LoadCommandFavoritebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                YourCmnds.LoadCommandFavorite(rootPanel, CommandsParameterstextField);
-            }
-        });
+        AddCommandFavoritebutton.setActionCommand("ACommFavorb");
+        AddCommandFavoritebutton.addActionListener(gal);
+
+        LoadCommandFavoritebutton.setActionCommand("LCommFavb");
+        LoadCommandFavoritebutton.addActionListener(gal);
 
 
         // Edit Exif pane buttons
@@ -2291,24 +2295,12 @@ public class mainScreen {
 
 
         // Edit geotagging buttons
-        geotaggingImgFolderbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String ImgPath = EGd.getImagePath(rootPanel);
-                if (!"".equals(ImgPath)) {
-                    geotaggingImgFoldertextField.setText(ImgPath);
-                }
-            }
-        });
-        geotaggingGPSLogbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String TrackFile = EGd.gpsLogFile(rootPanel);
-                if (!"".equals(TrackFile)) {
-                    geotaggingGPSLogtextField.setText(TrackFile);
-                }
-            }
-        });
+        geotaggingImgFolderbutton.setActionCommand("geoIFb");
+        geotaggingImgFolderbutton.addActionListener(gal);
+
+        geotaggingGPSLogbutton.setActionCommand("geoGPSLb");
+        geotaggingGPSLogbutton.addActionListener(gal);
+
         geotaggingWriteInfobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2605,23 +2597,12 @@ public class mainScreen {
                 }
             }
         });
-        SaveQuerybutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (sqlQuerytextField.getText().length()>0) {
-                    AddFav.showDialog(rootPanel, "DB_query", sqlQuerytextField.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, "No query given", "No query", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        loadQuerybutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        SaveQuerybutton.setActionCommand("SQb");
+        SaveQuerybutton.addActionListener(gal);
 
-                DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
-            }
-        });
+        loadQuerybutton.setActionCommand("lQb");
+        loadQuerybutton.addActionListener(gal);
+
         buttonDBdiagram.setActionCommand("bDBb");
         buttonDBdiagram.addActionListener(gal);
 

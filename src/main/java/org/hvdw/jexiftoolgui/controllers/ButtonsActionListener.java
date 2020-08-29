@@ -2,6 +2,8 @@ package org.hvdw.jexiftoolgui.controllers;
 
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
+import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
 import org.hvdw.jexiftoolgui.view.WebView;
 import org.slf4j.Logger;
@@ -17,53 +19,124 @@ public class ButtonsActionListener implements ActionListener {
 
     private DatabasePanel DBP = new DatabasePanel();
     private WebView WV = new WebView();
+    private AddFavorite AddFav = new AddFavorite();
+    private YourCommands YourCmnds = new YourCommands();
+    private EditGeotaggingdata EGd = new EditGeotaggingdata();
+
 
     public JLabel OutputLabel;
     public JPanel rootPanel;
-    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel) {
+    public JTextField CommandsParameterstextField;
+    public JTextField geotaggingImgFoldertextField;
+    public JTextField geotaggingGPSLogtextField;
+    public JTextField sqlQuerytextField;
+
+    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JTextField sqlQuerytextField) {
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
+        this.CommandsParameterstextField = CommandsParameterstextField;
+        this.geotaggingImgFoldertextField = geotaggingImgFoldertextField;
+        this.geotaggingGPSLogtextField = geotaggingGPSLogtextField;
+        this.sqlQuerytextField = sqlQuerytextField;
     }
 
     @Override
     public void actionPerformed(ActionEvent gav) { // gav = gui ActionEvent
 
-        if (gav.getActionCommand().equals("bSI") ) {
-            logger.debug("button buttonShowImage pressed");
-            Utils.displaySelectedImageInExternalViewer();
-        } else if (gav.getActionCommand().equals("CommandshB")) {
-            WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
-            logger.debug("button CommandshelpButton pressed");
-        } else if ( (gav.getActionCommand().equals("ExifhB")) || (gav.getActionCommand().equals("xmpHB")) ) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("exifhelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button Exifhelp or xmpHelp pressed");
-        } else if (gav.getActionCommand().equals("geotHb")) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button geotagginghelpButton pressed");
-        } else if (gav.getActionCommand().equals("gpsMcb")) {
-            Utils.openBrowser("https://www.mapcoordinates.net/en");
-            logger.debug("button gpsMapcoordinatesButton pressed");
-        } else if (gav.getActionCommand().equals("gpsHb")) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button gpsHelpbutton pressed");
-        } else if (gav.getActionCommand().equals("CopyHb")) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button CopyHelpbutton pressed");
-        } else if (gav.getActionCommand().equals("gpanoHb")) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button gpanoHelpbutton pressed");
-        } else if (gav.getActionCommand().equals("lensHb")) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button lensHelpbutton pressed");
-        } else if (gav.getActionCommand().equals("sPHb")) {
-            logger.debug("button stringPlusHelpbutton pressed");
-        } else if (gav.getActionCommand().equals("edbHb")) {
-            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
-            logger.debug("button edbHelpbutton pressed");
-        } else if (gav.getActionCommand().equals("bDBb")) {
-            DBP.DisplayDiagram();
-            logger.debug("button buttonDBdiagram pressed");
+        // This is not nice object oriented programming but gives a nice clear structured overview
+        switch (gav.getActionCommand()) {
+            case "bSI":
+                logger.debug("button buttonShowImage pressed");
+                Utils.displaySelectedImageInExternalViewer();
+                break;
+            case "CommandshB":
+                logger.debug("button CommandshelpButton pressed");
+                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
+                break;
+            case "ExifhB":
+            case "xmpHB":
+                logger.debug("button Exifhelp or xmpHelp pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("exifhelptitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "geotHb":
+                logger.debug("button geotagginghelpButton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelptitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "gpsMcb":
+                logger.debug("button gpsMapcoordinatesButton pressed");
+                Utils.openBrowser("https://www.mapcoordinates.net/en");
+                break;
+            case "gpsHb":
+                logger.debug("button gpsHelpbutton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelptitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "CopyHb":
+                logger.debug("button CopyHelpbutton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "gpanoHb":
+                logger.debug("button gpanoHelpbutton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpanohelptitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "lensHb":
+                logger.debug("button lensHelpbutton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("lenshelptitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "sPHb":
+                logger.debug("button stringPlusHelpbutton pressed");
+                break;
+            case "edbHb":
+                logger.debug("button edbHelpbutton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "bDBb":
+                logger.debug("button buttonDBdiagram pressed");
+                DBP.DisplayDiagram();
+                break;
+            case "CommandsclearPSFB":
+                logger.debug("button CommandsclearParameterSFieldButton pressed");
+                CommandsParameterstextField.setText("");
+                break;
+            case "ACommFavorb":
+                logger.debug("button AddCommandFavoritebutton pressed");
+                if (CommandsParameterstextField.getText().length()>0) {
+                    AddFav.showDialog(rootPanel, "Exiftool_Command", CommandsParameterstextField.getText());
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "LCommFavb":
+                logger.debug("button CommandsclearParameterSFieldButton pressed");
+                YourCmnds.LoadCommandFavorite(rootPanel, CommandsParameterstextField);
+                break;
+            case "geoIFb":
+                logger.debug("button geotaggingImgFolderbutton pressed");
+                String ImgPath = EGd.getImagePath(rootPanel);
+                if (!"".equals(ImgPath)) {
+                    geotaggingImgFoldertextField.setText(ImgPath);
+                }
+                break;
+            case "geoGPSLb":
+                logger.debug("button geotaggingGPSLogbutton pressed");
+                String TrackFile = EGd.gpsLogFile(rootPanel);
+                if (!"".equals(TrackFile)) {
+                    geotaggingGPSLogtextField.setText(TrackFile);
+                }
+                break;
+            case "SQb":
+                logger.debug("button SaveQuerybutton pressed");
+                if (sqlQuerytextField.getText().length()>0) {
+                    AddFav.showDialog(rootPanel, "DB_query", sqlQuerytextField.getText());
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, "No query given", "No query", JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "lQb":
+                logger.debug("button loadQuerybutton pressed");
+                DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
+                break;
         }
+
 
     }
 }
