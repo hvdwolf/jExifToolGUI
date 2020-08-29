@@ -219,6 +219,9 @@ public class MenuActionListener implements ActionListener  {
             case "Translate":
                 Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/translations/Readme.md");
                 break;
+            case "Changelog":
+                Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/Changelog.md");
+                break;
             case "Donate":
                 Utils.openBrowser("https://hvdwolf.github.io/jExifToolGUI/donate.html");
                 // Disable for the time being

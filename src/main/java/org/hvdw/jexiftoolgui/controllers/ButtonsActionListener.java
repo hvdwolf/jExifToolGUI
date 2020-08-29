@@ -5,6 +5,7 @@ import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
 import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
+import org.hvdw.jexiftoolgui.view.MetadataViewPanel;
 import org.hvdw.jexiftoolgui.view.WebView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class ButtonsActionListener implements ActionListener {
     private AddFavorite AddFav = new AddFavorite();
     private YourCommands YourCmnds = new YourCommands();
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
+    private MetadataViewPanel MD = new MetadataViewPanel();
 
 
     public JLabel OutputLabel;
@@ -30,14 +32,16 @@ public class ButtonsActionListener implements ActionListener {
     public JTextField geotaggingImgFoldertextField;
     public JTextField geotaggingGPSLogtextField;
     public JTextField sqlQuerytextField;
+    public JComboBox UserCombiscomboBox;
 
-    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JTextField sqlQuerytextField) {
+    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JTextField sqlQuerytextField, JComboBox UserCombiscomboBox) {
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
         this.CommandsParameterstextField = CommandsParameterstextField;
         this.geotaggingImgFoldertextField = geotaggingImgFoldertextField;
         this.geotaggingGPSLogtextField = geotaggingGPSLogtextField;
         this.sqlQuerytextField = sqlQuerytextField;
+        this.UserCombiscomboBox = UserCombiscomboBox;
     }
 
     @Override
@@ -134,6 +138,14 @@ public class ButtonsActionListener implements ActionListener {
             case "lQb":
                 logger.debug("button loadQuerybutton pressed");
                 DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
+                break;
+            case "udcCNB":
+                logger.debug("button udcCreateNewButton pressed");
+                MD.showDialog(rootPanel);
+                // Update GPS box, no matter whether we were succesful or not
+                String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+                String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+                UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                 break;
         }
 

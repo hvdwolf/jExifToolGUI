@@ -2171,7 +2171,7 @@ public class mainScreen {
      */
     private void programButtonListeners() {
 
-        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, sqlQuerytextField);
+        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, sqlQuerytextField, UserCombiscomboBox);
 
         // Main screen left panel
         buttonLoadImages.addActionListener(new ActionListener() {
@@ -2220,10 +2220,8 @@ public class mainScreen {
         });
         CommandshelpButton.setActionCommand("CommandshB");
         CommandshelpButton.addActionListener(gal);
-
         AddCommandFavoritebutton.setActionCommand("ACommFavorb");
         AddCommandFavoritebutton.addActionListener(gal);
-
         LoadCommandFavoritebutton.setActionCommand("LCommFavb");
         LoadCommandFavoritebutton.addActionListener(gal);
 
@@ -2297,10 +2295,8 @@ public class mainScreen {
         // Edit geotagging buttons
         geotaggingImgFolderbutton.setActionCommand("geoIFb");
         geotaggingImgFolderbutton.addActionListener(gal);
-
         geotaggingGPSLogbutton.setActionCommand("geoGPSLb");
         geotaggingGPSLogbutton.addActionListener(gal);
-
         geotaggingWriteInfobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2356,7 +2352,6 @@ public class mainScreen {
         });
         gpsMapcoordinatesbutton.setActionCommand("gpsMcb");
         gpsMapcoordinatesbutton.addActionListener(gal);
-
         gpsHelpbutton.addActionListener(gal);
         gpsHelpbutton.setActionCommand("gpsHb");
 
@@ -2581,7 +2576,6 @@ public class mainScreen {
         });
         edbHelpbutton.setActionCommand("edbHb");
         edbHelpbutton.addActionListener(gal);
-
         sqlExecutebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2599,24 +2593,14 @@ public class mainScreen {
         });
         SaveQuerybutton.setActionCommand("SQb");
         SaveQuerybutton.addActionListener(gal);
-
         loadQuerybutton.setActionCommand("lQb");
         loadQuerybutton.addActionListener(gal);
-
         buttonDBdiagram.setActionCommand("bDBb");
         buttonDBdiagram.addActionListener(gal);
 
-        // Button listeners fro the User defined metadata combinations tab
-        udcCreateNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                MD.showDialog(rootPanel);
-                // Update GPS box, no matter whether we were succesful or not
-                String sqlsets = SQLiteJDBC.getdefinedCustomSets();
-                String[] views = sqlsets.split("\\r?\\n"); // split on new lines
-                UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
-            }
-        });
+        // Button listeners for the User defined metadata combinations tab
+        udcCreateNewButton.setActionCommand("udcCNB");
+        udcCreateNewButton.addActionListener(gal);
         UserCombiscomboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -2677,7 +2661,6 @@ public class mainScreen {
                 }
             }
         });
-
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -2809,7 +2792,8 @@ public class mainScreen {
     private void createMenuBar(JFrame frame) {
         menuBar = new JMenuBar();
 
-        MenuActionListener mal = new MenuActionListener(rootPanel, menuBar, OutputLabel, progressBar, UserCombiscomboBox);
+
+        // Due to the Load Iamge method with its own ActionListener we do the first menu items here
         // File menu
         myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.file"));
         myMenu.setMnemonic(KeyEvent.VK_F);
@@ -2825,200 +2809,10 @@ public class mainScreen {
         myMenu.setMnemonic(KeyEvent.VK_D);
         menuItem.addActionListener(new SpecialMenuActionListener());
         myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.preferences"));
-        myMenu.setMnemonic(KeyEvent.VK_P);
-        menuItem.setActionCommand("Preferences");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem("User defined Metadata Combis");
-        menuItem.setActionCommand("Metadata");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));
-        menuItem.setMnemonic(KeyEvent.VK_X);
-        menuItem.setActionCommand("Exit");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
 
-        // Rename photos menu
-        myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.renaming"));
-        menuBar.add(myMenu);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("rmenu.renamephotos"));
-        menuItem.setActionCommand("Rename photos");
-        //myMenu.setMnemonic(KeyEvent.VK_R);
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-
-        JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exif"));
-        menuItem.setActionCommand("exportexivsidecar");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.xmp"));
-        menuItem.setActionCommand("exportxmpsidecar");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
-
-
-        // metadata menu
-        myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.metadata"));
-        myMenu.setMnemonic(KeyEvent.VK_M);
-        menuBar.add(myMenu);
-        //myMenu.addSeparator();
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportmetadata"));
-        menuItem.setActionCommand("Export metadata");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        myMenu.add(exportSidecarSubMenu);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.copyallmetadatatoxmpformat"));
-        menuItem.setActionCommand("Copy all metadata to xmp format");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.removemetadata"));
-        menuItem.setActionCommand("Remove metadata");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-
-        // Date/time menu
-        myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.datetime"));
-        menuBar.add(myMenu);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.shiftdatetime"));
-        menuItem.setActionCommand("Shift Date/time");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.modifydatetime"));
-        menuItem.setActionCommand("Modify Date/time");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.setfiledatetodatetimeoriginal"));
-        menuItem.setActionCommand("Set file date to DateTimeOriginal");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        //myMenu.addSeparator();
-
-        // Other
-        myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.other"));
-        menuBar.add(myMenu);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.repairjpgs"));
-        menuItem.setActionCommand("Repair JPGs with corrupted metadata");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.createargfiles"));
-        menuItem.setActionCommand("Create args file(s)");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.exportallpreviews"));
-        menuItem.setActionCommand("Export all previews/thumbs from selected");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-
-
-        // exiftool database
-        //myMenu = new JMenu("Database");
-        //menuBar.add(myMenu);
-        //menuItem = new JMenuItem("Query the exiftool groups/tags database");
-        //menuItem.addActionListener(mal);
-        // this will be a sub menu of the Help menu containing the help dialogs for the several buttons
-        JMenu helpSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.helptopicsprogram"));
-        //menuItem.setActionCommand("Remove metadata");
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdataexif"));
-        menuItem.setActionCommand("editdataexif");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdataxmp"));
-        menuItem.setActionCommand("editdataxmp");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatagps"));
-        menuItem.setActionCommand("editdatagps");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatageotag"));
-        menuItem.setActionCommand("editdatageotag");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatagpano"));
-        menuItem.setActionCommand("editdatagpano");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.editdatalens"));
-        menuItem.setActionCommand("editdatalens");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.copydata"));
-        menuItem.setActionCommand("copydata");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.yourcommands"));
-        menuItem.setActionCommand("yourcommands");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.exiftooldb"));
-        menuItem.setActionCommand("exiftooldb");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-        helpSubMenu.addSeparator();
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.menurenaminginfo"));
-        menuItem.setActionCommand("menurenaminginfo");
-        menuItem.addActionListener(mal);
-        helpSubMenu.add(menuItem);
-
-
-
-        // Help menu
-        myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.help"));
-        myMenu.setMnemonic(KeyEvent.VK_H);
-        menuBar.add(myMenu);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.jexiftoolguihomepage"));
-        menuItem.setActionCommand("jExifToolGUI homepage");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.exiftoolhomepage"));
-        menuItem.setActionCommand("ExifTool homepage");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        //menuItem = new JMenuItem("Manual");
-        //myMenu.add(menuItem);
-        myMenu.addSeparator();
-        // Here we add the sub menu with help topics
-        myMenu.add(helpSubMenu);
-        myMenu.addSeparator();
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"));
-        menuItem.setActionCommand("Credits");
-        myMenu.add(menuItem);
-        menuItem.addActionListener(mal);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.donate"));
-        menuItem.setActionCommand("Donate");
-        myMenu.add(menuItem);
-        menuItem.addActionListener(mal);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.license"));
-        menuItem.setActionCommand("License");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.translate"));
-        menuItem.setActionCommand("Translate");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        myMenu.addSeparator();
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.sysproginfo"));
-        menuItem.setActionCommand("System/Program info");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.checkfornewversion"));
-        menuItem.setActionCommand("Check for new version");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.aboutexiftool"));
-        menuItem.setActionCommand("About ExifTool");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.aboutjexiftoolgui"));
-        menuItem.setActionCommand("About jExifToolGUI");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
-
-        // Finally add menubar to the frame
-        frame.setJMenuBar(menuBar);
+        // Now we continue with the rest of the entire menu outside the mainScreen in the external CreateMenu class
+        CreateMenu crMenu = new CreateMenu();
+        crMenu.CreateMenuBar(frame, rootPanel, menuBar, myMenu, OutputLabel, progressBar, UserCombiscomboBox);
     }
 
 
