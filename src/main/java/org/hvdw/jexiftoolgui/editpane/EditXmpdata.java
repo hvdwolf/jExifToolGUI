@@ -122,6 +122,8 @@ public class EditXmpdata {
             if (!xmpBoxes[9].isSelected()) { // default overwrite originals, when set do not
                 cmdparams.add("-overwrite_original");
             }
+            cmdparams.addAll(Utils.AlwaysAdd());
+
             if (xmpBoxes[0].isSelected()) {
                 cmdparams.add("-xmp:Creator=" + xmpFields[0].getText().trim());
             }

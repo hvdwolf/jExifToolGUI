@@ -161,6 +161,8 @@ public class EditGPSdata {
         if (!gpsBoxes[6].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
+        cmdparams.addAll(Utils.AlwaysAdd());
+
 
         if (gpsBoxes[0].isSelected()) { // LatLonAlt
             // Exiftool prefers to only set one tag (exif or xmp) and retrieve with composite,

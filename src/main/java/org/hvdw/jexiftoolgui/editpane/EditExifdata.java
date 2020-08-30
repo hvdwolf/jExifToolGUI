@@ -117,6 +117,8 @@ public class EditExifdata {
         if (!exifBoxes[9].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
+        cmdparams.addAll(Utils.AlwaysAdd());
+
 
         if (exifBoxes[0].isSelected()) {
             cmdparams.add("-exif:Make=" + exifFields[0].getText().trim());

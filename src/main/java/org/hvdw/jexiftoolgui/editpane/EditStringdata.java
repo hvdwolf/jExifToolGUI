@@ -100,6 +100,7 @@ public class EditStringdata {
         if (!stringPlusBoxes[2].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
+        cmdparams.addAll(Utils.AlwaysAdd());
 
         //keywords -> xmp keywords
         if ( (stringPlusFields[0].getText().length() > 0) && (!"".equals(selectedRadioButtons[0])) && (stringPlusBoxes[0].isSelected()) ) {

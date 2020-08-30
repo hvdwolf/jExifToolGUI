@@ -151,6 +151,8 @@ public class EditGpanodata {
         if (!gpanoBoxes[6].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
+        cmdparams.addAll(Utils.AlwaysAdd());
+
 
         // These are manadatory anyway and do not need a checkbox. They need to be controlled first if they are not empty
         cmdparams.add("-xmp:CroppedAreaImageHeightPixels=" + gpanoFields[0].getText().trim());

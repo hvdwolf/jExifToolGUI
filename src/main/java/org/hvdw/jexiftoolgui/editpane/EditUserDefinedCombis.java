@@ -108,7 +108,7 @@ public class EditUserDefinedCombis {
         List<String> cmdparams = new ArrayList<String>();
 
         cmdparams.add(Utils.platformExiftool());
-        // -config parameter for customconfig file has to be first parameter on command line
+        // -config parameter for custom config file has to be first parameter on command line
         if (!strcustomconfigfile.equals("")) {
             String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
             String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
