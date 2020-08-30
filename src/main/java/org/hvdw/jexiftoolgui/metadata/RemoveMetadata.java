@@ -83,12 +83,16 @@ public class RemoveMetadata extends JDialog {
                     removeGpsDataCheckBox.setSelected(true);
                     removeIptcDataCheckBox.setSelected(true);
                     removeICCDataCheckBox.setSelected(true);
+                    removegeotagDataCheckbox.setSelected(true);
+                    removexmpgeotagDataCheckbox.setSelected(true);
                 } else {
                     removeExifDataCheckBox.setSelected(false);
                     removeXmpDataCheckBox.setSelected(false);
                     removeGpsDataCheckBox.setSelected(false);
                     removeIptcDataCheckBox.setSelected(false);
                     removeICCDataCheckBox.setSelected(false);
+                    removegeotagDataCheckbox.setSelected(false);
+                    removexmpgeotagDataCheckbox.setSelected(false);
                 }
             }
         });

@@ -28,6 +28,8 @@ public class MyVariables {
     private File CurrentWorkFile;
     private String ExiftoolVersion;
     private List<List> tableRowsCells;
+    private List<String> userCombiTableValues;
+    private List<Integer> selectedIndicesList;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -95,6 +97,10 @@ public class MyVariables {
     public static void setSelectedFilenamesIndices(int[] selectedTableIndices) {
         staticInstance.selectedFilenamesIndices = Arrays.copyOf(selectedTableIndices,selectedTableIndices.length);
     }
+
+    public static List<Integer> getselectedIndicesList() { return staticInstance.selectedIndicesList; }
+    public static void setselectedIndicesList(List<Integer> selIndList) { staticInstance.selectedIndicesList = selIndList; }
+
     public static String getExiftoolVersion() {
         return staticInstance.ExiftoolVersion;
     }
@@ -104,5 +110,8 @@ public class MyVariables {
 
     public static List<List> gettableRowsCells() { return staticInstance.tableRowsCells; }
     public static void settableRowsCells (List<List> tblRwsClls) {staticInstance.tableRowsCells = tblRwsClls; }
+
+    public static List<String> getuserCombiTableValues() { return staticInstance.userCombiTableValues; }
+    public static void setuserCombiTableValues (List<String> userCTV) { staticInstance.userCombiTableValues = userCTV; }
 
 }

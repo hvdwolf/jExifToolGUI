@@ -111,7 +111,7 @@ public class EditExifdata {
 
         List<String> cmdparams = new LinkedList<>();
         File[] files = MyVariables.getSelectedFiles();
-        int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
 
         cmdparams.add(Utils.platformExiftool());
         if (!exifBoxes[9].isSelected()) { // default overwrite originals, when set do not

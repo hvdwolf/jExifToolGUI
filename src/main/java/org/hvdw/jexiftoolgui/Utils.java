@@ -163,6 +163,30 @@ public class Utils {
         return ArtCredCopyPrefs;
     }
 
+    public static List<String> AlwaysAdd() {
+        List<String> AlwaysAddParams = new ArrayList<String>();
+        String exifartist = prefs.getByKey(ARTIST, "");
+        String copyright = prefs.getByKey(COPYRIGHTS, "");
+        String credits = prefs.getByKey(CREDIT, "");
+        if (!prefs.getByKey(ARTIST, "").equals("") && !prefs.getByKey(ARTIST, "").equals(" ") ) {
+            exifartist = "-exif:Artist=" + prefs.getByKey(ARTIST, "");
+            AlwaysAddParams.add(exifartist);
+        }
+        if (!prefs.getByKey(CREDIT, "").equals("") && !prefs.getByKey(CREDIT, "").equals(" ")) {
+            credits = "-xmp:Credit=" + prefs.getByKey(CREDIT, "");
+            AlwaysAddParams.add(credits);
+        }
+        if (!prefs.getByKey(COPYRIGHTS, "").equals("") && !prefs.getByKey(COPYRIGHTS, "").equals(" ")) {
+            copyright = "-exif:Copyright=" + prefs.getByKey(COPYRIGHTS, "");
+            AlwaysAddParams.add(copyright);
+        }
+        AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);
+        AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
+        AlwaysAddParams.add("-xmp:Software=jExifToolGUI " + ProgramTexts.Version);
+
+        return AlwaysAddParams;
+    }
+
 
     /*
      * This method checks for a new version on the repo.

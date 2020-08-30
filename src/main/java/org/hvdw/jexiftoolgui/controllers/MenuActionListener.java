@@ -59,14 +59,10 @@ public class MenuActionListener implements ActionListener  {
     public void actionPerformed(ActionEvent mev) {
         String[] dummy = null;
         logger.info("Selected: {}", mev.getActionCommand());
-        /*selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        if ( selectedIndices == null ) {
-            logger.info("selectedIndices = null");
+        selectedIndicesList = MyVariables.getselectedIndicesList();
+        if (selectedIndicesList == null) {
             selectedIndicesList = new ArrayList<>();
-        } else {
-            logger.info("selectedIndices <> null");
-            selectedIndicesList = Arrays.stream(selectedIndices).boxed().collect(Collectors.toList());
-        }*/
+        }
 
         switch (mev.getActionCommand()) {
             case "Preferences":
