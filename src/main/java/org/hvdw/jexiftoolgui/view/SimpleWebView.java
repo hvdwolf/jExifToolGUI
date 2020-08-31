@@ -11,9 +11,8 @@ import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ResourceBundle;
 
-public class WebView extends JDialog {
+public class SimpleWebView extends JDialog {
 
     private JButton OKbutton;
     private JEditorPane webEditorPane;
@@ -21,9 +20,9 @@ public class WebView extends JDialog {
     private JPanel contentPane;
 
     private final HyperlinkListener linkListener = new LinkListener();
-    private final static Logger logger = LoggerFactory.getLogger(WebView.class);
+    private final static Logger logger = LoggerFactory.getLogger(SimpleWebView.class);
 
-    public WebView() {
+    public SimpleWebView() {
 
         setContentPane(contentPane);
         setModal(true);
