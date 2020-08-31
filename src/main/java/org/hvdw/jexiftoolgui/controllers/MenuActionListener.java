@@ -10,15 +10,14 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
-import org.hvdw.jexiftoolgui.view.MetadataViewPanel;
-import org.hvdw.jexiftoolgui.view.WebView;
+import org.hvdw.jexiftoolgui.view.MetadataUserCombinations;
+import org.hvdw.jexiftoolgui.view.SimpleWebView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +30,9 @@ public class MenuActionListener implements ActionListener  {
 
     PreferencesDialog prefsDialog = new PreferencesDialog();
     private DateTime dateTime = new DateTime();
-    private MetadataViewPanel MD = new MetadataViewPanel();
+    private MetadataUserCombinations MD = new MetadataUserCombinations();
     private MetaData metaData = new MetaData();
-    private WebView WV = new WebView();
+    private SimpleWebView WV = new SimpleWebView();
 
     public int[] selectedIndices;
     public List<Integer> selectedIndicesList = new ArrayList<>();
@@ -68,7 +67,7 @@ public class MenuActionListener implements ActionListener  {
             case "Preferences":
                 prefsDialog.showDialog();
                 break;
-            case "Metadata":
+            case "UserMetadata":
                 MD.showDialog(rootPanel);
                 String sqlsets = SQLiteJDBC.getdefinedCustomSets();
                 String[] views = sqlsets.split("\\r?\\n"); // split on new lines

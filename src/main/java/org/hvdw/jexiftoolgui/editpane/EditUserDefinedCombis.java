@@ -50,9 +50,9 @@ public class EditUserDefinedCombis {
         usercombiTable = new JTable(new MyTableModel());
 
         model = ((MyTableModel) (usercombiTable.getModel()));
-        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mct.columnlabel"),
-                ResourceBundle.getBundle("translations/program_strings").getString("mct.columntag"),
-                ResourceBundle.getBundle("translations/program_strings").getString("mct.columndefault")});
+        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mduc.columnlabel"),
+                ResourceBundle.getBundle("translations/program_strings").getString("mduc.columntag"),
+                ResourceBundle.getBundle("translations/program_strings").getString("mduc.columndefault")});
         model.setRowCount(0);
         Object[] row = new Object[1];
 

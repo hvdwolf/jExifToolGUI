@@ -371,8 +371,8 @@ public class mainScreen {
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
-    private MetadataViewPanel MD = new MetadataViewPanel();
-    private WebView WV = new WebView();
+    private MetadataUserCombinations MD = new MetadataUserCombinations();
+    private SimpleWebView WV = new SimpleWebView();
     private EditUserDefinedCombis EUDC = new EditUserDefinedCombis();
 
 

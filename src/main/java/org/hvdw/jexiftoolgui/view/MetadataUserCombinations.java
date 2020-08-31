@@ -2,11 +2,13 @@ package org.hvdw.jexiftoolgui.view;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.TablePasteAdapter;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +19,14 @@ import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +48,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
  * Original @author Dennis Damico
  * Modified by Harry van der Wolf
  */
-public class MetadataViewPanel extends JDialog implements TableModelListener {
+public class MetadataUserCombinations extends JDialog implements TableModelListener {
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
 
@@ -56,8 +62,11 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
     private JPanel buttonpanel;
     private JComboBox customSetcomboBox;
     private JButton closeButton;
+    private JLabel lblCurDispUsercombi;
+    private JLabel lblConfigFile;
 
     private JPanel rootpanel;
+    JPanel myPanel = new JPanel(); // we need this for our dialog
 
 
     /**
@@ -75,7 +84,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
     /**
      * Create the on-screen Metadata table.
      */
-    public MetadataViewPanel() {
+    public MetadataUserCombinations() {
 
         setContentPane(metadatapanel);
         setModal(true);
@@ -89,7 +98,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                 // First check whether we have data
                 String haveData = haveTableData();
                 if ("complete".equals(haveData)) {
-                    String[] name_writetype = {"", "", ""};
+                    String[] name_writetype = {"", "", "", ""};
                     String setName = customSetcomboBox.getSelectedItem().toString();
                     if (setName.isEmpty()) { // We never saved anything or did not select anything
                         name_writetype = getSetName();
@@ -113,6 +122,13 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                     String[] name_writetype = getSetName();
                     if (!"".equals(name_writetype[0])) {
                         saveMetadata(name_writetype[0], name_writetype[1], name_writetype[2]);
+                        if (!name_writetype[3].equals("")) {
+                            String copyresult = StandardFileIO.CopyCustomConfigFile(name_writetype[1], name_writetype[3]);
+                            if (!copyresult.startsWith("successfully copied")) {
+                                JOptionPane.showMessageDialog(metadatapanel, String.format(ProgramTexts.HTML, 200, "Copying your custom configuration file failed"), "Copy configfile failed", JOptionPane.ERROR_MESSAGE);
+
+                            }
+                        }
                     }
                 }// if incomplete (or empty): do nothing
             }
@@ -176,7 +192,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                 if ("complete".equals(haveData)) {
                     MyVariables.settableRowsCells(tableRowsCells);
                 } else if ("incomplete".equals(haveData)) {
-                    JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.incompletetext"), ResourceBundle.getBundle("translations/program_strings").getString("acv.incompletetitle"), JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.incompletetext"), ResourceBundle.getBundle("translations/program_strings").getString("mduc.incompletetitle"), JOptionPane.ERROR_MESSAGE);
                 }
                 //logger.info("row {} data: {}, {}, {}", String.valueOf(count), model.getValueAt(count, 0).toString(), model.getValueAt(count, 1).toString(), model.getValueAt(count, 2).toString());
             }
@@ -186,74 +202,78 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
     }
 
     /*
+    / Get the config file if a user needs that
+     */
+    public String CustomconfigFile(JPanel myComponent, JLabel custom_config_field) {
+
+        String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
+        final JFileChooser chooser = new JFileChooser(startFolder);
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("mduc.locconfigfile"));
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int status = chooser.showOpenDialog(myComponent);
+        if (status == JFileChooser.APPROVE_OPTION) {
+            String selectedCustomconfigFile = chooser.getSelectedFile().getPath();
+            custom_config_field.setVisible(true);
+            return selectedCustomconfigFile;
+        } else {
+            return "";
+        }
+    }
+
+
+    /*
     / get the name for the custom set. Being asked when nothing was selected or no setname available, or when "Save As" was clicked
     / returns String[] with Name and writetype (update or insert)
     /
      */
     private String[] getSetName() {
-        String[] name_writetype = {"", "", ""};
+        String[] name_writetype = {"", "", "", ""};
         String chosenName = "";
-        String custom_config = "";
-/*        String chosenName = JOptionPane.showInputDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.inpdlgname"));
-        if (!(chosenName == null)) { // null on cancel
-            String[] checkNames = loadCurrentSets("");
-            // We expect a new name here
-            for (String name : checkNames) {
-                if (name.equals(chosenName)) {
-                    // We have this name already (so why did user select "Save As" anyway?
-                    int result = JOptionPane.showConfirmDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.overwrite") + chosenName + "\"?",
-                            ResourceBundle.getBundle("translations/program_strings").getString("acv.overwriteconfirm"), JOptionPane.OK_CANCEL_OPTION);
-                    if (result == 0) { // user OK with overwrite
-                        name_writetype[0] = chosenName;
-                        name_writetype[1] = "update";
-                        break;
-                    } else {
-                        name_writetype[0] = "";
-                        name_writetype[1] = "";
-                    }
-                } else { // We have a new name
-                    name_writetype[0] = chosenName;
-                    name_writetype[1] = "insert";
-                }
-            }
-        } else { //Cancelled; no name
-            name_writetype[0] = "";
-            name_writetype[1] = "";
-        } */
+        String custom_config_path = "";
+        String custom_config_filename = "";
 
         JTextField customset_name_field = new JTextField(15);
-        JTextField custom_config_field = new JTextField(15);
-        String explanation = "In case you want to add custom tags not known to exiftool, you need to provide "
-                + "a custom configuration. Provide the complete name for it (without path) and copy this file "
-                + "yourself(!) inside your user home folder into the folder \"jexftoolgui_data\".";
+        JLabel custom_config_field = new JLabel();
+        JButton custom_config_selector = new JButton(ResourceBundle.getBundle("translations/program_strings").getString("mduc.locatebutton"));
+        custom_config_selector.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                custom_config_field.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile") + " " + CustomconfigFile(myPanel, custom_config_field));
+            }
+        });
 
-        JPanel myPanel = new JPanel();
+        //JPanel myPanel = new JPanel();
         myPanel.setLayout(new BorderLayout());
         JPanel nameRow = new JPanel();
         nameRow.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JLabel ccname = new JLabel();
-        ccname.setPreferredSize(new Dimension(150, 25));
-        ccname.setText("Name");
+        ccname.setPreferredSize(new Dimension(250, 25));
+        ccname.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.name"));
         //nameRow.add(new JLabel("Name:"));
         nameRow.add(ccname);
         nameRow.add(customset_name_field);
         myPanel.add(nameRow, BorderLayout.PAGE_START);
-        myPanel.add(new JLabel(String.format(ProgramTexts.HTML, 450, explanation)), BorderLayout.CENTER);
+        myPanel.add(new JLabel(String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("mduc.explanation"))), BorderLayout.CENTER);
         JPanel customconfigRow = new JPanel();
         customconfigRow.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JLabel cco = new JLabel();
-        cco.setPreferredSize(new Dimension(150, 25));
-        cco.setText("Custom config (optional):");
-        //customconfigRow.add(new JLabel("Custom config (optional):"));
+        cco.setPreferredSize(new Dimension(250, 25));
+        cco.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblcustconfig"));
         customconfigRow.add(cco);
+        customconfigRow.add(custom_config_selector);
         customconfigRow.add(custom_config_field);
+        custom_config_field.setVisible(false);
         myPanel.add(customconfigRow, BorderLayout.PAGE_END);
 
         int result = JOptionPane.showConfirmDialog(metadatapanel, myPanel,
-                "Please Enter a Name for the set and optionally a config file", JOptionPane.OK_CANCEL_OPTION);
+                ResourceBundle.getBundle("translations/program_strings").getString("mduc.inpdlgname"), JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             chosenName = customset_name_field.getText();
-            custom_config = custom_config_field.getText();
+            custom_config_path = custom_config_field.getText();
+            Path p = Paths.get(custom_config_path);
+            custom_config_filename = p.getFileName().toString();
+            logger.info("chosenName {}; custom_config_path {}", chosenName, custom_config_path);
         }
         if ((!(chosenName == null)) && (!(chosenName.isEmpty()))) { // null on cancel
             String[] checkNames = loadCurrentSets("");
@@ -261,28 +281,32 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             for (String name : checkNames) {
                 if (name.equals(chosenName)) {
                     // We have this name already (so why did user select "Save As" anyway?
-                    result = JOptionPane.showConfirmDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.overwrite") + chosenName + "\"?",
-                            ResourceBundle.getBundle("translations/program_strings").getString("acv.overwriteconfirm"), JOptionPane.OK_CANCEL_OPTION);
+                    result = JOptionPane.showConfirmDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.overwrite") + chosenName + "\"?",
+                            ResourceBundle.getBundle("translations/program_strings").getString("mduc.overwriteconfirm"), JOptionPane.OK_CANCEL_OPTION);
                     if (result == 0) { // user OK with overwrite
                         name_writetype[0] = chosenName;
-                        name_writetype[1] = custom_config;
+                        name_writetype[1] = custom_config_filename;
                         name_writetype[2] = "update";
+                        name_writetype[3] = custom_config_path;
                         break;
                     } else {
                         name_writetype[0] = "";
                         name_writetype[1] = "";
                         name_writetype[2] = "";
+                        name_writetype[3] = "";
                     }
                 } else { // We have a new name
                     name_writetype[0] = chosenName;
-                    name_writetype[1] = custom_config;
+                    name_writetype[1] = custom_config_filename;
                     name_writetype[2] = "insert";
+                    name_writetype[3] = custom_config_path;
                 }
             }
         } else { //Cancelled; no name
             name_writetype[0] = "";
             name_writetype[1] = "";
             name_writetype[2] = "";
+            name_writetype[3] = "";
         }
 
         return name_writetype;
@@ -296,11 +320,11 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
 
         myPopupMenu = new JPopupMenu();
         // Menu items.
-        JMenuItem menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mct.insert")); // index 0
+        JMenuItem menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mduc.insert")); // index 0
         menuItem.addActionListener(new MyMenuHandler());
         myPopupMenu.add(menuItem);
 
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mct.delete"));           // index 1
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mduc.delete"));           // index 1
         menuItem.addActionListener(new MyMenuHandler());
         myPopupMenu.add(menuItem);
         /*myPopupMenu.addSeparator();                     // index 2
@@ -346,10 +370,10 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             logger.trace(cells.toString());
         }
         if ("insert".equals(writetype)) {
-            sql = "insert into CustomMetadataset(customset_name, custom_config) values('" + setName + "','" + custom_config +  "')";
+            sql = "insert into CustomMetadataset(customset_name, custom_config) values('" + setName + "','" + custom_config + "')";
             queryresult = SQLiteJDBC.insertUpdateQuery(sql);
             if (!"".equals(queryresult)) { //means we have an error
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                 queryresultcounter += 1;
             } else {
                 logger.info("no of tablerowcells {}", tableRowsCells.size());
@@ -361,7 +385,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                     logger.info(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                         queryresultcounter += 1;
                     }
                     rowcount++;
@@ -371,12 +395,12 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             if (queryresultcounter == 0) {
                 loadCurrentSets("fill_combo");
                 customSetcomboBox.setSelectedItem(setName);
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.savedb"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
             }
         } else { // update
             queryresult = SQLiteJDBC.deleteCustomSetRows(setName);
             if (!"".equals(queryresult)) { //means we have an error
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorupdatetext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorupdatetitle"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetitle"), JOptionPane.ERROR_MESSAGE);
             } else {
                 logger.info("no of tablerowcells {}", tableRowsCells.size());
                 // deleting the old records went OK, now (re)insert the rows
@@ -387,7 +411,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                     logger.info(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);
                         queryresultcounter += 1;
                     }
                     rowcount++;
@@ -397,7 +421,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             if (queryresultcounter == 0) {
                 loadCurrentSets("fill_combo");
                 customSetcomboBox.setSelectedItem(setName);
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("acv.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("acv.savedb"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -414,7 +438,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
         for (int i = 0; i < modelRows.size(); i++) {
             screenRows.add(modelRows.get(metadataTable.convertRowIndexToModel(i)));
         }
-        Vector headings = new Vector(Arrays.asList(ResourceBundle.getBundle("translations/program_strings").getString("mct.columnlabel"), ResourceBundle.getBundle("translations/program_strings").getString("mct.columntag"), ResourceBundle.getBundle("translations/program_strings").getString("mct.columndefault")));
+        Vector headings = new Vector(Arrays.asList(ResourceBundle.getBundle("translations/program_strings").getString("mduc.columnlabel"), ResourceBundle.getBundle("translations/program_strings").getString("mduc.columntag"), ResourceBundle.getBundle("translations/program_strings").getString("mduc.columndefault")));
         model.setDataVector(screenRows, headings);
         //metadataTable.getColumnModel().getColumn(2).setMaxWidth(100); // Checkbox.
     }
@@ -468,33 +492,48 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
      */
     private void $$$setupUI$$$() {
         metadatapanel = new JPanel();
-        metadatapanel.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        metadatapanel.setLayout(new GridLayoutManager(3, 2, new Insets(10, 10, 10, 10), -1, -1));
         metadatapanel.setMinimumSize(new Dimension(600, 300));
         metadatapanel.setPreferredSize(new Dimension(800, 500));
         buttonpanel = new JPanel();
         buttonpanel.setLayout(new GridLayoutManager(1, 5, new Insets(5, 5, 5, 5), -1, -1));
-        metadatapanel.add(buttonpanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        metadatapanel.add(buttonpanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         saveasButton = new JButton();
-        this.$$$loadButtonText$$$(saveasButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mct.buttonsaveas"));
+        this.$$$loadButtonText$$$(saveasButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonsaveas"));
         buttonpanel.add(saveasButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         saveButton = new JButton();
-        this.$$$loadButtonText$$$(saveButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mct.buttonsave"));
+        this.$$$loadButtonText$$$(saveButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonsave"));
         buttonpanel.add(saveButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         helpButton = new JButton();
-        this.$$$loadButtonText$$$(helpButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mct.buttonhelp"));
+        this.$$$loadButtonText$$$(helpButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonhelp"));
         buttonpanel.add(helpButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         customSetcomboBox = new JComboBox();
         buttonpanel.add(customSetcomboBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         closeButton = new JButton();
-        this.$$$loadButtonText$$$(closeButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mct.buttonclose"));
+        this.$$$loadButtonText$$$(closeButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonclose"));
         buttonpanel.add(closeButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         aScrollPanel = new JScrollPane();
-        metadatapanel.add(aScrollPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        metadatapanel.add(aScrollPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         metadataTable = new JTable();
         metadataTable.setAutoCreateRowSorter(true);
         metadataTable.setMinimumSize(new Dimension(600, 300));
         metadataTable.setPreferredScrollableViewportSize(new Dimension(700, 400));
         aScrollPanel.setViewportView(metadataTable);
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        metadatapanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        lblCurDispUsercombi = new JLabel();
+        lblCurDispUsercombi.setHorizontalAlignment(10);
+        lblCurDispUsercombi.setHorizontalTextPosition(10);
+        this.$$$loadLabelText$$$(lblCurDispUsercombi, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.curdispcombi"));
+        panel1.add(lblCurDispUsercombi);
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        metadatapanel.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        lblConfigFile = new JLabel();
+        lblConfigFile.setHorizontalTextPosition(10);
+        this.$$$loadLabelText$$$(lblConfigFile, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.lblconffile"));
+        panel2.add(lblConfigFile);
     }
 
     private static Method $$$cachedGetBundleMethod$$$ = null;
@@ -512,6 +551,33 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
             bundle = ResourceBundle.getBundle(path);
         }
         return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**
@@ -553,9 +619,9 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
      * the screen view.  This will generate a tableChanged event.
      */
 //    class MySortListener implements RowSorterListener {
-        /**
-         * Metadata table was sorted.
-         */
+    /**
+     * Metadata table was sorted.
+     */
 /*        @Override
         public void sorterChanged(RowSorterEvent e) {
             if (e.getType() == RowSorterEvent.Type.SORTED) {
@@ -604,9 +670,9 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem item = (JMenuItem) e.getSource();
-            if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("mct.insert"))) {
+            if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("mduc.insert"))) {
                 insertRows(e);
-            } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("mct.delete"))) {
+            } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("mduc.delete"))) {
                 deleteRows(e);
             }
         }
@@ -770,9 +836,9 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
 
     private void fillTable() {
         DefaultTableModel model = ((DefaultTableModel) (metadataTable.getModel()));
-        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mct.columnlabel"),
-                ResourceBundle.getBundle("translations/program_strings").getString("mct.columntag"),
-                ResourceBundle.getBundle("translations/program_strings").getString("mct.columndefault")});
+        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mduc.columnlabel"),
+                ResourceBundle.getBundle("translations/program_strings").getString("mduc.columntag"),
+                ResourceBundle.getBundle("translations/program_strings").getString("mduc.columndefault")});
         model.setRowCount(0);
         Object[] row = new Object[1];
 
@@ -800,7 +866,13 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
                     model.addRow(new Object[]{cells[0], cells[1], cells[2]});
                 }
             }
-
+            lblCurDispUsercombi.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.curdispcombi") + " " + setName);
+            String configFile = SQLiteJDBC.singleFieldQuery("select custom_config from custommetadataset where customset_name='" + setName.trim() + "'", "custom_config");
+            if (!configFile.equals("")) {
+                lblConfigFile.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile") + " " + configFile);
+            } else {
+                lblConfigFile.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile"));
+            }
         }
     }
 
@@ -809,7 +881,7 @@ public class MetadataViewPanel extends JDialog implements TableModelListener {
         //setSize(750, 500);
         //make sure we have a "local" rootpanel
         rootpanel = rootPanel;
-        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("mct.title"));
+        setTitle(ResourceBundle.getBundle("translations/program_strings").getString("mduc.title"));
         pack();
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();

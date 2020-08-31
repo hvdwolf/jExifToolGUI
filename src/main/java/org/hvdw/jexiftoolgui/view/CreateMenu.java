@@ -21,8 +21,8 @@ public class CreateMenu {
         menuItem.setActionCommand("Preferences");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
-        menuItem = new JMenuItem("User defined Metadata Combis");
-        menuItem.setActionCommand("Metadata");
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.mdusercombis"));
+        menuItem.setActionCommand("UserMetadata");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));

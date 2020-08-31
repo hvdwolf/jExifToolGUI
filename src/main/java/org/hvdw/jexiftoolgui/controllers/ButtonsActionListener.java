@@ -5,8 +5,8 @@ import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
 import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
-import org.hvdw.jexiftoolgui.view.MetadataViewPanel;
-import org.hvdw.jexiftoolgui.view.WebView;
+import org.hvdw.jexiftoolgui.view.MetadataUserCombinations;
+import org.hvdw.jexiftoolgui.view.SimpleWebView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +19,11 @@ public class ButtonsActionListener implements ActionListener {
     private final static Logger logger = LoggerFactory.getLogger(ButtonsActionListener.class);
 
     private DatabasePanel DBP = new DatabasePanel();
-    private WebView WV = new WebView();
+    private SimpleWebView WV = new SimpleWebView();
     private AddFavorite AddFav = new AddFavorite();
     private YourCommands YourCmnds = new YourCommands();
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
-    private MetadataViewPanel MD = new MetadataViewPanel();
+    private MetadataUserCombinations MD = new MetadataUserCombinations();
 
 
     public JLabel OutputLabel;

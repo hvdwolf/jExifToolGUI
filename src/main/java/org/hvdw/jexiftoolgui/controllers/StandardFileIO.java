@@ -15,6 +15,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
@@ -274,6 +275,28 @@ public class StandardFileIO {
             System.setProperty("apple.awt.fileDialogForDirectories", "false");
         }*/
         return files;
+    }
+
+    /*
+    / This method is called from the MetDataViewPanel and copies, when relevant, the custom config file to the "user home"/jexiftoolgui_data
+    */
+    public static String CopyCustomConfigFile(String fileName, String configFilePath) {
+        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+        String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
+        String strfileToBe = strjexiftoolguifolder + File.separator + fileName;
+        String copyResult = "";
+        //NIO copy with replace existing
+        Path copyFrom = Paths.get(configFilePath);
+        Path copyTo = Paths.get(strfileToBe);
+        try {
+            Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
+            copyResult = "successfully copied config file";
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("copy of \"{}\" to \"{}\" failed with {}", configFilePath, strfileToBe, e);
+            copyResult = e.toString();
+        }
+        return copyResult;
     }
 
 

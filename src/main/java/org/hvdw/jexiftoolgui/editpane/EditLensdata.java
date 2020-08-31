@@ -160,6 +160,8 @@ public class EditLensdata {
             if (!lensBoxes[13].isSelected()) { // default overwrite originals, when set do not
                 cmdparams.add("-overwrite_original");
             }
+            cmdparams.addAll(Utils.AlwaysAdd());
+
             if (lensBoxes[0].isSelected()) {
                 cmdparams.add("-exif:lensmake=" + lensFields[0].getText().trim());
             }
@@ -198,7 +200,7 @@ public class EditLensdata {
                 cmdparams.add("-makernotes:lensfirmwareversion=" + lensFields[11].getText().trim());
             }
             if (lensBoxes[12].isSelected()) {
-                cmdparams.add("-exif:meteringnmode=" + meteringmodecomboBox.getSelectedItem());
+                cmdparams.add("-exif:meteringmode=" + meteringmodecomboBox.getSelectedItem());
             }
 
 
