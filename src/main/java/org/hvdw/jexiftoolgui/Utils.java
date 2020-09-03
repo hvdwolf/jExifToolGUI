@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
@@ -256,6 +257,10 @@ public class Utils {
         }
     }
 
+    public static boolean UseDecimalDegrees() {
+        Boolean usedecimaldegrees = prefs.getByKey(SHOW_DECIMAL_DEGREES, false);
+        return usedecimaldegrees;
+    }
 
     public static String stringBetween(String value, String before, String after) {
         // Return a substring between the two strings before and after.
@@ -564,6 +569,11 @@ public class Utils {
         if (!"".equals(getmetadataLanguage())) {
             cmdparams.add("-lang");
             cmdparams.add(getmetadataLanguage());
+        }
+        // Check if user wants to see decimal degrees
+        if (UseDecimalDegrees()) {
+            cmdparams.add("-c");
+            cmdparams.add("%.6f");
         }
         cmdparams.addAll(Arrays.asList(whichInfo));
         logger.trace("image file path: {}", fpath);

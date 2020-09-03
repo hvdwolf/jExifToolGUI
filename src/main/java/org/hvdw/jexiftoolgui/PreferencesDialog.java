@@ -41,6 +41,7 @@ public class PreferencesDialog extends JDialog {
     private JRadioButton JFilechooserradioButton;
     private JRadioButton AwtdialogradioButton;
     private JLabel filedialogexplained;
+    private JCheckBox decimaldegreescheckBox;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -195,6 +196,7 @@ public class PreferencesDialog extends JDialog {
         } else {
             logger.info("Preferred file dialog", "awtdialog");
         }
+        logger.info("showdecimaldegrees {}", decimaldegreescheckBox.isSelected());
 
 
         if (!ArtisttextField.getText().isEmpty()) {
@@ -245,6 +247,9 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", PREFERRED_APP_LANGUAGE.key, localecomboBox.getSelectedItem());
         prefs.storeByKey(PREFERRED_APP_LANGUAGE, (String) localecomboBox.getSelectedItem());
 
+        logger.trace("{}: {}", SHOW_DECIMAL_DEGREES.key, decimaldegreescheckBox.isSelected());
+        prefs.storeByKey(SHOW_DECIMAL_DEGREES, decimaldegreescheckBox.isSelected());
+
         JOptionPane.showMessageDialog(generalPanel, ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -269,6 +274,7 @@ public class PreferencesDialog extends JDialog {
             JFilechooserradioButton.setSelected(false);
             AwtdialogradioButton.setSelected(true);
         }
+        decimaldegreescheckBox.setSelected((prefs.getByKey(SHOW_DECIMAL_DEGREES, false)));
     }
 
     // The  main" function of this class
@@ -463,22 +469,18 @@ public class PreferencesDialog extends JDialog {
         final Spacer spacer3 = new Spacer();
         panel12.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel14 = new JPanel();
-        panel14.setLayout(new GridLayoutManager(2, 1, new Insets(5, 5, 5, 5), -1, -1));
+        panel14.setLayout(new GridLayoutManager(3, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.lookandfeeltab"), panel14);
-        final Spacer spacer4 = new Spacer();
-        panel14.add(spacer4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel15 = new JPanel();
-        panel15.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
+        panel15.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
         panel14.add(panel15, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel15.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label11 = new JLabel();
         this.$$$loadLabelText$$$(label11, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.whichdialog"));
-        panel15.add(label11, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final Spacer spacer5 = new Spacer();
-        panel15.add(spacer5, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel15.add(label11, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel16 = new JPanel();
         panel16.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        panel15.add(panel16, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel15.add(panel16, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         JFilechooserradioButton = new JRadioButton();
         JFilechooserradioButton.setSelected(true);
         this.$$$loadButtonText$$$(JFilechooserradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.jfilechooser"));
@@ -488,12 +490,17 @@ public class PreferencesDialog extends JDialog {
         panel16.add(AwtdialogradioButton);
         filedialogexplained = new JLabel();
         filedialogexplained.setText("Label");
-        panel15.add(filedialogexplained, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        panel15.add(filedialogexplained, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        decimaldegreescheckBox = new JCheckBox();
+        this.$$$loadButtonText$$$(decimaldegreescheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.showdecdegrees"));
+        panel14.add(decimaldegreescheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer4 = new Spacer();
+        panel14.add(spacer4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel17 = new JPanel();
         panel17.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPanel.add(panel17, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
-        final Spacer spacer6 = new Spacer();
-        panel17.add(spacer6, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer5 = new Spacer();
+        panel17.add(spacer5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel18 = new JPanel();
         panel18.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel17.add(panel18, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
