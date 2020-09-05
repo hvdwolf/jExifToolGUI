@@ -67,12 +67,6 @@ public class MenuActionListener implements ActionListener  {
             case "Preferences":
                 prefsDialog.showDialog();
                 break;
-            case "UserMetadata":
-                MD.showDialog(rootPanel);
-                String sqlsets = SQLiteJDBC.getdefinedCustomSets();
-                String[] views = sqlsets.split("\\r?\\n"); // split on new lines
-                UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
-                break;
             case "Exit":
                 StandardFileIO.deleteDirectory(new File(MyVariables.gettmpWorkFolder()) );
                 System.exit(0);
@@ -180,6 +174,12 @@ public class MenuActionListener implements ActionListener  {
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
+                break;
+            case "UserMetadata":
+                MD.showDialog(rootPanel);
+                String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+                String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+                UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                 break;
             case "About jExifToolGUI":
                 //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);

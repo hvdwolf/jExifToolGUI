@@ -1,6 +1,5 @@
 package org.hvdw.jexiftoolgui;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;

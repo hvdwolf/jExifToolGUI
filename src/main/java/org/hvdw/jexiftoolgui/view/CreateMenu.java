@@ -21,10 +21,6 @@ public class CreateMenu {
         menuItem.setActionCommand("Preferences");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.mdusercombis"));
-        menuItem.setActionCommand("UserMetadata");
-        menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.exit"));
         menuItem.setMnemonic(KeyEvent.VK_X);
         menuItem.setActionCommand("Exit");
@@ -100,6 +96,15 @@ public class CreateMenu {
         myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("omenu.exportallpreviews"));
         menuItem.setActionCommand("Export all previews/thumbs from selected");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
+
+
+        // Tools
+        myMenu = new JMenu("Tools");
+        menuBar.add(myMenu);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.mdusercombis"));
+        menuItem.setActionCommand("UserMetadata");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 

@@ -1,11 +1,18 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.editpane.EditLensdata;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.io.File;
+
+import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.extract_resource_to_jexiftoolguiFolder;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class UpdateActions {
 
@@ -59,6 +66,7 @@ public class UpdateActions {
                 "    custom_config text,\n" +
                 "    unique (id, customset_name))";
         do_Update(sql, "creating the table CustomMetadataset (1.6)");
+
         sql = "Create table if not exists CustomMetadatasetLines (\n" +
                 "    id integer primary key autoincrement,\n" +
                 "    customset_name text NOT NULL,\n" +
@@ -69,6 +77,30 @@ public class UpdateActions {
                 "    UNIQUE (customset_name, tag),\n" +
                 "    foreign key(customset_name) references CustomMetadataset(customset_name))";
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
+
+        // pre-fill both tables if necessary
+        String queryresultalias = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg-alias'");
+        String queryresultfull = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg-full'");
+        logger.debug("isadg-alias test {}; isadg-full test {}", queryresultalias.trim(), queryresultfull.trim());
+        if (!"26".equals(queryresultalias.trim()) || !"26".equals(queryresultfull.trim())) {
+
+            String sqlFile = StandardFileIO.readTextFileAsStringFromResource("sql/fill_isadg.sql");
+            String[] sqlCommands = sqlFile.split("\\r?\\n"); // split on new lines
+            for (String sqlCommand : sqlCommands) {
+                if (!sqlCommand.startsWith("--") && !sqlCommand.equals("")) {
+                    do_Update(sqlCommand, sqlCommand);
+                }
+            }
+        }
+            // our data folder
+            String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
+            // Check if isadg-struct.cfg exists
+            File isadg = new File(strjexiftoolguifolder + File.separator + "isadg-struct.cfg");
+            if (isadg.exists()) {
+                isadg.delete();
+            }
+            String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder);
+
     }
 
 

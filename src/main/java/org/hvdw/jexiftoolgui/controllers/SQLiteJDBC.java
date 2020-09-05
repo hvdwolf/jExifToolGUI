@@ -92,6 +92,21 @@ public class SQLiteJDBC {
         return sbresult.toString();
     }
 
+    static public String countQuery(String sql) {
+        String DBresult = "";
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            rs.next(); // You always have a row, with the count
+            int count = rs.getInt(1);
+            DBresult = String.valueOf(count).trim();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return DBresult;
+    }
+
     static public String insertUpdateQuery(String sql) {
         String queryresult = "";
 

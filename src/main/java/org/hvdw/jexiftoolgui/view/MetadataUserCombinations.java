@@ -24,6 +24,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -123,6 +124,10 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     if (!"".equals(name_writetype[0])) {
                         saveMetadata(name_writetype[0], name_writetype[1], name_writetype[2]);
                         if (!name_writetype[3].equals("")) {
+                            File testFile = new File(name_writetype[3]);
+                            if (testFile.exists()) {
+                                testFile.delete();
+                            }
                             String copyresult = StandardFileIO.CopyCustomConfigFile(name_writetype[1], name_writetype[3]);
                             if (!copyresult.startsWith("successfully copied")) {
                                 JOptionPane.showMessageDialog(metadatapanel, String.format(ProgramTexts.HTML, 200, "Copying your custom configuration file failed"), "Copy configfile failed", JOptionPane.ERROR_MESSAGE);
