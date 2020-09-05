@@ -107,6 +107,11 @@ public class CreateMenu {
         menuItem.setActionCommand("UserMetadata");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("tmenu.deletefavs"));
+        menuItem.setActionCommand("DeleteFavorites");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
+
 
 
         // exiftool database

@@ -35,8 +35,8 @@ public class AddFavorite extends JDialog {
     private String favtypeText = "";
     private String cmd_qry = "";
 
-    private final String commandTxt = "<html>Please enter a name for this exiftool command.<br><br></html>";
-    private final String queryTxt = "<html>Please enter a name for this database query.<br><br></html>";
+    private final String commandTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("fav.commandtext") + "<br><br></html>";
+    private final String queryTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("fav.querytext") + "<br><br></html>";
 
     private final static Logger logger = LoggerFactory.getLogger(AddFavorite.class);
 
@@ -96,7 +96,7 @@ public class AddFavorite extends JDialog {
     private void displayfavorites(String favorites, String favoriteType) {
 
         DefaultTableModel model = (DefaultTableModel) favoritestable.getModel();
-        model.setColumnIdentifiers(new String[]{"name", favoriteType});
+        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("fav.name"), favoriteType});
         //favoritestable.setModel(model);
         favoritestable.getColumnModel().getColumn(0).setPreferredWidth(120);
         favoritestable.getColumnModel().getColumn(1).setPreferredWidth(350);
@@ -126,14 +126,14 @@ public class AddFavorite extends JDialog {
         // by doubling them (as that is what databases expect)
         // We can not do that at the start as the user would see those escaped single quotes in his/her command
         String cmd_qry_escaped = cmd_qry.replace("'", "''");
-        logger.info("cmd_qry_escaped: " + cmd_qry_escaped);
+        logger.debug("cmd_qry_escaped: " + cmd_qry_escaped);
         if (!"".equals(chosenname)) { // user gave a favorites name
             // Check if already exists
             sql = "select favorite_name from userFavorites where favorite_name='" + chosenname + "' and favorite_type='" + favtype + "';";
             queryresult = SQLiteJDBC.singleFieldQuery(sql, "favorite_name");
             if (!"".equals(queryresult)) { // so we have already this name and we want it updated
-                int result = JOptionPane.showConfirmDialog(jp, "You want to overwrite/update the already existing favorite: \"" + chosenname + "\"?",
-                        "overwrite/update?", JOptionPane.OK_CANCEL_OPTION);
+                int result = JOptionPane.showConfirmDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.overwrite") + chosenname + "\"?",
+                        ResourceBundle.getBundle("translations/program_strings").getString("fav.overwriteshort"), JOptionPane.OK_CANCEL_OPTION);
                 if (result == 0) { //OK
                     // user wants us to overwrite
                     logger.info("user wants to update the favorites with name: " + chosenname);
@@ -142,16 +142,16 @@ public class AddFavorite extends JDialog {
                             + " command_query='" + cmd_qry_escaped + "'"
                             + " where favorite_name='" + chosenname + "'"
                             + " and favorite_type='" + favtype + "'";
-                    logger.info("update sql:" + sql);
+                    logger.debug("update sql:" + sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(jp, "Encountered an error in updating your favorite " + chosenname, "error updating", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerror") + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerrshort"), JOptionPane.ERROR_MESSAGE);
                     } else { //success
-                        JOptionPane.showMessageDialog(jp, "favorite \"" + chosenname + "\" saved", "favorite saved", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.saved") + " " + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.savedshort"), JOptionPane.INFORMATION_MESSAGE);
                     }
                 } // result 2 means cancel; do nothing
             } else { // No name from DB, so a new favorite record
-                logger.info("insert new favorite named: " + chosenname);
+                logger.debug("insert new favorite named: " + chosenname);
                 sql = "insert into userFavorites(favorite_type, favorite_name, command_query) "
                         + " values('"
                         + favtype + "','"
@@ -160,13 +160,13 @@ public class AddFavorite extends JDialog {
                 logger.info("insert sql: " + sql);
                 queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                 if (!"".equals(queryresult)) { //means we have an error
-                    JOptionPane.showMessageDialog(jp, "Encountered an error inserting your favorite " + chosenname, "insert error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterror") + " " + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterrshort"), JOptionPane.ERROR_MESSAGE);
                 } else { //success
-                    JOptionPane.showMessageDialog(jp, "favorite \"" + chosenname + "\" saved", "favorite saved", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.saved") + "" + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.savedshort"), JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else { // user did not provide a lensname to insert/update
-            JOptionPane.showMessageDialog(jp, "You did not provide a favorite name. Nothing to save/update.", "No favorite name given", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.nofavname"), ResourceBundle.getBundle("translations/program_strings").getString("fav.nofavnameshort"), JOptionPane.ERROR_MESSAGE);
         }
 
         //return queryresult;
