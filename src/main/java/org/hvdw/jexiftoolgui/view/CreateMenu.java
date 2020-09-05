@@ -101,9 +101,9 @@ public class CreateMenu {
 
 
         // Tools
-        myMenu = new JMenu("Tools");
+        myMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("menu.tools"));
         menuBar.add(myMenu);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.mdusercombis"));
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("tmenu.mdusercombis"));
         menuItem.setActionCommand("UserMetadata");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
