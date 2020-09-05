@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
@@ -238,8 +239,8 @@ public class EditLensdata {
                 sql = "select lens_name from myLenses where lens_name='" + chosenValues[0] + "'";
                 queryresult = SQLiteJDBC.singleFieldQuery(sql, "lens_name");
                 if (!"".equals(queryresult)) { // so we have a name and we want it updated
-                    int result = JOptionPane.showConfirmDialog(rootpanel, "You want to overwrite/update the already existing lens configuration: \"" + chosenValues[0] + "\"?",
-                            "overwrite/update?", JOptionPane.OK_CANCEL_OPTION);
+                    int result = JOptionPane.showConfirmDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.overwrite") + " " + chosenValues[0] + "?",
+                            ResourceBundle.getBundle("translations/program_strings").getString("addlens.overwriteshort"), JOptionPane.OK_CANCEL_OPTION);
                     if (result == 0) { //OK
                         // user wants us to overwrite
                         logger.info("user wants to update lensconfig with name: " + chosenValues[0]);
@@ -261,9 +262,9 @@ public class EditLensdata {
                         logger.info("update sql:" + sql);
                         queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                         if (!"".equals(queryresult)) { //means we have an error
-                            JOptionPane.showMessageDialog(rootpanel, "Encountered an error in updating your lens " + chosenValues[0], "error updating", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.updateerror") + chosenValues[0], ResourceBundle.getBundle("translations/program_strings").getString("addlens.updateerrorshort"), JOptionPane.ERROR_MESSAGE);
                         } else { //success
-                            JOptionPane.showMessageDialog(rootpanel, "lens \"" + chosenValues[0] + "\" saved", "lens saved", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.saved") + " " + chosenValues[0], ResourceBundle.getBundle("translations/program_strings").getString("addlens.savedshort"), JOptionPane.INFORMATION_MESSAGE);
                         }
                     } // result 2 means cancel; do nothing
                 } else {// No name from DB, so a new lens config record
@@ -290,20 +291,20 @@ public class EditLensdata {
                     logger.info("insert sql: " + sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
                     if (!"".equals(queryresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(rootpanel, "Encountered an error inserting your lens " + chosenValues[0], "insert error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.inserterror") + " " + chosenValues[0], ResourceBundle.getBundle("translations/program_strings").getString("addlens.inserterrorshort"), JOptionPane.ERROR_MESSAGE);
                     } else { //success
-                        JOptionPane.showMessageDialog(rootpanel, "lens \"" + chosenValues[0] + "\" saved", "lens saved", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.saved") + " " + chosenValues[0], ResourceBundle.getBundle("translations/program_strings").getString("addlens.savedshort"), JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             } else { // user did not provide a lensname to insert/update
-                JOptionPane.showMessageDialog(rootpanel, "You did not provide a lens name. Nothing to save/update.", "No lens name given", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.noname"), ResourceBundle.getBundle("translations/program_strings").getString("addlens.nonameshort"), JOptionPane.ERROR_MESSAGE);
             }
 
         }
 
         public void loadLensconfig(JTextField[] lensFields, JComboBox meteringmodecomboBox, JPanel rootpanel) {
             String queryresult = "";
-            String lensname = SmL.showDialog(rootpanel);
+            String lensname = SmL.showDialog(rootpanel, "load lens");
             //String lensname = MyVariables.getselectedLensConfig();
             logger.debug("returned selected lensname: " + lensname);
             //String lensname2 = MyVariables.getselectedLensConfig();

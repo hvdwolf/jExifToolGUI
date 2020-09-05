@@ -25,6 +25,7 @@ public class CreateUpdatemyLens extends JDialog {
     private JTextField descriptiontextField;
     private JScrollPane scrollPane;
     private JTable lensnametable;
+    private JLabel addLensTopTxt;
 
     private String chosenName = "";
     private String chosenDescription = "";
@@ -95,7 +96,7 @@ public class CreateUpdatemyLens extends JDialog {
             }
         };*/
         DefaultTableModel model = (DefaultTableModel) lensnametable.getModel();
-        model.setColumnIdentifiers(new String[]{"lens name", "description"});
+        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("sellens.name"), ResourceBundle.getBundle("translations/program_strings").getString("sellens.descr")});
         //lensnametable.setModel(model);
         lensnametable.getColumnModel().getColumn(0).setPreferredWidth(150);
         lensnametable.getColumnModel().getColumn(1).setPreferredWidth(300);
@@ -134,6 +135,8 @@ public class CreateUpdatemyLens extends JDialog {
         //setLocationRelativeTo(null);
         setLocationByPlatform(true);
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("createupdatelens.title"));
+        addLensTopTxt.setText("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("addlens.toptxt") + "<br><br></html>");
+
         // Make table readonly
         lensnametable.setDefaultEditor(Object.class, null);
 
@@ -187,17 +190,17 @@ public class CreateUpdatemyLens extends JDialog {
         panel4.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), 5, 5));
         panel3.add(panel4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText("lens name:");
+        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "sellens.name"));
         panel4.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lensnametextField = new JTextField();
         panel4.add(lensnametextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(450, -1), null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText("Description");
+        this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("translations/program_strings", "sellens.descr"));
         panel4.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         descriptiontextField = new JTextField();
         panel4.add(descriptiontextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(450, -1), null, 0, false));
         final JLabel label3 = new JLabel();
-        label3.setText("Current defined lens(es):");
+        this.$$$loadLabelText$$$(label3, this.$$$getMessageFromBundle$$$("translations/program_strings", "sellens.currentlenses"));
         panel4.add(label3, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scrollPane = new JScrollPane();
         panel4.add(scrollPane, new GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -205,9 +208,9 @@ public class CreateUpdatemyLens extends JDialog {
         scrollPane.setViewportView(lensnametable);
         final Spacer spacer2 = new Spacer();
         panel4.add(spacer2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("<html>Please enter a lens name for this config and optionally a description.<br>Or select a row from the table to copy it in the text fields to update an existing lens configuration.<br><br></html>");
-        panel3.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(450, -1), null, 0, false));
+        addLensTopTxt = new JLabel();
+        addLensTopTxt.setText("<html>Please enter a lens name for this config and optionally a description.<br>Or select a row from the table to copy it in the text fields to update an existing lens configuration.<br><br></html>");
+        panel3.add(addLensTopTxt, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(450, -1), null, 0, false));
     }
 
     private static Method $$$cachedGetBundleMethod$$$ = null;
@@ -225,6 +228,33 @@ public class CreateUpdatemyLens extends JDialog {
             bundle = ResourceBundle.getBundle(path);
         }
         return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

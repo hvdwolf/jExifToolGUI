@@ -12,6 +12,7 @@ import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.DeleteFavorite;
 import org.hvdw.jexiftoolgui.view.MetadataUserCombinations;
+import org.hvdw.jexiftoolgui.view.SelectmyLens;
 import org.hvdw.jexiftoolgui.view.SimpleWebView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,6 +186,10 @@ public class MenuActionListener implements ActionListener  {
             case "DeleteFavorites":
                 DeleteFavorite DelFavs = new DeleteFavorite();
                 DelFavs.showDialog(rootPanel);
+                break;
+            case "DeleteLenses":
+                SelectmyLens SmL = new SelectmyLens();
+                SmL.showDialog(rootPanel, "delete lens");
                 break;
             case "About jExifToolGUI":
                 //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);

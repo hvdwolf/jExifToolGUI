@@ -23,10 +23,16 @@ public class SelectmyLens extends JDialog {
     private JTable lensnametable;
     private JButton OKbutton;
     private JButton Cancelbutton;
+    private JButton Deletebutton;
+    private JLabel selectLensTopText;
 
     private String lensname = "";
+    private String queryresult = "";
+    private JPanel rp;
 
     private final static Logger logger = LoggerFactory.getLogger(SelectmyLens.class);
+    private final String loadLensTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("sellens.loadlenstxt") + "<br><br></html>";
+    private final String deleteLensTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("sellens.deletelenstxt") + "<br><br></html>";
 
 
     public SelectmyLens() {
@@ -34,6 +40,7 @@ public class SelectmyLens extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(OKbutton);
 
+        // Only active on load lens
         OKbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -48,6 +55,23 @@ public class SelectmyLens extends JDialog {
                 dispose();
             }
         });
+        // Only active on delete lens
+        Deletebutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("lens selected for deletion {}", lensname);
+                String sql = "delete from myLenses where lens_Name = '" + lensname + "'";
+                queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                if (!"".equals(queryresult)) { //means we have an error
+                    JOptionPane.showMessageDialog(rp, ResourceBundle.getBundle("translations/program_strings").getString("sellens.delerror") + lensname, ResourceBundle.getBundle("translations/program_strings").getString("fav.delerrorshort"), JOptionPane.ERROR_MESSAGE);
+                } else { //success
+                    JOptionPane.showMessageDialog(rp, ResourceBundle.getBundle("translations/program_strings").getString("sellens.deleted") + " " + lensname, ResourceBundle.getBundle("translations/program_strings").getString("sellens.deletedshort"), JOptionPane.INFORMATION_MESSAGE);
+                }
+                setVisible(false);
+                dispose();
+            }
+        });
+
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
@@ -55,6 +79,8 @@ public class SelectmyLens extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        // mouse/table listener
         lensnametable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -76,7 +102,7 @@ public class SelectmyLens extends JDialog {
 
     private void displaylensnames(String lensnames) {
         DefaultTableModel model = (DefaultTableModel) lensnametable.getModel();
-        model.setColumnIdentifiers(new String[]{"lens name", "description"});
+        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("sellens.name"), ResourceBundle.getBundle("translations/program_strings").getString("sellens.descr")});
         lensnametable.getColumnModel().getColumn(0).setPreferredWidth(150);
         lensnametable.getColumnModel().getColumn(1).setPreferredWidth(300);
         model.setRowCount(0);
@@ -101,11 +127,25 @@ public class SelectmyLens extends JDialog {
         dispose();
     }
 
-    public String showDialog(JPanel rootpanel) {
+    public String showDialog(JPanel rootpanel, String action) {
         pack();
         //setLocationRelativeTo(null);
+        rp = rootpanel;
         setLocationByPlatform(true);
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("selectlens.title"));
+        if ("load lens".equals(action)) {
+            selectLensTopText.setText(loadLensTxt);
+            OKbutton.setVisible(true);
+            OKbutton.setEnabled(true);
+            Deletebutton.setVisible(false);
+            Deletebutton.setEnabled(false);
+        } else {
+            selectLensTopText.setText(deleteLensTxt);
+            OKbutton.setVisible(false);
+            OKbutton.setEnabled(false);
+            Deletebutton.setVisible(true);
+            Deletebutton.setEnabled(true);
+        }
         // Make table readonly
         lensnametable.setDefaultEditor(Object.class, null);
         // Get current defined lenses
@@ -142,18 +182,21 @@ public class SelectmyLens extends JDialog {
         panel2.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), 5, 5));
         panel1.add(panel2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText("Current defined lens(es):");
+        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "sellens.currentlenses"));
         panel2.add(label1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scrollPane = new JScrollPane();
         panel2.add(scrollPane, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         lensnametable = new JTable();
         scrollPane.setViewportView(lensnametable);
-        final JLabel label2 = new JLabel();
-        label2.setText("<html>Select a row from the table to select and load an existing lens configuration.<br><br></html>");
-        panel1.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(450, -1), null, 0, false));
+        selectLensTopText = new JLabel();
+        selectLensTopText.setText("<html>Select a row from the table to select and load an existing lens configuration.<br><br></html>");
+        panel1.add(selectLensTopText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(450, -1), null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         panel1.add(panel3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        Deletebutton = new JButton();
+        this.$$$loadButtonText$$$(Deletebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.delete"));
+        panel3.add(Deletebutton);
         OKbutton = new JButton();
         this.$$$loadButtonText$$$(OKbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
         panel3.add(OKbutton);
@@ -177,6 +220,33 @@ public class SelectmyLens extends JDialog {
             bundle = ResourceBundle.getBundle(path);
         }
         return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

@@ -111,6 +111,10 @@ public class CreateMenu {
         menuItem.setActionCommand("DeleteFavorites");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("tmenu.deletelens"));
+        menuItem.setActionCommand("DeleteLenses");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
 
 
 
