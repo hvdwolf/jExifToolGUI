@@ -30,6 +30,7 @@ public class MyVariables {
     private List<List> tableRowsCells;
     private List<String> userCombiTableValues;
     private List<Integer> selectedIndicesList;
+    private String[] CustomCombis;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -113,5 +114,8 @@ public class MyVariables {
 
     public static List<String> getuserCombiTableValues() { return staticInstance.userCombiTableValues; }
     public static void setuserCombiTableValues (List<String> userCTV) { staticInstance.userCombiTableValues = userCTV; }
+
+    public static String[] getCustomCombis() { return Arrays.copyOf(staticInstance.CustomCombis, staticInstance.CustomCombis.length); }
+    public static void setCustomCombis(String[] CustomCombisfromDB) { staticInstance.CustomCombis = Arrays.copyOf(CustomCombisfromDB, CustomCombisfromDB.length); }
 
 }

@@ -834,6 +834,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         logger.info("retrieved CustomSets: " + sqlsets);
         String[] views = sqlsets.split("\\r?\\n"); // split on new lines
         if ("fill_combo".equals(check)) { // We use this one also for "Save As" to check if user has chosen same name
+            MyVariables.setCustomCombis(views);
             customSetcomboBox.setModel(new DefaultComboBoxModel(views));
         }
         return views;

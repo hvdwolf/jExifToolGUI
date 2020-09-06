@@ -2,6 +2,7 @@ package org.hvdw.jexiftoolgui;
 
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
+import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -612,7 +613,7 @@ public class Utils {
 
     // This is for the Common Tags as they can contain combined info
     static String[] getWhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
-        String[] params = {"-all"}; // We need to initialize with something
+        String[] params = {"-a","-G","-tab","-exiftool:all"}; // We need to initialize with something
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
 
         switch (SelectedTagName) {
@@ -646,6 +647,36 @@ public class Utils {
             case "makernotes":
                 params = MyConstants.MAKERNOTES_PARAMS;
                 break;
+            default:
+                // Here is where we check if we have "user custom combi tags"
+                String[] customCombis = MyVariables.getCustomCombis();
+                for (String customCombi : customCombis) {
+                    if (customCombi.equals(SelectedTagName)) {
+                        //logger.info("SelectedTagName: {}; customCombi: {}",SelectedTagName, customCombi);
+                        String sql = "select tag from custommetadatasetLines where customset_name='" + SelectedTagName + "' order by rowcount";
+                        String queryResult = SQLiteJDBC.singleFieldQuery(sql,"tag");
+                        if (queryResult.length() > 0) {
+                            String[] customTags = queryResult.split("\\r?\\n");
+                            logger.info("queryResult {}",queryResult);
+                            List<String> tmpparams = new ArrayList<String>();
+                            tmpparams.add("-a");
+                            tmpparams.add("-G");
+                            tmpparams.add("-tab");
+                            for (String customTag : customTags) {
+                                logger.trace("customTag {}", customTag);
+                                if (customTag.startsWith("-")) {
+                                    tmpparams.add(customTag);
+                                } else {
+                                    tmpparams.add("-" + customTag);
+                                }
+                            }
+                            String[] tmpArray = new String[tmpparams.size()];
+                            params = tmpparams.toArray(tmpArray);
+                            logger.trace("custom tags: {}", params.toString());
+                        }
+                    }
+                }
+                break;
         }
         return params;
     }
@@ -654,8 +685,9 @@ public class Utils {
      * This method displays the exiftool info in the right 3-column table
      */
     private static void displayInfoForSelectedImage(String exiftoolInfo, JTable ListexiftoolInfotable) {
-        // This will display the exif info in the right panel
+        // This will display the metadata info in the right panel
 
+        logger.trace("String exiftoolInfo {}", exiftoolInfo);
         DefaultTableModel model = (DefaultTableModel) ListexiftoolInfotable.getModel();
         model.setColumnIdentifiers(new String[]{ ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tablegroup"),
                 ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tabletag"),
@@ -667,13 +699,21 @@ public class Utils {
 
         Object[] row = new Object[1];
 
+        logger.debug("exiftoolInfo.length() {}; Warning?? {}; Error ?? {}", exiftoolInfo.length(),exiftoolInfo.trim().startsWith("Warning"), exiftoolInfo.trim().startsWith("Error"));
+//        if ( (exiftoolInfo.length() > 0) && !( exiftoolInfo.trim().startsWith("Warning") || exiftoolInfo.trim().startsWith("Error") ) ) {
         if (exiftoolInfo.length() > 0) {
-            String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+            if (exiftoolInfo.trim().startsWith("Warning")) {
+                model.addRow(new Object[]{"ExifTool", "Warning", "Invalid Metadata data"});
+            } else if (exiftoolInfo.trim().startsWith("Error")) {
+                model.addRow(new Object[]{"ExifTool", "Error", "Invalid Metadata data"});
+            } else {
+                String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 
-            for (String line : lines) {
-                //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
-                String[] cells = line.split("\\t", 3);
-                model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                for (String line : lines) {
+                    //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+                    String[] cells = line.split("\\t", 3);
+                    model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                }
             }
         }
 

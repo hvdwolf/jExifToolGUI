@@ -5,7 +5,7 @@ import java.awt.Font;
 public class MyConstants {
     public static final String MY_DATA_FOLDER = "jexiftoolgui_data";
     // exiftool image info parameters
-    public static final String[] ALL_PARAMS = {"-a","-G", "-tab"};
+    public static final String[] ALL_PARAMS = {"-a", "-G", "-tab"};
     public static final String[] EXIF_PARAMS = {"-a", "-exif:all","-G", "-tab"};
     public static final String[] XMP_PARAMS = {"-a", "-xmp:all","-G", "-tab"};
     public static final String[] IPTC_PARAMS = {"-a", "-iptc:all","-G", "-tab"};

@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 //import java.util.Arrays;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
@@ -533,10 +534,25 @@ public class mainScreen {
 
 
     private void fillAllComboboxes() {
+        //Combobox on User combi edit tab; do as first as we need it again
+        String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+        String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+        // use setter to be later use it for common tags in Utils.getWhichCommonTagSelected
+        MyVariables.setCustomCombis(views);
+        UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
+
         // Fill all combo boxes in the View panel
         String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
         String[] Tags = TagNames.split("\\r?\\n"); // split on new lines
-        comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(Tags));
+        // Now combine Tags[] and above views[] into one array
+        int length1 = Tags.length;
+        int length2 = views.length;
+        String[] allTags = new String[length1 + length2];
+        //Using arraycopy method to merge two arrays
+        System.arraycopy(Tags, 0, allTags, 0, length1);
+        System.arraycopy(views, 0, allTags, length1, length2);
+        Arrays.sort(allTags);
+        comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(allTags));
 
         String sqlGroups = SQLiteJDBC.getGroups();
         Tags = sqlGroups.split("\\r?\\n"); // split on new lines
@@ -561,10 +577,6 @@ public class mainScreen {
         for (String item : MyConstants.GPANO_PROJECTIONS) {
             gpanoPTcomboBox.addItem(item);
         }
-        //Combobox on User combi edit tab
-        String sqlsets = SQLiteJDBC.getdefinedCustomSets();
-        String[] views = sqlsets.split("\\r?\\n"); // split on new lines
-        UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
     }
 
     // region IntelliJ GUI Code Generated
