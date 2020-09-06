@@ -33,7 +33,7 @@ INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,defa
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-alias',22,'Notes Note','xmp-isadg:NotesNote','');
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-alias',23,'Descriptioncontrol Archivistsnote','xmp-isadg:Archivistsnote','');
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-alias',24,'Descriptioncontrol Rulesconventions','xmp-isadg:Rulesconventions','');
-INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-alias',25,'Descriptioncontrol Descriptionsdate','xmp-isadg:xmp-isadg:Descriptionsdate','');
+INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-alias',25,'Descriptioncontrol Descriptionsdate','xmp-isadg:Descriptionsdate','');
 
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',0,'Identity Reference','xmp-isadg:IdentityReference','');
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',1,'Identity Title','xmp-isadg:IdentityTitle','');
@@ -60,5 +60,5 @@ INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,defa
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',22,'Notes Note','xmp-isadg:NotesNote','');
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',23,'Descriptioncontrol Archivistsnote','xmp-isadg:DescriptioncontrolArchivistsnote','');
 INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',24,'Descriptioncontrol Rulesconventions','xmp-isadg:DescriptioncontrolRulesconventions','');
-INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',25,'Descriptioncontrol Descriptionsdate','xmp-isadg:Descriptioncontrolxmp-isadg:Descriptionsdate','');
+INSERT INTO CustomMetadatasetLines(customset_name,rowcount,screen_label,tag,default_value) VALUES('isadg-full',25,'Descriptioncontrol Descriptionsdate','xmp-isadg:DescriptioncontrolDescriptionsdate','');
 
