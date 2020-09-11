@@ -6,7 +6,7 @@ public class ProgramTexts {
      */
     public static final String Author = "Harry van der Wolf";
     public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
-    public static final String Version = "1.6.0-beta2";
+    public static final String Version = "1.6.0-beta3";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
     public static final String CreditsText =
             "<big>Credits</big><hr><br>"

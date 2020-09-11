@@ -24,7 +24,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class DatabasePanel {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(DatabasePanel.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DatabasePanel.class);
 
     private SelectFavorite SelFav = new SelectFavorite();
     private DiagramPanel contentPane;

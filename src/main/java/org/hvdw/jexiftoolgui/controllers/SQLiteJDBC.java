@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
@@ -16,7 +17,8 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class SQLiteJDBC {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(SQLiteJDBC.class);
+    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SQLiteJDBC.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SQLiteJDBC.class);
 
     static public Connection connect() {
 

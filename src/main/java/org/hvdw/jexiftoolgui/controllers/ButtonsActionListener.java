@@ -15,8 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class ButtonsActionListener implements ActionListener {
-    private final static Logger logger = LoggerFactory.getLogger(ButtonsActionListener.class);
+    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ButtonsActionListener.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(ButtonsActionListener.class);
 
     private DatabasePanel DBP = new DatabasePanel();
     private SimpleWebView WV = new SimpleWebView();
@@ -35,6 +38,7 @@ public class ButtonsActionListener implements ActionListener {
     public JComboBox UserCombiscomboBox;
 
     public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JTextField sqlQuerytextField, JComboBox UserCombiscomboBox) {
+
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
         this.CommandsParameterstextField = CommandsParameterstextField;

@@ -67,7 +67,7 @@ public class RenamePhotos extends JDialog {
     private JRadioButton suffixFocalLengthradioButton;
 
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(RenamePhotos.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(RenamePhotos.class);
 
     private int[] selectedFilenamesIndices;
     public File[] files;

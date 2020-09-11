@@ -26,9 +26,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.OS_NAME;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class MenuActionListener implements ActionListener  {
-    private final static Logger logger = LoggerFactory.getLogger(MenuActionListener.class);
+    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(MenuActionListener.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(MenuActionListener.class);
 
     PreferencesDialog prefsDialog = new PreferencesDialog();
     private DateTime dateTime = new DateTime();
@@ -46,6 +48,7 @@ public class MenuActionListener implements ActionListener  {
     public JComboBox UserCombiscomboBox;
 
     public MenuActionListener(JPanel rootPanel, JMenuBar menuBar, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
+
         this.rootPanel = rootPanel;
         this.menuBar = menuBar;
         this.OutputLabel = OutputLabel;

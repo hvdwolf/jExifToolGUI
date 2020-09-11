@@ -26,7 +26,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class StandardFileIO {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(StandardFileIO.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(StandardFileIO.class);
 
     public static String extract_resource_to_jexiftoolguiFolder(String resourcePath, String strjexiftoolguifolder){
         String copyresult = "";

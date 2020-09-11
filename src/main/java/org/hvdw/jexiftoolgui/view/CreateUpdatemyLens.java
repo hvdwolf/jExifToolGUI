@@ -30,7 +30,7 @@ public class CreateUpdatemyLens extends JDialog {
     private String chosenName = "";
     private String chosenDescription = "";
 
-    private final static Logger logger = LoggerFactory.getLogger(CreateUpdatemyLens.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CreateUpdatemyLens.class);
 
 
     public CreateUpdatemyLens() {

@@ -44,7 +44,7 @@ public class ModifyDateTime extends JDialog {
     public File[] files;
     private JProgressBar progBar;
 
-    private final static Logger logger = LoggerFactory.getLogger(ModifyDateTime.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ModifyDateTime.class);
 
     public ModifyDateTime() {
         setContentPane(rootModifyDateTimePane);

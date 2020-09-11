@@ -26,7 +26,7 @@ public class ImageFunctions {
     // And he copied it almost 100% from Wyat Olsons original ImageTagger Imagefunctions (2005)
     // And then extended with the TwelveMonkeys imageIO
 
-    private final static Logger logger = LoggerFactory.getLogger(ImageFunctions.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ImageFunctions.class);
 
     public static int[] getbasicImageData (File file) {
         int[] basicdata = {0, 0, 999};

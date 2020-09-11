@@ -26,7 +26,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 
 public class EditGPSdata {
 
-    private final static Logger logger = LoggerFactory.getLogger(EditGPSdata.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditGPSdata.class);
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     // I had specified for the arrays:
     //textfields:  gpsLatDecimaltextField, gpsLonDecimaltextField, gpsAltDecimaltextField, gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField

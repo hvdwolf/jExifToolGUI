@@ -21,7 +21,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class EditStringdata {
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(EditStringdata.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditStringdata.class);
 
 
     public void resetFields(JTextField[] stringPlusFields, JCheckBox[] stringPlusCheckboxes) {

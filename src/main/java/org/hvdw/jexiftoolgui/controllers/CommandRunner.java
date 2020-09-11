@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 public class CommandRunner {
-    public final static Logger logger = LoggerFactory.getLogger(CommandRunner.class);
+    public final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CommandRunner.class);
 
     /*
      * All exiftool commands go through this method

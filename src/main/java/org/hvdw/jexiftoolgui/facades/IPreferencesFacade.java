@@ -16,7 +16,7 @@ public interface IPreferencesFacade {
         RAW_VIEWER_ALL_IMAGES("rawviewerallimages"),
         PREFERRED_APP_LANGUAGE("System default"),
         PREFERRED_FILEDIALOG("jfilechooser"),
-        LOG_LEVEL("info"),
+        LOG_LEVEL("loglevel"),
         SHOW_DECIMAL_DEGREES("showdecimaldegrees")  // exiftool shows coordinates by default as Deg Min Sec
         ;
 

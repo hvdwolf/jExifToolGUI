@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 
 public class CheckPreferences {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Utils.class);
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     //check preferences (a.o. exiftool)

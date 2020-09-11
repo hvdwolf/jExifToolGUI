@@ -24,7 +24,7 @@ public class TablePasteAdapter implements ActionListener {
     private final JTable myTable;
     private final Clipboard myClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
-    private static final Logger logger = LoggerFactory.getLogger(TablePasteAdapter.class);
+    private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(TablePasteAdapter.class);
 
 
     /**

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 
 public class LinkListener implements HyperlinkListener {
-    private final static Logger logger = LoggerFactory.getLogger(LinkListener.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(LinkListener.class);
 
     /*
      * Opens the default browser of the Operating System

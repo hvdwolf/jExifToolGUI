@@ -23,7 +23,7 @@ import java.io.IOException;
 import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
 
 public class JavaImageViewer {
-    private final static Logger logger = LoggerFactory.getLogger(DatabasePanel.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DatabasePanel.class);
     private ImagePanel imageViewPane;
 
     private void makeFrameFullSize(JFrame aFrame) {

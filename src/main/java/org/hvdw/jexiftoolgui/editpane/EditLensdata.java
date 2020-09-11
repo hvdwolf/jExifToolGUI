@@ -28,7 +28,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class EditLensdata {
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(EditLensdata.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditLensdata.class);
 
     private SelectmyLens SmL = new SelectmyLens();
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();

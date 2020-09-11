@@ -25,7 +25,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class EditUserDefinedCombis {
-    private final static Logger logger = LoggerFactory.getLogger(EditUserDefinedCombis.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditUserDefinedCombis.class);
     JTable usercombiTable;
     MyTableModel model;
     List<String> values = new ArrayList<String>();

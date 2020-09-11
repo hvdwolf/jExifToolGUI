@@ -39,7 +39,7 @@ public class ShiftDateTime extends JDialog {
     public File[] files;
     private JProgressBar progBar;
 
-    private final static Logger logger = LoggerFactory.getLogger(ShiftDateTime.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ShiftDateTime.class);
 
     public ShiftDateTime() {
         setContentPane(shiftDateTimePane);

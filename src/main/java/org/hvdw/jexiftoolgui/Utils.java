@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
+import ch.qos.logback.classic.Level;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
@@ -32,18 +33,52 @@ import java.util.stream.IntStream;
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.*;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class Utils {
 
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Utils.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(Utils.class);
 
+    private Utils() {
+        SetLoggingLevel(Utils.class);
+        //logger.setLevel(Level.ALL);
+    }
 
     public static boolean containsIndices(int[] selectedIndices) {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());
         return intList.size() != 0;
     }
 
+    static public void SetLoggingLevel(Class usedClass) {
+        String logLevel = prefs.getByKey(LOG_LEVEL, "Info");
+        ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(usedClass);
+        //root.setLevel(level);
+        switch (logLevel) {
+            case "Off":
+                logger.setLevel(Level.OFF);
+                break;
+            case "Error":
+                logger.setLevel(Level.ERROR);
+                break;
+            case "Warn":
+                logger.setLevel(Level.WARN);
+                break;
+            case "Info":
+                logger.setLevel(Level.INFO);
+                break;
+            case "Debug":
+                logger.setLevel(Level.DEBUG);
+                break;
+            case "Trace":
+                logger.setLevel(Level.TRACE);
+                break;
+            default:
+                logger.setLevel(Level.INFO);
+                break;
+        }
+    }
 
     /*
     / Set default font for everything in the Application

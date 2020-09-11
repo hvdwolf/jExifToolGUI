@@ -16,7 +16,7 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXI
 public class ExifTool {
 
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(ExifTool.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ExifTool.class);
 
     /////////////////// Locate exiftool //////////////
     /*

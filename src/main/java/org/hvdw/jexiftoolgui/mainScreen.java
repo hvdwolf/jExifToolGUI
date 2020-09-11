@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
+import ch.qos.logback.classic.Level;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -43,7 +44,8 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRE
 
 
 public class mainScreen {
-    private static final Logger logger = LoggerFactory.getLogger(mainScreen.class);
+    //private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(mainScreen.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(mainScreen.class);
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -484,28 +486,35 @@ public class mainScreen {
     public void loadImages(String loadingType) {
         String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
         if ("images".equals(loadingType)) {
+            logger.debug("load images pushed or menu load images");
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages"));
             if ("jfilechooser".equals(prefFileDialog)) {
+                logger.debug("load images using jfilechooser");
                 files = StandardFileIO.getFileNames(rootPanel);
-                logger.debug("load images pushed or menu load images using jfilechooser");
+                logger.debug("AFTER load images using jfilechooser");
             } else {
-                files = StandardFileIO.getFileNamesAwt(rootPanel);
                 logger.debug("load images pushed or menu load images using AWT file dialog");
+                files = StandardFileIO.getFileNamesAwt(rootPanel);
+                logger.debug("AFTER load images using AWT file dialog");
             }
         } else if ("folder".equals(loadingType)) { // loadingType = folder
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingdirectory"));
+            logger.debug("load folder pushed or menu load folder");
             if ("jfilechooser".equals(prefFileDialog)) {
+                logger.debug("load folder using jfilechooser");
                 files = StandardFileIO.getFolderFiles(rootPanel);
-                logger.debug("load folder pushed or menu load folder using jfilechooser");
+                logger.debug("AFTER load folder using jfilechooser");
             } else {
+                logger.debug("load folder using AWT file dialog");
                 files = StandardFileIO.getFolderFilesAwt(rootPanel);
-                logger.debug("load folder pushed or menu load folder using AWT file dialog");
+                logger.debug("AFTER load folder using AWT file dialog");
             }
         } else { // files dropped onto our app
             OutputLabel.setText("Files dropped on the app");
             files = MyVariables.getSelectedFiles();
         }
         if (files != null) {
+            logger.trace("After loafing images, loading files or dropping files: no. of files > 0");
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
@@ -2167,10 +2176,12 @@ public class mainScreen {
 
             switch (ev.getActionCommand()) {
                 case "Load Images":
+                    logger.debug("menu File -> Load Images pressed");
                     // identical to button "Load Images"
                     loadImages("images");
                     break;
                 case "Load Directory":
+                    logger.debug("menu File -> Load Folder pressed");
                     // identical to button "Load Directory"
                     loadImages("folder");
                     break;
@@ -2195,7 +2206,7 @@ public class mainScreen {
         buttonLoadImages.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                logger.debug("buttonLoadImages pressed");
+                logger.debug("button buttonLoadImages pressed");
                 //File opener: Load the images; identical to Menu option Load Images.
                 loadImages("images");
             }
@@ -2203,7 +2214,7 @@ public class mainScreen {
         buttonLoadDirectory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                logger.debug("buttonLoadFolder pressed");
+                logger.debug("button buttonLoadFolder pressed");
                 //File opener: Load folder with images; identical to Menu option Load Directory.
                 loadImages("folder");
             }

@@ -22,7 +22,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 
 
 public class EditGpanodata {
-    private final static Logger logger = LoggerFactory.getLogger(EditGpanodata.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditGpanodata.class);
 
     public void setFormattedFieldFormats(JFormattedTextField[] theFields) {
         Locale currentLocale = Locale.getDefault();

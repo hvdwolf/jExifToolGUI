@@ -30,7 +30,7 @@ public class SelectmyLens extends JDialog {
     private String queryresult = "";
     private JPanel rp;
 
-    private final static Logger logger = LoggerFactory.getLogger(SelectmyLens.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SelectmyLens.class);
     private final String loadLensTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("sellens.loadlenstxt") + "<br><br></html>";
     private final String deleteLensTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("sellens.deletelenstxt") + "<br><br></html>";
 

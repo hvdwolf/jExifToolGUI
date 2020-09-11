@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class DateTime {
 
-    private static final Logger logger = LoggerFactory.getLogger(DateTime.class);
+    private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DateTime.class);
 
 
     public static void setFileDateTimeToDateTimeOriginal( JProgressBar progressBar) {

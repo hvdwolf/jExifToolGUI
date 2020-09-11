@@ -50,7 +50,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
  * Modified by Harry van der Wolf
  */
 public class MetadataUserCombinations extends JDialog implements TableModelListener {
-    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Utils.class);
 
 
     // The graphic components for the MetadataViewPanel.form

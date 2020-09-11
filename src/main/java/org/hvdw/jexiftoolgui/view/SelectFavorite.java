@@ -26,7 +26,7 @@ public class SelectFavorite extends JDialog {
 
     private String favorite_name = "";
 
-    private final static Logger logger = LoggerFactory.getLogger(SelectFavorite.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SelectFavorite.class);
 
 
     public SelectFavorite() {

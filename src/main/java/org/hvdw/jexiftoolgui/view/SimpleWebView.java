@@ -20,7 +20,7 @@ public class SimpleWebView extends JDialog {
     private JPanel contentPane;
 
     private final HyperlinkListener linkListener = new LinkListener();
-    private final static Logger logger = LoggerFactory.getLogger(SimpleWebView.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleWebView.class);
 
     public SimpleWebView() {
 

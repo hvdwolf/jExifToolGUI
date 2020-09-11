@@ -28,7 +28,7 @@ public class DeleteFavorite extends JDialog {
     private String queryresult = "";
     private JPanel jp = null;
 
-    private final static Logger logger = LoggerFactory.getLogger(DeleteFavorite.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DeleteFavorite.class);
 
 
     public DeleteFavorite() {

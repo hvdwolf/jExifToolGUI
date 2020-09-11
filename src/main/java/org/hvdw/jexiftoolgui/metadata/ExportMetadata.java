@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ExportMetadata extends JDialog {
-    private final static Logger logger = LoggerFactory.getLogger(ExportMetadata.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ExportMetadata.class);
 
     private JPanel contentPane;
     private JButton buttonOK;

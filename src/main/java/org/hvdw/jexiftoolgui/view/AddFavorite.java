@@ -38,7 +38,7 @@ public class AddFavorite extends JDialog {
     private final String commandTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("fav.commandtext") + "<br><br></html>";
     private final String queryTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("fav.querytext") + "<br><br></html>";
 
-    private final static Logger logger = LoggerFactory.getLogger(AddFavorite.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(AddFavorite.class);
 
 
     public AddFavorite() {

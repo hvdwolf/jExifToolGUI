@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 
 public class YourCommands {
 
-    private final static Logger logger = LoggerFactory.getLogger(YourCommands.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(YourCommands.class);
 
     private SelectFavorite SelFav = new SelectFavorite();
 

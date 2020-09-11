@@ -26,7 +26,7 @@ public class EditGeotaggingdata {
 
     private String ImageFolder;
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
-    private final static Logger logger = LoggerFactory.getLogger(EditGeotaggingdata.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditGeotaggingdata.class);
 
     public String getImagePath(JPanel myComponent) {
         String SelectedFolder;

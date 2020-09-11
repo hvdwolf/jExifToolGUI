@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MetaData {
-    private final static Logger logger = LoggerFactory.getLogger(MetaData.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(MetaData.class);
 
     public void copyToXmp() {
         String fpath = "";
