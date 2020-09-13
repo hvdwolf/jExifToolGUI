@@ -16,6 +16,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ public class EditUserDefinedCombis {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditUserDefinedCombis.class);
     JTable usercombiTable;
     MyTableModel model;
-    List<String> values = new ArrayList<String>();
+    List<String> tablerowdata = new ArrayList<String>();
     String strcustomconfigfile = "";
 
     /*
@@ -46,7 +47,7 @@ public class EditUserDefinedCombis {
      */
     public void UpdateTable(JPanel rootpanel, JComboBox combicombobox, JScrollPane userCombiPane) {
 
-        List<String> values = new ArrayList<String>();
+        List<String> tablerowdata = new ArrayList<String>();
         usercombiTable = new JTable(new MyTableModel());
 
         model = ((MyTableModel) (usercombiTable.getModel()));
@@ -65,16 +66,16 @@ public class EditUserDefinedCombis {
             for (String line : lines) {
                 String[] cells = line.split("\\t", 4);
                 model.addRow(new Object[]{cells[0], cells[1], cells[2]});
-                values.add(cells[2]);
+                tablerowdata.add(cells[2]);
             }
-            MyVariables.setuserCombiTableValues(values);
+            MyVariables.setuserCombiTableValues(tablerowdata);
         }
         userCombiPane.setViewportView(usercombiTable);
 
         usercombiTable.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                 logger.debug("source {}; firstRow {}; lastRow {}, column{}", e.getSource(), e.getFirstRow(), e.getLastRow(), e.getColumn());
-                logger.debug("tag {}; original value {}; modified tablecell value {}", model.getValueAt(e.getFirstRow(),1), values.get(e.getFirstRow()), model.getValueAt(e.getFirstRow(),e.getColumn()));
+                logger.debug("tag {}; original value {}; modified tablecell value {}", model.getValueAt(e.getFirstRow(),1), tablerowdata.get(e.getFirstRow()), model.getValueAt(e.getFirstRow(),e.getColumn()));
             }
         });
     }
@@ -103,7 +104,7 @@ public class EditUserDefinedCombis {
         // else if !empty => save
         File[] files = MyVariables.getSelectedFiles();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        values = MyVariables.getuserCombiTableValues();
+        tablerowdata = MyVariables.getuserCombiTableValues();
         int rowcounter = 0;
         List<String> cmdparams = new ArrayList<String>();
 
@@ -121,9 +122,9 @@ public class EditUserDefinedCombis {
         }
         cmdparams.addAll(Utils.AlwaysAdd());
 
-        for (String value : values) {
+        for (String value : tablerowdata) {
             if ( (!model.getValueAt(rowcounter, 2).equals(value)) || (!model.getValueAt(rowcounter, 2).equals("")) ) { //not equal, table value has changed OR table value not empty -> means default value
-                logger.info("tag {}; original value {}; modified tablecell value {}", model.getValueAt(rowcounter,1), values.get(rowcounter), model.getValueAt(rowcounter,2));
+                logger.info("tag {}; original value {}; modified tablecell value {}", model.getValueAt(rowcounter,1), tablerowdata.get(rowcounter), model.getValueAt(rowcounter,2));
                 if (model.getValueAt(rowcounter,1).toString().startsWith("-")) {
                     cmdparams.add(model.getValueAt(rowcounter,1).toString() + "=" + model.getValueAt(rowcounter, 2).toString().trim());
                 } else { //tag without - (minus sign/hyphen) as prefix
@@ -144,6 +145,70 @@ public class EditUserDefinedCombis {
 
         logger.info("Save user combi parameter command {}", cmdparams);
         CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+    }
 
+    public void CopyFromSelectedImage() {
+        File[] files = MyVariables.getSelectedFiles();
+        int SelectedRow = MyVariables.getSelectedRow();
+        tablerowdata = MyVariables.getuserCombiTableValues();
+        int rowcounter = 0;
+        String fpath ="";
+        String res = "";
+        List<String> cmdparams = new ArrayList<String>();
+        List<String> tagnames = new ArrayList<String>();
+
+
+        if (Utils.isOsFromMicrosoft()) {
+            fpath = files[SelectedRow].getPath().replace("\\", "/");
+        } else {
+            fpath = files[SelectedRow].getPath();
+        }
+        cmdparams.add(Utils.platformExiftool());
+        cmdparams.add("-e");
+        cmdparams.add("-n");
+        // Now get the tags from table
+        for (String value : tablerowdata) {
+            logger.debug("tag derived from table {}", model.getValueAt(rowcounter,1));
+            if (model.getValueAt(rowcounter,1).toString().startsWith("-")) {
+                cmdparams.add(model.getValueAt(rowcounter,1).toString().trim());
+                tagnames.add(model.getValueAt(rowcounter,1).toString().trim().substring(1));
+            } else { //tag without - (minus sign/hyphen) as prefix
+                cmdparams.add("-" + model.getValueAt(rowcounter,1).toString().trim());
+                tagnames.add(model.getValueAt(rowcounter,1).toString().trim());
+            }
+            rowcounter++;
+        }
+        cmdparams.add(fpath);
+        try {
+            res = CommandRunner.runCommand(cmdparams);
+            logger.debug("res from copyfrom is\n{}", res);
+        } catch(IOException | InterruptedException ex) {
+            logger.debug("Error executing command");
+        }
+        if (res.length() > 0) {
+            String[] strTagnames = tagnames.stream().toArray(String[]::new);
+            displayCopiedInfo( res, strTagnames);
+        }
+
+    }
+
+    private void displayCopiedInfo(String exiftoolInfo, String[] tagNames) {
+        int rowcounter = 0;
+        String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+        tablerowdata = MyVariables.getuserCombiTableValues();
+
+        for (String line : lines) {
+            String[] returnedValuesRow = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
+            String SpaceStrippedTag = returnedValuesRow[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
+            logger.debug("returnedValuesRow tag {}; returnedValuesRow value {}; SpaceStrippedTag {}", returnedValuesRow[0], returnedValuesRow[1], SpaceStrippedTag);
+
+            rowcounter =0;
+            for (String tagname: tablerowdata) {
+                if (model.getValueAt(rowcounter,1).toString().contains(SpaceStrippedTag)) {
+                    model.setValueAt(returnedValuesRow[1].trim(),rowcounter,2);
+                }
+                rowcounter++;
+            }
+        }
     }
 }

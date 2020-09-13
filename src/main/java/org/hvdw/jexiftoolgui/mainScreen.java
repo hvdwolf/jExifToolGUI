@@ -2640,6 +2640,8 @@ public class mainScreen {
         udcCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                EUDC.UpdateTable(rootPanel, UserCombiscomboBox, UserCombiScrollPane);
+                EUDC.CopyFromSelectedImage();
             }
         });
         udcSaveTobutton.addActionListener(new ActionListener() {
@@ -2659,12 +2661,8 @@ public class mainScreen {
                 // as the user can simply "reset" from the dropdown.
             }
         });
-        udcHelpbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-
-            }
-        });
+        udcHelpbutton.setActionCommand("udcHb");
+        udcHelpbutton.addActionListener(gal);
     }
 
     private void ViewRadiobuttonListener() {
@@ -2883,7 +2881,9 @@ public class mainScreen {
         cmdparams.add("-ver");
 
         try {
+            logger.trace("Get exiftool version");
             version = (CommandRunner.runCommand(cmdparams));
+            logger.trace("raw exiftool version: {}", version);
         } catch (IOException | InterruptedException ex) {
             logger.debug("Error executing command");
             version = "I cannot determine the exiftool version";
@@ -2891,6 +2891,7 @@ public class mainScreen {
         Float floatversion = Float.parseFloat(version.trim());
         Float minversion = new Float("9.09");
         int retval = floatversion.compareTo(minversion);
+        logger.trace("returned version for exiftool (>0: OK; <=0: No gpano): {}", retval);
         if (retval >0) { // cureent exiftool > 9.09
             gpanoMinVersionText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gpano.googlemapsfields")));
         } else {

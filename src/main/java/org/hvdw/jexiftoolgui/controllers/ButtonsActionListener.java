@@ -151,6 +151,10 @@ public class ButtonsActionListener implements ActionListener {
                 String[] views = sqlsets.split("\\r?\\n"); // split on new lines
                 UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                 break;
+            case "udcHb":
+                logger.debug("button udcHelpbutton pressed");
+                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
+                break;
         }
 
 

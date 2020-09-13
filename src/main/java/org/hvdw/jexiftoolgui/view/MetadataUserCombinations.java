@@ -142,7 +142,8 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                logger.debug("button helpbutton in MatadataUserCombinations class pressed");
+                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
             }
         });
 

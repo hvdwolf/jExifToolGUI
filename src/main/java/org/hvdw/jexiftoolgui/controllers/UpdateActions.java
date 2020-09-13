@@ -79,10 +79,9 @@ public class UpdateActions {
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
 
         // pre-fill both tables if necessary
-        String queryresultalias = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg-alias'");
-        String queryresultfull = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg-full'");
-        logger.debug("isadg-alias test {}; isadg-full test {}", queryresultalias.trim(), queryresultfull.trim());
-        if (!"26".equals(queryresultalias.trim()) || !"26".equals(queryresultfull.trim())) {
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg'");
+        logger.debug("isadg test {}", queryresult.trim());
+        if (!"26".equals(queryresult.trim())) {
 
             String sqlFile = StandardFileIO.readTextFileAsStringFromResource("sql/fill_isadg.sql");
             String[] sqlCommands = sqlFile.split("\\r?\\n"); // split on new lines

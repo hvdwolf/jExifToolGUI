@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+
+<title>Create user defined metadata tag combinations</title>
+<META NAME="description" LANG="EN" CONTENT="jExifToolGUI">
+<META NAME="keywords" LANG="EN" CONTENT="jExifToolGUI, photo, exiftool, exif, xmp, iptc, gps, image, rename, gui, gpano, metadata, tags, jpg, jpeg, tif, tiff, png">
+<META NAME="description" LANG="NL" CONTENT="jExifToolGUI">
+<META NAME="keywords" LANG="NL" CONTENT="jExifToolGUI, foto, exiftool, exif, xmp, iptc, gps, image, rename, gui, gpano, metadata, tags, jpg, jpeg, tif, tiff, png">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+<link rel="shortcut icon" href="../jexiftoolgui.ico" >
+
+<!-- styles for panos -->
+<link rel="STYLESHEET" type="text/css" href="../css/styles.css">
+
+<style>
+body.ex1 {margin-left: 35px; margin-right:100px}
+p.ex1 {margin: 35px}
+</style>
+
+</head>
+<body class="ex1" bgcolor="#FFFFCC">
+<H1>Create and use user defined metadata tag combinations</H1><br>
+Version 1.6 of jExifToolGUI gives you the option to define your own set of metadata tags that you want to add to your images. You can even define multiple metadata combination sets for different purposes: landscapes, sport, archiving, wildlife, family, etcetera.
+Below the maintenance screen and edit screen. Click to see a full-size version in a separate tab.
+<table><tr valign=top>
+<td><a href="maintain_user_defined_metadata_combis.png" target=_blank><img src="maintain_user_defined_metadata_combis.png" border=0 width=500></a><br>The maintenance and create screen</td><td><a href="use_user_defined_metadata_combis.png" target=_blank><img src="use_user_defined_metadata_combis.png" border=1 width=500></a><br>The Edit screen where you use your defined metadata sets to write those tags to your images.</td>
+</tr></table><br><br>
+<p>Below video shows how to create your own set(s) of metadata tag combinations. And then how to use this combination on your images.
+<br>
+The below video shows how to create combinations based om metadata tags already known to Exiftool. These are the standard Exif, XMP, IPTC, etcetera metadata tags.
+For 99% of the users this is all they will need.<br>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/FvTN-pMU7yM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<!-- <video width="1280" height="720" controls>
+  <source src="https://github.com/hvdwolf/jExifToolGUI/blob/master/docs/manual/jexiftoolgui_usercombis_simple.mp4?raw=true" type="video/mp4">
+Your browser does not support the video tag.
+</video> -->
+<br>
+Note: The video is displayed by default in 1024x576, but the maximum resolution is 1920x1080.<br><br>
+This video shows the basis.<br>
+The tag names will not be stored in alphabetical order but in the order you created/saved them.
+You can cut/copy tags. You can even prepare your tags in Excel or another spreadsheet and copy the rows, containing the 3 colums, into the maintenance table, but make sure to first create enough empty rows.
+
+<H2>Creating non-existing tags to add to your images</H2>
+Below only gives you a very brief overview what can be done. <br><br>
+Exiftool allows you to define metadata tags that "do not exist yet". For this you need to create a custom config file where you define those "brand new" metadata tags.<br>
+This is described at <a href="https://exiftool.org/config.html" target=_blank>the Exiftool site</a><br>
+Another example is delivered with jExifToolGUI itself. It is called isadg-struct.cfg and is based on the isad(g) archiving standard (based on this <a href="https://gist.github.com/anarchivist/826364" target=_blabk>xml scheme</a>. The isadg-struct.cfg I created can be found <a href="https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/src/main/resources/isadg-struct.cfg" target=_blank>here online</a>, but it is also located in the <tt>jexiftoolgui_data</tt> folder inside your user home folder. (Just to make sure users do not corrupt this file, it is overwritten on every program start).<br>
+When wanting to use non-existing tags, you first create the cfg file containing these tags. Then you define your combination set in the Tools screen, based on the tagnames in your configuration file.
+Upon saving this set, you also use the file chooser to select the cfg file you created. jExifToolGUI will then copy the cfg file into the <tt>jexiftoolgui_data</tt> folder and will store the link between the tags and the configuration file in the database. When you want to use this combination set, jExifToolGUI will also use the configuration file (has to use the file otherwise the tags can't be written).<br>
+<b>Note:</b> Exiftool, thereby jExifToolGUI, can read those tags from the images at any time. You only need the config file when wanting to write the tags to your images.
+</body>
+</html>
