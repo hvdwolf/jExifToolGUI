@@ -54,7 +54,9 @@ public class Utils {
     static public void SetLoggingLevel(Class usedClass) {
         String logLevel = prefs.getByKey(LOG_LEVEL, "Info");
         ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(usedClass);
-        //root.setLevel(level);
+        // hardcode in case of debugging/troubleshooting
+        //logLevel = "Trace";
+
         switch (logLevel) {
             case "Off":
                 logger.setLevel(Level.OFF);
@@ -692,7 +694,7 @@ public class Utils {
                         String queryResult = SQLiteJDBC.singleFieldQuery(sql,"tag");
                         if (queryResult.length() > 0) {
                             String[] customTags = queryResult.split("\\r?\\n");
-                            logger.info("queryResult {}",queryResult);
+                            logger.debug("queryResult {}",queryResult);
                             List<String> tmpparams = new ArrayList<String>();
                             tmpparams.add("-a");
                             tmpparams.add("-G");
@@ -761,10 +763,10 @@ public class Utils {
         String fpath = "";
         if (isOsFromMicrosoft()) {
             fpath = "\"" + files[selectedRow].getPath().replace("\\", "/") + "\"";
-            logger.trace("fpath is now: {}", fpath);
         } else {
             fpath = "\"" + files[selectedRow].getPath() + "\"";
         }
+        logger.debug("fpath for displaySelectedImageInDefaultViewer is now: {}", fpath);
         BufferedImage img = ImageIO.read(new File(fpath));
         // resize it
         BufferedImage resizedImg = new BufferedImage(300, 225, BufferedImage.TYPE_INT_ARGB);
@@ -801,45 +803,6 @@ public class Utils {
     }
 
     /*
-     * This method displays a preview of the image in the bottom left panel
-     * THIS METHOD IS NOT USED ANYMORE
-     */
-    public void displayTableImage(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
-        String fpath = "";
-        if (isOsFromMicrosoft()) {
-            fpath = files[selectedRow].getPath().replace("\\", "/");
-            logger.trace("fpath is now: {}", fpath);
-        } else {
-            fpath = files[selectedRow].getPath();
-        }
-        BufferedImage img = ImageIO.read(new File(fpath));
-        // resize it
-        BufferedImage resizedImg = new BufferedImage(300, 225, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(img, 0, 0, 300, 225, null);
-        g2.dispose();
-        ImageIcon icon = new ImageIcon(resizedImg);
-        ThumbView.setIcon(icon);
-    }
-
-    /*
-     * This method displays the program logo
-     * * THIS METHOD IS NOT USED CURRENTLY
-     */
-    public void displayLogo(JLabel ThumbView) throws IOException {
-        BufferedImage img = ImageIO.read(Utils.getResource("icons/jexiftoolgui-splashlogo.jpg"));
-        // resize it
-        BufferedImage resizedImg = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(img, 0, 0, 300, 300, null);
-        g2.dispose();
-        ImageIcon icon = new ImageIcon(resizedImg);
-        ThumbView.setIcon(icon);
-    }
-
-    /*
     *
      */
     static void setCopyMetaDatacheckboxes(boolean state, JCheckBox[] CopyMetaDatacheckboxes) {
@@ -855,7 +818,7 @@ public class Utils {
          try {
              frameicon = ImageIO.read(mainScreen.class.getResource("/icons/jexiftoolgui-frameicon.png"));
          } catch (IOException ioe) {
-             logger.info("erorr loading frame icon {}", ioe.toString());
+             logger.info("error loading frame icon {}", ioe.toString());
          }
          return frameicon;
     }
@@ -869,10 +832,10 @@ public class Utils {
         String command = ""; // macos/linux
         String[] commands = {}; // windows
         List<String> cmdparams = new ArrayList<String>();
-        logger.info("bestand {} ", MyVariables.getSelectedImagePath());
+        logger.debug("Selected file {} ", MyVariables.getSelectedImagePath());
         //String correctedPath = MyVariables.getSelectedImagePath().replace("\"", ""); //Can contain double quotes when double-clicked
 
-        logger.info("RAW viewer started (trying to start)");
+        logger.debug("RAW viewer started (trying to start)");
         Application.OS_NAMES currentOsName = getCurrentOsName();
         Runtime runtime = Runtime.getRuntime();
         //ProcessBuilder builder = new ProcessBuilder(cmdparams);
@@ -937,7 +900,7 @@ public class Utils {
         for (String ext: raw_images) {
             if ( filenameExt.toLowerCase().equals(ext)) { // it is a raw image
                 RawExtension = true;
-                logger.info("RawExtension is true");
+                logger.debug("RawExtension is true");
                 break;
             }
         }
@@ -1007,7 +970,7 @@ public class Utils {
         // In decs-mins-secs, degrees < 90, minutes < 60, seconds <60. NOT <=
         if ( in_Range(Integer.parseInt(input_lat_lon[2]), 0, 60)) { //secs
             coordinate = Float.parseFloat(input_lat_lon[2]) / (float) 60;
-            logger.info("converted seconds: " + coordinate);
+            logger.debug("converted latitude seconds: " + coordinate);
         } else {
             JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcsecerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
@@ -1015,7 +978,7 @@ public class Utils {
         }
         if (in_Range(Integer.parseInt(input_lat_lon[1]), 0, 60)) { //mins
             coordinate = (Float.parseFloat( input_lat_lon[1]) + coordinate) / (float) 60;
-            logger.info("converted mins + secs: " + coordinate);
+            logger.debug("converted latitude mins + secs: " + coordinate);
         } else {
             JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcminerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
@@ -1026,7 +989,7 @@ public class Utils {
             if ("S".equals(input_lat_lon[3])) { //South means negative value
                 coordinate = -(coordinate);
             }
-            logger.info("decimal lat: " + coordinate);
+            logger.debug("decimal lat: " + coordinate);
             lat_lon[0] = String.valueOf(coordinate);
         } else {
             JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcdegerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
@@ -1037,7 +1000,7 @@ public class Utils {
         // Now do the same for longitude
         if ( in_Range(Integer.parseInt(input_lat_lon[6]), 0, 60)) { //secs
             coordinate = Float.parseFloat(input_lat_lon[6]) / (float) 60;
-            logger.info("converted seconds: " + coordinate);
+            logger.debug("converted longitude seconds: " + coordinate);
         } else {
             JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcsecerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
@@ -1045,7 +1008,7 @@ public class Utils {
         }
         if (in_Range(Integer.parseInt(input_lat_lon[5]), 0, 60)) { //mins
             coordinate = (Float.parseFloat( input_lat_lon[5]) + coordinate) / (float) 60;
-            logger.info("converted mins + secs: " + coordinate);
+            logger.debug("converted longitude mins + secs: " + coordinate);
         } else {
             JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcminerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
@@ -1057,7 +1020,7 @@ public class Utils {
                 coordinate = -(coordinate);
             }
             lat_lon[1] = String.valueOf(coordinate);
-            logger.info("decimal lon: " + coordinate);
+            logger.debug("decimal lon: " + coordinate);
         } else {
             JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("gps.calcdegerror"), ResourceBundle.getBundle("translations/program_strings").getString("gps.calcerror"), JOptionPane.ERROR_MESSAGE);
             lat_lon[0] = "error";
@@ -1078,7 +1041,7 @@ public class Utils {
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
 
-        logger.info("Export previews/thumbnails..");
+        logger.debug("Export previews/thumbnails..");
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("ept.dlgtext")),ResourceBundle.getBundle("translations/program_strings").getString("ept.dlgtitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
@@ -1100,7 +1063,7 @@ public class Utils {
 
 
             for (int index: selectedIndices) {
-                logger.trace("index: {}  image path: {}", index, files[index].getPath());
+                logger.debug("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
@@ -1144,7 +1107,7 @@ public class Utils {
             String cmdResult = CommandRunner.runCommand(cmdparams);
             //logger.info("cmd result from export previews for single RAW" + cmdResult);
         } catch (IOException | InterruptedException ex) {
-            logger.debug("Error executing command to export previes for one RAW");
+            logger.debug("Error executing command to export previews for one RAW");
             exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
         }
         return exportResult;
