@@ -1,6 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
-import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -11,7 +11,6 @@ import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.view.*;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
@@ -45,7 +44,7 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRE
 
 public class mainScreen {
     //private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(mainScreen.class);
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(mainScreen.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(mainScreen.class);
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;
@@ -73,7 +72,7 @@ public class mainScreen {
     private JButton CommandsclearOutputFieldButton;
     private JButton CommandsgoButton;
     private JButton CommandshelpButton;
-    private JTextArea YourCommandsOutputTextArea;
+    private JEditorPane YourCommandsOutputText;
     private JTabbedPane tabbedPaneEditfunctions;
     private JTextField ExifMaketextField;
     private JCheckBox ExifMakecheckBox;
@@ -1913,9 +1912,9 @@ public class mainScreen {
         panel43.add(label93, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         panel43.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        YourCommandsOutputTextArea = new JTextArea();
-        YourCommandsOutputTextArea.setText("");
-        scrollPane1.setViewportView(YourCommandsOutputTextArea);
+        YourCommandsOutputText = new JEditorPane();
+        YourCommandsOutputText.setText("");
+        scrollPane1.setViewportView(YourCommandsOutputText);
         final JPanel panel44 = new JPanel();
         panel44.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
         panel43.add(panel44, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2228,7 +2227,7 @@ public class mainScreen {
         CommandsclearOutputFieldButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                YourCommandsOutputTextArea.setText("");
+                YourCommandsOutputText.setText("");
             }
         });
         CommandsgoButton.addActionListener(new ActionListener() {
@@ -2237,7 +2236,7 @@ public class mainScreen {
                 if (selectedIndicesList.size() > 0) {
                     if (CommandsParameterstextField.getText().length() > 0) {
                         OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.yourcommands"));
-                        YourCmnds.executeCommands(CommandsParameterstextField.getText(), YourCommandsOutputTextArea, UseNonPropFontradioButton, progressBar);
+                        YourCmnds.executeCommands(CommandsParameterstextField.getText(), YourCommandsOutputText, UseNonPropFontradioButton, progressBar);
                         OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.yourcommandsoutput"));
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), JOptionPane.WARNING_MESSAGE);

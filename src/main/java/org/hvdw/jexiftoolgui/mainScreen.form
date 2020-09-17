@@ -3285,7 +3285,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="46ae8" class="javax.swing.JTextArea" binding="YourCommandsOutputTextArea">
+                          <component id="e1bbd" class="javax.swing.JEditorPane" binding="YourCommandsOutputText">
                             <constraints/>
                             <properties>
                               <text value=""/>
