@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.metadata;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
@@ -130,6 +131,7 @@ public class ExportMetadata extends JDialog {
         List<String> params = new ArrayList<String>();
         List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option
         String filepath = ""; // Again: we need this for the csv option
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
 
         boolean isWindows = Utils.isOsFromMicrosoft();
 
@@ -139,6 +141,7 @@ public class ExportMetadata extends JDialog {
             if (!"".equals(Utils.getmetadataLanguage())) {
                 params.add("-lang");
                 params.add(Utils.getmetadataLanguage());
+                logger.debug("Export in specific metadata language requested lang= {}", Utils.getmetadataLanguage());
             }
         }
         params.add("-a");
@@ -205,7 +208,7 @@ public class ExportMetadata extends JDialog {
                     params.add("-csv");
                 }
 
-                for (int index : selectedFilenamesIndices) {
+                for (int index : selectedIndices) {
                     //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
                         if (csvRadioButton.isSelected()) {
@@ -240,11 +243,12 @@ public class ExportMetadata extends JDialog {
                 } else {
                     cmdparams = params;
                 }
-                logger.info("cmdparams : {}", cmdparams);
+                logger.debug("cmdparams : {}", cmdparams.toString());
 
 
                 // Export metadata
                 if (!csvRadioButton.isSelected()) {
+                    logger.debug("CSV export requested");
                     CommandRunner.runCommandWithProgressBar(params, progBar);
                 } else {
                     try {
@@ -258,6 +262,7 @@ public class ExportMetadata extends JDialog {
                         writer.close();
                     } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
+                        logger.error("metadata export failed with error {}", e);
                     }
                 }
             }
