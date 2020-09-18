@@ -604,7 +604,7 @@ public class mainScreen {
         rootPanel.setRequestFocusEnabled(true);
         LeftPanel = new JPanel();
         LeftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        rootPanel.add(LeftPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(320, -1), new Dimension(420, -1), null, 2, false));
+        rootPanel.add(LeftPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(320, -1), new Dimension(450, -1), null, 2, false));
         LeftbuttonBar = new JPanel();
         LeftbuttonBar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         LeftPanel.add(LeftbuttonBar, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -3030,8 +3030,8 @@ public class mainScreen {
 
         // Should work, but doesn't work
 
+        Application.OS_NAMES os = Utils.getCurrentOsName();
         try {
-            Application.OS_NAMES os = Utils.getCurrentOsName();
             if (os == Application.OS_NAMES.APPLE) {
                 logger.info("running on Apple. set correct menu");
                 // take the menu bar off the jframe and put it in the MacOS menu
@@ -3048,7 +3048,11 @@ public class mainScreen {
            logger.error("Could not start GUI.", weTried);
         }
 
-        frame.pack();
+        if (os == Application.OS_NAMES.APPLE) {
+            frame.setSize(1450,850);
+        } else {
+            frame.pack();
+        }
         //frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
