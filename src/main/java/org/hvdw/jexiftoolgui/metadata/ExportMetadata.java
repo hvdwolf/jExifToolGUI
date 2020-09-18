@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.metadata;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -7,7 +8,7 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
-import org.slf4j.Logger;
+import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ExportMetadata extends JDialog {
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ExportMetadata.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(ExportMetadata.class);
 
     private JPanel contentPane;
     private JButton buttonOK;
@@ -43,6 +44,9 @@ public class ExportMetadata extends JDialog {
     private JCheckBox exportIptcDataCheckBox;
     private JCheckBox exportICCDataCheckBox;
     private JCheckBox useMetadataTagLanguageCheckBox;
+    private JRadioButton exportFromUserCombisradioButton;
+    private JComboBox userCombicomboBox;
+    private JRadioButton catmetadataradioButton;
 
     public int[] selectedFilenamesIndices;
     public File[] files;
@@ -84,18 +88,65 @@ public class ExportMetadata extends JDialog {
         exportAllMetadataCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (exportAllMetadataCheckBox.isSelected()) {
-                    exportExifDataCheckBox.setSelected(true);
-                    exportXmpDataCheckBox.setSelected(true);
-                    exportGpsDataCheckBox.setSelected(true);
-                    exportIptcDataCheckBox.setSelected(true);
-                    exportICCDataCheckBox.setSelected(true);
-                } else {
-                    exportExifDataCheckBox.setSelected(false);
-                    exportXmpDataCheckBox.setSelected(false);
-                    exportGpsDataCheckBox.setSelected(false);
-                    exportIptcDataCheckBox.setSelected(false);
-                    exportICCDataCheckBox.setSelected(false);
+                if (catmetadataradioButton.isSelected()) {
+                    exportExifDataCheckBox.setEnabled(true);
+                    exportXmpDataCheckBox.setEnabled(true);
+                    exportGpsDataCheckBox.setEnabled(true);
+                    exportIptcDataCheckBox.setEnabled(true);
+                    exportICCDataCheckBox.setEnabled(true);
+                    exportAllMetadataCheckBox.setEnabled(true);
+
+                    if (exportAllMetadataCheckBox.isSelected()) {
+                        exportExifDataCheckBox.setSelected(true);
+                        exportXmpDataCheckBox.setSelected(true);
+                        exportGpsDataCheckBox.setSelected(true);
+                        exportIptcDataCheckBox.setSelected(true);
+                        exportICCDataCheckBox.setSelected(true);
+                    } else {
+                        exportExifDataCheckBox.setSelected(false);
+                        exportXmpDataCheckBox.setSelected(false);
+                        exportGpsDataCheckBox.setSelected(false);
+                        exportIptcDataCheckBox.setSelected(false);
+                        exportICCDataCheckBox.setSelected(false);
+                    }
+                    userCombicomboBox.setEnabled(false);
+                }
+            }
+        });
+        exportFromUserCombisradioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (exportFromUserCombisradioButton.isSelected()) {
+                    userCombicomboBox.setEnabled(true);
+                    exportExifDataCheckBox.setEnabled(false);
+                    exportXmpDataCheckBox.setEnabled(false);
+                    exportGpsDataCheckBox.setEnabled(false);
+                    exportIptcDataCheckBox.setEnabled(false);
+                    exportICCDataCheckBox.setEnabled(false);
+                    exportAllMetadataCheckBox.setEnabled(false);
+                } /*else {
+                    userCombicomboBox.setEnabled(true);
+                    exportExifDataCheckBox.setEnabled(false);
+                    exportXmpDataCheckBox.setEnabled(false);
+                    exportGpsDataCheckBox.setEnabled(false);
+                    exportIptcDataCheckBox.setEnabled(false);
+                    exportICCDataCheckBox.setEnabled(false);
+                    exportAllMetadataCheckBox.setSelected(false);
+
+                }*/
+            }
+        });
+        catmetadataradioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (catmetadataradioButton.isSelected()) {
+                    exportExifDataCheckBox.setEnabled(true);
+                    exportXmpDataCheckBox.setEnabled(true);
+                    exportGpsDataCheckBox.setEnabled(true);
+                    exportIptcDataCheckBox.setEnabled(true);
+                    exportICCDataCheckBox.setEnabled(true);
+                    exportAllMetadataCheckBox.setEnabled(true);
+                    userCombicomboBox.setEnabled(false);
                 }
             }
         });
@@ -104,7 +155,6 @@ public class ExportMetadata extends JDialog {
     private void initDialog() {
         //exportMetaDataUiText.setContentType("text/html");
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 420, ResourceBundle.getBundle("translations/program_strings").getString("emd.toptext")));
-
 
         ButtonGroup ExportRbBtns = new ButtonGroup();
         ExportRbBtns.add(txtRadioButton);
@@ -145,46 +195,78 @@ public class ExportMetadata extends JDialog {
             }
         }
         params.add("-a");
-        // which options selected?
-        StringBuilder Message = new StringBuilder("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgyouhaveselected"));
-        if (exportAllMetadataCheckBox.isSelected()) {
-            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("emd.exportall"));
-            params.add("-all");
-            atLeastOneSelected = true;
-        } else {
-            Message.append("<ul>");
-            if (exportExifDataCheckBox.isSelected()) {
-                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exportexif") + "</li>");
-                params.add("-exif:all");
+        StringBuilder Message = new StringBuilder();
+
+        if (catmetadataradioButton.isSelected()) {
+            // which options are selected from the checkboxes?
+            Message.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgyouhaveselected"));
+            if (exportAllMetadataCheckBox.isSelected()) {
+                Message.append(ResourceBundle.getBundle("translations/program_strings").getString("emd.exportall"));
+                params.add("-all");
+                Message.append("<br><br>");
                 atLeastOneSelected = true;
+            } else {
+                Message.append("<ul>");
+                if (exportExifDataCheckBox.isSelected()) {
+                    Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exportexif") + "</li>");
+                    params.add("-exif:all");
+                    atLeastOneSelected = true;
+                }
+                if (exportXmpDataCheckBox.isSelected()) {
+                    Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.extportxmp") + "</li>");
+                    params.add("-xmp:all");
+                    atLeastOneSelected = true;
+                }
+                if (exportGpsDataCheckBox.isSelected()) {
+                    Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exportgps") + "</li>");
+                    params.add("-gps:all");
+                    atLeastOneSelected = true;
+                }
+                if (exportIptcDataCheckBox.isSelected()) {
+                    Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exportiptc") + "</li>");
+                    params.add("-iptc:all");
+                    atLeastOneSelected = true;
+                }
+                if (exportICCDataCheckBox.isSelected()) {
+                    Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exporticc") + "</li>");
+                    params.add("-icc_profile:all");
+                    atLeastOneSelected = true;
+                }
+                Message.append("</ul><br><br>");
             }
-            if (exportXmpDataCheckBox.isSelected()) {
-                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.extportxmp") + "</li>");
-                params.add("-xmp:all");
-                atLeastOneSelected = true;
+
+        } else { // This is when the user has selected to export from a user combination
+            atLeastOneSelected = true; // if we use the drop-down always one item is selected
+            String SelectedCombi = userCombicomboBox.getSelectedItem().toString();
+            logger.debug("selected metadata set for export {}", SelectedCombi);
+            String sql = "select tag from custommetadatasetLines where customset_name='" + SelectedCombi + "' order by rowcount";
+            String queryResult = SQLiteJDBC.singleFieldQuery(sql, "tag");
+            if (queryResult.length() > 0) {
+                String[] customTags = queryResult.split("\\r?\\n");
+                logger.debug("queryResult {}", queryResult);
+                List<String> tmpparams = new ArrayList<String>();
+                for (String customTag : customTags) {
+                    logger.trace("customTag {}", customTag);
+                    if (customTag.startsWith("-")) {
+                        params.add(customTag);
+                    } else {
+                        params.add("-" + customTag);
+                    }
+                }
+                //String[] tmpArray = new String[tmpparams.size()];
+                //params = tmpparams.toArray(tmpArray);
+                logger.debug("custom tags for export: {}", params.toString());
             }
-            if (exportGpsDataCheckBox.isSelected()) {
-                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exportgps") + "</li>");
-                params.add("-gps:all");
-                atLeastOneSelected = true;
-            }
-            if (exportIptcDataCheckBox.isSelected()) {
-                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exportiptc") + "</li>");
-                params.add("-iptc:all");
-                atLeastOneSelected = true;
-            }
-            if (exportICCDataCheckBox.isSelected()) {
-                Message.append("<li>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.exporticc") + "</li>");
-                params.add("-icc_profile:all");
-                atLeastOneSelected = true;
-            }
-            Message.append("</ul><br><br>");
+            Message.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.askusercombi") + "<br>");
+            Message.append(SelectedCombi);
+            Message.append("<br><br>");
         }
-        Message.append("Is this correct?</html>");
+        Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgisthiscorrect") + "</html>");
         if (atLeastOneSelected) {
             String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue")};
             int choice = JOptionPane.showOptionDialog(null, Message, ResourceBundle.getBundle("translations/program_strings").getString("emd.dlgtitle"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+
             if (choice == 1) { //Yes
                 // Check with export file format has been chosen
                 if (txtRadioButton.isSelected()) {
@@ -276,6 +358,11 @@ public class ExportMetadata extends JDialog {
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
         progBar = progressBar;
+        //Combobox on User combi edit tab; do as first as we need it again
+        String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+        String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+        userCombicomboBox.setModel(new DefaultComboBoxModel(views));
+        userCombicomboBox.setEnabled(false);
 
         pack();
         //setLocationRelativeTo(null);
@@ -301,98 +388,120 @@ public class ExportMetadata extends JDialog {
      */
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(5, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setPreferredSize(new Dimension(600, 450));
+        contentPane.setLayout(new GridLayoutManager(6, 2, new Insets(10, 10, 10, 10), -1, -1));
+        contentPane.setPreferredSize(new Dimension(700, 450));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel1, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        buttonOK = new JButton();
-        this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
-        panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        buttonCancel = new JButton();
-        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
-        panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel2.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel2, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         exportMetaDataUiText = new JLabel();
         exportMetaDataUiText.setEnabled(true);
         exportMetaDataUiText.setRequestFocusEnabled(false);
         exportMetaDataUiText.setText("");
         exportMetaDataUiText.setVerifyInputWhenFocusTarget(false);
-        panel3.add(exportMetaDataUiText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 1, false));
+        panel2.add(exportMetaDataUiText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel3, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JPanel panel5 = new JPanel();
-        panel5.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        panel4.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel4.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.add(panel4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
         this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportto"));
-        panel5.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel4.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        panel4.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
-        panel5.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        panel5.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JPanel panel6 = new JPanel();
-        panel6.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel5.add(panel6, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel4.add(spacer2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JPanel panel5 = new JPanel();
+        panel5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panel4.add(panel5, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         txtRadioButton = new JRadioButton();
         txtRadioButton.setSelected(true);
         this.$$$loadButtonText$$$(txtRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.txt"));
-        panel6.add(txtRadioButton);
+        panel5.add(txtRadioButton);
         tabRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(tabRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.tab"));
-        panel6.add(tabRadioButton);
+        panel5.add(tabRadioButton);
         xmlRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(xmlRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.xml"));
-        panel6.add(xmlRadioButton);
+        panel5.add(xmlRadioButton);
         htmlRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(htmlRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.html"));
-        panel6.add(htmlRadioButton);
+        panel5.add(htmlRadioButton);
         xmpRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(xmpRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.xmp"));
         xmpRadioButton.setVisible(false);
-        panel6.add(xmpRadioButton);
+        panel5.add(xmpRadioButton);
         csvRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(csvRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.csv"));
-        panel6.add(csvRadioButton);
-        final JPanel panel7 = new JPanel();
-        panel7.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel7, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        panel5.add(csvRadioButton);
+        final JPanel panel6 = new JPanel();
+        panel6.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel6.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         exportAllMetadataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(exportAllMetadataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportall"));
-        panel7.add(exportAllMetadataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel8 = new JPanel();
-        panel8.setLayout(new GridLayoutManager(5, 1, new Insets(0, 30, 0, 0), -1, -1));
-        panel7.add(panel8, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
+        panel6.add(exportAllMetadataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel7 = new JPanel();
+        panel7.setLayout(new GridLayoutManager(5, 1, new Insets(0, 15, 0, 0), -1, -1));
+        panel6.add(panel7, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         exportExifDataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(exportExifDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportexif"));
-        panel8.add(exportExifDataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(exportExifDataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         exportXmpDataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(exportXmpDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.extportxmp"));
-        panel8.add(exportXmpDataCheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(exportXmpDataCheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         exportGpsDataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(exportGpsDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportgps"));
-        panel8.add(exportGpsDataCheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(exportGpsDataCheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         exportIptcDataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(exportIptcDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportiptc"));
-        panel8.add(exportIptcDataCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(exportIptcDataCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         exportICCDataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(exportICCDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exporticc"));
-        panel8.add(exportICCDataCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        panel7.add(spacer4, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel7.add(exportICCDataCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         useMetadataTagLanguageCheckBox = new JCheckBox();
         useMetadataTagLanguageCheckBox.setSelected(true);
         this.$$$loadButtonText$$$(useMetadataTagLanguageCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.uselang"));
-        contentPane.add(useMetadataTagLanguageCheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPane.add(useMetadataTagLanguageCheckBox, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel8 = new JPanel();
+        panel8.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel8, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel8.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        userCombicomboBox = new JComboBox();
+        panel8.add(userCombicomboBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel9 = new JPanel();
+        panel9.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel9, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        buttonOK = new JButton();
+        this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
+        panel9.add(buttonOK, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        buttonCancel = new JButton();
+        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
+        panel9.add(buttonCancel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        panel9.add(spacer3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JPanel panel10 = new JPanel();
+        panel10.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel10, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label2 = new JLabel();
+        this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportoption"));
+        panel10.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        catmetadataradioButton = new JRadioButton();
+        catmetadataradioButton.setSelected(true);
+        this.$$$loadButtonText$$$(catmetadataradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.catmetadata"));
+        panel10.add(catmetadataradioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exportFromUserCombisradioButton = new JRadioButton();
+        this.$$$loadButtonText$$$(exportFromUserCombisradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.usercombi"));
+        panel10.add(exportFromUserCombisradioButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        ButtonGroup buttonGroup;
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(exportFromUserCombisradioButton);
+        buttonGroup.add(exportFromUserCombisradioButton);
+        buttonGroup.add(catmetadataradioButton);
     }
 
     private static Method $$$cachedGetBundleMethod$$$ = null;
