@@ -602,6 +602,15 @@ public class Utils {
         Application.OS_NAMES currentOsName = getCurrentOsName();
 
         cmdparams.add(Utils.platformExiftool().trim());
+        // Check if we want to use G1 instead of G
+        boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+        if (useGroup1) {
+            for (int i =0; i < whichInfo.length; i++) {
+                if ("-G".equals(whichInfo[i])) {
+                    whichInfo[i] = whichInfo[i].replace("-G", "-G1");
+                }
+            }
+        }
         // Check for chosen metadata language
         if (!"".equals(getmetadataLanguage())) {
             cmdparams.add("-lang");
@@ -633,7 +642,12 @@ public class Utils {
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
-        params[1] = "-G";
+        boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+        if (useGroup1) {
+            params[1] = "-G1";
+        } else {
+            params[1] = "-G";
+        }
         params[2] = "-tab";
         getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
     }
@@ -643,7 +657,12 @@ public class Utils {
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
         params[0] = "-" + SelectedTagName + ":all";
-        params[1] = "-G";
+        boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+        if (useGroup1) {
+            params[1] = "-G1";
+        } else {
+            params[1] = "-G";
+        }
         params[2] = "-tab";
         return params;
     }
@@ -714,6 +733,14 @@ public class Utils {
                     }
                 }
                 break;
+        }
+        boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+        if (useGroup1) {
+            for (int i =0; i < params.length; i++) {
+                if ("-G".equals(params[i])) {
+                    params[i] = params[i].replace("-G", "-G1");
+                }
+            }
         }
         return params;
     }

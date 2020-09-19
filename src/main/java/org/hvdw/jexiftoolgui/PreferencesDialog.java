@@ -46,6 +46,7 @@ public class PreferencesDialog extends JDialog {
     private JLabel logleveltext;
     private JPanel loglevelpanel;
     private JPanel filechooserpanel;
+    private JCheckBox useG1GroupcheckBox;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -203,6 +204,7 @@ public class PreferencesDialog extends JDialog {
             logger.info("Preferred file dialog", "awtdialog");
         }
         logger.info("showdecimaldegrees {}", decimaldegreescheckBox.isSelected());
+        logger.info("useg1group {}", useG1GroupcheckBox.isSelected());
         logger.info("loglevel {}", loglevelcomboBox.getSelectedItem());
 
 
@@ -257,6 +259,9 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", SHOW_DECIMAL_DEGREES.key, decimaldegreescheckBox.isSelected());
         prefs.storeByKey(SHOW_DECIMAL_DEGREES, decimaldegreescheckBox.isSelected());
 
+        logger.trace("{}: {}", USE_G1_GROUP.key, useG1GroupcheckBox.isSelected());
+        prefs.storeByKey(USE_G1_GROUP, useG1GroupcheckBox.isSelected());
+
         logger.trace("{}: {}", LOG_LEVEL.key, loglevelcomboBox.getSelectedItem());
         prefs.storeByKey(LOG_LEVEL, (String) loglevelcomboBox.getSelectedItem());
 
@@ -286,6 +291,7 @@ public class PreferencesDialog extends JDialog {
         }
         decimaldegreescheckBox.setSelected((prefs.getByKey(SHOW_DECIMAL_DEGREES, false)));
         loglevelcomboBox.setSelectedItem(prefs.getByKey(LOG_LEVEL, "Info"));
+        useG1GroupcheckBox.setSelected(prefs.getByKey(USE_G1_GROUP, false));
     }
 
     // The  main" function of this class
@@ -481,10 +487,10 @@ public class PreferencesDialog extends JDialog {
         final Spacer spacer3 = new Spacer();
         panel12.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel14 = new JPanel();
-        panel14.setLayout(new GridLayoutManager(4, 1, new Insets(5, 5, 5, 5), -1, -1));
+        panel14.setLayout(new GridLayoutManager(5, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.system"), panel14);
         final Spacer spacer4 = new Spacer();
-        panel14.add(spacer4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel14.add(spacer4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         filechooserpanel = new JPanel();
         filechooserpanel.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
         panel14.add(filechooserpanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -510,7 +516,7 @@ public class PreferencesDialog extends JDialog {
         panel14.add(decimaldegreescheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loglevelpanel = new JPanel();
         loglevelpanel.setLayout(new GridLayoutManager(2, 3, new Insets(5, 5, 5, 5), -1, -1));
-        panel14.add(loglevelpanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel14.add(loglevelpanel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         loglevelpanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label12 = new JLabel();
         this.$$$loadLabelText$$$(label12, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.loglevel"));
@@ -531,6 +537,10 @@ public class PreferencesDialog extends JDialog {
         logleveltext = new JLabel();
         logleveltext.setText("Label");
         loglevelpanel.add(logleveltext, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        useG1GroupcheckBox = new JCheckBox();
+        useG1GroupcheckBox.setSelected(true);
+        this.$$$loadButtonText$$$(useG1GroupcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.useg1group"));
+        panel14.add(useG1GroupcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel16 = new JPanel();
         panel16.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPanel.add(panel16, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
