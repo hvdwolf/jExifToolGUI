@@ -337,6 +337,7 @@ public class mainScreen {
     private JButton udcHelpbutton;
     private JScrollPane UserCombiScrollPane;
     private JLabel CustomConfiglabel;
+    private JLabel lblLoadedFiles;
     private JLabel user;
     private JButton button;
     private JPanel gps;
@@ -513,6 +514,7 @@ public class mainScreen {
             files = MyVariables.getSelectedFiles();
         }
         if (files != null) {
+            lblLoadedFiles.setText(String.valueOf(files.length));
             logger.trace("After loafing images, loading files or dropping files: no. of files > 0");
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -534,6 +536,10 @@ public class mainScreen {
                     progressBar.setVisible(true);
                 }
             });
+        } else {
+            logger.debug("no files loaded. User pressed cancel.");
+            lblLoadedFiles.setText("");
+            OutputLabel.setText("");
         }
         selectedIndicesList = new ArrayList<>();
         MyVariables.setselectedIndicesList(selectedIndicesList);
@@ -2020,6 +2026,15 @@ public class mainScreen {
         progressBar.setPreferredSize(new Dimension(100, 15));
         progressBar.setStringPainted(false);
         panel50.add(progressBar);
+        final JPanel panel51 = new JPanel();
+        panel51.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
+        rootPanel.add(panel51, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
+        final JLabel label96 = new JLabel();
+        this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "pt.filesloaded"));
+        panel51.add(label96);
+        lblLoadedFiles = new JLabel();
+        lblLoadedFiles.setText("");
+        panel51.add(lblLoadedFiles);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(CalcNorthRadioButton);
