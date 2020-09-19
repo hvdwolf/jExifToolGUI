@@ -27,7 +27,16 @@ public class UpdateActions {
         } else { // we were successful
             logger.trace("Successfully did: " + Comments);
         }
+    }
 
+    static void fill_UserMetadataCustomSet_Tables( String sql_file) {
+        String sqlFile = StandardFileIO.readTextFileAsStringFromResource(sql_file);
+        String[] sqlCommands = sqlFile.split("\\r?\\n"); // split on new lines
+        for (String sqlCommand : sqlCommands) {
+            if (!sqlCommand.startsWith("--") && !sqlCommand.equals("")) {
+                do_Update(sqlCommand, sqlCommand);
+            }
+        }
     }
 
 
@@ -78,18 +87,11 @@ public class UpdateActions {
                 "    foreign key(customset_name) references CustomMetadataset(customset_name))";
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
 
-        // pre-fill both tables if necessary
+        // pre-fill both tables if necessary with isadg data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg'");
         logger.debug("isadg test {}", queryresult.trim());
         if (!"26".equals(queryresult.trim())) {
-
-            String sqlFile = StandardFileIO.readTextFileAsStringFromResource("sql/fill_isadg.sql");
-            String[] sqlCommands = sqlFile.split("\\r?\\n"); // split on new lines
-            for (String sqlCommand : sqlCommands) {
-                if (!sqlCommand.startsWith("--") && !sqlCommand.equals("")) {
-                    do_Update(sqlCommand, sqlCommand);
-                }
-            }
+            fill_UserMetadataCustomSet_Tables("sql/fill_isadg.sql");
         }
             // our data folder
             String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
@@ -100,6 +102,19 @@ public class UpdateActions {
             }
             String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder);
 
+        // pre-fill both tables if necessary with gps_location data
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'");
+        logger.debug("gps_location test {}", queryresult.trim());
+        if (!"19".equals(queryresult.trim())) {
+            fill_UserMetadataCustomSet_Tables("sql/fill_location.sql");
+        }
+
+        // pre-fill both tables if necessary with gps_location data
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='Google Photos'");
+        logger.debug("Google Photos test {}", queryresult.trim());
+        if (!"38".equals(queryresult.trim())) {
+            fill_UserMetadataCustomSet_Tables("sql/fill_gphotos.sql");
+        }
     }
 
 
