@@ -208,7 +208,9 @@ public class MenuActionListener implements ActionListener  {
                 Utils.openBrowser("https://exiftool.org/");
                 break;
             case "Credits":
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
+                String Credits = StandardFileIO.readTextFileAsStringFromResource("texts/credits.html");
+                WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"), String.format(ProgramTexts.HTML, 500, Credits), 600, 800);
                 break;
             case "System/Program info":
                 String os = SystemPropertyFacade.getPropertyByKey(OS_NAME);
