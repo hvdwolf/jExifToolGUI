@@ -1,5 +1,29 @@
 # Changelog
 
+## 2020-09-20 1.6.0
+* New menu "Tools"
+    * User defined Metadata combis
+    * delete Lenses
+    * delete Favorites
+* Add option to create your own combination of tags in "Tools -> User defined Metadata combis" to write to your images (see help page [here](https://hvdwolf.github.io/jExifToolGUI/manual/jexiftoolgui_usercombis.html) or via the help button. This has been extended with the option to also use tags that are not known to Exiftool via a custom config file: Create your custom config file, Create your own custom tag combination and add the config file when saving your combination. This allows for example, to add your own set of tags to XMP, Exif, IPTC, Composite, etc. Exiftool and jExifToolGUI will displays the tags, but you need to have the custom config file to write them as well. As examples: [see the Exiftool example](https://exiftool.org/config.html) or [see the isadg-struct.cfg](https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/src/main/resources/isadg-struct.cfg) online to add ISAD(g) data to the XMP set as new category xmp-isadg. (ISAD(G) is General International Standard Archival Description)
+    * "pre-installed" custom metadata sets (for use, as example and for modification (save as)):
+        * isadg: like above mentioned
+        * gps_location: All gps and location tags in the 3 categories EXIF,XMP and IPTC.
+        * Google Photos: All tags that Google Photos uses or recognizes.
+    * Common Tags in the View Tab now also include your own defined "User defined Metadata combis" by name. 
+        * Note: If you added your custom tags under one of the existing categories like XMP, Exif, IPTC, etcetera, they will also be displayed there.
+    * Export Metadata (Menu Metadata -> Export Metadata) now supports the export by category (exif, xmp, etc.) but also from our user defined metadata combi set.
+* Add drag & drop of images. Drop them anywhere on the main program window and they will be loaded into the application.
+* Preferences -> System: "Show coordinates in decimal degrees (Exiftool defaults to Deg Min Sec)"
+* Preferences -> System: "Use G1 group instead of G for viewing": G will show main category like EXIF or XMP. G1 will show sub groups like for EXIF it will show ExifIFD, IFD0, etc. and for XMP like XMP-x, XMP-exif, XMP-dc, XMP-isadg, etcetera.
+* Preferences -> System: Make log level user definable for troubleshooting.
+* In the tab "Your commands": If you specify "-h" or "-htmlFormat", the output will switch to html instead of "plain text"
+* MacOS: Apple likes it big. The application starts with a bigger window on MacOS to show all GUI components. 
+* Feature request: [issue #66](https://github.com/hvdwolf/jExifToolGUI/issues/66): images count. An image counter is now displayed in the bottom left showing how much images have been loaded.
+* (Internal) Better separation between Gui elements and program logic.
+* Fix: [issue #60](https://github.com/hvdwolf/jExifToolGUI/issues/60) Fix 2 combined errors. There was a check whether exiftool "delivers" data, but not if the first line contains a warning or error in case of faulty metadata data. This resulted in "hanging" on loading a file, or hanging when requesting specific info from a file.
+* Fix: fix export metadata (again).
+
 ## 2020-08-26 1.5.2
 * Fix: (old) error in exiftool detection when exiftool is removed or moved to other folder.
 * "Fix" (Linux KDE/QT): KDE/QT based window managers deliver "strange" strings for imagewidth and imageheight out of exiftool. The values are not integers and can't be converted to integers either. Now using java based approach, and better "error trapping" in case it still errors out.

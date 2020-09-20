@@ -205,6 +205,11 @@ public class StandardFileIO {
                 return false;
             }
         });
+        Application.OS_NAMES os = Utils.getCurrentOsName();
+        if (os == APPLE) {
+            System.setProperty("apple.awt.fileDialogForDirectories", "false");
+            System.setProperty("apple.awt.use-file-dialog-packages", "true");
+        }
 
         chooser.setVisible(true);
 
@@ -231,8 +236,9 @@ public class StandardFileIO {
 
         final JFileChooser chooser = new JFileChooser(startFolder);
         chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"));
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.resetChoosableFileFilters();
         chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
             SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
@@ -258,9 +264,10 @@ public class StandardFileIO {
         chooser.setDirectory(startFolder);
         chooser.setMultipleMode(false);
         Application.OS_NAMES os = Utils.getCurrentOsName();
-        /*if (os == APPLE) {
+        if (os == APPLE) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
-        }*/
+            System.setProperty("apple.awt.use-file-dialog-packages", "false");
+        }
         chooser.setVisible(true);
 
         SelectedFolder = chooser.getDirectory();
