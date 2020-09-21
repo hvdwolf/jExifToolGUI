@@ -24,7 +24,7 @@ p.ex1 {margin: 35px}
 <body class="ex1" bgcolor="#FFFFCC">
 <H1>Create and use user defined metadata tag combinations</H1><br>
 Version 1.6 of jExifToolGUI gives you the option to define your own set of metadata tags that you want to add to your images. You can even define multiple metadata combination sets for different purposes: landscapes, sport, archiving, wildlife, family, etcetera.
-Below the maintenance screen and edit screen. Click to see a full-size version in a separate tab.
+Below the maintenance screen and edit screen. - Click the images to see a full-size version in a separate tab. -
 <table><tr valign=top>
 <td><a href="maintain_user_defined_metadata_combis.png" target=_blank><img src="maintain_user_defined_metadata_combis.png" border=0 width=500></a><br>The maintenance and create screen</td><td><a href="use_user_defined_metadata_combis.png" target=_blank><img src="use_user_defined_metadata_combis.png" border=1 width=500></a><br>The Edit screen where you use your defined metadata sets to write those tags to your images.</td>
 </tr></table><br><br>
@@ -37,19 +37,19 @@ For 99% of the users this is all they will need.<br>
 <strong>jExifToolGUI #01: Create and use User defined Combinations</strong><br>
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/FvTN-pMU7yM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 <br>
-Note: The video is displayed by default in 1024x576, but the maximum resolution is 1920x1080. (When playing select the gear icon in the bottom bar to set to 1080P and click the bottom right icon to play fullscreen)<br><br>
+Note: The video is displayed by default in 1024x576 in 480p, but the maximum resolution is 1920x1080. (When playing select the gear icon in the bottom bar to set to 1080P and click the bottom right icon to play fullscreen)<br><br>
 This video shows the basis.<br>
 The tag names will not be stored in alphabetical order but in the order you created/saved them.<br>
 You can also cut/copy & paste tags: The second movie shows how to use Copy&Paste from (or to) other apps like spreadsheets (Excel, Google Spreadsheets, etc.) where you define your combinations.<br>
 <strong>jExifToolGUI #02: user combis copy paste</strong><br>
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/8cXT2Aiy6bI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-Note: The video is displayed by default in 1024x576, but the maximum resolution is 1920x1080. (When playing select the gear icon in the bottom bar to set to 1080P and click the bottom right icon to play fullscreen)<br><br>
+Note: The video is displayed by default in 1024x576 in 480p, but the maximum resolution is 1920x1080. (When playing select the gear icon in the bottom bar to set to 1080P and click the bottom right icon to play fullscreen)<br><br>
 
 <H2>Creating non-existing tags to add to your images</H2>
 Below only gives you a very brief overview what can be done. <br><br>
 Exiftool allows you to define metadata tags that "do not exist yet". For this you need to create a custom config file where you define those "brand new" metadata tags.<br>
 This is described at <a href="https://exiftool.org/config.html" target=_blank>the Exiftool site</a><br>
-Another example is delivered with jExifToolGUI itself. It is called isadg-struct.cfg and is based on the isad(g) archiving standard (based on this <a href="https://gist.github.com/anarchivist/826364" target=_blabk>xml scheme</a>. The isadg-struct.cfg I created can be found <a href="https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/src/main/resources/isadg-struct.cfg" target=_blank>here online</a>, but it is also located in the <tt>jexiftoolgui_data</tt> folder inside your user home folder. (Just to make sure users do not corrupt this file, it is overwritten on every program start).<br>
+Another example is delivered with jExifToolGUI itself. It is called isadg-struct.cfg and is based on the isad(g) archiving standard (based on this <a href="https://gist.github.com/anarchivist/826364" target=_blabk>xml scheme</a>). The isadg-struct.cfg I created can be found <a href="https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/src/main/resources/isadg-struct.cfg" target=_blank>here online</a>, but it is also located in the <tt>jexiftoolgui_data</tt> folder inside your user home folder. (Just to make sure users do not corrupt this file, it is overwritten on every program start).<br>
 When wanting to use non-existing tags, you first create the cfg file containing these tags. Then you define your combination set in the Tools screen, based on the tagnames in your configuration file.
 Upon saving this set, you also use the file chooser to select the cfg file you created. jExifToolGUI will then copy the cfg file into the <tt>jexiftoolgui_data</tt> folder and will store the link between the tags and the configuration file in the database. When you want to use this combination set, jExifToolGUI will also use the configuration file (has to use the file otherwise the tags can't be written).<br>
 <b>Note:</b> Exiftool, thereby jExifToolGUI, can read those tags from the images at any time. You only need the config file when wanting to write the tags to your images.
