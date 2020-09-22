@@ -185,6 +185,10 @@ public class CreateMenu {
         //menuItem = new JMenuItem("Manual");
         //myMenu.add(menuItem);
         myMenu.addSeparator();
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.onlinemanual"));
+        menuItem.setActionCommand("Online manual");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
         // Here we add the sub menu with help topics
         myMenu.add(helpSubMenu);
         myMenu.addSeparator();

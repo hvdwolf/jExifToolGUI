@@ -207,6 +207,9 @@ public class MenuActionListener implements ActionListener  {
             case "ExifTool homepage":
                 Utils.openBrowser("https://exiftool.org/");
                 break;
+            case "Online manual":
+                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html");
+                break;
             case "Credits":
                 //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
                 String Credits = StandardFileIO.readTextFileAsStringFromResource("texts/credits.html");
