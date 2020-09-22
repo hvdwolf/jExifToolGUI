@@ -1,0 +1,690 @@
+<html lang="en">
+<head>
+<title>jexiftoolgui: a cross-platform python pyside gui for exiftool</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="jexiftoolgui: a cross-platform java/swing gui for exiftool" version="1.6.0+">
+<link title="Top" rel="top" href="#Top">
+
+<!--
+This manual is for jexiftoolgui (version 1.6.0 and newer, Sept 2020).
+jExifToolGUI is a java Swing program that reads and writes
+exif, xmp and IPTC tags from/to image files. It can use a "reference" image as source image to
+copy data from. A strong point of this software is the ability to write the data,
+copied or not from a source image, to multiple images at once.
+
+Copyright (C) 2019-2020 Harry van der Wolf.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, no Front-Cover Texts and no
+     Back-Cover Texts.  A copy of the license is included in the section
+     entitledGNU Free Documentation License".
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; }
+  span.sansserif { font-family:sans-serif; font-weight:normal; }
+body {
+    margin-left: 6%;
+    margin-right: 6%
+}
+h1, h2, h3, h4, h5, h6 {margin-left: -4%}
+
+dl, h1, h2, h3, h4, h5, h6, ol, p, table, ul, body, figcaption {font-family: sans-serif}
+code, pre {font-family: monospace; font-size: 110%}
+var {
+    font-family: sans-serif;
+    font-style: italic
+}
+
+/* Class- and attibute based settings */
+div.contents {}
+div.float {
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+
+dl.compact {}
+dl.listoffloats {}
+
+h1.chapter {}
+h1.settitle {}
+h1.unnumbered {}
+h2.section {}
+h3.subsection {}
+h4.subsubsection {}
+
+hr.small {
+    background-color: black;
+    color: black;
+    height: 1px;
+    width: 113%
+}
+hr.middle {
+    background-color: black;
+    color: black;
+    height: 2px;
+    width: 113%
+}
+hr.big {
+    background-color: black;
+    color: black;
+    height: 4px;
+    width: 113%
+}
+
+math {display: block}
+math[display=inline] {display: inline}
+
+pre.example {}
+pre.display {font-family: sans-serif}
+pre.menu-comment {
+    font-family: sans-serif;
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 2ex;
+}
+
+small.enddots {}
+
+span.option {font-size: 110%}
+span.samp {font-size: 110%}
+
+strong {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+table.index-cp {}
+table.index-op {}
+table.index-pg {}
+table.menu {}
+
+tt {font-size: 110%}
+
+ul.toc {}
+--></style>
+</head>
+<body>
+<img src="images/jexiftoolgui-splashlogo.png" alt="jExifToolGUI:jexiftoolgui-splashlogo.png" title="jexiftoolgui-splashlogo.png"><h1 class="settitle">jExifToolGUI: a cross-platform java Swing gui for ExifTool</h1>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<!--<li><a name="toc_Top" href="#Top"></a>-->
+<li><a name="toc_Overview" href="#Overview">1 Overview</a>
+<!--<ul>
+<li><a href="#manual_version">1.1 This manual and the jExifToolGUI version</a>
+</li></ul> -->
+<li><a name="toc_Installation" href="#Installation">2 Versions and "Installation"</a>
+<ul>
+<li><a href="#UnInstall">2.1 Uninstall</a>
+</li></ul>
+<li><a name="toc_GeneralUsage" href="#quickstart">3 Quick Start</a>
+<li><a name="toc_userdefinedmetadatacombinations" href="#userdefinedmetadatacombinations">4 Create and use user defined metadata tag combinations</a></li>
+
+<li><a name="toc_FDL" href="#FDL">Appendix A <acronym>GNU</acronym> Free Documentation License</a>
+</li></ul>
+</div>
+
+
+
+<p><a name="Top"></a>
+
+<!--<h2 class="unnumbered">jExifToolGUI</h2>
+
+<p>This manual is for jExifToolGUI (version 1.6.0 and later, Sept 2020).
+jExifToolGUI is a java Swing program that reads and writes metadata like
+exif, xmp, gps, gpano tags from/to image files. It can use a "reference" image as source image to
+copy data from. A strong point of this software is the ability to write the data,
+copied or not from a source image, to multiple images at once. -->
+
+<!-- Document Body -->
+<hr>
+<p><a name="Overview"></a>
+<h2 class="chapter">1 Overview</h2>
+
+<!-- Undo the roman page numbering we used for the Table-of-Contents, -->
+<!-- the List-of-Tables, and the List-of-Figures. -->
+<p><strong>jExifToolGUI</strong> is a java Swing program that reads and writes metadat from files. It has some preformatted screens for exif, gps/location, xmp, gpano (and a very limited set of IPTC) tags to write/read from/to image files using <strong>ExifTool</strong> and it also supports geotagging.
+Next to that you can define your own combination of metadata tags to write to your images. This gives you the option to use any tag that Exiftool supports. Next to that you can also define "brand new" non-existing tags that can be added to your files using a user-defined configuration file and user define tag combination.
+jExifToolGUI: j for java, GUI for Graphical User Interface to ExifTool.
+
+
+<p>jExifToolGUI is only a graphical frontend for the excellent open source
+command line tool <a href="http://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank">ExifTool</a> by Phil Harvey.
+ExifTool is the real "engine", but it is a command-line tool.<br>jExifToolGUI is built around it, but it only implements part of the functionality of ExifTool. It is definitely not a complete GUI for Exiftool and can certainly not replace it as it is still ExifTool "under the hood".
+
+<p>This program is Open Source and completely free and will always stay that way, but you can donate any amount to me to show
+your appreciation. See the Help menu in the program or click <a href="../donate.html" target="_blank">here</a>.
+
+<p>This manual and the jExifToolGUI version might not always run synchronously. If new functionality
+is added to the program which requires a new chapter or paragraph, the manual will be updated for that new section.
+However, not all parts of the manual will/might be updated which might lead to older program screens in the manual that might
+slightly deviate from the program version you will be working with.<br>
+    Note also that you will see screen captures from several operating systems (Linux/Windows/MacOS) and/or window managers (on Linux).</p>
+<br><br>
+<hr>
+<p><a name="Installation"></a>
+<h2 class="chapter">2 Versions and "Installation"</h2>
+
+<p>This tool is written on Linux, used on Linux and mostly tested on Linux.
+However, as it is a java Swing cross-platform program it should run fine on MacOS, Windows and theoretically on all platforms that support java. 
+
+<p><b>Note:</b> jExifToolGUI comes without exiftool which you need to download yourself from Phil Harvey's
+<a href="http://www.sno.phy.queensu.ca/~phil/exiftool/" target="blank">exiftool site</a> if you want the latest version.
+On Linux you can also use the version belonging to your distribution.
+
+<p>
+<strong>Universal jar</strong>
+<ul><li>jExifToolGUI.jar: Just the bare jExifToolGUI.jar containing all dependencies. You need to have java version 8 (1.8) or newer installed on your system.<br>Start from a terminal with <tt>java -jar jExifToolGUI.jar &</tt>.
+    This version should run on any system that comes included with java 8 or newer, or where you can install java 8 or newer. (Windows/Linux/MacOS (BSD*unix)/Solaris/AIX/HP*UX etc.)</li></ul>
+
+<p><strong>Windows:</strong>
+<ul><li>jExifToolGUI-&lt;<i>version</i>&gt;-win-x86_64_with-jre.zip: A windows 64-bit executable including java V11. Unzip with paths!</li>
+<li>jExifToolGUI-&lt;<i>version</i>&gt;-win-x86_64.zip: A windows 32/64 bit executable without java. You need java 8 (1.8) or newer installed on your system.<br><br>
+Both versions do not come with installers. Simply unzip (with paths) to a folder of your liking and optionally create a shortcut on your desktop.</li></ul>
+    
+<p><strong>MacOS:</strong>
+<ul><li>jExifToolGUI-x86_64-macos-&lt;<i>version</i>&gt;-with_jre.dmg.zip: A MacOS bundle including java V11. Note: Apple is very unfriendly to non-Apple stuff like java/perl and other software. This bundle IS a working Apple bundle but not entirely according Apple standards.</li>
+<li>jExifToolGUI-x86_64-macos-&lt;<i>version</i>&gt;.dmg: A MacOS bundle without java. You need java 8 (1.8) or newer installed on your system.<br><br>
+These are MacOS bundles. Simply unzip (the full version) and open the dmg and drag the bundle to a folder of your liking where <i>Applications</i> is the most logical one.<br><b>Note:</b> Apple does normally not allow applications to be started that do not originate from the AppStore. Depending on your MacOS version there are several options you need to do to circumvent this. See <a href="https://support.apple.com/guide/mac-help/if-an-app-is-not-from-the-mac-app-store-mh40620/mac" target=_blank>Apple support</a></li></ul>
+    
+<p><strong>Linux</strong>
+<ul><li>jexiftoolgui-&lt;<i>version</i>&gt;.deb: a Linux .deb package. For all Debian based systems (Debian/Ubuntu/Mint/MX Linux/Raspbian etc. etc.). This is a linux multi-architecture version as the relevant java V11 version for your system/architecture will be downloaded as dependency.<br>
+    Use <tt>sudo dpkg -i jexiftoolgui-&lt;<i>version</i>&gt;.deb</tt> to install. As of that moment it will also appear in your menu.</li>
+<li>jExifToolGUI-&lt;<i>version</i>&gt;-x86_64.AppImage: Linux universal Appimage including java V11. Runs on every 64bit intel Linux system (and also inside Chromebook Linux beta).<br>
+    Simpy do a <tt>chmod +x jExifToolGUI-&lt;<i>version</i>&gt;-x86_64.AppImage</tt> and start with <tt>./jExifToolGUI-&lt;<i>version</i>&gt;-x86_64.AppImage &</tt>.</li></ul>
+
+<p><a name="UnInstall"></a>
+<h3 class="section">2.1 Uninstall</h3>
+<p>If you use the deb package on any Debian/Ubuntu like Linux OS, you can use apt-get or dpkg to uninstall it.<br>
+All other versions: be it the MacOS bundles, or windows .exes or linux appImage can simply be deleted.<br>
+<ul><li>User data and program data: In your home/user folder, you will find a folder <tt>jexiftoolgui_data</tt>. Simply remove that folder.</li>
+    <li>Logs:</li>jar/Windows exe/appImage: In the same folder where your run the application you will find a folder <tt>logs</tt>. Simply delete that one.<br>
+    For the MacOS bundles and the jexiftoolgui.deb, the logs are written to folder <tt>logs</tt> inside your user/home folder. Simply delete the logs folder.</li></ul>
+</p>
+<br><br>
+<hr><p><a name="quickstart"></a>
+<h2 class="chapter">3 Quick Start</h2>
+
+<p>The program consists of a left pane containing your photos, and a right pane which consists of a set of tabs. One of these tabs ("Edit") contains a subset of tabs.
+Next to the tabs on the right the program also has several menusu which contain more functionalities.
+A number of buttons and functions will not work, and are disabled, untill you have loaded at least one photo.
+Most actions on your images which you perform in the right tabs or in the menus, only work after having selected at least one, or more of the loaded photos in the left pane.
+<figure>
+    <a href="images/mainscreen-quickstart-01.png" target="_blank"><img src="images/mainscreen-quickstart-01.png" width="1024"></a><br>
+    <figcaption>Click image for full size view.</figcaption>
+</figure>    
+<h4>View data</h4>
+<p>Select an image and click one of the radiobuttons and select the desired metadata category from the drop-down. The "Common Tags" is not the ExifTool category "common", but what the author considers are "commonly selected categories" where the "user defined metadata tags combinations" are added to as well. If you have multiple images selected, the metadata for the last selected image will be displayed.<br>
+    <img src="images/ViewData.png">
+
+<h4>Edit data</h4>
+<p>Here as well: All actions in the right "Edit" tab only work after having selected one or more of the loaded photos.
+<ol>
+<li>You can select one image and modify the data for it.
+<li>You can select multiple images at once and modify the data for all these images at once.
+<li>You can select one image, copy data from it, then select multiple images, and paste the (copied) data to these multiple images at once.
+</ol>
+    <img src="images/EditData.png"><br>
+    
+<p>All Edit sub tabs do have a "bottom line" of buttons "copy from", "save to"  and "Help"<br><img src="images/CopyFromSaveToHelp.png"></p>
+<p>Some of the sub tabs on the "Edit Data" tab will return in this manual for further explanation.</p>    
+
+<h4>Copy Data</h4>
+<p>This options allows you to copy entire metadata categories from one image to multiple images.</p>
+<p><img src="images/CopyData.png">
+
+<h4>Your Commands</h4>
+<p>This program has quite a lot of functionality and flexibility in how you can read/write date from and to your images. In case that is not sufficient you can simply create your own command and run that on your images. Next to that you can also save your commands as "favorites" for later, repeated use.<br>
+    <img src="images/YourCommands.png">
+
+<h4>ExifTool Database</h4>
+This tab does nothing with your images. It is simply a tool to query through all the metadata categories and tags that ExifTool supports. The number of tags is dependent on your ExifTool version. The tab mentions on which version the retrieved information is based. Also here you can save your SQL queries as favorites.<br>
+    <img src="images/ExiftoolDatabase.png">
+
+<br><br>
+<hr>
+<p><a name="userdefinedmetadatacombinations"></a>
+<h2 class="chapter">4 Create and use user defined metadata tag combinations</h2>
+Version 1.6 of jExifToolGUI gives you the option to define your own set of metadata tags that you want to add to your images. You can even define multiple metadata combination sets for different purposes: landscapes, sport, archiving, wildlife, family, etcetera.
+The Maintenance screen canbe found in the menu "Tools -> User defined Metadata combis".<br>
+The edit screen can be found under the "Edit Data" tab inside "User defined combinations".<br>
+Below the maintenance screen and edit screen.<br><strong>Click the images to see a full-size version in a separate tab.</strong>
+<table><tr valign=top>
+<td><a href="images/maintain_user_defined_metadata_combis.png" target=_blank><img src="images/maintain_user_defined_metadata_combis.png" border=0 width=600></a><br>The maintenance and create screen</td><td><a href="images/use_user_defined_metadata_combis.png" target=_blank><img src="images/use_user_defined_metadata_combis.png" border=1 width=600></a><br>The Edit screen where you use your defined metadata sets to write those tags to your images.</td>
+</tr></table><br><br>
+<p>
+The below video shows:
+<ul><li>how to create combinations.</li>
+<li>how to use this combination on your images.</li></ul> 
+The created combinations in this movie are based om metadata tags already known to Exiftool. These are the standard Exif, XMP, IPTC, etcetera metadata tags.
+For 99% of the users this is all they will need.<br>
+<strong>jExifToolGUI #01: Create and use User defined Combinations</strong><br>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/FvTN-pMU7yM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<br>
+Note: The video is displayed by default in 1024x576 in 480p, but the maximum resolution is 1920x1080. (When playing select the gear icon in the bottom bar to set to 1080P and click the bottom right icon to play fullscreen)<br><br>
+This video shows the basis.<br>
+The tag names will not be stored in alphabetical order but in the order you created/saved them.<br>
+You can also cut/copy & paste tags: The second movie shows how to use Copy&Paste from (or to) other apps like spreadsheets (Excel, Google Spreadsheets, etc.) where you define your combinations.<br>
+<strong>jExifToolGUI #02: user combis copy paste</strong><br>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/8cXT2Aiy6bI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+Note: The video is displayed by default in 1024x576 in 480p, but the maximum resolution is 1920x1080. (When playing select the gear icon in the bottom bar to set to 1080P and click the bottom right icon to play fullscreen)<br><br>
+
+<H4>Creating non-existing tags to add to your images</H4>
+Below only gives you a very brief overview what can be done. <br><br>
+Exiftool allows you to define metadata tags that "do not exist yet". For this you need to create a custom config file where you define those "brand new" metadata tags.<br>
+This is described at <a href="https://exiftool.org/config.html" target=_blank>the Exiftool site</a><br>
+Another example is delivered with jExifToolGUI itself. It is called isadg-struct.cfg and is based on the isad(g) archiving standard (based on this <a href="https://gist.github.com/anarchivist/826364" target=_blabk>xml scheme</a>). The isadg-struct.cfg I created can be found <a href="https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/src/main/resources/isadg-struct.cfg" target=_blank>here online</a>, but it is also located in the <tt>jexiftoolgui_data</tt> folder inside your user home folder. (Just to make sure users do not corrupt this file, it is overwritten on every program start).<br>
+When wanting to use non-existing tags, you first create the cfg file containing these tags. Then you define your combination set in the Tools screen, based on the tagnames in your configuration file.
+Upon saving this set, you also use the file chooser to select the cfg file you created. jExifToolGUI will then copy the cfg file into the <tt>jexiftoolgui_data</tt> folder and will store the link between the tags and the configuration file in the database. When you want to use this combination set, jExifToolGUI will also use the configuration file (has to use the file otherwise the tags can't be written).<br>
+<b>Note:</b> Exiftool, thereby jExifToolGUI, can read those tags from the images at any time. You only need the config file when wanting to write the tags to your images.
+
+
+
+<HR>
+<p><strong>This manual will be worked on and slowly expand. It currently is in it's infancy</strong></p>
+
+
+<Hr>
+<p><a name="FDL"></a>
+
+<h2 class="appendix">Appendix A <acronym>GNU</acronym> Free Documentation License</h2>
+
+<p><a name="index-free-documentation-license-_0028_0040acronym_007bFDL_007d_0029-265"></a><a name="index-g_t_0040acronym_007bGNU_007d-free-documentation-license-266"></a>
+
+<!-- The GNU Free Documentation License. -->
+   <p>Version 1.2, November 2002
+
+<!-- This file is intended to be included within another document, -->
+<!-- hence no sectioning command or @node. -->
+<pre class="display">     Copyright &copy; 2000, 2001, 2002 Free Software Foundation, Inc.
+     51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+
+     Everyone is permitted to copy and distribute verbatim copies
+     of this license document, but changing it is not allowed.
+</pre>
+     <ol type=1 start=0>
+<li>PREAMBLE
+
+     <p>The purpose of this License is to make a manual, textbook, or other
+functional and useful document <dfn>free</dfn> in the sense of freedom: to
+assure everyone the effective freedom to copy and redistribute it,
+with or without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a way
+to get credit for their work, while not being considered responsible
+for modifications made by others.
+
+     <p>This License is a kind of &ldquo;copyleft&rdquo;, which means that derivative
+works of the document must themselves be free in the same sense.  It
+complements the <acronym>GNU</acronym> General Public License, which is a
+copyleft license designed for free software.
+
+     <p>We have designed this License in order to use it for manuals for free
+software, because free software needs free documentation: a free
+program should come with manuals providing the same freedoms that the
+software does.  But this License is not limited to software manuals;
+it can be used for any textual work, regardless of subject matter or
+whether it is published as a printed book.  We recommend this License
+principally for works whose purpose is instruction or reference.
+
+     <li>APPLICABILITY AND DEFINITIONS
+
+     <p>This License applies to any manual or other work, in any medium, that
+contains a notice placed by the copyright holder saying it can be
+distributed under the terms of this License.  Such a notice grants a
+world-wide, royalty-free license, unlimited in duration, to use that
+work under the conditions stated herein.  The &ldquo;Document&rdquo;, below,
+refers to any such manual or work.  Any member of the public is a
+licensee, and is addressed as &ldquo;you&rdquo;.  You accept the license if you
+copy, modify or distribute the work in a way requiring permission
+under copyright law.
+
+     <p>A &ldquo;Modified Version&rdquo; of the Document means any work containing the
+Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.
+
+     <p>A &ldquo;Secondary Section&rdquo; is a named appendix or a front-matter section
+of the Document that deals exclusively with the relationship of the
+publishers or authors of the Document to the Document's overall
+subject (or to related matters) and contains nothing that could fall
+directly within that overall subject.  (Thus, if the Document is in
+part a textbook of mathematics, a Secondary Section may not explain
+any mathematics.)  The relationship could be a matter of historical
+connection with the subject or with related matters, or of legal,
+commercial, philosophical, ethical or political position regarding
+them.
+
+     <p>The &ldquo;Invariant Sections&rdquo; are certain Secondary Sections whose titles
+are designated, as being those of Invariant Sections, in the notice
+that says that the Document is released under this License.  If a
+section does not fit the above definition of Secondary then it is not
+allowed to be designated as Invariant.  The Document may contain zero
+Invariant Sections.  If the Document does not identify any Invariant
+Sections then there are none.
+
+     <p>The &ldquo;Cover Texts&rdquo; are certain short passages of text that are
+listed, as Front-Cover Texts or Back-Cover Texts, in the notice that
+says that the Document is released under this License.  A Front-Cover
+Text may be at most 5 words, and a Back-Cover Text may be at most 25
+words.
+
+     <p>A &ldquo;Transparent&rdquo; copy of the Document means a machine-readable copy,
+represented in a format whose specification is available to the
+general public, that is suitable for revising the document
+straightforwardly with generic text editors or (for images composed of
+pixels) generic paint programs or (for drawings) some widely available
+drawing editor, and that is suitable for input to text formatters or
+for automatic translation to a variety of formats suitable for input
+to text formatters.  A copy made in an otherwise Transparent file
+format whose markup, or absence of markup, has been arranged to thwart
+or discourage subsequent modification by readers is not Transparent.
+An image format is not Transparent if used for any substantial amount
+of text.  A copy that is not &ldquo;Transparent&rdquo; is called &ldquo;Opaque&rdquo;.
+
+     <p>Examples of suitable formats for Transparent copies include plain
+<span class="sc">ascii</span> without markup, Texinfo input format, LaTeX input
+format, <acronym>SGML</acronym> or <acronym>XML</acronym> using a publicly available
+<acronym>DTD</acronym>, and standard-conforming simple <acronym>HTML</acronym>,
+PostScript or <acronym>PDF</acronym> designed for human modification.  Examples
+of transparent image formats include <acronym>PNG</acronym>, <acronym>XCF</acronym> and
+<acronym>JPG</acronym>.  Opaque formats include proprietary formats that can be
+read and edited only by proprietary word processors, <acronym>SGML</acronym> or
+<acronym>XML</acronym> for which the <acronym>DTD</acronym> and/or processing tools are
+not generally available, and the machine-generated <acronym>HTML</acronym>,
+PostScript or <acronym>PDF</acronym> produced by some word processors for
+output purposes only.
+
+     <p>The &ldquo;Title Page&rdquo; means, for a printed book, the title page itself,
+plus such following pages as are needed to hold, legibly, the material
+this License requires to appear in the title page.  For works in
+formats which do not have any title page as such, &ldquo;Title Page&rdquo; means
+the text near the most prominent appearance of the work's title,
+preceding the beginning of the body of the text.
+
+     <p>A section &ldquo;Entitled XYZ&rdquo; means a named subunit of the Document whose
+title either is precisely XYZ or contains XYZ in parentheses following
+text that translates XYZ in another language.  (Here XYZ stands for a
+specific section name mentioned below, such as &ldquo;Acknowledgements&rdquo;,
+&ldquo;Dedications&rdquo;, &ldquo;Endorsements&rdquo;, or &ldquo;History&rdquo;.)  To &ldquo;Preserve the
+Title&rdquo; of such a section when you modify the Document means that it
+remains a section &ldquo;Entitled XYZ&rdquo; according to this definition.
+
+     <p>The Document may include Warranty Disclaimers next to the notice which
+states that this License applies to the Document.  These Warranty
+Disclaimers are considered to be included by reference in this
+License, but only as regards disclaiming warranties: any other
+implication that these Warranty Disclaimers may have is void and has
+no effect on the meaning of this License.
+
+     <li>VERBATIM COPYING
+
+     <p>You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License applies
+to the Document are reproduced in all copies, and that you add no
+other conditions whatsoever to those of this License.  You may not use
+technical measures to obstruct or control the reading or further
+copying of the copies you make or distribute.  However, you may accept
+compensation in exchange for copies.  If you distribute a large enough
+number of copies you must also follow the conditions in section 3.
+
+     <p>You may also lend copies, under the same conditions stated above, and
+you may publicly display copies.
+
+     <li>COPYING IN QUANTITY
+
+     <p>If you publish printed copies (or copies in media that commonly have
+printed covers) of the Document, numbering more than 100, and the
+Document's license notice requires Cover Texts, you must enclose the
+copies in covers that carry, clearly and legibly, all these Cover
+Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+the back cover.  Both covers must also clearly and legibly identify
+you as the publisher of these copies.  The front cover must present
+the full title with all words of the title equally prominent and
+visible.  You may add other material on the covers in addition.
+Copying with changes limited to the covers, as long as they preserve
+the title of the Document and satisfy these conditions, can be treated
+as verbatim copying in other respects.
+
+     <p>If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto adjacent
+pages.
+
+     <p>If you publish or distribute Opaque copies of the Document numbering
+more than 100, you must either include a machine-readable Transparent
+copy along with each Opaque copy, or state in or with each Opaque copy
+a computer-network location from which the general network-using
+public has access to download using public-standard network protocols
+a complete Transparent copy of the Document, free of added material.
+If you use the latter option, you must take reasonably prudent steps,
+when you begin distribution of Opaque copies in quantity, to ensure
+that this Transparent copy will remain thus accessible at the stated
+location until at least one year after the last time you distribute an
+Opaque copy (directly or through your agents or retailers) of that
+edition to the public.
+
+     <p>It is requested, but not required, that you contact the authors of the
+Document well before redistributing any large number of copies, to
+give them a chance to provide you with an updated version of the
+Document.
+
+     <li>MODIFICATIONS
+
+     <p>You may copy and distribute a Modified Version of the Document under
+the conditions of sections 2 and 3 above, provided that you release
+the Modified Version under precisely this License, with the Modified
+Version filling the role of the Document, thus licensing distribution
+and modification of the Modified Version to whoever possesses a copy
+of it.  In addition, you must do these things in the Modified Version:
+
+          <ol type=A start=1>
+<li>Use in the Title Page (and on the covers, if any) a title distinct
+from that of the Document, and from those of previous versions (which
+should, if there were any, be listed in the History section of the
+Document).  You may use the same title as a previous version if the
+original publisher of that version gives permission.
+
+          <li>List on the Title Page, as authors, one or more persons or entities
+responsible for authorship of the modifications in the Modified
+Version, together with at least five of the principal authors of the
+Document (all of its principal authors, if it has fewer than five),
+unless they release you from this requirement.
+
+          <li>State on the Title page the name of the publisher of the Modified
+Version, as the publisher.
+
+          <li>Preserve all the copyright notices of the Document.
+
+          <li>Add an appropriate copyright notice for your modifications adjacent to
+the other copyright notices.
+
+          <li>Include, immediately after the copyright notices, a license notice
+giving the public permission to use the Modified Version under the
+terms of this License, in the form shown in the Addendum below.
+
+          <li>Preserve in that license notice the full lists of Invariant Sections
+and required Cover Texts given in the Document's license notice.
+
+          <li>Include an unaltered copy of this License.
+
+          <li>Preserve the section Entitled &ldquo;History&rdquo;, Preserve its Title, and add
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page.  If
+there is no section Entitled &ldquo;History&rdquo; in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.
+
+          <li>Preserve the network location, if any, given in the Document for
+public access to a Transparent copy of the Document, and likewise the
+network locations given in the Document for previous versions it was
+based on.  These may be placed in the &ldquo;History&rdquo; section.  You may
+omit a network location for a work that was published at least four
+years before the Document itself, or if the original publisher of the
+version it refers to gives permission.
+
+          <li>For any section Entitled &ldquo;Acknowledgements&rdquo; or &ldquo;Dedications&rdquo;,
+Preserve the Title of the section, and preserve in the section all the
+substance and tone of each of the contributor acknowledgements and/or
+dedications given therein.
+
+          <li>Preserve all the Invariant Sections of the Document, unaltered in
+their text and in their titles.  Section numbers or the equivalent are
+not considered part of the section titles.
+
+          <li>Delete any section Entitled &ldquo;Endorsements&rdquo;.  Such a section may not
+be included in the Modified Version.
+
+          <li>Do not retitle any existing section to be Entitled &ldquo;Endorsements&rdquo; or
+to conflict in title with any Invariant Section.
+
+          <li>Preserve any Warranty Disclaimers.
+          </ol>
+
+     <p>If the Modified Version includes new front-matter sections or
+appendices that qualify as Secondary Sections and contain no material
+copied from the Document, you may at your option designate some or all
+of these sections as invariant.  To do this, add their titles to the
+list of Invariant Sections in the Modified Version's license notice.
+These titles must be distinct from any other section titles.
+
+     <p>You may add a section Entitled &ldquo;Endorsements&rdquo;, provided it contains
+nothing but endorsements of your Modified Version by various
+parties&mdash;for example, statements of peer review or that the text has
+been approved by an organization as the authoritative definition of a
+standard.
+
+     <p>You may add a passage of up to five words as a Front-Cover Text, and a
+passage of up to 25 words as a Back-Cover Text, to the end of the list
+of Cover Texts in the Modified Version.  Only one passage of
+Front-Cover Text and one of Back-Cover Text may be added by (or
+through arrangements made by) any one entity.  If the Document already
+includes a cover text for the same cover, previously added by you or
+by arrangement made by the same entity you are acting on behalf of,
+you may not add another; but you may replace the old one, on explicit
+permission from the previous publisher that added the old one.
+
+     <p>The author(s) and publisher(s) of the Document do not by this License
+give permission to use their names for publicity for or to assert or
+imply endorsement of any Modified Version.
+
+     <li>COMBINING DOCUMENTS
+
+     <p>You may combine the Document with other documents released under this
+License, under the terms defined in section 4 above for modified
+versions, provided that you include in the combination all of the
+Invariant Sections of all of the original documents, unmodified, and
+list them all as Invariant Sections of your combined work in its
+license notice, and that you preserve all their Warranty Disclaimers.
+
+     <p>The combined work need only contain one copy of this License, and
+multiple identical Invariant Sections may be replaced with a single
+copy.  If there are multiple Invariant Sections with the same name but
+different contents, make the title of each such section unique by
+adding at the end of it, in parentheses, the name of the original
+author or publisher of that section if known, or else a unique number.
+Make the same adjustment to the section titles in the list of
+Invariant Sections in the license notice of the combined work.
+
+     <p>In the combination, you must combine any sections Entitled &ldquo;History&rdquo;
+in the various original documents, forming one section Entitled
+&ldquo;History&rdquo;; likewise combine any sections Entitled
+&ldquo;Acknowledgements&rdquo;, and any sections Entitled &ldquo;Dedications&rdquo;.  You
+must delete all sections Entitled &ldquo;Endorsements.&rdquo;
+
+     <li>COLLECTIONS OF DOCUMENTS
+
+     <p>You may make a collection consisting of the Document and other
+documents released under this License, and replace the individual
+copies of this License in the various documents with a single copy
+that is included in the collection, provided that you follow the rules
+of this License for verbatim copying of each of the documents in all
+other respects.
+
+     <p>You may extract a single document from such a collection, and
+distribute it individually under this License, provided you insert a
+copy of this License into the extracted document, and follow this
+License in all other respects regarding verbatim copying of that
+document.
+
+     <li>AGGREGATION WITH INDEPENDENT WORKS
+
+     <p>A compilation of the Document or its derivatives with other separate
+and independent documents or works, in or on a volume of a storage or
+distribution medium, is called an &ldquo;aggregate&rdquo; if the copyright
+resulting from the compilation is not used to limit the legal rights
+of the compilation's users beyond what the individual works permit.
+When the Document is included in an aggregate, this License does not
+apply to the other works in the aggregate which are not themselves
+derivative works of the Document.
+
+     <p>If the Cover Text requirement of section 3 is applicable to these
+copies of the Document, then if the Document is less than one half of
+the entire aggregate, the Document's Cover Texts may be placed on
+covers that bracket the Document within the aggregate, or the
+electronic equivalent of covers if the Document is in electronic form.
+Otherwise they must appear on printed covers that bracket the whole
+aggregate.
+
+     <li>TRANSLATION
+
+     <p>Translation is considered a kind of modification, so you may
+distribute translations of the Document under the terms of section 4.
+Replacing Invariant Sections with translations requires special
+permission from their copyright holders, but you may include
+translations of some or all Invariant Sections in addition to the
+original versions of these Invariant Sections.  You may include a
+translation of this License, and all the license notices in the
+Document, and any Warranty Disclaimers, provided that you also include
+the original English version of this License and the original versions
+of those notices and disclaimers.  In case of a disagreement between
+the translation and the original version of this License or a notice
+or disclaimer, the original version will prevail.
+
+     <p>If a section in the Document is Entitled &ldquo;Acknowledgements&rdquo;,
+&ldquo;Dedications&rdquo;, or &ldquo;History&rdquo;, the requirement (section 4) to
+Preserve its Title (section 1) will typically require changing the
+actual title.
+
+     <li>TERMINATION
+
+     <p>You may not copy, modify, sublicense, or distribute the Document
+except as expressly provided for under this License.  Any other
+attempt to copy, modify, sublicense or distribute the Document is
+void, and will automatically terminate your rights under this License.
+However, parties who have received copies, or rights, from you under
+this License will not have their licenses terminated so long as such
+parties remain in full compliance.
+
+     <li>FUTURE REVISIONS OF THIS LICENSE
+
+     <p>The Free Software Foundation may publish new, revised versions of the
+<acronym>GNU</acronym> Free Documentation License from time to time.  Such new
+versions will be similar in spirit to the present version, but may
+differ in detail to address new problems or concerns.  See
+<a href="http://www.gnu.org/copyleft/">http://www.gnu.org/copyleft/</a>.
+
+     <p>Each version of the License is given a distinguishing version number.
+If the Document specifies that a particular numbered version of this
+License &ldquo;or any later version&rdquo; applies to it, you have the option of
+following the terms and conditions either of that specified version or
+of any later version that has been published (not as a draft) by the
+Free Software Foundation.  If the Document does not specify a version
+number of this License, you may choose any version ever published (not
+as a draft) by the Free Software Foundation.
+        </ol>
+
+<p>
+<!-- End of Document -->
+</body></html>
+
