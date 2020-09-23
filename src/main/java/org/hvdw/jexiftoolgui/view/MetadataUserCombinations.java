@@ -143,7 +143,8 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button helpbutton in MatadataUserCombinations class pressed");
-                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
+                //Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
+                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#userdefinedmetadatacombinations");
             }
         });
 

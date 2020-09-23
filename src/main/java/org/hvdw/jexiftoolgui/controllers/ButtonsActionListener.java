@@ -153,7 +153,8 @@ public class ButtonsActionListener implements ActionListener {
                 break;
             case "udcHb":
                 logger.debug("button udcHelpbutton pressed");
-                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
+                //Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
+                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#userdefinedmetadatacombinations");
                 break;
         }
 

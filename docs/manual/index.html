@@ -124,11 +124,16 @@ ul.toc {}
 <li><a href="#manual_version">1.1 This manual and the jExifToolGUI version</a>
 </li></ul> -->
 <li><a name="toc_Installation" href="#Installation">2 Versions and "Installation"</a>
-<ul>
-<li><a href="#UnInstall">2.1 Uninstall</a>
-</li></ul>
-<li><a name="toc_GeneralUsage" href="#quickstart">3 Quick Start</a>
-<li><a name="toc_userdefinedmetadatacombinations" href="#userdefinedmetadatacombinations">4 Create and use user defined metadata tag combinations</a></li>
+ <ul>
+  <li><a href="#UnInstall">2.1 Uninstall</a></li>
+ </ul>
+<li><a name="toc_GeneralUsage" href="#quickstart">3 Quick Start</a></li>
+<li><a name="toc_SomeEditTabs" href="#someedittabs">4 Some Edit sub tabs further explained</a></li>
+   <ul>
+       <li><a name="toc_geotagging" href="#geotagging">4.1 Geotagging</a></li>
+       <li><a name="toc_lenses" href="#lenses">4.2 Use Lenses and create lens templates for your lenses</a></li>
+       <li><a name="toc_userdefinedmetadatacombinations" href="#userdefinedmetadatacombinations">4.3 Create and use user defined metadata tag combinations</a></li>
+   </ul> 
 
 <li><a name="toc_FDL" href="#FDL">Appendix A <acronym>GNU</acronym> Free Documentation License</a>
 </li></ul>
@@ -236,7 +241,8 @@ Most actions on your images which you perform in the right tabs or in the menus,
 </ol>
     <img src="images/EditData.png"><br>
     
-<p>All Edit sub tabs do have a "bottom line" of buttons "copy from", "save to"  and "Help"<br><img src="images/CopyFromSaveToHelp.png"></p>
+<p>All Edit sub tabs do have a "bottom line" of buttons "copy from", "save to"  and "Help"<br><img src="images/CopyFromSaveToHelp.png"><br>
+As mentioned in bullet #3: You can copy the relevant information from a selected image. Then you can write this info to many images.</p>
 <p>Some of the sub tabs on the "Edit Data" tab will return in this manual for further explanation.</p>    
 
 <h4>Copy Data</h4>
@@ -253,11 +259,49 @@ This tab does nothing with your images. It is simply a tool to query through all
 
 <br><br>
 <hr>
+<a name="someedittabs"></a>
+<H2 class="chapter">4 Some Edit sub tabs further explained</H2>
+In this chapter some of the edit tabs will be further explained. Others like Exif, XMP and GPS/locaion are too straight-forward to say something about them.
+<p><a name="geotagging"></a></p>
+<h3 class="section">4.1 Geotagging</h3>
+<p>Geotagging adds GPS data to your images based on data from a GPS track log file.<br>
+This GPS track file can be used from your phone, gps device, navigation device, or whatever you have providing such a GPS track.<br>
+The GPS track log file is loaded, and linear interpolation is used to determine the GPS position at the time of the image, then the relevant tags 
+are written to the image (if the corresponding information is available). It means that your camera needs to be set correctly with regard to the date/time of the location where you are.
+<p>jExifToolGUI also supports the "Geosync" feature of ExifTool. The Geosync tag is only needed when the image timestamps are not properly synchronized with GPS time.<br>
+For example, a value of "+1:20" specifies that 1 minute and 20 seconds is added to the Geotime value before checking with the GPS track file. This is for a camera running 1 minute 20 seconds slower than the GPS clock.<br>
+The Geosync time is specified as  "SS", "MM:SS", "HH:MM:SS" or "DD HH:MM:SS" (where SS=seconds, MM=minutes, HH=hours and DD=days), 
+and a leading "+" or "-" may be added for positive or negative differences.<br><b>Note:</b> Do not use (double) quotes around the geosync time in jExifToolGUI. Simply use something like -25 or +1:20
+<p>In jExifToolGUI you have 2 options:
+<ol><li>Use (a selection of) the images you loaded in the left images pane.</li>
+    <li>Specify a folder containing a set of images to be tagged.</li>
+</ol>
+<p>In case of the first option you need to leave the folder empty. If the "Folder containing the images:" is not left empty, it will always use the second option being the folder.
+<p>"The "Make backup of Originals" checkbox can make backups when selected. When selected new images will be created and the original images will get the extension ".original".<br>
+Note that jExifToolGUI will write both the EXIF GPS tags as well as the XMP GPS tags.<br>
+<img src="images/geotaggingtab.png">
+<p><br></p>
+<p><a name="lenses"></a></p>
+<h3 class="section">4.2 Use Lenses and create lens templates for your lenses</h3>
+This screen has two purposes:<br>
+<ul><li>Add/remove lens data to your photos (first row of buttons)</li>
+<li>Create/Modify a lens configuration (second row of buttons enclosed inside lined framework), and in this manual within the red frame.</li></ul>
+Both options can be used to add lens data to your image if it is not complete.<br>
+<p>Next to that: Still some add-on lenses are not completely recognized by the camera and therefore the info is not added to the image. For these cases you can create lens configs and save and load them for your images taken with that specific lens.<br>
+<img src="images/lenses.png">
+<p>When you click the button "Save this lens configuration", the following popup will be displayed.<br><img src="images/createsavelens.png"><br>
+The "Load a lens configuration" is almost identical.</p>
+<p><br></p>
 <p><a name="userdefinedmetadatacombinations"></a>
-<h2 class="chapter">4 Create and use user defined metadata tag combinations</h2>
+<h3 class="section">4.3 Create and use user defined metadata tag combinations</h3>
 Version 1.6 of jExifToolGUI gives you the option to define your own set of metadata tags that you want to add to your images. You can even define multiple metadata combination sets for different purposes: landscapes, sport, archiving, wildlife, family, etcetera.
-The Maintenance screen canbe found in the menu "Tools -> User defined Metadata combis".<br>
+The Maintenance screen can be found in the menu "Tools -> User defined Metadata combis".<br>
 The edit screen can be found under the "Edit Data" tab inside "User defined combinations".<br>
+Currently three metadata sets are "pre-installed":
+<ul><li>isadg: ISAD(g) data will be added to the XMP set as new category xmp-isadg. (ISAD(G) is General International Standard Archival Description)</li>
+<li>gps_location: All gps and location tags in the 3 categories EXIF,XMP and IPTC.</li>
+<li>Google Photos: All tags that Google Photos uses or recognizes.</li>
+</ul>
 Below the maintenance screen and edit screen.<br><strong>Click the images to see a full-size version in a separate tab.</strong>
 <table><tr valign=top>
 <td><a href="images/maintain_user_defined_metadata_combis.png" target=_blank><img src="images/maintain_user_defined_metadata_combis.png" border=0 width=600></a><br>The maintenance and create screen</td><td><a href="images/use_user_defined_metadata_combis.png" target=_blank><img src="images/use_user_defined_metadata_combis.png" border=1 width=600></a><br>The Edit screen where you use your defined metadata sets to write those tags to your images.</td>
