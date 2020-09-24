@@ -134,7 +134,7 @@ ul.toc {}
        <li><a name="toc_lenses" href="#lenses">4.2 Use Lenses and create lens templates for your lenses</a></li>
        <li><a name="toc_userdefinedmetadatacombinations" href="#userdefinedmetadatacombinations">4.3 Create and use user defined metadata tag combinations</a></li>
    </ul> 
-
+<li><a name="toc_Preferences" href="#preferences">5 Preferences</a></li>
 <li><a name="toc_FDL" href="#FDL">Appendix A <acronym>GNU</acronym> Free Documentation License</a>
 </li></ul>
 </div>
@@ -226,10 +226,10 @@ A number of buttons and functions will not work, and are disabled, untill you ha
 Most actions on your images which you perform in the right tabs or in the menus, only work after having selected at least one, or more of the loaded photos in the left pane.
 <figure>
     <a href="images/mainscreen-quickstart-01.png" target="_blank"><img src="images/mainscreen-quickstart-01.png" width="1024"></a><br>
-    <figcaption>Click image for full size view.</figcaption>
+    <figcaption><strong>Click the image for a full size view in a separate tab.</strong></figcaption>
 </figure>    
 <h4>View data</h4>
-<p>Select an image and click one of the radiobuttons and select the desired metadata category from the drop-down. The "Common Tags" is not the ExifTool category "common", but what the author considers are "commonly selected categories" where the "user defined metadata tags combinations" are added to as well. If you have multiple images selected, the metadata for the last selected image will be displayed.<br>
+<p>Select an image and click one of the radiobuttons and select the desired metadata category from the drop-down. The "Common Tags" is not the ExifTool category "common", but what the author considers are "commonly selected categories". The "user defined metadata tags combinations" (see <a href="#userdefinedmetadatacombinations">here</a>) are also added to this drop down. If you have multiple images selected, the metadata for the last selected image will be displayed.<br>
     <img src="images/ViewData.png">
 
 <h4>Edit data</h4>
@@ -332,9 +332,20 @@ When wanting to use non-existing tags, you first create the cfg file containing 
 Upon saving this set, you also use the file chooser to select the cfg file you created. jExifToolGUI will then copy the cfg file into the <tt>jexiftoolgui_data</tt> folder and will store the link between the tags and the configuration file in the database. When you want to use this combination set, jExifToolGUI will also use the configuration file (has to use the file otherwise the tags can't be written).<br>
 <b>Note:</b> Exiftool, thereby jExifToolGUI, can read those tags from the images at any time. You only need the config file when wanting to write the tags to your images.
 
-
-
-<HR>
+<p><br></p>
+<p><a name="preferences"></a>
+<h3 class="chapter">5 Preferences</h3>
+The Preferences can be found under the menu "File -> Preferences"<br>
+Currently the Preferences screen has 3 tabs: General, Language, System. See below (reduced size) images.<br>
+<table><tr valign="top"><td><a href="images/01-preferences-general.png" target="_blank"><img src="images/01-preferences-general-450.png"></a></td>
+    <td><a href="images/02-preferences-language.png" target="_blank"><img src="images/02-preferences-language-450.png"></a><br><br><br>
+        <a href="images/03-preferences-system.png" target="_blank"><img src="images/03-preferences-system-450.png"></a>
+        </td></tr><tr><td colspan=" 2"><center>Click the images for a full-sized view in a separate tab.</center></td></tr><table>
+<p>The <strong>"General"</strong> tab (left): W.r.t. the "Raw Image viewer". jExiftoolGUI can show quite a lot of images like jpg/png/tif/bmp/pgm, but not Raw Images (it can convert some to jpg thumbnails for viewing in the left pane), and neither can most operating systems. So if you have Raw Images and you want to see them full screen, you need to install a Raw Image Viewer.</p>
+<p>The <strong>"Language"</strong> tab (top right): jExifToolGUI can be translated. jExifToolGUI will try to start in the operating system language, but only if that is available as translated "property language".  It is currently translated in (American) English (default), Spanish, German and Dutch. On this tab you can select one of those languages if you prefer that over your system language, or in case your system language is not supported but your American English is not as good as your Spanish or German.<br>
+Many users have helped to translate the desciption of metadata tags in Exiftool. This has nothing to do with jExifToolGUI, but with ExifTool. You can select a number of languages and if the tag is translated you will see it in that language.</p>
+<p>The <strong>"System"</strong> tab (bottom right): W.r.t. the log level: Do not set it too high. That will create huge files and slow down the application (due to all the logging). The author or someone else might ask you to put it to the highest level for trobleshooting.</p>
+<p><br></p><HR>
 <p><strong>This manual will be worked on and slowly expand. It currently is in it's infancy</strong></p>
 
 
