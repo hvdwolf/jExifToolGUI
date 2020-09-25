@@ -209,13 +209,23 @@ public class Utils {
         if (!prefs.getByKey(ARTIST, "").equals("") && !prefs.getByKey(ARTIST, "").equals(" ") ) {
             exifartist = "-exif:Artist=" + prefs.getByKey(ARTIST, "");
             AlwaysAddParams.add(exifartist);
+            exifartist = "-xmp-dc:creator=" + prefs.getByKey(ARTIST, "");
+            AlwaysAddParams.add(exifartist);
+            exifartist = "-iptc:by-line=" + prefs.getByKey(ARTIST, "");
+            AlwaysAddParams.add(exifartist);
         }
         if (!prefs.getByKey(CREDIT, "").equals("") && !prefs.getByKey(CREDIT, "").equals(" ")) {
-            credits = "-xmp:Credit=" + prefs.getByKey(CREDIT, "");
+            credits = "-xmp-photoshop:Credit=" + prefs.getByKey(CREDIT, "");
+            AlwaysAddParams.add(credits);
+            credits = "-iptc:Credit=" + prefs.getByKey(CREDIT, "");
             AlwaysAddParams.add(credits);
         }
         if (!prefs.getByKey(COPYRIGHTS, "").equals("") && !prefs.getByKey(COPYRIGHTS, "").equals(" ")) {
             copyright = "-exif:Copyright=" + prefs.getByKey(COPYRIGHTS, "");
+            AlwaysAddParams.add(copyright);
+            copyright = "-xmp-dc:rights=" + prefs.getByKey(COPYRIGHTS, "");
+            AlwaysAddParams.add(copyright);
+            copyright = "-iptc:copyrightnotice=" + prefs.getByKey(COPYRIGHTS, "");
             AlwaysAddParams.add(copyright);
         }
         AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);

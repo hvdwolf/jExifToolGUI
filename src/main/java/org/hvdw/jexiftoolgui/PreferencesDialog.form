@@ -3,14 +3,16 @@
   <grid id="a1e9b" binding="contentPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="48" y="54" width="804" height="720"/>
+      <xy x="48" y="54" width="944" height="720"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <tabbedpane id="7ac63" binding="tabbedPanel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="1" use-parent-layout="false">
+            <preferred-size width="900" height="600"/>
+          </grid>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -21,20 +23,22 @@
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="prefs.generaltab"/>
             </constraints>
             <properties>
-              <minimumSize width="770" height="500"/>
-              <preferredSize width="770" height="525"/>
+              <minimumSize width="-1" height="-1"/>
+              <preferredSize width="-1" height="-1"/>
             </properties>
             <border type="none"/>
             <children>
-              <grid id="cbd77" binding="generalPanel" layout-manager="GridLayoutManager" row-count="10" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="10" left="10" bottom="10" right="10"/>
+              <grid id="cbd77" binding="generalPanel" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="5" left="5" bottom="5" right="5"/>
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="2" use-parent-layout="false">
+                    <preferred-size width="850" height="600"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <maximumSize width="-1" height="-1"/>
-                  <minimumSize width="800" height="600"/>
-                  <preferredSize width="850" height="650"/>
+                  <minimumSize width="-1" height="-1"/>
+                  <preferredSize width="-1" height="-1"/>
                   <requestFocusEnabled value="false"/>
                 </properties>
                 <border type="none"/>
@@ -42,7 +46,7 @@
                   <grid id="e3588" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -91,7 +95,7 @@
                   </component>
                   <grid id="fb879" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -101,6 +105,7 @@
                         <properties>
                           <minimumSize width="300" height="30"/>
                           <preferredSize width="550" height="30"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <component id="26fed" class="javax.swing.JButton" binding="ImgStartFolderButton">
@@ -112,9 +117,9 @@
                     </children>
                   </grid>
                   <grid id="31774" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="10" bottom="0" right="0"/>
+                    <margin top="0" left="5" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="bevel-raised"/>
@@ -128,9 +133,9 @@
                           <text resource-bundle="translations/program_strings" key="prefs.alwaysaddvals"/>
                         </properties>
                       </component>
-                      <grid id="5fb51" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                      <grid id="5fb51" layout-manager="FlowLayout" hgap="4" vgap="5" flow-align="0">
                         <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
@@ -140,21 +145,21 @@
                             <properties>
                               <maximumSize width="300" height="18"/>
                               <minimumSize width="220" height="18"/>
-                              <preferredSize width="300" height="18"/>
+                              <preferredSize width="500" height="18"/>
                               <text resource-bundle="translations/program_strings" key="prefs.artist"/>
                             </properties>
                           </component>
                           <component id="58c06" class="javax.swing.JTextField" binding="ArtisttextField">
                             <constraints/>
                             <properties>
-                              <preferredSize width="350" height="30"/>
+                              <preferredSize width="325" height="30"/>
                             </properties>
                           </component>
                         </children>
                       </grid>
-                      <grid id="b10e1" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                      <grid id="b10e1" layout-manager="FlowLayout" hgap="4" vgap="5" flow-align="0">
                         <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
@@ -164,21 +169,22 @@
                             <properties>
                               <maximumSize width="300" height="18"/>
                               <minimumSize width="220" height="18"/>
-                              <preferredSize width="300" height="18"/>
+                              <preferredSize width="500" height="18"/>
                               <text resource-bundle="translations/program_strings" key="prefs.copyright"/>
                             </properties>
                           </component>
                           <component id="e06db" class="javax.swing.JTextField" binding="CopyrightstextField">
                             <constraints/>
                             <properties>
-                              <preferredSize width="350" height="30"/>
+                              <preferredSize width="325" height="30"/>
+                              <text value=""/>
                             </properties>
                           </component>
                         </children>
                       </grid>
-                      <grid id="9a677" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                      <grid id="9a677" layout-manager="FlowLayout" hgap="4" vgap="5" flow-align="0">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
@@ -188,14 +194,15 @@
                             <properties>
                               <maximumSize width="300" height="18"/>
                               <minimumSize width="250" height="18"/>
-                              <preferredSize width="300" height="18"/>
+                              <preferredSize width="500" height="18"/>
                               <text resource-bundle="translations/program_strings" key="prefs.credits"/>
                             </properties>
                           </component>
                           <component id="d837c" class="javax.swing.JTextField" binding="CreditstextField">
                             <constraints/>
                             <properties>
-                              <preferredSize width="350" height="30"/>
+                              <preferredSize width="325" height="30"/>
+                              <text value=""/>
                             </properties>
                           </component>
                         </children>
@@ -211,28 +218,10 @@
                       <toolTipText value="Selecting this checkbox will overrule the &quot;Default image start directory:&quot;"/>
                     </properties>
                   </component>
-                  <vspacer id="c7e09">
-                    <constraints>
-                      <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                  </vspacer>
-                  <component id="a67bb" class="javax.swing.JCheckBox" binding="CheckVersioncheckBox">
-                    <constraints>
-                      <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text resource-bundle="translations/program_strings" key="prefs.checknewversion"/>
-                    </properties>
-                  </component>
-                  <vspacer id="d87be">
-                    <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                  </vspacer>
                   <grid id="139e2" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="5" left="5" bottom="5" right="5"/>
                     <constraints>
-                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="bevel-raised"/>
@@ -247,7 +236,7 @@
                       </component>
                       <grid id="8f89b" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                         <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
@@ -257,6 +246,7 @@
                             <properties>
                               <minimumSize width="300" height="30"/>
                               <preferredSize width="550" height="30"/>
+                              <text value=""/>
                             </properties>
                           </component>
                           <component id="195df" class="javax.swing.JButton" binding="RawViewerLocationButton">
@@ -296,8 +286,8 @@
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="prefs.languagetab"/>
             </constraints>
             <properties>
-              <minimumSize width="770" height="500"/>
-              <preferredSize width="770" height="525"/>
+              <minimumSize width="-1" height="-1"/>
+              <preferredSize width="-1" height="-1"/>
             </properties>
             <border type="none"/>
             <children>
@@ -353,7 +343,7 @@
               </grid>
             </children>
           </grid>
-          <grid id="701c4" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="701c4" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="5" left="5" bottom="5" right="5"/>
             <constraints>
               <tabbedpane title-resource-bundle="translations/program_strings" title-key="prefs.system"/>
@@ -363,7 +353,7 @@
             <children>
               <vspacer id="24a">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <grid id="e5eb" binding="filechooserpanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -478,6 +468,14 @@
                 <properties>
                   <selected value="true"/>
                   <text resource-bundle="translations/program_strings" key="prefs.useg1group"/>
+                </properties>
+              </component>
+              <component id="84ec0" class="javax.swing.JCheckBox" binding="CheckVersioncheckBox">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="prefs.checknewversion"/>
                 </properties>
               </component>
             </children>
