@@ -164,7 +164,7 @@ jExifToolGUI: j for java, GUI for Graphical User Interface to ExifTool.
 
 
 <p>jExifToolGUI is only a graphical frontend for the excellent open source
-command line tool <a href="http://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank">ExifTool</a> by Phil Harvey.
+Perl command line tool <a href="http://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank">ExifTool</a> by Phil Harvey.
 ExifTool is the real "engine", but it is a command-line tool.<br>jExifToolGUI is built around it, but it only implements part of the functionality of ExifTool. It is definitely not a complete GUI for Exiftool and can certainly not replace it as it is still ExifTool "under the hood".
 
 <p>This program is Open Source and completely free and will always stay that way, but you can donate any amount to me to show
@@ -343,9 +343,9 @@ Currently the Preferences screen has 3 tabs: General (Linux LXDE), Language (Win
         </td></tr><tr><td colspan=" 2"><center>Click the images for a full-sized view in a separate tab.</center></td></tr><table>
 <p>The <strong>"General"</strong> tab (left): 
     <ul><li>W.r.t. the "Raw Image viewer". jExiftoolGUI can show quite a lot of images like jpg/png/tif/bmp/pgm, but not Raw Images (it can convert some to jpg thumbnails for viewing in the left pane), and neither can most operating systems show Raw Images. So if you have Raw Images and you want to see them full screen, you need to install a Raw Image Viewer.</li>
-    <li>Values to always add to your images: These are 3 input fileds writing to multiple metadata tags. the xmp and iptc tags are used by Google Photos and many professional photographers. The somewhat older exif tags are meant for the same purposes but slightly outdate.</li></ul></p>
-<p>The <strong>"Language"</strong> tab (top right): jExifToolGUI can be translated. jExifToolGUI will try to start in the operating system language, but only if that is available as translated "property language".  It is currently translated in (American) English (default), Spanish, German and Dutch. On this tab you can select one of those languages if you prefer that over your system language, or in case your system language is not supported but your American English is not as good as your Spanish or German.<br>
-Many users have helped to translate the desciption of metadata tags in Exiftool. This has nothing to do with jExifToolGUI, but with ExifTool. You can select a number of languages and if the tag is translated you will see the tag in that language.<br>
+    <li>Values to always add to your images: These are 3 input fields writing to multiple metadata tags. The xmp and iptc tags are used by Google Photos and many professional photographers. The somewhat older exif tags are meant for the same purposes but slightly outdated.</li></ul></p>
+<p>The <strong>"Language"</strong> tab (top right): <ul><li>jExifToolGUI can be translated. jExifToolGUI will try to start in the operating system language, but only if that is available as translated "property language".  It is currently translated in (American) English (default), Spanish, German and Dutch. On this tab you can select one of those languages if you prefer that over your system language, or in case your system language is not supported but your American English is not as good as your Spanish or German.</li>
+<li>Many Exiftool users have helped to translate the desciption of metadata tags in Exiftool. (This has nothing to do with jExifToolGUI, but with ExifTool). You can select a number of languages and if the tag is translated you will see the tag in that language.</li></ul>
 Translating the application in your language is a volunteers/community effort. <a href="https://hvdwolf.github.io/jExifToolGUI/translate.html" target="_blank">Please help in translating this application</a>.</p>
 <p>The <strong>"System"</strong> tab (bottom right): W.r.t. the log level: Do not set it too high. That will create huge files and slow down the application (due to all the logging). The author or someone else might ask you to put it to the highest level for trobleshooting.</p>
 <p><br></p><HR>
