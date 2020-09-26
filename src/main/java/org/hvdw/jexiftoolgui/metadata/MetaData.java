@@ -286,4 +286,49 @@ public class MetaData {
             }
         }
     }
+
+    public void exportMIESidecar(JProgressBar progressBar) {
+        String commandstring = "";
+        String pathwithoutextension = "";
+        List<String> cmdparams = new ArrayList<String>();
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getSelectedFiles();
+
+        logger.info("Create MIE sidecar");
+        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.mietext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.mietitle"),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if ((choice == 0)) {
+            // choice 0: exiftool -tagsfromfile a.jpg -all:all -icc_profile a.mie
+            // choice 1: Cancel
+            boolean isWindows = Utils.isOsFromMicrosoft();
+
+            for (int index : selectedIndices) {
+                cmdparams = new ArrayList<String>();; // initialize on every file
+                cmdparams.add(Utils.platformExiftool());
+                cmdparams.add("-tagsfromfile");
+
+                if (isWindows) {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add("-all:all");
+                    cmdparams.add("-icc_profile");
+                    cmdparams.add(pathwithoutextension + ".mie");
+                } else {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                    cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                    commandstring += files[index].getPath().replace(" ", "\\ ");
+                    cmdparams.add("-all:all");
+                    cmdparams.add("-icc_profile");
+                    cmdparams.add((pathwithoutextension + ".mie").replace(" ", "\\ "));
+                }
+                // export metadata
+                logger.info("exportmiesidecar cmdparams: {}", cmdparams);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,true);
+                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+            }
+        }
+    }
+
 }

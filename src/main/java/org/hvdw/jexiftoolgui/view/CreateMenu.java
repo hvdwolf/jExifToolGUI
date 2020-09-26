@@ -45,6 +45,10 @@ public class CreateMenu {
         menuItem.setActionCommand("exportxmpsidecar");
         menuItem.addActionListener(mal);
         exportSidecarSubMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.mie"));
+        menuItem.setActionCommand("exportmiesidecar");
+        menuItem.addActionListener(mal);
+        exportSidecarSubMenu.add(menuItem);
 
 
         // metadata menu
