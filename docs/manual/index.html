@@ -163,23 +163,24 @@ copied or not from a source image, to multiple images at once. -->
 
 <!-- Undo the roman page numbering we used for the Table-of-Contents, -->
 <!-- the List-of-Tables, and the List-of-Figures. -->
-<p><strong>jExifToolGUI</strong> is a java Swing program that reads and writes metadat from files. It has some preformatted screens for exif, gps/location, xmp, gpano (and a very limited set of IPTC) tags to write/read from/to image files using <strong>ExifTool</strong> and it also supports geotagging.
+<p><strong>jExifToolGUI</strong> is a java Swing program that reads and writes metadata from files, predominantly image files. It has some preformatted screens for exif, gps/location, xmp, gpano (and a very limited set of IPTC) tags to write/read from/to image files using <strong>ExifTool</strong> and it also supports geotagging.
 Next to that you can define your own combination of metadata tags to write to your images. This gives you the option to use any tag that Exiftool supports. Next to that you can also define "brand new" non-existing tags that can be added to your files using a user-defined configuration file and user define tag combination.
 jExifToolGUI: j for java, GUI for Graphical User Interface to ExifTool.
 
 
 <p>jExifToolGUI is only a graphical frontend for the excellent open source
-Perl command line tool <a href="http://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank">ExifTool</a> by Phil Harvey.
-ExifTool is the real "engine", but it is a command-line tool.<br>jExifToolGUI is built around it, but it only implements part of the functionality of ExifTool. It is definitely not a complete GUI for Exiftool and can certainly not replace it as it is still ExifTool "under the hood".
+Perl command line <a href="http://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank">ExifTool</a> by Phil Harvey.
+ExifTool is the real "engine", but as it is a command-line tool it is to some users less userfriendly. jExifToolGUI is built around exiftool and tries to give a lot of funtionalities and flexibility without you having to remember every command line parameter. jExifToolGUI only implements part of the functionality of ExifTool. It is definitely not a complete GUI for Exiftool and can certainly not replace it (if only that ExifTool is still the engine "under the hood").
 
 <p>This program is Open Source and completely free and will always stay that way, but you can donate any amount to me to show
-your appreciation. See the Help menu in the program or click <a href="../donate.html" target="_blank">here</a>.
+your appreciation (after all it took a lot of hours to write it). See the Help menu in the program or click <a href="../donate.html" target="_blank">here</a>.
 
 <p>This manual and the jExifToolGUI version might not always run synchronously. If new functionality
 is added to the program which requires a new chapter or paragraph, the manual will be updated for that new section.
 However, not all parts of the manual will/might be updated which might lead to older program screens in the manual that might
 slightly deviate from the program version you will be working with.<br>
     Note also that you will see screen captures from several operating systems (Linux/Windows/MacOS) and/or window managers (on Linux).</p>
+    <p><strong>This manual will be worked on and slowly expand. It currently is in it's infancy.</strong></p>
 <br><br>
 <hr>
 <p><a name="Installation"></a>
@@ -346,8 +347,17 @@ Upon saving this set, you also use the file chooser to select the cfg file you c
 <p><br></p>
 <p><a name="renamephotos"></a></p>
 <h3 class="section">5.1 Rename photos</h3>
-jExifToolGUI gives you many options to rename your photos. These will explained here.
-<img src="images/renamephotos.png">
+jExifToolGUI gives you many options to rename your photos. These will explained here.<br>
+Inside the "striped" frame you see the options for dropdown boxes 1 and 2.<br>
+Renaming has 4 "subsections": the "prefix", the "suffix", "numbering" and the "extension" which give you for a filename "prefix_suffix_(numbering).extension".
+<ul>
+    <li><strong>prefix</strong>: This is the first part of the name. You have 4 basic options to choose from, where the 2 dropboxes options are depicted in the striped frame. The "String" field gives you the option to give it any name you like with spaces (not supported: quotes, double-quotes, forward slashes, backward slashes, question marks, exclamation marks, colons and semicolons (and probably more "strange" characters).</li>
+    <li><strong>suffix</strong>: This is the second part of the name. You have (currently) 10 options to choose from where some are based on the metadata in your images (these might later change to a dropdown as well). Only remark here is that "${filename}" is the original filename your camera gives to the image like for example "DSC_1234.NEF" or "P10001234.JPG", etcetera.</li>
+    <li><strong>numbering</strong>: If you use a "name" (String) or "YearMonthDate", you might get images with the same name. To prevent this you can autonumber the images, giving e.g. "exiftool-001.jpg", "exiftool-002.jpg", etcetera.</li>
+    <li><strong>extension</strong>: You can't change the extension as such (a jpg is always a jpg). Some cameras/phones use uppercase extensions, other lowercase extensions. If this bothers you, you can simply change that here.</li>
+</ul>
+
+<br><img src="images/renamephotos.png">
 <p><br></p>
 
 <p><a name="sidecar"></a></p>
@@ -374,7 +384,7 @@ Currently the Preferences screen has 3 tabs: General (Linux LXDE), Language (Win
 Translating the application in your language is a volunteers/community effort. <a href="https://hvdwolf.github.io/jExifToolGUI/translate.html" target="_blank">Please help in translating this application</a>.</p>
 <p>The <strong>"System"</strong> tab (bottom right): W.r.t. the log level: Do not set it too high. That will create huge files and slow down the application (due to all the logging). The author or someone else might ask you to put it to the highest level for trobleshooting.</p>
 <p><br></p><HR>
-<p><strong>This manual will be worked on and slowly expand. It currently is in it's infancy</strong></p>
+<p><strong>This manual will be worked on and slowly expand. It currently is in it's infancy.</strong></p>
 
 
 <Hr>
