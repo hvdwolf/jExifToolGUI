@@ -242,7 +242,7 @@ public class Utils {
      */
     public static void checkForNewVersion(String fromWhere) {
         String web_version = "";
-        boolean versioncheck = prefs.getByKey(VERSION_CHECK, false);
+        boolean versioncheck = prefs.getByKey(VERSION_CHECK, true);
 
 
         if (fromWhere.equals("menu") || versioncheck) {

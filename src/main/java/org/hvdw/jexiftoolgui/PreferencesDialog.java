@@ -277,7 +277,7 @@ public class PreferencesDialog extends JDialog {
         CreditstextField.setText(prefs.getByKey(CREDIT, ""));
         CopyrightstextField.setText(prefs.getByKey(COPYRIGHTS, ""));
         UseLastOpenedFoldercheckBox.setSelected(prefs.getByKey(USE_LAST_OPENED_FOLDER, false));
-        CheckVersioncheckBox.setSelected(prefs.getByKey(VERSION_CHECK, false));
+        CheckVersioncheckBox.setSelected(prefs.getByKey(VERSION_CHECK, true));
         metadataLanuagecomboBox.setSelectedItem(prefs.getByKey(METADATA_LANGUAGE, "exiftool - default"));
         RawViewerLocationtextField.setText(prefs.getByKey(RAW_VIEWER_PATH, ""));
         RawViewercheckBox.setSelected(prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false));
