@@ -111,10 +111,10 @@ public class MenuActionListener implements ActionListener  {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
                 break;
-            case "exportexivsidecar":
+            case "exportexifsidecar":
                 if (selectedIndicesList.size() > 0) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
-                    metaData.exportExifSidecar(progressBar);
+                    metaData.exportExifMieExvSidecar(rootPanel, progressBar, "exif");
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -123,7 +123,7 @@ public class MenuActionListener implements ActionListener  {
             case "exportxmpsidecar":
                 if (selectedIndicesList.size() > 0) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
-                    metaData.exportXMPSidecar(progressBar);
+                    metaData.exportXMPSidecar(rootPanel, progressBar);
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -132,7 +132,17 @@ public class MenuActionListener implements ActionListener  {
             case "exportmiesidecar":
                 if (selectedIndicesList.size() > 0) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.miesidecar"));
-                    metaData.exportMIESidecar(progressBar);
+                    metaData.exportExifMieExvSidecar(rootPanel, progressBar, "mie");
+                    //metaData.exportMIESidecar(progressBar);
+                    OutputLabel.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "exportexvsidecar":
+                if (selectedIndicesList.size() > 0) {
+                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exvsidecar"));
+                    metaData.exportExifMieExvSidecar(rootPanel, progressBar, "exv");
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);

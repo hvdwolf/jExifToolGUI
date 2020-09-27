@@ -134,7 +134,12 @@ ul.toc {}
        <li><a name="toc_lenses" href="#lenses">4.2 Use Lenses and create lens templates for your lenses</a></li>
        <li><a name="toc_userdefinedmetadatacombinations" href="#userdefinedmetadatacombinations">4.3 Create and use user defined metadata tag combinations</a></li>
    </ul> 
-<li><a name="toc_Preferences" href="#preferences">5 Preferences</a></li>
+    <li><a name="toc_Menu" href="#menugeneral">5 Several menu options</a></li>
+    <ul>
+        <li><a name="toc_menurenamephotos" href="#renamephotos">5.1 Rename photos</a></li>
+        <li><a name="toc_menusidecar" href="#sidecar">5.2 Sidecar exports</a></li>
+    </ul>
+<li><a name="toc_Preferences" href="#preferences">6 Preferences</a></li>
 <li><a name="toc_FDL" href="#FDL">Appendix A <acronym>GNU</acronym> Free Documentation License</a>
 </li></ul>
 </div>
@@ -220,7 +225,7 @@ All other versions: be it the MacOS bundles, or windows .exes or linux appImage 
 <hr><p><a name="quickstart"></a>
 <h2 class="chapter">3 Quick Start</h2>
 
-<p>The program consists of a left pane containing your photos, and a right pane which consists of a set of tabs. One of these tabs ("Edit") contains a subset of tabs.
+<p>The program consists of a left pane containing your photos, and a right pane which consists of a set of tabs. One of these tabs ("Edit") contains a subset of tabs (Some of the sub tabs on the "Edit Data" tab will return in this manual for further explanation).<br>
 Next to the tabs on the right, the program also has several menus which contain more functionalities.
 A number of buttons and functions will not work, and are disabled, until you have loaded at least one photo.
 Most actions on your images which you perform in the right tabs or in the menus, only work after having selected at least one, or more of the loaded photos in the left pane.
@@ -242,7 +247,8 @@ Most actions on your images which you perform in the right tabs or in the menus,
     <img src="images/EditData.png"><br>
     
 <p>All Edit sub tabs do have a "bottom line" of buttons "copy from", "save to"  and "Help"<br><img src="images/CopyFromSaveToHelp.png"><br>
-As mentioned in bullet #3: You can copy the relevant information from a selected image. Then you can write this info to many images.</p>
+As mentioned in bullet #3: You can copy the relevant information from a selected image. Then you can write this info to many images.<br>
+<strong>Note:</strong> Under (menu) "Metadata -> SideCar Exports" you can export metadata to a number of format. Especially MIE is an excellent format to export to. You can read the MIE format back in like an image and use it to "Copy from".</p>
 <p>Some of the sub tabs on the "Edit Data" tab will return in this manual for further explanation.</p>    
 
 <h4>Copy Data</h4>
@@ -254,7 +260,7 @@ As mentioned in bullet #3: You can copy the relevant information from a selected
     <img src="images/YourCommands.png">
 
 <h4>ExifTool Database</h4>
-This tab does nothing with your images. It is simply a tool to query through all the metadata categories and tags that ExifTool supports. The number of tags is dependent on your ExifTool version. The tab mentions on which version the retrieved information is based. Also here you can save your SQL queries as favorites.<br>
+This tab does nothing with your images. It is simply a tool to query through all the metadata categories and tags that ExifTool supports. The number of tags is dependent on your ExifTool version. The tab mentions on which version the retrieved information is based (this doesn't have to be the version you have installed on your laptop/pc). Also here you can save your SQL queries as favorites.<br>
     <img src="images/ExiftoolDatabase.png">
 
 <br><br>
@@ -333,8 +339,27 @@ Upon saving this set, you also use the file chooser to select the cfg file you c
 <b>Note:</b> Exiftool, thereby jExifToolGUI, can read those tags from the images at any time. You only need the config file when wanting to write the tags to your images.
 
 <p><br></p>
+<p><a name="menugeneral"></a>
+<h3 class="chapter">5 Several menu options</h3>
+<p>In this chapter some of the menu options will we explained. Some because they are somewhat more complicated. Some because you might not know what the "usefullnes" is of these options.</p>
+
+<p><br></p>
+<p><a name="renamephotos"></a></p>
+<h3 class="section">5.1 Rename photos</h3>
+jExifToolGUI gives you many options to rename your photos. These will explained here.
+<img src="images/renamephotos.png">
+<p><br></p>
+
+<p><a name="sidecar"></a></p>
+<h3 class="section">5.2 Sidecar exports</h3>
+Metadata for images and other file types can be stored in (exported to) separate metadata files. Exiftool supports and can create a number of these metadata files. The XMP "sidecar" file is probably the best know format. Other supported metadata file types are EXIF, XMP, MIE (<a href="https://exiftool.org/commentary.html" target="_blank">"The only format that doesn't suck"</a>) and EXV.
+jExifToolGUI can export all contained metadata in images and other files that Exiftool supports, and this can be used via (Menu) "Metadata-> Export metadata". Supported formats are txt, tab, xml, html and csv.
+<p>The Sidecar exports can be found via (menu) "Metadata -> Sidecar exports". The Sidecar exports are slighly different.<br><img src="images/metadatasidecar.png"><br>
+All Sidecar files can be read as "images". This makes it possible to read (for example) a .mie file together with a number of images. You use the .mie metadata file as "Copy from selected image" and use it to populate one or more images. For this reason there is no import function for these Sidecar files as you can use them as just described.
+<p><br></p>
+
 <p><a name="preferences"></a>
-<h3 class="chapter">5 Preferences</h3>
+<h3 class="chapter">6 Preferences</h3>
 The Preferences can be found under the menu "File -> Preferences"<br>
 Currently the Preferences screen has 3 tabs: General (Linux LXDE), Language (Windows), System (MacOS). See below (reduced size) images.<br>
 <table><tr valign="top"><td><a href="images/01-preferences-general.png" target="_blank"><img src="images/01-preferences-general-500.png"></a></td>

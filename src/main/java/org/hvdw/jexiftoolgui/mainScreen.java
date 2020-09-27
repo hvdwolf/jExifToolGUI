@@ -2480,7 +2480,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //metaData.copyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, selectedIndices, files, progressBar);
-                metaData.copyMetaData(getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, progressBar);
+                metaData.copyMetaData(rootPanel, getCopyMetaDataRadiobuttons(), getCopyMetaDataCheckBoxes(), SelectedCopyFromImageIndex, progressBar);
             }
         });
         CopyHelpbutton.setActionCommand("CopyHb");

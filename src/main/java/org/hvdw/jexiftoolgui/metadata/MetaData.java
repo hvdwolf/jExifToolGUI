@@ -93,7 +93,7 @@ public class MetaData {
         }
     }
 
-    public void copyMetaData(JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
+    public void copyMetaData(JPanel rootpanel, JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
         //int selectedRow = MyVariables.getSelectedRow();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
@@ -183,11 +183,11 @@ public class MetaData {
                 CommandRunner.runCommandWithProgressBar(params, progressBar);
             }
         } else {
-            JOptionPane.showMessageDialog(null, ProgramTexts.NoOptionSelected, "No copy option selected", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(rootpanel, ProgramTexts.NoOptionSelected, "No copy option selected", JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    public void exportXMPSidecar(JProgressBar progressBar) {
+    public void exportXMPSidecar(JPanel rootpanel, JProgressBar progressBar) {
         String commandstring = "";
         String pathwithoutextension = "";
         List<String> cmdparams = new ArrayList<String>();
@@ -197,7 +197,7 @@ public class MetaData {
         File[] files = MyVariables.getSelectedFiles();
 
         logger.info("Create xmp sidecar");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
+        int choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         if (!(choice == 2)) {
@@ -242,23 +242,46 @@ public class MetaData {
                 CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,false);
                 //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
             }
+            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    public void exportExifSidecar(JProgressBar progressBar) {
+
+    public void exportExifMieExvSidecar(JPanel rootpanel, JProgressBar progressBar, String exportoption) {
         String commandstring = "";
         String pathwithoutextension = "";
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getSelectedFiles();
+        int choice = 999;
+        String logstring = "";
+        String export_extension = exportoption.toLowerCase().trim();
 
-        logger.info("Create exif sidecar");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftitle"),
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
+        switch (exportoption.toLowerCase()) {
+            case "mie":
+                logger.info("Create MIE sidecar");
+                logstring = "export mie sidecar cmdparams: {}";
+                choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.mietext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.mietitle"),
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                break;
+            case "exv":
+                logger.info("Create EXV sidecar");
+                logstring = "export exv sidecar cmdparams: {}";
+                choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.exvtext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.exvtitle"),
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                break;
+            case "exif":
+                logger.info("Create EXIF sidecar");
+                logstring = "export exif sidecar cmdparams: {}";
+                choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftitle"),
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                break;
+        }
         if ((choice == 0)) {
-            // choice 0: exiftool -tagsfromfile SRC.EXT -exif DST.exif
+            // choice 0: exiftool -tagsfromfile a.jpg -all:all -icc_profile a.mie
+            // exiftool -tagsfromfile a.jpg -all:all -icc_profile a.exv
+            // exiftool -tagsfromfile a.jpg -all:all -icc_profile a.exif
             // choice 1: Cancel
             boolean isWindows = Utils.isOsFromMicrosoft();
 
@@ -270,64 +293,27 @@ public class MetaData {
                 if (isWindows) {
                     pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
-                    cmdparams.add("-exif");
-                    cmdparams.add(pathwithoutextension + ".exif");
+                    cmdparams.add("-all:all");
+                    if (!"exif".equals(export_extension)) {
+                        cmdparams.add("-icc_profile");
+                    }
+                    cmdparams.add(pathwithoutextension + "." + export_extension);
                 } else {
                     pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
                     cmdparams.add(files[index].getPath().replace(" ", "\\ "));
                     commandstring += files[index].getPath().replace(" ", "\\ ");
-                    cmdparams.add("-exif");
-                    cmdparams.add((pathwithoutextension + ".exif").replace(" ", "\\ "));
+                    cmdparams.add("-all:all");
+                    if (!"exif".equals(export_extension)) {
+                        cmdparams.add("-icc_profile");
+                    }
+                    cmdparams.add((pathwithoutextension + "." + export_extension).replace(" ", "\\ "));
                 }
                 // export metadata
-                logger.info("exportexifsidecar cmdparams: {}", cmdparams);
+                logger.info(logstring, cmdparams);
                 CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,false);
                 //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
             }
-        }
-    }
-
-    public void exportMIESidecar(JProgressBar progressBar) {
-        String commandstring = "";
-        String pathwithoutextension = "";
-        List<String> cmdparams = new ArrayList<String>();
-        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
-        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
-
-        logger.info("Create MIE sidecar");
-        int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.mietext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.mietitle"),
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-        if ((choice == 0)) {
-            // choice 0: exiftool -tagsfromfile a.jpg -all:all -icc_profile a.mie
-            // choice 1: Cancel
-            boolean isWindows = Utils.isOsFromMicrosoft();
-
-            for (int index : selectedIndices) {
-                cmdparams = new ArrayList<String>();; // initialize on every file
-                cmdparams.add(Utils.platformExiftool());
-                cmdparams.add("-tagsfromfile");
-
-                if (isWindows) {
-                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
-                    cmdparams.add(files[index].getPath().replace("\\", "/"));
-                    cmdparams.add("-all:all");
-                    cmdparams.add("-icc_profile");
-                    cmdparams.add(pathwithoutextension + ".mie");
-                } else {
-                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
-                    cmdparams.add(files[index].getPath().replace(" ", "\\ "));
-                    commandstring += files[index].getPath().replace(" ", "\\ ");
-                    cmdparams.add("-all:all");
-                    cmdparams.add("-icc_profile");
-                    cmdparams.add((pathwithoutextension + ".mie").replace(" ", "\\ "));
-                }
-                // export metadata
-                logger.info("exportmiesidecar cmdparams: {}", cmdparams);
-                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,true);
-                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
-            }
+            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

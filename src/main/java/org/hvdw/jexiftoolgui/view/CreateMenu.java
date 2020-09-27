@@ -38,7 +38,7 @@ public class CreateMenu {
 
         JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exif"));
-        menuItem.setActionCommand("exportexivsidecar");
+        menuItem.setActionCommand("exportexifsidecar");
         menuItem.addActionListener(mal);
         exportSidecarSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.xmp"));
@@ -47,6 +47,10 @@ public class CreateMenu {
         exportSidecarSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.mie"));
         menuItem.setActionCommand("exportmiesidecar");
+        menuItem.addActionListener(mal);
+        exportSidecarSubMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exv"));
+        menuItem.setActionCommand("exportexvsidecar");
         menuItem.addActionListener(mal);
         exportSidecarSubMenu.add(menuItem);
 
