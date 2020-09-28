@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-09-28 1.6.1
+* (Menu) Help -> Online manual added. I'm slowly working on an online manual (in English).
+* Added sidecar exports of MIE (["The only metadata format that doesn't suck"](https://exiftool.org/commentary.html)) and EXV (next to xmp and exif). *(All Sidecar files can be read as "images". This makes it possible to read (for example) a .mie file together with a number of images. You use the .mie metadata file as "Copy from selected image" and use it to populate one or more images. For this reason there is no import function for these Sidecar files as you can use them as just described.)*
+* Fix Preferences screen: Somehow 2 options were "falling off the screen": "Credits" under "Always add.." and "Check for new jExifToolGUI version on program start" (under System).
+
 ## 2020-09-20 1.6.0
 * New menu "Tools"
     * User defined Metadata combis
