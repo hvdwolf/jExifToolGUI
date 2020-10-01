@@ -93,10 +93,10 @@ public class EditLensdata {
                     lensFields[2].setText(cells[1].trim());
                 }
                 if ("FocalLength".equals(SpaceStripped)) {
-                    lensFields[3].setText(cells[1].replace(" mm",""));
+                    lensFields[3].setText(cells[1].replace(" mm","").trim());
                 }
                 if (SpaceStripped.toLowerCase().contains("focallengthin35mmformat")) { // FocalLengthIn35mmFormat
-                    lensFields[4].setText(cells[1].replace(" mm",""));
+                    lensFields[4].setText(cells[1].replace(" mm","").trim());
                 }
                 if (SpaceStripped.contains("FNumber")) {
                     lensFields[5].setText(cells[1].trim());
@@ -275,18 +275,18 @@ public class EditLensdata {
                             +"values('"
                             + chosenValues[0] + "','"
                             + chosenValues[1] + "','"
-                            + LensFields[0].getText() + "','"
-                            + LensFields[1].getText() + "','"
-                            + LensFields[2].getText() + "','"
-                            + LensFields[3].getText() + "','"
-                            + LensFields[4].getText() + "','"
-                            + LensFields[5].getText() + "','"
-                            + LensFields[6].getText() + "','"
-                            + LensFields[7].getText() + "','"
-                            + LensFields[8].getText() + "','"
-                            + LensFields[9].getText() + "','"
-                            + LensFields[10].getText() + "','"
-                            + LensFields[11].getText() + "','"
+                            + LensFields[0].getText().trim() + "','"
+                            + LensFields[1].getText().trim() + "','"
+                            + LensFields[2].getText().trim() + "','"
+                            + LensFields[3].getText().trim() + "','"
+                            + LensFields[4].getText().trim() + "','"
+                            + LensFields[5].getText().trim() + "','"
+                            + LensFields[6].getText().trim() + "','"
+                            + LensFields[7].getText().trim() + "','"
+                            + LensFields[8].getText().trim() + "','"
+                            + LensFields[9].getText().trim() + "','"
+                            + LensFields[10].getText().trim() + "','"
+                            + LensFields[11].getText().trim() + "','"
                             + meteringmodecomboBox.getSelectedItem() + "')";
                     logger.info("insert sql: " + sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql);
