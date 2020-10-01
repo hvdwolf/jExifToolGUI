@@ -1,6 +1,6 @@
 # Changelog
 
-##2020-10-01 1.6.2
+## 2020-10-01 1.6.2
 * Speed up loading of thumbnails with approx. 25% for JPGs by first trying to use an embedded thumbnail.
 * Display preview for MP4 movies as recorded by modern cameras/phones as they contain a preview image (Not for any other (downloaded) MP4 or mkv, or created from a Video editor)
 * Fix: Edit tab -> Lens tab: "Focal length" and "focal length in 35 mm" were not correctly trimmed. (Some cameras place spaces before and after the focal length to make sure that programs can read it as a string.)
