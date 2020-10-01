@@ -342,89 +342,6 @@ public class Utils {
         return filepath.replaceFirst("[.][^.]+$", "");
     }
 
-    /*
-    * Create the icon
-    */
-    static ImageIcon createIcon(File file) {
-        ImageIcon icon = null;
-        int[] basicdata = {0, 0, 0};
-        boolean bde = false;
-        try {
-            try {
-                basicdata = ImageFunctions.getbasicImageData(file);
-                //logger.info("Width {} Height {} Orientation {}", String.valueOf(basicdata[0]), String.valueOf(basicdata[1]), String.valueOf(basicdata[2]));
-            } catch (NullPointerException npe) {
-                npe.printStackTrace();
-                bde = true;
-
-            }
-            logger.trace("after getbasicdata");
-            if (bde) {
-                // We had some error. Mostly this is the orientation
-                basicdata[2]= 1;
-            }
-            BufferedImage img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
-            BufferedImage resizedImg =  ImageFunctions.scaleImageToContainer(img, 160, 160);
-            logger.trace("after scaleImageToContainer");
-            if (basicdata[2] > 1) {
-                resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
-            }
-
-            logger.trace("after rotate");
-
-            icon = new ImageIcon(resizedImg);
-            return icon;
-        } catch (IIOException iex) {
-            icon = null;
-        } catch (IOException ex) {
-            logger.error("Error loading image", ex);
-            icon = null;
-        }
-        return icon;
-    }
-
-    /*
-    / On Mac we let sips do the conversion of tif and heic images to previews
-    / like "sips -s format JPEG -Z 160 test.heic --out test.jpg"
-     */
-    static String sipsConvertToJPG(File file, String size) {
-        //ImageIcon icon = null;
-        //Runtime runtime = Runtime.getRuntime();
-        List<String> cmdparams = new ArrayList<String>();
-        String exportResult = "Success";
-
-        cmdparams.add("/usr/bin/sips");
-        cmdparams.add("-s");
-        cmdparams.add("format");
-        cmdparams.add("JPEG");
-        if (size.toLowerCase().equals("thumb")) {
-            cmdparams.add("-Z");
-            cmdparams.add("160");
-        }
-        // Get the file
-        cmdparams.add(file.getPath().replace(" ", "\\ "));
-        //cmdparams.add("\"" + file.getPath() + "\"");
-        cmdparams.add("--out");
-
-        // Get the temporary directory
-        String tempWorkDir = MyVariables.gettmpWorkFolder();
-        // Get the file name without extension
-        String fileName = file.getName();
-        int pos = fileName.lastIndexOf(".");
-        if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
-            fileName = fileName.substring(0, pos);
-        }
-        cmdparams.add(tempWorkDir + File.separator + fileName + ".jpg");
-        logger.info("final sips command: " + cmdparams.toString());
-
-        try {
-            String cmdResult = CommandRunner.runCommand(cmdparams);
-            logger.trace("cmd result from export previews for single RAW" + cmdResult);
-        } catch (IOException | InterruptedException ex) {
-            logger.debug("Error executing sipd command to convert to jpg");
-        }
-        return exportResult;
-    }
 
     /*
      * Display the loaded files with icon and name
@@ -474,7 +391,7 @@ public class Utils {
             //logger.trace(file.getName().replace("\\", "/"));
             bSimpleExtension = false;
             filename = file.getName().replace("\\", "/");
-            logger.trace("Now working on image: " +filename);
+            logger.debug("Now working on image: " +filename);
             String filenameExt = getFileExtension(filename);
             if (filenameExt.toLowerCase().equals("heic")) {
                 heicextension = true;
@@ -489,7 +406,7 @@ public class Utils {
             if ( (heicextension) && currentOsName == APPLE) { // For Apple we deviate
 //            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
                 logger.info("do sipsConvertToJPG for {}", filename);
-                String exportResult = sipsConvertToJPG(file, "thumb");
+                String exportResult = ImageFunctions.sipsConvertToJPG(file, "thumb");
                 if ("Success".equals(exportResult)) {
                     logger.info("back from sipsconvert: result {}", exportResult);
                     //Hoping we have a thumbnail
@@ -498,7 +415,7 @@ public class Utils {
                     if (thumbfile.exists()) {
                         // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
                         logger.trace("create thumb nr1");
-                        icon = createIcon(thumbfile);
+                        icon = ImageFunctions.createIcon(thumbfile);
                         if (icon != null) {
                             // display our created icon from the thumbnail
                             ImgFilenameRow[0] = icon;
@@ -508,11 +425,19 @@ public class Utils {
                 //reset our heic flag
                 heicextension = false;
             } else if (bSimpleExtension) {
-                icon = createIcon(file);
+                /*if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+                    String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file, "RAW");
+                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    icon = ImageFunctions.createIcon(file);
+                } else {
+                    icon = ImageFunctions.createIcon(file);
+                } */
+                icon = ImageFunctions.createIcon(file);
                 ImgFilenameRow[0] = icon;
             } else { //We have a RAW image extension or tiff or something else like audio/video
                 // Export previews for current (RAW) image to tempWorkfolder
-                String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);
+                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
                 if ("Success".equals(exportResult)) {
                     //Hoping we have a thumbnail
                     thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
@@ -521,7 +446,8 @@ public class Utils {
                     if (thumbfile.exists()) {
                         // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
                         logger.trace("create thumb nr1");
-                        icon = createIcon(thumbfile);
+                        //icon = ImageFunctions.createIcon(file, thumbfile);
+                        icon = ImageFunctions.createIcon(thumbfile);
                         if (icon != null) {
                             // display our created icon from the thumbnail
                             ImgFilenameRow[0] = icon;
@@ -532,7 +458,8 @@ public class Utils {
                         if (thumbfile.exists()) {
                             // Create icon of this Preview
                             logger.trace("create thumb nr2");
-                            icon = createIcon(thumbfile);
+                            //icon = ImageFunctions.createIcon(file, thumbfile);
+                            icon = ImageFunctions.createIcon(thumbfile);
                             if (icon != null) {
                                 // display our created icon from the preview
                                 ImgFilenameRow[0] = icon;
@@ -542,7 +469,8 @@ public class Utils {
                             thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                             if (thumbfile.exists()) {
                                 // Create icon of this Preview
-                                icon = createIcon(thumbfile);
+                                //icon = ImageFunctions.createIcon(file, thumbfile);
+                                icon = ImageFunctions.createIcon(thumbfile);
                                 if (icon != null) {
                                     // display our created icon from the preview
                                     ImgFilenameRow[0] = icon;
@@ -552,7 +480,7 @@ public class Utils {
                                 thumbfile = new File(MyVariables.getcantdisplaypng());
                                 if (thumbfile.exists()) {
                                     // Create icon of this Preview
-                                    icon = createIcon(thumbfile);
+                                    icon = ImageFunctions.createIcon(thumbfile);
                                     if (icon != null) {
                                         // display our created icon from the preview
                                         ImgFilenameRow[0] = icon;
@@ -567,7 +495,7 @@ public class Utils {
                     thumbfile = new File(MyVariables.getcantdisplaypng());
                     if (thumbfile.exists()) {
                         // Create icon of this Preview
-                        icon = createIcon(thumbfile);
+                        icon = ImageFunctions.createIcon(thumbfile);
                         if (icon != null) {
                             // display our created icon from the preview
                             ImgFilenameRow[0] = icon;
@@ -950,7 +878,7 @@ public class Utils {
                 } else if ( filenameExt.toLowerCase().equals("heic") && (currentOsName == APPLE) ) { // We first need to use sips to convert
                     File file = new File (MyVariables.getSelectedImagePath());
                     String filename = file.getName();
-                    String exportResult = sipsConvertToJPG(file, "full");
+                    String exportResult = ImageFunctions.sipsConvertToJPG(file, "full");
                     String dispfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
                     File dispfile = new File(MyVariables.gettmpWorkFolder() + File.separator + dispfilename);
                 }
@@ -1116,7 +1044,7 @@ public class Utils {
     * This method is used to try to get a preview image for those (RAW) images that can't be converted directly to be displayed in the left images column
     * We will try to extract a jpg from the RAW to the tempdir and resize/display that one
      */
-    public static String ExportPreviewsThumbnailsForIconDisplay(File file) {
+/*    public static String ExportPreviewsThumbnailsForIconDisplay(File file) {
         List<String> cmdparams = new ArrayList<String>();
         String exportResult = "Success";
 
@@ -1148,7 +1076,7 @@ public class Utils {
             exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
         }
         return exportResult;
-    }
+    } */
 
 
     @SuppressWarnings("SameParameterValue")

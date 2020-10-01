@@ -510,16 +510,30 @@ public class mainScreen {
                 logger.debug("AFTER load folder using AWT file dialog");
             }
         } else { // files dropped onto our app
-            OutputLabel.setText("Files dropped on the app");
+            OutputLabel.setText("Loading files dropped onto the app");
             files = MyVariables.getSelectedFiles();
         }
         if (files != null) {
             lblLoadedFiles.setText(String.valueOf(files.length));
-            logger.trace("After loafing images, loading files or dropping files: no. of files > 0");
+            logger.debug("After loading images, loading files or dropping files: no. of files > 0");
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
+                    int jpegcounter = 0;
+                    String filename;
+                    for (File file : files) {
+                        filename = file.getName().replace("\\", "/");
+                        logger.debug("Checking on extension for JPG extraction on image: " +filename);
+                        String filenameExt = Utils.getFileExtension(filename);
+                        if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+                            jpegcounter++;
+                        }
+                    }
+                    if (jpegcounter >= 3) {
+                        // Always try to extract thumbnails and previews of selected images. This normally only works for JPGs and RAWs
+                        ImageFunctions.extractThumbnails();
+                    }
                     Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
                     MyVariables.setSelectedRow(0);
                     String[] params = whichRBselected();

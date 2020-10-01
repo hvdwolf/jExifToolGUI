@@ -3,12 +3,15 @@ package org.hvdw.jexiftoolgui.controllers;
 import com.twelvemonkeys.image.AffineTransformOp;
 
 import org.hvdw.jexiftoolgui.MyConstants;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -17,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
@@ -24,7 +28,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 public class ImageFunctions {
     // Almost 100% copied from Dennis Damico's FastPhotoTagger
     // And he copied it almost 100% from Wyat Olsons original ImageTagger Imagefunctions (2005)
-    // And then extended with the TwelveMonkeys imageIO
+    // And I then extended it with the TwelveMonkeys imageIO libraries
 
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ImageFunctions.class);
 
@@ -146,6 +150,198 @@ public class ImageFunctions {
         }
             return basicdata;
     }
+
+    /*
+    / This method is used to mass extract thumbnails from JPG images, either by load folder, load images or "dropped" images.
+     */
+    public static void extractThumbnails() {
+        String exiftool = Utils.platformExiftool();
+        List<String> cmdparams = new ArrayList<String>();
+        cmdparams.add(exiftool.trim());
+
+        boolean isWindows = Utils.isOsFromMicrosoft();
+        File[] files = MyVariables.getSelectedFiles();
+
+        // Get the temporary directory
+        String tempWorkDir = MyVariables.gettmpWorkFolder();
+
+        cmdparams.add("-a");
+        cmdparams.add("-m");
+        cmdparams.add("-b");
+        cmdparams.add("-W");
+        cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
+        cmdparams.add("-preview:ThumbnailImage");
+        //cmdparams.add("-preview:PreviewImage");
+
+        for (File file : files) {
+            if (isWindows) {
+                cmdparams.add(file.getPath().replace("\\", "/"));
+            } else {
+                cmdparams.add(file.getPath());
+            }
+        }
+        try {
+            String cmdResult = CommandRunner.runCommand(cmdparams);
+            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+        } catch (IOException | InterruptedException ex) {
+            logger.error("Error executing command to export thumbnails and previews for selected images");
+            //exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
+        }
+
+    }
+
+    /*
+     * This method is used to try to get a preview image for those (RAW) images that can't be converted directly to be displayed in the left images column
+     * We will try to extract a jpg from the RAW to the tempdir and resize/display that one
+     */
+    public static String ExportPreviewsThumbnailsForIconDisplay(File file) {
+        List<String> cmdparams = new ArrayList<String>();
+        String exportResult = "Success";
+
+        cmdparams.add(Utils.platformExiftool());
+        boolean isWindows = Utils.isOsFromMicrosoft();
+
+        // Get the temporary directory
+        String tempWorkDir = MyVariables.gettmpWorkFolder();
+
+        cmdparams.add("-a");
+        cmdparams.add("-m");
+        cmdparams.add("-b");
+        cmdparams.add("-W");
+        cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
+        cmdparams.add("-preview:ThumbnailImage");
+        cmdparams.add("-preview:PreviewImage");
+        // dont' do _JpgFromRaw.jpg as all RAWs have either a thumb or a preview and a _JpgFromRaw.jpg is again quite big
+        /*if ("RAW".equals(type)) {
+            cmdparams.add("-preview:PreviewImage");
+        }*/
+
+        if (isWindows) {
+            cmdparams.add(file.getPath().replace("\\", "/"));
+        } else {
+            cmdparams.add(file.getPath());
+        }
+
+        try {
+            String cmdResult = CommandRunner.runCommand(cmdparams);
+            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing command to export previews for one RAW");
+            exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
+        }
+        return exportResult;
+    }
+
+    /*
+     * Create the icon
+     */
+    public static ImageIcon createIcon(File file) {
+        ImageIcon icon = null;
+        int[] basicdata = {0, 0, 0};
+        boolean bde = false;
+        String thumbfilename = "";
+        File thumbfile = null;
+        String filename = "";
+        BufferedImage img = null;
+        BufferedImage resizedImg = null;
+
+        filename = file.getName().replace("\\", "/");
+        logger.debug("Now working on image: " +filename);
+        String filenameExt = Utils.getFileExtension(filename);
+        try {
+            try {
+                // We use exiftool to get width, height and orientation from the original image
+                // (as it is not always available in the thumbnail or preview)
+                basicdata = ImageFunctions.getbasicImageData(file);
+                logger.debug("Width {} Height {} Orientation {}", String.valueOf(basicdata[0]), String.valueOf(basicdata[1]), String.valueOf(basicdata[2]));
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+                bde = true;
+
+            }
+            logger.trace("after getbasicdata");
+            if ((bde) || (basicdata[2]== 999)) {
+                // We had some error. Mostly this is the orientation
+                basicdata[2]= 1;
+            }
+            // Check whether we have a thumbnail
+            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+            thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+            if (thumbfile.exists()) {
+                logger.debug("precreated thumbnail found: {}", thumbfile.toString());
+                img = ImageIO.read(new File(thumbfile.getPath().replace("\\", "/")));
+            } else {
+                logger.debug("precreated thumbnail NOT found: {}", thumbfile.toString());
+                img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
+            }
+            if (basicdata[0] > 160) {
+                resizedImg = ImageFunctions.scaleImageToContainer(img, 160, 160);
+                logger.trace("after scaleImageToContainer");
+            } else {
+                // In some circumstances we even have images < 160 width
+                resizedImg = img;
+            }
+            if ( basicdata[2] > 1 ) { //We use 999 if we can' t find an orientation
+                resizedImg = ImageFunctions.rotate(resizedImg, basicdata[2]);
+            }
+
+
+            logger.trace("after rotate");
+
+            icon = new ImageIcon(resizedImg);
+            return icon;
+        } catch (IIOException iex) {
+            icon = null;
+        } catch (IOException ex) {
+            logger.error("Error loading image", ex);
+            icon = null;
+        }
+        return icon;
+    }
+
+    /*
+    / On Mac we let sips do the conversion of tif and heic images to previews
+    / like "sips -s format JPEG -Z 160 test.heic --out test.jpg"
+     */
+    public static String sipsConvertToJPG(File file, String size) {
+        //ImageIcon icon = null;
+        //Runtime runtime = Runtime.getRuntime();
+        List<String> cmdparams = new ArrayList<String>();
+        String exportResult = "Success";
+
+        cmdparams.add("/usr/bin/sips");
+        cmdparams.add("-s");
+        cmdparams.add("format");
+        cmdparams.add("JPEG");
+        if (size.toLowerCase().equals("thumb")) {
+            cmdparams.add("-Z");
+            cmdparams.add("160");
+        }
+        // Get the file
+        cmdparams.add(file.getPath().replace(" ", "\\ "));
+        //cmdparams.add("\"" + file.getPath() + "\"");
+        cmdparams.add("--out");
+
+        // Get the temporary directory
+        String tempWorkDir = MyVariables.gettmpWorkFolder();
+        // Get the file name without extension
+        String fileName = file.getName();
+        int pos = fileName.lastIndexOf(".");
+        if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+            fileName = fileName.substring(0, pos);
+        }
+        cmdparams.add(tempWorkDir + File.separator + fileName + ".jpg");
+        logger.info("final sips command: " + cmdparams.toString());
+
+        try {
+            String cmdResult = CommandRunner.runCommand(cmdparams);
+            logger.trace("cmd result from export previews for single RAW" + cmdResult);
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing sipd command to convert to jpg");
+        }
+        return exportResult;
+    }
+
 
     /**
      * Resizes an image using a Graphics2D object backed by a BufferedImage.
