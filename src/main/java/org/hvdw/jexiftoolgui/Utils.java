@@ -229,7 +229,7 @@ public class Utils {
             AlwaysAddParams.add(copyright);
         }
         AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);
-        AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
+        //AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
         AlwaysAddParams.add("-xmp:Software=jExifToolGUI " + ProgramTexts.Version);
 
         return AlwaysAddParams;
@@ -517,59 +517,64 @@ public class Utils {
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    //static void getImageInfoFromSelectedFile(String[] whichInfo, int selectedRow, File[] files, JTable ListexiftoolInfotable) {
     static void getImageInfoFromSelectedFile(String[] whichInfo, File[] files, JTable ListexiftoolInfotable) {
 
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
         int selectedRow = MyVariables.getSelectedRow();
+        List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
 
-        logger.debug("selectedRow: {}", String.valueOf(selectedRow));
-        if (isOsFromMicrosoft()) {
-            fpath = files[selectedRow].getPath().replace("\\", "/");
-        } else {
-            fpath = files[selectedRow].getPath();
-        }
-        //Testje metadata extractor
-        /*logger.info("\n\nStart of test metadata extractor {}\n\n", fpath);
-        File imgfile = new File(files[selectedRow].getPath());
-        ImageFunctions.getbasicImageData(imgfile); */
+        if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
+            logger.debug("selectedRow: {}", String.valueOf(selectedRow));
+            if (isOsFromMicrosoft()) {
+                fpath = files[selectedRow].getPath().replace("\\", "/");
+            } else {
+                fpath = files[selectedRow].getPath();
+            }
+            //Testje metadata extractor
+            /*logger.info("\n\nStart of test metadata extractor {}\n\n", fpath);
+            File imgfile = new File(files[selectedRow].getPath());
+            ImageFunctions.getbasicImageData(imgfile); */
 
-        // Need to build exiftool prefs check
-        MyVariables.setSelectedImagePath(fpath);
-        Application.OS_NAMES currentOsName = getCurrentOsName();
+            // Need to build exiftool prefs check
+            MyVariables.setSelectedImagePath(fpath);
+            Application.OS_NAMES currentOsName = getCurrentOsName();
 
-        cmdparams.add(Utils.platformExiftool().trim());
-        // Check if we want to use G1 instead of G
-        boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
-        if (useGroup1) {
-            for (int i =0; i < whichInfo.length; i++) {
-                if ("-G".equals(whichInfo[i])) {
-                    whichInfo[i] = whichInfo[i].replace("-G", "-G1");
+            cmdparams.add(Utils.platformExiftool().trim());
+            // Check if we want to use G1 instead of G
+            boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+            if (useGroup1) {
+                for (int i = 0; i < whichInfo.length; i++) {
+                    if ("-G".equals(whichInfo[i])) {
+                        whichInfo[i] = whichInfo[i].replace("-G", "-G1");
+                    }
                 }
             }
-        }
-        // Check for chosen metadata language
-        if (!"".equals(getmetadataLanguage())) {
-            cmdparams.add("-lang");
-            cmdparams.add(getmetadataLanguage());
-        }
-        // Check if user wants to see decimal degrees
-        if (UseDecimalDegrees()) {
-            cmdparams.add("-c");
-            cmdparams.add("%.6f");
-        }
-        cmdparams.addAll(Arrays.asList(whichInfo));
-        logger.trace("image file path: {}", fpath);
-        cmdparams.add(MyVariables.getSelectedImagePath());
+            // Check for chosen metadata language
+            if (!"".equals(getmetadataLanguage())) {
+                cmdparams.add("-lang");
+                cmdparams.add(getmetadataLanguage());
+            }
+            // Check if user wants to see decimal degrees
+            if (UseDecimalDegrees()) {
+                cmdparams.add("-c");
+                cmdparams.add("%.6f");
+            }
+            cmdparams.addAll(Arrays.asList(whichInfo));
+            logger.trace("image file path: {}", fpath);
+            cmdparams.add(MyVariables.getSelectedImagePath());
 
-        logger.trace("before runCommand: {}", cmdparams);
-        try {
-            String res = CommandRunner.runCommand(cmdparams);
-            logger.trace("res is {}", res);
+            logger.trace("before runCommand: {}", cmdparams);
+            try {
+                String res = CommandRunner.runCommand(cmdparams);
+                logger.trace("res is {}", res);
+                displayInfoForSelectedImage(res, ListexiftoolInfotable);
+            } catch (IOException | InterruptedException ex) {
+                logger.error("Error executing command", ex);
+            }
+        } else { // We have multiple images selected. There is no direct link to the images anymore, apart from the fact that the last selected will be displayed
+            String res = "jExifToolGUI " + ProgramTexts.Version + "\tmultiple images selected\tSelect appropriate option";
             displayInfoForSelectedImage(res, ListexiftoolInfotable);
-        } catch (IOException | InterruptedException ex) {
-            logger.error("Error executing command", ex);
         }
 
     }
