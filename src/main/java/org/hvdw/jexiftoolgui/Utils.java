@@ -572,8 +572,12 @@ public class Utils {
             } catch (IOException | InterruptedException ex) {
                 logger.error("Error executing command", ex);
             }
-        } else { // We have multiple images selected. There is no direct link to the images anymore, apart from the fact that the last selected will be displayed
-            String res = "jExifToolGUI " + ProgramTexts.Version + "\tmultiple images selected\tSelect appropriate option";
+        } else {
+            // We have multiple images selected. There is no direct link to the images anymore,
+            // apart from the fact that the last image is automatically selected
+            String res = "jExifToolGUI\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfiles") + "\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.seloption");
             displayInfoForSelectedImage(res, ListexiftoolInfotable);
         }
 

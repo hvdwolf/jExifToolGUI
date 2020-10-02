@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
@@ -157,7 +158,10 @@ public class StandardFileIO {
      */
     public static File[] getFileNames(JPanel myComponent) {
         File[] files = null;
+        javax.swing.filechooser.FileFilter imgFilter;
+        FileFilter imageFormats = null;
 
+        String userDefinedFilefilter = prefs.getByKey(USER_DEFINED_FILE_FILTER, "");
         String startFolder = getFolderPathToOpenBasedOnPreferences();
         logger.debug("startfolder {}", startFolder);
 
@@ -165,13 +169,26 @@ public class StandardFileIO {
         //final JFileChooser chooser = new NativeJFileChooser(startFolder);
 
         //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
-        javax.swing.filechooser.FileFilter imgFilter = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.images"), MyConstants.SUPPORTED_IMAGES);
+        if (!"".equals(userDefinedFilefilter)) {
+            String[] uDefFilefilter = userDefinedFilefilter.split(",");
+            for (int i = 0; i < uDefFilefilter.length; i++)
+                uDefFilefilter[i] = uDefFilefilter[i].trim();
+
+            logger.info("String userDefinedFilefilter {} ; String[] uDefFilefilter {}", userDefinedFilefilter, Arrays.toString(uDefFilefilter));
+            imgFilter = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.userdefinedfilter"), uDefFilefilter);
+            imageFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.images"), MyConstants.SUPPORTED_IMAGES);
+        } else {
+            imgFilter = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.images"), MyConstants.SUPPORTED_IMAGES);
+        }
         FileFilter audioFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.audioformats"), MyConstants.SUPPORTED_AUDIOS);
         FileFilter videoFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.videoformats"), MyConstants.SUPPORTED_VIDEOS);
         FileFilter supFormats = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("stfio.allformats"), MyConstants.SUPPORTED_FORMATS);
         chooser.setMultiSelectionEnabled(true);
         chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadimages"));
         chooser.setFileFilter(imgFilter);
+        if (!"".equals(userDefinedFilefilter)) {
+            chooser.addChoosableFileFilter(imageFormats);
+        }
         chooser.addChoosableFileFilter(audioFormats);
         chooser.addChoosableFileFilter(videoFormats);
         chooser.addChoosableFileFilter(supFormats);
@@ -189,27 +206,41 @@ public class StandardFileIO {
 
         JFrame dialogframe = new JFrame("");
         String startFolder = getFolderPathToOpenBasedOnPreferences();
+        String userDefinedFilefilter = prefs.getByKey(USER_DEFINED_FILE_FILTER, "");
 
         //logger.info("startfolder {}", startFolder);
-        FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadimages"), FileDialog.LOAD);
-        chooser.setDirectory(startFolder);
-        chooser.setMultipleMode(true);
-        chooser.setFilenameFilter(new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String ext) {
-                for (int i = 0; i < MyConstants.SUPPORTED_FORMATS.length; i++) {
-                    if (ext.toLowerCase().endsWith(MyConstants.SUPPORTED_FORMATS[i])) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+        FileDialog chooser = new FileDialog(new Frame(), ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadimages"), FileDialog.LOAD);
         Application.OS_NAMES os = Utils.getCurrentOsName();
         if (os == APPLE) {
             System.setProperty("apple.awt.fileDialogForDirectories", "false");
             System.setProperty("apple.awt.use-file-dialog-packages", "true");
         }
+        chooser.setDirectory(startFolder);
+        chooser.setMultipleMode(true);
+
+        chooser.setFilenameFilter(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String ext) {
+                if (!"".equals(userDefinedFilefilter)) {
+                    String[] uDefFilefilter = userDefinedFilefilter.split(",");
+                    for (int i = 0; i < uDefFilefilter.length; i++)
+                        uDefFilefilter[i] = uDefFilefilter[i].trim();
+                    for (int i = 0; i < uDefFilefilter.length; i++) {
+                        if (ext.toLowerCase().endsWith(uDefFilefilter[i])) {
+                            return true;
+                        }
+                    }
+                    return false;
+                } else {
+                    for (int i = 0; i < MyConstants.SUPPORTED_FORMATS.length; i++) {
+                        if (ext.toLowerCase().endsWith(MyConstants.SUPPORTED_FORMATS[i])) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+        });
 
         chooser.setVisible(true);
 
@@ -258,16 +289,15 @@ public class StandardFileIO {
 
         JFrame dialogframe = new JFrame("");
         String startFolder = getFolderPathToOpenBasedOnPreferences();
-
-        //logger.info("startfolder {}", startFolder);
-        FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
-        chooser.setDirectory(startFolder);
-        chooser.setMultipleMode(false);
         Application.OS_NAMES os = Utils.getCurrentOsName();
+        //logger.info("startfolder {}", startFolder);
+        FileDialog chooser = new FileDialog(new Frame(), ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
         if (os == APPLE) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
             System.setProperty("apple.awt.use-file-dialog-packages", "false");
         }
+        chooser.setDirectory(startFolder);
+        chooser.setMultipleMode(false);
         chooser.setVisible(true);
 
         SelectedFolder = chooser.getDirectory();

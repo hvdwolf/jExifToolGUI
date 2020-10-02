@@ -18,7 +18,8 @@ public interface IPreferencesFacade {
         PREFERRED_FILEDIALOG("jfilechooser"),
         LOG_LEVEL("loglevel"),
         SHOW_DECIMAL_DEGREES("showdecimaldegrees"), // exiftool shows coordinates by default as Deg Min Sec
-        USE_G1_GROUP ("useg1group")
+        USE_G1_GROUP ("useg1group"),
+        USER_DEFINED_FILE_FILTER("userdefinedfilefilter")
         ;
 
         public final String key;
