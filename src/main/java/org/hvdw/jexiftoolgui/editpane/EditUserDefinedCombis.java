@@ -5,6 +5,7 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class EditUserDefinedCombis {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditUserDefinedCombis.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+
     JTable usercombiTable;
     MyTableModel model;
     List<String> tablerowdata = new ArrayList<String>();
@@ -115,6 +119,10 @@ public class EditUserDefinedCombis {
             String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
             cmdparams.add("-config");
             cmdparams.add(strjexiftoolguifolder + File.separator + strcustomconfigfile);
+        }
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        if (preserveModifyDate) {
+            cmdparams.add("-preserve");
         }
         if (!udcOverwriteOriginalscheckBox.isSelected()) {
             // default not select ->overwrite originals

@@ -7,6 +7,7 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
+
 public class RemoveMetadata extends JDialog {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(RemoveMetadata.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     private JPanel contentPane;
     private JButton buttonOK;
@@ -172,6 +176,10 @@ public class RemoveMetadata extends JDialog {
             int choice = JOptionPane.showOptionDialog(null, Message, ResourceBundle.getBundle("translations/program_strings").getString("rmd.dlgyouwantto"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                if (preserveModifyDate) {
+                    params.add("-preserve");
+                }
                 if (!makeBackupOfOriginalsCheckBox.isSelected()) {
                     params.add("-overwrite_original");
                 }

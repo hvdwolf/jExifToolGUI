@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
 public class RenamePhotos extends JDialog {
     private JPanel rootRenamingPane;
@@ -66,7 +65,7 @@ public class RenamePhotos extends JDialog {
     private JRadioButton suffixISOradioButton;
     private JRadioButton suffixFocalLengthradioButton;
 
-    private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
+    private final static IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(RenamePhotos.class);
 
     private int[] selectedFilenamesIndices;
@@ -395,16 +394,25 @@ public class RenamePhotos extends JDialog {
                 // We need to first cmdparams here, as sometimes the string does not contains spaces and sometimes it does
                 // When it does have spaces we need to create an addition cdmparams
 
+                // Check if wee need to preserver the file modify date
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
                 if ((suffixDonNotUseradioButton.isSelected()) && (prefixStringradioButton.isSelected())) {
                     // string as prefix and no suffix
                     if (isWindows) {
                         cmdparams.add(Utils.platformExiftool());
+                        if (preserveModifyDate) {
+                            cmdparams.add("-preserve");
+                        }
                         exifcommands = new StringBuilder("\"-FileName=" + prefix);
                     } else {
                         // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
-                        exifcommands = new StringBuilder(Utils.platformExiftool() + " '-FileName=" + prefix);
+                        if (preserveModifyDate) {
+                            exifcommands = new StringBuilder(Utils.platformExiftool() + " -preserve '-FileName=" + prefix);
+                        } else {
+                            exifcommands = new StringBuilder(Utils.platformExiftool() + " '-FileName=" + prefix);
+                        }
                     }
                 } else { // Or a suffix or date(time), or both
                     if (isWindows) {

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class EditStringdata {
@@ -97,6 +98,10 @@ public class EditStringdata {
         File[] files = MyVariables.getSelectedFiles();
 
         cmdparams.add(Utils.platformExiftool());
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        if (preserveModifyDate) {
+            cmdparams.add("-preserve");
+        }
         if (!stringPlusBoxes[2].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }

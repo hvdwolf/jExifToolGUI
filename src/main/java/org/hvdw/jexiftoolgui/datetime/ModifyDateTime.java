@@ -7,6 +7,7 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 
 public class ModifyDateTime extends JDialog {
     private JPanel rootModifyDateTimePane;
@@ -45,6 +48,7 @@ public class ModifyDateTime extends JDialog {
     private JProgressBar progBar;
 
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ModifyDateTime.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public ModifyDateTime() {
         setContentPane(rootModifyDateTimePane);
@@ -95,6 +99,10 @@ public class ModifyDateTime extends JDialog {
 
         String exiftool = Utils.platformExiftool();
         cmdparams.add(exiftool);
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        if (preserveModifyDate) {
+            cmdparams.add("-preserve");
+        }
         if (!BackupOfOriginalscheckBox.isSelected()) {
             cmdparams.add("-overwrite_original");
         }

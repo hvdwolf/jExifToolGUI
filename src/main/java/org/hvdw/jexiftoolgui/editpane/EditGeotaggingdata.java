@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
 
 public class EditGeotaggingdata {
@@ -79,7 +78,6 @@ public class EditGeotaggingdata {
         }
     }
 
-//    public void writeInfo(String onFolder, String gpslogfile, String geosync, boolean OverwiteOriginals, int[] selectedFilenamesIndices, File[] files) {
     public void writeInfo(boolean images_selected, JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
 
         int[] selectedFilenamesIndices = new int[]{};
@@ -98,6 +96,10 @@ public class EditGeotaggingdata {
         boolean isWindows = Utils.isOsFromMicrosoft();
 
         cmdparams.add(Utils.platformExiftool());
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        if (preserveModifyDate) {
+            cmdparams.add("-preserve");
+        }
         if (!OverwiteOriginals) {
             cmdparams.add("-overwrite_original_in_place");
         }

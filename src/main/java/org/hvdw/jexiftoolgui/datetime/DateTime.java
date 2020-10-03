@@ -4,6 +4,7 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.ProgramTexts;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
+
 public class DateTime {
 
     private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DateTime.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
 
     public static void setFileDateTimeToDateTimeOriginal( JProgressBar progressBar) {
@@ -29,16 +33,24 @@ public class DateTime {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
             boolean isWindows = Utils.isOsFromMicrosoft();
             if (isWindows) {
                 cmdparams.add(Utils.platformExiftool());
+                if (preserveModifyDate) {
+                    cmdparams.add("-preserve");
+                }
                 cmdparams.add("-overwrite_original");
                 cmdparams.add("\"-FileModifyDate<DateTimeOriginal\"");
             } else {
                 // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                 cmdparams.add("/bin/sh");
                 cmdparams.add("-c");
-                tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ");
+                if (preserveModifyDate) {
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " -overwrite_original -preserve '-FileModifyDate<DateTimeOriginal' ");
+                } else {
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ");
+                }
             }
             for (int index: selectedIndices) {
                 logger.trace("index: {} image path: {}", index, files[index].getPath());

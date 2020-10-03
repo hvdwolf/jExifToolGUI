@@ -22,12 +22,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditLensdata {
 
-    private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditLensdata.class);
 
     private SelectmyLens SmL = new SelectmyLens();
@@ -158,6 +159,10 @@ public class EditLensdata {
             File[] files = MyVariables.getSelectedFiles();
 
             cmdparams.add(Utils.platformExiftool());
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+            if (preserveModifyDate) {
+                cmdparams.add("-preserve");
+            }
             if (!lensBoxes[13].isSelected()) { // default overwrite originals, when set do not
                 cmdparams.add("-overwrite_original");
             }

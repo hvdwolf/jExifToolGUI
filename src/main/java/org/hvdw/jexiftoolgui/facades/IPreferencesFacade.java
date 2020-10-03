@@ -19,7 +19,8 @@ public interface IPreferencesFacade {
         LOG_LEVEL("loglevel"),
         SHOW_DECIMAL_DEGREES("showdecimaldegrees"), // exiftool shows coordinates by default as Deg Min Sec
         USE_G1_GROUP ("useg1group"),
-        USER_DEFINED_FILE_FILTER("userdefinedfilefilter")
+        USER_DEFINED_FILE_FILTER("userdefinedfilefilter"),
+        PRESERVE_MODIFY_DATE("preservemodifydate")
         ;
 
         public final String key;

@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
@@ -48,12 +49,14 @@ public class PreferencesDialog extends JDialog {
     private JPanel filechooserpanel;
     private JCheckBox useG1GroupcheckBox;
     private JTextField udFilefiltertextField;
+    private JCheckBox preserveModDatecheckBox;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(PreferencesDialog.class);
     private final static Logger logger = (Logger) LoggerFactory.getLogger(PreferencesDialog.class);
+    HashMap<String, String> retrievedPreferences = new HashMap<String, String>();
 
     public PreferencesDialog() {
 
@@ -206,22 +209,28 @@ public class PreferencesDialog extends JDialog {
         }
         logger.info("showdecimaldegrees {}", decimaldegreescheckBox.isSelected());
         logger.info("useg1group {}", useG1GroupcheckBox.isSelected());
+        logger.info("preservemodifydate {}", preserveModDatecheckBox.isSelected());
         logger.info("loglevel {}", loglevelcomboBox.getSelectedItem());
+        logger.info("userdefinedfilefilter {}", udFilefiltertextField.getText());
 
 
-        if (!ArtisttextField.getText().isEmpty()) {
+        if (!(retrievedPreferences.get("Artist").equals(ArtisttextField.getText()))) {
+            //if (!ArtisttextField.getText().isEmpty()) {
             logger.trace("{}: {}", ARTIST.key, ArtisttextField.getText());
             prefs.storeByKey(ARTIST, ArtisttextField.getText());
         }
-        if (!CreditstextField.getText().isEmpty()) {
+        if (!(retrievedPreferences.get("Credits").equals(CreditstextField.getText()))) {
+            //if (!CreditstextField.getText().isEmpty()) {
             logger.trace("{}: {}", CREDIT.key, CreditstextField.getText());
             prefs.storeByKey(CREDIT, CreditstextField.getText());
         }
-        if (!CopyrightstextField.getText().isEmpty()) {
+        if (!(retrievedPreferences.get("Copyrights").equals(CopyrightstextField.getText()))) {
+            //if (!CopyrightstextField.getText().isEmpty()) {
             logger.trace("{}: {}", COPYRIGHTS.key, CopyrightstextField.getText());
             prefs.storeByKey(COPYRIGHTS, CopyrightstextField.getText());
         }
-        if (!ExiftoolLocationtextField.getText().isEmpty()) {
+        if (!(retrievedPreferences.get("ExiftoolLocation").equals(ExiftoolLocationtextField.getText()))) {
+            //if (!ExiftoolLocationtextField.getText().isEmpty()) {
             logger.trace("{}: {}", EXIFTOOL_PATH.key, ExiftoolLocationtextField.getText());
             prefs.storeByKey(EXIFTOOL_PATH, ExiftoolLocationtextField.getText());
         }
@@ -240,7 +249,8 @@ public class PreferencesDialog extends JDialog {
             logger.trace("Preferred file dialog: awtdialog");
             prefs.storeByKey(PREFERRED_FILEDIALOG, "awtdialog");
         }
-        if (!udFilefiltertextField.getText().isEmpty()) {
+        if (!(retrievedPreferences.get("udFilefilter").equals(udFilefiltertextField.getText()))) {
+            //if (!udFilefiltertextField.getText().isEmpty()) {
             logger.trace(" {} {}", USER_DEFINED_FILE_FILTER.key, udFilefiltertextField.getText());
             prefs.storeByKey(USER_DEFINED_FILE_FILTER, udFilefiltertextField.getText());
         }
@@ -267,6 +277,9 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", USE_G1_GROUP.key, useG1GroupcheckBox.isSelected());
         prefs.storeByKey(USE_G1_GROUP, useG1GroupcheckBox.isSelected());
 
+        logger.trace("{} {}", PRESERVE_MODIFY_DATE.key, preserveModDatecheckBox.isSelected());
+        prefs.storeByKey(PRESERVE_MODIFY_DATE, preserveModDatecheckBox.isSelected());
+
         logger.trace("{}: {}", LOG_LEVEL.key, loglevelcomboBox.getSelectedItem());
         prefs.storeByKey(LOG_LEVEL, (String) loglevelcomboBox.getSelectedItem());
 
@@ -277,16 +290,27 @@ public class PreferencesDialog extends JDialog {
     private void retrievePreferences() {
         // get current preferences
         ExiftoolLocationtextField.setText(prefs.getByKey(EXIFTOOL_PATH, ""));
+        retrievedPreferences.put("ExiftoolLocation", prefs.getByKey(EXIFTOOL_PATH, ""));
         ImgStartFoldertextField.setText(prefs.getByKey(DEFAULT_START_FOLDER, ""));
+        retrievedPreferences.put("ImgStartFolder", prefs.getByKey(DEFAULT_START_FOLDER, ""));
         ArtisttextField.setText(prefs.getByKey(ARTIST, ""));
+        retrievedPreferences.put("Artist", prefs.getByKey(ARTIST, ""));
         CreditstextField.setText(prefs.getByKey(CREDIT, ""));
+        retrievedPreferences.put("Credits", prefs.getByKey(CREDIT, ""));
         CopyrightstextField.setText(prefs.getByKey(COPYRIGHTS, ""));
+        retrievedPreferences.put("Copyrights", prefs.getByKey(COPYRIGHTS, ""));
         UseLastOpenedFoldercheckBox.setSelected(prefs.getByKey(USE_LAST_OPENED_FOLDER, false));
+        retrievedPreferences.put("UseLastOpenedFolder", String.valueOf(prefs.getByKey(USE_LAST_OPENED_FOLDER, false)));
         CheckVersioncheckBox.setSelected(prefs.getByKey(VERSION_CHECK, true));
+        retrievedPreferences.put("CheckVersion", String.valueOf(prefs.getByKey(VERSION_CHECK, true)));
         metadataLanuagecomboBox.setSelectedItem(prefs.getByKey(METADATA_LANGUAGE, "exiftool - default"));
+        retrievedPreferences.put("metadataLanuage", prefs.getByKey(METADATA_LANGUAGE, "exiftool - default"));
         RawViewerLocationtextField.setText(prefs.getByKey(RAW_VIEWER_PATH, ""));
+        retrievedPreferences.put("RawViewerLocation", prefs.getByKey(RAW_VIEWER_PATH, ""));
         RawViewercheckBox.setSelected(prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false));
+        retrievedPreferences.put("RawViewer", String.valueOf(prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false)));
         localecomboBox.setSelectedItem(prefs.getByKey(PREFERRED_APP_LANGUAGE, "System default"));
+        retrievedPreferences.put("locale", prefs.getByKey(PREFERRED_APP_LANGUAGE, "System default"));
         if ("jfilechooser".equals(prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser"))) {
             JFilechooserradioButton.setSelected(true);
             AwtdialogradioButton.setSelected(false);
@@ -294,10 +318,17 @@ public class PreferencesDialog extends JDialog {
             JFilechooserradioButton.setSelected(false);
             AwtdialogradioButton.setSelected(true);
         }
-        decimaldegreescheckBox.setSelected((prefs.getByKey(SHOW_DECIMAL_DEGREES, false)));
+        retrievedPreferences.put("filedialog", prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser"));
+        decimaldegreescheckBox.setSelected(prefs.getByKey(SHOW_DECIMAL_DEGREES, false));
+        retrievedPreferences.put("decimaldegrees", String.valueOf(prefs.getByKey(SHOW_DECIMAL_DEGREES, false)));
         loglevelcomboBox.setSelectedItem(prefs.getByKey(LOG_LEVEL, "Info"));
+        retrievedPreferences.put("loglevel", prefs.getByKey(LOG_LEVEL, "Info"));
         useG1GroupcheckBox.setSelected(prefs.getByKey(USE_G1_GROUP, false));
+        retrievedPreferences.put("useG1Group", String.valueOf(prefs.getByKey(USE_G1_GROUP, false)));
+        preserveModDatecheckBox.setSelected(prefs.getByKey(PRESERVE_MODIFY_DATE, false));
+        retrievedPreferences.put("preserveModDate", String.valueOf(prefs.getByKey(PRESERVE_MODIFY_DATE, false)));
         udFilefiltertextField.setText(prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
+        retrievedPreferences.put("udFilefilter", prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
     }
 
     // The  main" function of this class
@@ -506,10 +537,10 @@ public class PreferencesDialog extends JDialog {
         localecomboBox = new JComboBox();
         panel13.add(localecomboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel14 = new JPanel();
-        panel14.setLayout(new GridLayoutManager(6, 1, new Insets(5, 5, 5, 5), -1, -1));
+        panel14.setLayout(new GridLayoutManager(7, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.system"), panel14);
         final Spacer spacer2 = new Spacer();
-        panel14.add(spacer2, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel14.add(spacer2, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         filechooserpanel = new JPanel();
         filechooserpanel.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
         panel14.add(filechooserpanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -535,7 +566,7 @@ public class PreferencesDialog extends JDialog {
         panel14.add(decimaldegreescheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loglevelpanel = new JPanel();
         loglevelpanel.setLayout(new GridLayoutManager(2, 3, new Insets(5, 5, 5, 5), -1, -1));
-        panel14.add(loglevelpanel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel14.add(loglevelpanel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         loglevelpanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label14 = new JLabel();
         this.$$$loadLabelText$$$(label14, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.loglevel"));
@@ -562,7 +593,10 @@ public class PreferencesDialog extends JDialog {
         panel14.add(useG1GroupcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CheckVersioncheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(CheckVersioncheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.checknewversion"));
-        panel14.add(CheckVersioncheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(CheckVersioncheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        preserveModDatecheckBox = new JCheckBox();
+        this.$$$loadButtonText$$$(preserveModDatecheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.presmoddate"));
+        panel14.add(preserveModDatecheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel16 = new JPanel();
         panel16.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPanel.add(panel16, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));

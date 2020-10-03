@@ -2,6 +2,7 @@ package org.hvdw.jexiftoolgui.metadata;
 
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
+
 public class MetaData {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(MetaData.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public void copyToXmp() {
         String fpath = "";
@@ -43,6 +47,10 @@ public class MetaData {
                     cmdparams.add("-TagsFromfile");
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                     cmdparams.add("\"-all>xmp:all\"");
+                    boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                    if (preserveModifyDate) {
+                        cmdparams.add("-preserve");
+                    }
                     cmdparams.add("-overwrite_original");
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
@@ -74,6 +82,10 @@ public class MetaData {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             cmdparams.add(Utils.platformExiftool());
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+            if (preserveModifyDate) {
+                cmdparams.add("-preserve");
+            }
             cmdparams.add("-overwrite_original");
             for (String s : MyConstants.REPAIR_JPG_METADATA) {
                 cmdparams.add(s);
@@ -160,6 +172,10 @@ public class MetaData {
             }
             Message.append("</ul><br><br>");
         }
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        if (preserveModifyDate) {
+            params.add("-preserve");
+        }
         if (!CopyMetaDataCheckBoxes[7].isSelected()) {
             params.add("-overwrite_original");
         }
@@ -212,6 +228,10 @@ public class MetaData {
                 cmdparams = new ArrayList<String>();; // initialize on every file
                 cmdparams.add(Utils.platformExiftool());
                 commandstring += Utils.platformExiftool();
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                if (preserveModifyDate) {
+                    cmdparams.add("-preserve");
+                }
                 //cmdparams.add("-overwrite_original");
                 cmdparams.add("-tagsfromfile");
                 commandstring += " -tagsfromfile ";

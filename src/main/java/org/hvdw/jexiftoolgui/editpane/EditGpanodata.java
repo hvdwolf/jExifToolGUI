@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.editpane;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 
 public class EditGpanodata {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditGpanodata.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public void setFormattedFieldFormats(JFormattedTextField[] theFields) {
         Locale currentLocale = Locale.getDefault();
@@ -148,6 +151,10 @@ public class EditGpanodata {
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
 
         cmdparams.add(Utils.platformExiftool());
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        if (preserveModifyDate) {
+            cmdparams.add("-preserve");
+        }
         if (!gpanoBoxes[6].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
