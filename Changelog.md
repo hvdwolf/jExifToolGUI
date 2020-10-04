@@ -4,7 +4,7 @@
 * MacOS Feature request: [issue #35](https://github.com/hvdwolf/jExifToolGUI/issues/35) heic (heif) thumbnails and full screen / full size view are now supported using sips as converting engine. Unfortunately it is not really fast (I am now on MacOS Catalina and could finally test myself and make it work).
 * Feature request: [issue #72](https://github.com/hvdwolf/jExifToolGUI/issues/72) Preserve file modification date/time. (Preferences -> system)
 * MacOS: Fix/enhancement: [issue #74](https://github.com/hvdwolf/jExifToolGUI/issues/74) Improve working of "Load Folder".
-* Feature request: [issue #70](https://github.com/hvdwolf/jExifToolGUI/issues/70) Add user defined file filter (Preferences -> general). If you add extension, the user definedfilter becomes the default. Note: The jfilechooser supports "dynamic filters" which means you can change it on the fly. The old Awt Filedialog requires your to remove the user defined filter values to regain "normal" behavior.
+* Feature request: [issue #70](https://github.com/hvdwolf/jExifToolGUI/issues/70) Add user defined file filter (Preferences -> general). If you add one or more extensions, the user defined filter becomes the default. Note: The jfilechooser supports "dynamic filters" which means you can change it on the fly. The old Awt Filedialog requires you to remove the user defined filter values to regain "normal" behavior.
 * Feature request: [issue #68](https://github.com/hvdwolf/jExifToolGUI/issues/68) Do not write to "exif:Software". Some camera brands use this for own purposes.
 * Fix: Restore proper functioning choosing JFilechooser/AWt dialog in system Preferences (bug "introduced" in 1.6.0).
 
