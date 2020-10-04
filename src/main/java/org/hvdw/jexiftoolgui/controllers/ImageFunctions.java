@@ -312,7 +312,7 @@ public class ImageFunctions {
         cmdparams.add("/usr/bin/sips");
         cmdparams.add("-s");
         cmdparams.add("format");
-        cmdparams.add("JPEG");
+        cmdparams.add("jpeg");
         if (size.toLowerCase().equals("thumb")) {
             cmdparams.add("-Z");
             cmdparams.add("160");
