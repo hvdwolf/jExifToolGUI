@@ -277,21 +277,6 @@ public class mainScreen {
     private JButton saveLensConfigurationbutton;
     private JButton loadLensConfigurationButton;
     private JLabel lensSaveLoadConfigLabel;
-    private JScrollPane databaseScrollPanel;
-    private JTable DBResultsTable;
-    private JLabel exiftoolDBText;
-    private JRadioButton radiobuttonQueryByGroup;
-    private JRadioButton radiobuttonQueryByCameraMake;
-    private JComboBox comboBoxQueryCommonTags;
-    private JComboBox comboBoxQueryByTagName;
-    private JComboBox comboBoxQueryCameraMake;
-    private JTextField sqlQuerytextField;
-    private JButton sqlExecutebutton;
-    private JTextField queryTagLiketextField;
-    private JButton searchLikebutton;
-    private JLabel exiftoolDBversion;
-    private JButton edbHelpbutton;
-    private JButton buttonDBdiagram;
     private JPanel gpsButtonPanel2;
     private JButton buttonLoadDirectory;
     private JLabel StringsTopText;
@@ -338,12 +323,6 @@ public class mainScreen {
     private JScrollPane UserCombiScrollPane;
     private JLabel CustomConfiglabel;
     private JLabel lblLoadedFiles;
-    private JLabel user;
-    private JButton button;
-    private JPanel gps;
-    private JTextField ExiftoolLocationtextField;
-    private MenuListener menuListener;
-    private JPanel prefPanel;
     private ImageIcon icon;
 
 
@@ -353,8 +332,6 @@ public class mainScreen {
     private int SelectedRow;
     public int SelectedCell;
     private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
-
-    public boolean droppedready = false;
 
     public String exiftool_path = "";
     private ListSelectionModel listSelectionModel;
@@ -370,7 +347,7 @@ public class mainScreen {
     private YourCommands YourCmnds = new YourCommands();
     private EditGpanodata EGpanod = new EditGpanodata();
     private EditLensdata ELd = new EditLensdata();
-    private DatabasePanel DBP = new DatabasePanel();
+    //private DatabasePanel DBP = new DatabasePanel();
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
     private AddFavorite AddFav = new AddFavorite();
@@ -585,7 +562,7 @@ public class mainScreen {
         String sqlGroups = SQLiteJDBC.getGroups();
         Tags = sqlGroups.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
-        comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
+        //comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
 
 
         TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
@@ -597,9 +574,9 @@ public class mainScreen {
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         meteringmodecomboBox.setModel(new DefaultComboBoxModel(Tags));
 
-        TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
+        /*TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
-        comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags));
+        comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags)); */
 
         //Combobox on Gpano edit tab
         for (String item : MyConstants.GPANO_PROJECTIONS) {
@@ -678,7 +655,7 @@ public class mainScreen {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("per Camera");
+        radioButtonCameraMakes.setLabel("By Camera");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1151,7 +1128,7 @@ public class mainScreen {
         decimalToMinutesSecondsButton.setVisible(false);
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
-        minutesSecondsToDecimalButton.setLabel("Converteer naar decimale graden");
+        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(4, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         copyToInputFieldsButton = new JButton();
@@ -1949,106 +1926,29 @@ public class mainScreen {
         MyCommandsText.setText("MyCommandsText");
         panel39.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
         final JPanel panel45 = new JPanel();
-        panel45.setLayout(new GridLayoutManager(5, 2, new Insets(10, 10, 10, 10), -1, -1));
-        panel45.setPreferredSize(new Dimension(800, 550));
-        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exiftooldb"), panel45);
-        databaseScrollPanel = new JScrollPane();
-        panel45.add(databaseScrollPanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        DBResultsTable = new JTable();
-        databaseScrollPanel.setViewportView(DBResultsTable);
-        final JPanel panel46 = new JPanel();
-        panel46.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel45.add(panel46, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        exiftoolDBText = new JLabel();
-        this.$$$loadLabelText$$$(exiftoolDBText, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.toptext"));
-        panel46.add(exiftoolDBText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel47 = new JPanel();
-        panel47.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel45.add(panel47, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        panel47.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        radiobuttonQueryByGroup = new JRadioButton();
-        radiobuttonQueryByGroup.setSelected(true);
-        this.$$$loadButtonText$$$(radiobuttonQueryByGroup, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bygroup"));
-        panel47.add(radiobuttonQueryByGroup);
-        comboBoxQueryByTagName = new JComboBox();
-        panel47.add(comboBoxQueryByTagName);
-        radiobuttonQueryByCameraMake = new JRadioButton();
-        this.$$$loadButtonText$$$(radiobuttonQueryByCameraMake, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
-        panel47.add(radiobuttonQueryByCameraMake);
-        comboBoxQueryCameraMake = new JComboBox();
-        panel47.add(comboBoxQueryCameraMake);
-        final JPanel panel48 = new JPanel();
-        panel48.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel45.add(panel48, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel48.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label94 = new JLabel();
-        this.$$$loadLabelText$$$(label94, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.wheretaglike"));
-        panel48.add(label94);
-        queryTagLiketextField = new JTextField();
-        queryTagLiketextField.setPreferredSize(new Dimension(300, 30));
-        panel48.add(queryTagLiketextField);
-        searchLikebutton = new JButton();
-        this.$$$loadButtonText$$$(searchLikebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.btnsearchlike"));
-        panel48.add(searchLikebutton);
-        edbHelpbutton = new JButton();
-        this.$$$loadButtonText$$$(edbHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
-        panel45.add(edbHelpbutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        exiftoolDBversion = new JLabel();
-        Font exiftoolDBversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolDBversion.getFont());
-        if (exiftoolDBversionFont != null) exiftoolDBversion.setFont(exiftoolDBversionFont);
-        this.$$$loadLabelText$$$(exiftoolDBversion, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.edbversion"));
-        exiftoolDBversion.setToolTipText("The exiftool version to build the included database version is not necessarily the same as your installed exiftool version");
-        panel45.add(exiftoolDBversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        buttonDBdiagram = new JButton();
-        this.$$$loadButtonText$$$(buttonDBdiagram, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.btndiagram"));
-        buttonDBdiagram.setToolTipText("Opens a browser displaying the DB diagram");
-        panel45.add(buttonDBdiagram, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel49 = new JPanel();
-        panel49.setLayout(new GridLayoutManager(3, 4, new Insets(5, 5, 5, 5), -1, -1));
-        panel45.add(panel49, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel49.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        sqlQuerytextField = new JTextField();
-        panel49.add(sqlQuerytextField, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label95 = new JLabel();
-        Font label95Font = this.$$$getFont$$$(null, Font.BOLD, -1, label95.getFont());
-        if (label95Font != null) label95.setFont(label95Font);
-        this.$$$loadLabelText$$$(label95, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.ownquery"));
-        panel49.add(label95, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqlExecutebutton = new JButton();
-        this.$$$loadButtonText$$$(sqlExecutebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btngo"));
-        panel49.add(sqlExecutebutton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        SaveQuerybutton = new JButton();
-        this.$$$loadButtonText$$$(SaveQuerybutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnaddfav"));
-        panel49.add(SaveQuerybutton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        loadQuerybutton = new JButton();
-        this.$$$loadButtonText$$$(loadQuerybutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnloadfav"));
-        panel49.add(loadQuerybutton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer9 = new Spacer();
-        panel49.add(spacer9, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final JPanel panel50 = new JPanel();
-        panel50.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        rootPanel.add(panel50, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel45.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        rootPanel.add(panel45, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         JLabelDropReady = new JLabel();
         JLabelDropReady.setText("");
         JLabelDropReady.setVisible(false);
-        panel50.add(JLabelDropReady);
+        panel45.add(JLabelDropReady);
         OutputLabel = new JLabel();
         OutputLabel.setText("");
-        panel50.add(OutputLabel);
+        panel45.add(OutputLabel);
         progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
         progressBar.setPreferredSize(new Dimension(100, 15));
         progressBar.setStringPainted(false);
-        panel50.add(progressBar);
-        final JPanel panel51 = new JPanel();
-        panel51.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
-        rootPanel.add(panel51, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
-        final JLabel label96 = new JLabel();
-        this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "pt.filesloaded"));
-        panel51.add(label96);
+        panel45.add(progressBar);
+        final JPanel panel46 = new JPanel();
+        panel46.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
+        rootPanel.add(panel46, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
+        final JLabel label94 = new JLabel();
+        this.$$$loadLabelText$$$(label94, this.$$$getMessageFromBundle$$$("translations/program_strings", "pt.filesloaded"));
+        panel46.add(label94);
         lblLoadedFiles = new JLabel();
         lblLoadedFiles.setText("");
-        panel51.add(lblLoadedFiles);
+        panel46.add(lblLoadedFiles);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(CalcNorthRadioButton);
@@ -2068,9 +1968,6 @@ public class mainScreen {
         buttonGroup.add(radioButtoncommonTags);
         buttonGroup.add(radioButtonByTagName);
         buttonGroup.add(radioButtonCameraMakes);
-        buttonGroup = new ButtonGroup();
-        buttonGroup.add(radiobuttonQueryByGroup);
-        buttonGroup.add(radiobuttonQueryByCameraMake);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(StringsKeywOverwriteradioButton);
         buttonGroup.add(StringsKeywAppendradioButton);
@@ -2228,7 +2125,7 @@ public class mainScreen {
      */
     private void programButtonListeners() {
 
-        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, sqlQuerytextField, UserCombiscomboBox);
+        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, UserCombiscomboBox);
 
         // Main screen left panel
         buttonLoadImages.addActionListener(new ActionListener() {
@@ -2600,61 +2497,6 @@ public class mainScreen {
         stringPlusHelpbutton.setActionCommand("sPHb");
         stringPlusHelpbutton.addActionListener(gal);
 
-
-        // buttons and the like on database panel
-        searchLikebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (!"".equals(queryTagLiketextField.getText())) {
-                    String queryResult = SQLiteJDBC.queryByTagname(queryTagLiketextField.getText(), true);
-                    DBP.displayQueryResults(queryResult, DBResultsTable);
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, "No search string provided!", "No search string", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        comboBoxQueryByTagName.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (radiobuttonQueryByGroup.isSelected()) {
-                        String queryResult = SQLiteJDBC.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
-                        DBP.displayQueryResults(queryResult, DBResultsTable);
-                }
-            }
-        });
-        comboBoxQueryCameraMake.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (radiobuttonQueryByCameraMake.isSelected()) {
-                    String queryResult = SQLiteJDBC.queryByTagname(comboBoxQueryCameraMake.getSelectedItem().toString(), false);
-                    DBP.displayQueryResults(queryResult, DBResultsTable);
-                }
-            }
-        });
-        edbHelpbutton.setActionCommand("edbHb");
-        edbHelpbutton.addActionListener(gal);
-        sqlExecutebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (!"".equals(sqlQuerytextField.getText())) {
-                    String queryResult = SQLiteJDBC.ownQuery(sqlQuerytextField.getText());
-                    if (!queryResult.contains("SQLITE_ERROR")) {
-                        DBP.displayOwnQueryResults(sqlQuerytextField.getText(), queryResult, DBResultsTable);
-                    } else { // We do have an "[SQLITE_ERROR] SQL error or missing database ...."
-                        JOptionPane.showMessageDialog(rootPanel, "You have an error in your query.\nPlease check!", "incorrect sql query", JOptionPane.WARNING_MESSAGE);
-                    }
-                } else { //user did not proved an sql string
-                    JOptionPane.showMessageDialog(rootPanel, "No sql query provided!", "No sql query", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        SaveQuerybutton.setActionCommand("SQb");
-        SaveQuerybutton.addActionListener(gal);
-        loadQuerybutton.setActionCommand("lQb");
-        loadQuerybutton.addActionListener(gal);
-        buttonDBdiagram.setActionCommand("bDBb");
-        buttonDBdiagram.addActionListener(gal);
-
         // Button listeners for the User defined metadata combinations tab
         udcCreateNewButton.setActionCommand("udcCNB");
         udcCreateNewButton.addActionListener(gal);
@@ -2892,12 +2734,12 @@ public class mainScreen {
         copyAllMetadataSameGroupsRadiobutton.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("copyd.copyallsamegroup")));
         copySelectiveMetadataradioButton.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("copyd.copybyselection")));
         lensSaveLoadConfigLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("lens.saveloadconfig")));
-        exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
+        //exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
         StringsTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("xis.toptext")));
         UserCombiTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("udc.toptext")));
 
         // database version
-        exiftoolDBversion.setText(String.format(ProgramTexts.HTML,100,"exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
+        //exiftoolDBversion.setText(String.format(ProgramTexts.HTML,100,"exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
         // Special dynamic version string
         logger.trace("check for exiftool version");
         String exiftool = Utils.platformExiftool();
@@ -3007,7 +2849,7 @@ public class mainScreen {
         tableListfiles.setDefaultEditor(Object.class, null);
         ListexiftoolInfotable.setDefaultEditor(Object.class, null);
         // Make all tables read-only unless ....
-        DBResultsTable.setDefaultEditor(Object.class, null);
+        //DBResultsTable.setDefaultEditor(Object.class, null);
 
         // icon for my dialogs
         InputStream stream = StandardFileIO.getResourceAsStream("icons/jexiftoolgui-64.png");

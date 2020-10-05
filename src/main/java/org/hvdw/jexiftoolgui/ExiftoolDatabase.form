@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.hvdw.jexiftoolgui.ExiftoolDatabase">
+  <grid id="27dc6" binding="rootDBpanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="845" height="586"/>
+    </constraints>
+    <properties>
+      <minimumSize width="700" height="500"/>
+      <preferredSize width="850" height="700"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="b8bc8" binding="ExiftoolDBPanel" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="10" left="10" bottom="10" right="10"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <preferredSize width="800" height="550"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <scrollpane id="16630" binding="databaseScrollPanel">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a24c4" class="javax.swing.JTable" binding="DBResultsTable">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
+          <grid id="60116" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a67d3" class="javax.swing.JLabel" binding="exiftoolDBText">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="edb.toptext"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="86c7f" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="line"/>
+            <children>
+              <component id="d771c" class="javax.swing.JRadioButton" binding="radiobuttonQueryByGroup">
+                <constraints/>
+                <properties>
+                  <selected value="true"/>
+                  <text resource-bundle="translations/program_strings" key="vdtab.bygroup"/>
+                </properties>
+              </component>
+              <component id="2457b" class="javax.swing.JComboBox" binding="comboBoxQueryByTagName">
+                <constraints/>
+                <properties/>
+              </component>
+              <component id="a21b3" class="javax.swing.JRadioButton" binding="radiobuttonQueryByCameraMake">
+                <constraints/>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="vdtab.bycamera"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="bfc28" class="javax.swing.JComboBox" binding="comboBoxQueryCameraMake">
+                <constraints/>
+                <properties>
+                  <visible value="false"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="f61ba" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="line"/>
+            <children>
+              <component id="625ed" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="edb.wheretaglike"/>
+                </properties>
+              </component>
+              <component id="1c6e5" class="javax.swing.JTextField" binding="queryTagLiketextField">
+                <constraints/>
+                <properties>
+                  <preferredSize width="300" height="30"/>
+                </properties>
+              </component>
+              <component id="ba9ce" class="javax.swing.JButton" binding="searchLikebutton">
+                <constraints/>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="edb.btnsearchlike"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="cd5f1" class="javax.swing.JButton" binding="edbHelpbutton">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="translations/program_strings" key="button.help"/>
+            </properties>
+          </component>
+          <component id="e1c52" class="javax.swing.JLabel" binding="exiftoolDBversion">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font style="2"/>
+              <text resource-bundle="translations/program_strings" key="edb.edbversion"/>
+              <toolTipText value="The exiftool version to build the included database version is not necessarily the same as your installed exiftool version"/>
+            </properties>
+          </component>
+          <component id="30909" class="javax.swing.JButton" binding="buttonDBdiagram">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="translations/program_strings" key="edb.btndiagram"/>
+              <toolTipText value="Opens a browser displaying the DB diagram"/>
+            </properties>
+          </component>
+          <grid id="cd997" layout-manager="GridLayoutManager" row-count="3" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="line"/>
+            <children>
+              <component id="f4d7" class="javax.swing.JTextField" binding="sqlQuerytextField">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="e9381" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font style="1"/>
+                  <text resource-bundle="translations/program_strings" key="edb.ownquery"/>
+                </properties>
+              </component>
+              <component id="12611" class="javax.swing.JButton" binding="sqlExecutebutton">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="yc.btngo"/>
+                </properties>
+              </component>
+              <component id="cc3c7" class="javax.swing.JButton" binding="SaveQuerybutton">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="yc.btnaddfav"/>
+                </properties>
+              </component>
+              <component id="9d78b" class="javax.swing.JButton" binding="loadQuerybutton">
+                <constraints>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="yc.btnloadfav"/>
+                </properties>
+              </component>
+              <hspacer id="7a13e">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

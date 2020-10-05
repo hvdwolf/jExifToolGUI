@@ -37,7 +37,7 @@ public class ButtonsActionListener implements ActionListener {
     public JTextField sqlQuerytextField;
     public JComboBox UserCombiscomboBox;
 
-    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JTextField sqlQuerytextField, JComboBox UserCombiscomboBox) {
+    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox) {
 
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
@@ -93,14 +93,14 @@ public class ButtonsActionListener implements ActionListener {
             case "sPHb":
                 logger.debug("button stringPlusHelpbutton pressed");
                 break;
-            case "edbHb":
+/*            case "edbHb":
                 logger.debug("button edbHelpbutton pressed");
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
-                break;
-            case "bDBb":
+                break; */
+/*            case "bDBb":
                 logger.debug("button buttonDBdiagram pressed");
                 DBP.DisplayDiagram();
-                break;
+                break; */
             case "CommandsclearPSFB":
                 logger.debug("button CommandsclearParameterSFieldButton pressed");
                 CommandsParameterstextField.setText("");
@@ -131,18 +131,18 @@ public class ButtonsActionListener implements ActionListener {
                     geotaggingGPSLogtextField.setText(TrackFile);
                 }
                 break;
-            case "SQb":
+/*            case "SQb":
                 logger.debug("button SaveQuerybutton pressed");
                 if (sqlQuerytextField.getText().length()>0) {
                     AddFav.showDialog(rootPanel, "DB_query", sqlQuerytextField.getText());
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, "No query given", "No query", JOptionPane.WARNING_MESSAGE);
                 }
-                break;
-            case "lQb":
+                break; */
+/*            case "lQb":
                 logger.debug("button loadQuerybutton pressed");
                 DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
-                break;
+                break; */
             case "udcCNB":
                 logger.debug("button udcCreateNewButton pressed");
                 MD.showDialog(rootPanel);

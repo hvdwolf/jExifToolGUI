@@ -21,6 +21,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -215,6 +216,9 @@ public class MenuActionListener implements ActionListener  {
             case "DeleteLenses":
                 SelectmyLens SmL = new SelectmyLens();
                 SmL.showDialog(rootPanel, "delete lens");
+                break;
+            case "ExiftoolDatabase":
+                ExiftoolDatabase.showDialog();
                 break;
             case "About jExifToolGUI":
                 //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);
