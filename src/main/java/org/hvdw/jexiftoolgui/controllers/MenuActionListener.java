@@ -88,8 +88,7 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Copy all metadata to xmp format":
                 if (selectedIndicesList.size() > 0) {
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.copyallxmpdata"));
-                    metaData.copyToXmp();
+                    metaData.copyToXmp(OutputLabel);
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);

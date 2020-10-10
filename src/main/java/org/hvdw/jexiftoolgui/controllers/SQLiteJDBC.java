@@ -24,9 +24,15 @@ public class SQLiteJDBC {
 
         // ######################### The basic necessary stuff ###################3
         Connection conn = null;
+        String url;
         try {
             // db parameters
-            String url = "jdbc:sqlite:" + MyVariables.getjexiftoolguiDBPath();
+            boolean isWindows = Utils.isOsFromMicrosoft();
+            if (isWindows) {
+                url = "jdbc:sqlite:" + MyVariables.getjexiftoolguiDBPath();
+            } else {
+                url = "jdbc:sqlite:" + MyVariables.getjexiftoolguiDBPath().replace(" ", "\\ ");
+            }
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             logger.debug("Connection to SQLite DB has been established.");

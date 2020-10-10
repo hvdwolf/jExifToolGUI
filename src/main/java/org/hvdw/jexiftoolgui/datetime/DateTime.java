@@ -57,7 +57,7 @@ public class DateTime {
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
-                    tmpcmpstring.append(" ").append(files[index].getPath());
+                    tmpcmpstring.append(" ").append(files[index].getPath().replace(" ", "\\ "));
                 }
             }
             if (!isWindows) {

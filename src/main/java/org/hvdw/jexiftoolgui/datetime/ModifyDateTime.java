@@ -247,6 +247,7 @@ public class ModifyDateTime extends JDialog {
         final Spacer spacer2 = new Spacer();
         panel3.add(spacer2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         UpdateXmpcheckBox = new JCheckBox();
+        UpdateXmpcheckBox.setSelected(true);
         this.$$$loadButtonText$$$(UpdateXmpcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "mdt.updatexmp"));
         rootModifyDateTimePane.add(UpdateXmpcheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         BackupOfOriginalscheckBox = new JCheckBox();

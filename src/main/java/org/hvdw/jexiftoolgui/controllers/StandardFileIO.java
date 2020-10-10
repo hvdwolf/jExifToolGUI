@@ -30,7 +30,7 @@ public class StandardFileIO {
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(StandardFileIO.class);
 
-    public static String extract_resource_to_jexiftoolguiFolder(String resourcePath, String strjexiftoolguifolder){
+    public static String extract_resource_to_jexiftoolguiFolder(String resourcePath, String strjexiftoolguifolder, String targetSubFolder){
         String copyresult = "";
         Path resourceFile = Paths.get(strjexiftoolguifolder + File.separator);
 
@@ -42,7 +42,11 @@ public class StandardFileIO {
             // Grab the file name
             String[] chopped = resourcePath.split("\\/");
             String fileName = chopped[chopped.length-1];
-            resourceFile = Paths.get(strjexiftoolguifolder + File.separator + fileName);
+            if ("".equals(targetSubFolder)) {
+                resourceFile = Paths.get(strjexiftoolguifolder + File.separator + fileName);
+            } else {
+                resourceFile = Paths.get(strjexiftoolguifolder + File.separator + targetSubFolder + File.separator + fileName);
+            }
 
             // Create an output stream
             OutputStream out = new FileOutputStream(String.valueOf(resourceFile));
@@ -398,7 +402,7 @@ public class StandardFileIO {
         copyFile = new File(fileToBecopied);
         if (!copyFile.exists()) {
             logger.debug("no database yet; trying to create it");
-            method_result = extract_resource_to_jexiftoolguiFolder("jexiftoolgui.db", strjexiftoolguifolder);
+            method_result = extract_resource_to_jexiftoolguiFolder("jexiftoolgui.db", strjexiftoolguifolder, "");
             if ("success".equals(method_result)) {
                 MyVariables.setjexiftoolguiDBPath(fileToBecopied);
                 logger.info("copied the initial database");
@@ -413,7 +417,7 @@ public class StandardFileIO {
         copyFile = new File(fileToBecopied);
         if (!copyFile.exists()) {
             logger.debug("no cantdisplay.png yet; trying to create it");
-            method_result = extract_resource_to_jexiftoolguiFolder("cantdisplay.png", strjexiftoolguifolder);
+            method_result = extract_resource_to_jexiftoolguiFolder("cantdisplay.png", strjexiftoolguifolder, "");
             if ("success".equals(method_result)) {
                 MyVariables.setcantdisplaypng(fileToBecopied);
                 logger.debug("copied cantdisplay.png");

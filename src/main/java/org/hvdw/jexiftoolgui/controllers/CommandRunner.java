@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +87,7 @@ public class CommandRunner {
      * This executes the commands via runCommand and shows/hides the progress bar
      * This one has a 3rd parameter to enable/disable output. It should replace the above one (when I find the time)
      */
-    public static void runCommandWithProgressBar(List<String> cmdparams, JProgressBar progressBar, boolean output) {
+    public static void runCommandWithProgressBar(List<String> cmdparams, JProgressBar progressBar, String output) {
         // Create executor thread to be able to update my gui when longer methods run
         Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
@@ -96,9 +97,12 @@ public class CommandRunner {
                     String res = runCommand(cmdparams);
                     logger.debug("res is\n{}", res);
                     progressBar.setVisible(false);
-                    if (output) {
-                        outputAfterCommand(res);
+                    if ("delayed".equals(output.toLowerCase())) {
+                        String tmp = MyVariables.getdelayedOutput();
+                        MyVariables.setdelayedOutput(tmp + "\n\n" + res);
+                        //outputAfterCommand(res);
                     }
+
                 } catch (IOException | InterruptedException ex) {
                     logger.debug("Error executing command");
                 }

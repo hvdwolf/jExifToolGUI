@@ -10,8 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.extract_resource_to_jexiftoolguiFolder;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.FILE_SEPARATOR;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class UpdateActions {
@@ -100,7 +104,7 @@ public class UpdateActions {
             if (isadg.exists()) {
                 isadg.delete();
             }
-            String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder);
+            String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder, "");
 
         // pre-fill both tables if necessary with gps_location data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'");
@@ -117,6 +121,25 @@ public class UpdateActions {
         }
     }
 
+    static void update_1_7() {
+        // our data folder
+        String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
+        String args_files[] = {"exif2iptc.args","gps2xmp.args","iptc2xmp.args","pdf2xmp.args","xmp2gps.args","xmp2pdf.args","exif2xmp.args","iptc2exif.args","iptcCore.args","xmp2exif.args","xmp2iptc.args"};
+
+        String str_args_folder = strjexiftoolguifolder + File.separator + "args";
+        File args_folder = new File(str_args_folder);
+        if (!args_folder.exists()) {
+            try {
+                Files.createDirectories(Paths.get(str_args_folder));
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                logger.error("Error creating directory " + str_args_folder);
+            }
+        }
+        for (String args_file : args_files) {
+            String method_result = extract_resource_to_jexiftoolguiFolder("args" + File.separator + args_file, strjexiftoolguifolder, "args");
+        }
+    }
 
     // ################## Start of the update stuff ####################
     // This is where we add extra tables or table data after an update that added extra functionality
@@ -128,5 +151,6 @@ public class UpdateActions {
 
         update_1_4();
         update_1_6();
+        update_1_7();
     }
 }

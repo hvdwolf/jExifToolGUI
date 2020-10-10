@@ -31,6 +31,7 @@ public class MyVariables {
     private List<String> userCombiTableValues;
     private List<Integer> selectedIndicesList;
     private String[] CustomCombis;
+    private String delayedOutput;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -118,4 +119,10 @@ public class MyVariables {
     public static String[] getCustomCombis() { return Arrays.copyOf(staticInstance.CustomCombis, staticInstance.CustomCombis.length); }
     public static void setCustomCombis(String[] CustomCombisfromDB) { staticInstance.CustomCombis = Arrays.copyOf(CustomCombisfromDB, CustomCombisfromDB.length); }
 
+    public static String getdelayedOutput() {
+        return staticInstance.delayedOutput;
+    }
+    public static void setdelayedOutput(String deloutput) {
+        staticInstance.delayedOutput = deloutput;
+    }
 }

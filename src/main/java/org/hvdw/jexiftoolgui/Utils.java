@@ -133,10 +133,14 @@ public class Utils {
 
         infostring.append("<big>System and Program Info</big><hr><br><table width=\"90%\" border=0>");
         infostring.append("<tr><td>Operating system:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_NAME) + "</td></tr>");
-        infostring.append("<tr><td>Operating system architecture:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH) + "</td></tr>");
-        infostring.append("<tr><td>Operating system version:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION) + "<br><br></td></tr>");
-        infostring.append("<tr><td>jExifToolGUI version:</td><td>" + ProgramTexts.Version + "</td></tr>");
-        infostring.append("<tr><td>Exiftool version:</td><td>" + MyVariables.getExiftoolVersion() + "<br><br></td></tr>");
+        infostring.append("<tr><td>Operating system architecture:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH).replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        // or use replaceAll(LINE_SEPATATOR, "") or replaceAll("(\\r|\\n)", "")
+        infostring.append("<tr><td>Operating system version:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
+        infostring.append("<tr><td>User home directory:</td><td>" + SystemPropertyFacade.getPropertyByKey(USER_HOME).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
+        infostring.append("<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
+        infostring.append("<tr><td>jExifToolGUI version:</td><td>" + ProgramTexts.Version.replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<tr><td>Exiftool version:</td><td>" + (MyVariables.getExiftoolVersion()).replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
         infostring.append("<tr><td>java version:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_VERSION) + "</td></tr>");
         infostring.append("<tr><td>java home:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_HOME) + "</td></tr>");
         infostring.append("</table></html>");
@@ -777,13 +781,25 @@ public class Utils {
     }
 
     /*
-    *
+    * Setc checkboxes on first copy data tab. These are the cehckboxes for the selective copy
      */
     static void setCopyMetaDatacheckboxes(boolean state, JCheckBox[] CopyMetaDatacheckboxes) {
         for (JCheckBox chkbx : CopyMetaDatacheckboxes) {
             chkbx.setEnabled(state);
         }
     }
+    /*
+    / Set checkboxes and radiobuttons on the second copy data tab
+     */
+    static void setInsideCopyCheckboxesRadiobuttons(boolean state, JRadioButton[] InsideCopyMetadataradiobuttons, JCheckBox[] InsideCopyMetadacheckboxes) {
+        for (JRadioButton rdbtn: InsideCopyMetadataradiobuttons) {
+            rdbtn.setEnabled(state);
+        }
+        for (JCheckBox chkbx : InsideCopyMetadacheckboxes) {
+            chkbx.setEnabled(state);
+        }
+    }
+
     /*
     / Retrieves the icone that is used for the window bar icons in the app (windows/linux)
      */
