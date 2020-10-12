@@ -2,6 +2,7 @@ package org.hvdw.jexiftoolgui.controllers;
 
 import com.twelvemonkeys.image.AffineTransformOp;
 
+import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
@@ -17,12 +18,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 
+import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
+import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
+import static org.hvdw.jexiftoolgui.Utils.getFileExtension;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class ImageFunctions {
@@ -36,6 +38,7 @@ public class ImageFunctions {
         int[] basicdata = {0, 0, 999};
         long tmpvalue;
         String tmpValue;
+        HashMap<String, String> imgBasicData = new HashMap<String, String>();
         //Directory metadata = null;
         String filename = file.getName().replace("\\", "/");
 
@@ -100,7 +103,7 @@ public class ImageFunctions {
             e.printStackTrace();
         }*/
 
-        try {
+        /*try {
             BufferedImage bimg = ImageIO.read(file);
             int width = bimg.getWidth();
             int height = bimg.getHeight();
@@ -110,12 +113,13 @@ public class ImageFunctions {
         } catch (IOException e) {
             e.printStackTrace();
             logger.trace("bimg reading error {}", e);
-        }
+        } */
         // I can't solve it yet with TwelveMonkeys, so do it with exiftool
         String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<String>();
         cmdparams.add(exiftool.trim());
-        cmdparams.addAll(Arrays.asList(MyConstants.WIDTH_HEIGHT_ORIENTATION));
+        //cmdparams.addAll(Arrays.asList(MyConstants.WIDTH_HEIGHT_ORIENTATION));
+        cmdparams.addAll(Arrays.asList(MyConstants.BASIC_IMG_DATA));
         cmdparams.add(file.getPath());
         int counter = 0;
         String who ="";
@@ -131,22 +135,28 @@ public class ImageFunctions {
             String[] lines = who.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
             for (String line : lines) {
                 String[] parts = line.split(":", 2);
-                if (parts[1].trim().matches("[0-9]+")) {
+                imgBasicData.put(parts[0].trim(), parts[1].trim());
+                //if (parts[1].trim().matches("[0-9]+")) {
                     /*if ( (basicdata[0] == 0 && parts[0].contains("Width")) || (basicdata[1]  == 0 && parts[0].contains("Height")) ) {
                         logger.info("getbasicdata parts0 {} parts1 *{}*", parts[0], parts[1].trim());
                         basicdata[counter] = Integer.parseInt(parts[1].trim());
                     }*/
                     try {
-                        if (parts[0].contains("Orientation")) {
+                        if (parts[0].contains("ImageWidth")) {
+                            basicdata[0] = Integer.parseInt(parts[1].trim());
+                        } else if (parts[0].contains("ImageHeight")) {
+                            basicdata[1] = Integer.parseInt(parts[1].trim());
+                        } else if (parts[0].contains("Orientation")) {
                             basicdata[2] = Integer.parseInt(parts[1].trim());
                         }
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         logger.info("error Integer.parseInt {}", e);
                     }
-                }
+                //}
                 counter++;
             }
+            MyVariables.setimgBasicData(imgBasicData);
         }
             return basicdata;
     }
@@ -232,8 +242,157 @@ public class ImageFunctions {
         return exportResult;
     }
 
+    public static ImageIcon analyzeImageAndCreateIcon (File file) {
+        boolean heicextension = false;
+        String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
+
+        boolean bSimpleExtension = false;
+        String thumbfilename = "";
+        File thumbfile = null;
+        ImageIcon icon = null;
+        ImageIcon finalIcon = null;
+
+        Application.OS_NAMES currentOsName = getCurrentOsName();
+        String filename = file.getName().replace("\\", "/");
+        String filenameExt = getFileExtension(filename);
+        if (filenameExt.toLowerCase().equals("heic")) {
+            heicextension = true;
+        }
+        for (String ext : SimpleExtensions) {
+            if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png or tif(f)
+                bSimpleExtension = true;
+                break;
+            }
+        }
+
+        if ( (heicextension) && currentOsName == APPLE) { // For Apple we deviate
+//            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
+            logger.info("do sipsConvertToJPG for {}", filename);
+            String exportResult = ImageFunctions.sipsConvertToJPG(file, "thumb");
+            if ("Success".equals(exportResult)) {
+                logger.info("back from sipsconvert: result {}", exportResult);
+                //Hoping we have a thumbnail
+                thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
+                thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                if (thumbfile.exists()) {
+                    // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
+                    logger.trace("create thumb nr1");
+                    //icon = ImageFunctions.createIcon(thumbfile);
+                    icon = ImageFunctions.createIcon(file);
+                    if (icon != null) {
+                        // display our created icon from the thumbnail
+                        return icon;
+                    }
+                }
+            }
+            //reset our heic flag
+            heicextension = false;
+        } else if (bSimpleExtension) {
+            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+            thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+            if (!thumbfile.exists() && (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
+                /*if (thumbfile.exists()) {
+                    icon = ImageFunctions.createIcon(thumbfile);
+                } else {
+                    icon = ImageFunctions.createIcon(file);
+                }*/
+            }
+
+                /*if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+                    String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file, "RAW");
+                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    icon = ImageFunctions.createIcon(file);
+                } else {
+                    icon = ImageFunctions.createIcon(file);
+                } */
+            icon = ImageFunctions.createIcon(file);
+            return icon;
+        } else { //We have a RAW image extension or tiff or something else like audio/video
+            // Export previews for current (RAW) image to tempWorkfolder
+            String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
+            if ("Success".equals(exportResult)) {
+                //Hoping we have a thumbnail
+                thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                logger.trace("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                if (thumbfile.exists()) {
+                    // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
+                    logger.trace("create thumb nr1");
+                    icon = ImageFunctions.createIcon(file);
+                    //icon = ImageFunctions.createIcon(thumbfile);
+                    if (icon != null) {
+                        // display our created icon from the thumbnail
+                        return icon;
+                    }
+                } else { //thumbnail image probably doesn't exist, move to 2nd option
+                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
+                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    if (thumbfile.exists()) {
+                        // Create icon of this Preview
+                        logger.trace("create thumb nr2");
+                        icon = ImageFunctions.createIcon(file);
+                        //icon = ImageFunctions.createIcon(thumbfile);
+                        if (icon != null) {
+                            // display our created icon from the preview
+                            return icon;
+                        }
+                    } else { // So thumbnail and previewImage don't exist. Try 3rd option
+                        thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
+                        thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                        if (thumbfile.exists()) {
+                            // Create icon of this Preview
+                            icon = ImageFunctions.createIcon(file);
+                            //icon = ImageFunctions.createIcon(thumbfile);
+                            if (icon != null) {
+                                // display our created icon from the preview
+                                return icon;
+                            }
+                        } else {
+                            // Use the cantdisplay.png for this preview. Should actually not be necessary here
+                            thumbfile = new File(MyVariables.getcantdisplaypng());
+                            if (thumbfile.exists()) {
+                                // Create icon of this Preview
+                                //icon = ImageFunctions.createIcon(file);
+                                icon = ImageFunctions.createIcon(thumbfile);
+                                // Simply do getbasicdata again, otherwise we have to make the createicon much more complicated
+                                // and we only need it in case of non-recognised images/files
+                                ImageFunctions.getbasicImageData(file);
+                                if (icon != null) {
+                                    // display our created icon from the preview
+                                    return icon;
+                                }
+                            }
+                        } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
+                    } // end of 2nd option creation ("else if") and 3rd option creation (else)
+                } // end of 1st option creation ("else if") and 2nd option creation (else)
+
+            } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
+                // Use the cantdisplay.png for this preview
+                thumbfile = new File(MyVariables.getcantdisplaypng());
+                if (thumbfile.exists()) {
+                    // Create icon of this Preview
+                    icon = ImageFunctions.createIcon(thumbfile);
+                    // Simply do getbasicdata again, otherwise we have to make the createicon much more complicated
+                    // and we only need it in case of non-recognised images/files
+                    ImageFunctions.getbasicImageData(file);
+                    //icon = ImageFunctions.createIcon(file);
+                    if (icon != null) {
+                        // display our created icon from the preview
+                        return icon;
+                    }
+                }
+            }
+
+        }
+
+        return icon;
+    }
+
     /*
-     * Create the icon
+     * Create the icon after having determined what kind of image we have
+     * This is only necessary if we do not have a thumbnail, previewimage, etc from our "big" image
      */
     public static ImageIcon createIcon(File file) {
         ImageIcon icon = null;
@@ -247,10 +406,10 @@ public class ImageFunctions {
 
         filename = file.getName().replace("\\", "/");
         logger.debug("Now working on image: " +filename);
-        String filenameExt = Utils.getFileExtension(filename);
+        String filenameExt = getFileExtension(filename);
         try {
             try {
-                // We use exiftool to get width, height and orientation from the original image
+                // We use exiftool to get width, height and orientation from the ORIGINAL image
                 // (as it is not always available in the thumbnail or preview)
                 basicdata = ImageFunctions.getbasicImageData(file);
                 logger.debug("Width {} Height {} Orientation {}", String.valueOf(basicdata[0]), String.valueOf(basicdata[1]), String.valueOf(basicdata[2]));
@@ -260,7 +419,7 @@ public class ImageFunctions {
 
             }
             logger.trace("after getbasicdata");
-            if ((bde) || (basicdata[2]== 999)) {
+            if ((bde) || (basicdata[2] == 999)) {
                 // We had some error. Mostly this is the orientation
                 basicdata[2]= 1;
             }

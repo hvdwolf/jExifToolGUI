@@ -6,6 +6,7 @@ package org.hvdw.jexiftoolgui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MyVariables {
@@ -32,6 +33,7 @@ public class MyVariables {
     private List<Integer> selectedIndicesList;
     private String[] CustomCombis;
     private String delayedOutput;
+    private HashMap<String, String> imgBasicData;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -125,4 +127,8 @@ public class MyVariables {
     public static void setdelayedOutput(String deloutput) {
         staticInstance.delayedOutput = deloutput;
     }
+
+    public static HashMap<String, String> getimgBasicData () { return staticInstance.imgBasicData; };
+    public static void setimgBasicData( HashMap<String, String> imgBasData) {staticInstance.imgBasicData = imgBasData; }
+
 }

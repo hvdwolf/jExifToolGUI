@@ -69,8 +69,8 @@
               <component id="14186" class="javax.swing.JTable" binding="tableListfiles">
                 <constraints/>
                 <properties>
-                  <autoResizeMode value="4"/>
-                  <preferredScrollableViewportSize width="400" height="400"/>
+                  <autoResizeMode value="0"/>
+                  <preferredScrollableViewportSize width="-1" height="-1"/>
                   <showHorizontalLines value="true"/>
                   <showVerticalLines value="false"/>
                   <toolTipText value="Double-clicking the thumbnail or filename will open the image in the default viewer"/>

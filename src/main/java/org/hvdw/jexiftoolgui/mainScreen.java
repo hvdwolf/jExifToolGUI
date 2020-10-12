@@ -661,8 +661,8 @@ public class mainScreen {
         Leftscrollpane = new JScrollPane();
         LeftPanel.add(Leftscrollpane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tableListfiles = new JTable();
-        tableListfiles.setAutoResizeMode(4);
-        tableListfiles.setPreferredScrollableViewportSize(new Dimension(400, 400));
+        tableListfiles.setAutoResizeMode(0);
+        tableListfiles.setPreferredScrollableViewportSize(new Dimension(-1, -1));
         tableListfiles.setShowHorizontalLines(true);
         tableListfiles.setShowVerticalLines(false);
         tableListfiles.setToolTipText("Double-clicking the thumbnail or filename will open the image in the default viewer");
