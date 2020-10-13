@@ -21,6 +21,8 @@ public class MyConstants {
     public static final String[] REF_IMAGE_DATETIME = {"-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate"};
     public static final String[] GPANO_PROJECTIONS = {"equirectangular", "cylindrical", "rectilinear"};
     public static final String[] WIDTH_HEIGHT_ORIENTATION = {"-n", "-S", "-imagewidth", "-imageheight", "-orientation"};
+    public static final String[] BASIC_IMG_DATA = {"-n", "-S", "-imagewidth", "-imageheight", "-orientation", "-iso", "-fnumber", "-exposuretime", "-focallength", "-focallengthin35mmformat"};
+    //public static final String[] BASIC_IMG_DATA = {"-S", "-imagewidth", "-imageheight", "-orientation", "-iso", "-fnumber", "-exposuretime"};
 
     // exiftool image modification parameters
     public static final String[] SET_FILEDATETIME_TO_DATETIMEORIGINAL = {"-FileModifyDate<DateTimeOriginal"};

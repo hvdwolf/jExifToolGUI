@@ -21,6 +21,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -87,8 +88,7 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Copy all metadata to xmp format":
                 if (selectedIndicesList.size() > 0) {
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.copyallxmpdata"));
-                    metaData.copyToXmp();
+                    metaData.copyToXmp(OutputLabel);
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -215,6 +215,9 @@ public class MenuActionListener implements ActionListener  {
             case "DeleteLenses":
                 SelectmyLens SmL = new SelectmyLens();
                 SmL.showDialog(rootPanel, "delete lens");
+                break;
+            case "ExiftoolDatabase":
+                ExiftoolDatabase.showDialog();
                 break;
             case "About jExifToolGUI":
                 //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);

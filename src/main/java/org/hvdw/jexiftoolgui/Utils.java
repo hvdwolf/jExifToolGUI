@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
@@ -133,10 +133,14 @@ public class Utils {
 
         infostring.append("<big>System and Program Info</big><hr><br><table width=\"90%\" border=0>");
         infostring.append("<tr><td>Operating system:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_NAME) + "</td></tr>");
-        infostring.append("<tr><td>Operating system architecture:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH) + "</td></tr>");
-        infostring.append("<tr><td>Operating system version:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION) + "<br><br></td></tr>");
-        infostring.append("<tr><td>jExifToolGUI version:</td><td>" + ProgramTexts.Version + "</td></tr>");
-        infostring.append("<tr><td>Exiftool version:</td><td>" + MyVariables.getExiftoolVersion() + "<br><br></td></tr>");
+        infostring.append("<tr><td>Operating system architecture:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH).replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        // or use replaceAll(LINE_SEPATATOR, "") or replaceAll("(\\r|\\n)", "")
+        infostring.append("<tr><td>Operating system version:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
+        infostring.append("<tr><td>User home directory:</td><td>" + SystemPropertyFacade.getPropertyByKey(USER_HOME).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
+        infostring.append("<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
+        infostring.append("<tr><td>jExifToolGUI version:</td><td>" + ProgramTexts.Version.replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<tr><td>Exiftool version:</td><td>" + (MyVariables.getExiftoolVersion()).replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
         infostring.append("<tr><td>java version:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_VERSION) + "</td></tr>");
         infostring.append("<tr><td>java home:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_HOME) + "</td></tr>");
         infostring.append("</table></html>");
@@ -342,6 +346,81 @@ public class Utils {
         return filepath.replaceFirst("[.][^.]+$", "");
     }
 
+    /*
+    / an instance of LabelIcon holds an icon and label pair for each row.
+     */
+    private static class LabelIcon {
+
+        Icon icon;
+        String label;
+
+        public LabelIcon(Icon icon, String label) {
+            this.icon = icon;
+            this.label = label;
+        }
+    }
+
+    /*
+    / This is the extended TableCellRenderer
+    / Because DefaultTableCellRenderer is JLabel, you can use it's text alignment properties in a custom renderer to label the icon.
+     */
+    private static class LabelIconRenderer extends DefaultTableCellRenderer {
+
+        public LabelIconRenderer() {
+            setHorizontalTextPosition(JLabel.CENTER);
+            setVerticalTextPosition(JLabel.BOTTOM);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object
+                value, boolean isSelected, boolean hasFocus, int row, int col) {
+            JLabel r = (JLabel) super.getTableCellRendererComponent(
+                    table, value, isSelected, hasFocus, row, col);
+            setIcon(((LabelIcon) value).icon);
+            setText(((LabelIcon) value).label);
+            return r;
+        }
+    }
+
+    private static class MultiLineCellRenderer extends JTextArea implements TableCellRenderer {
+
+        public MultiLineCellRenderer() {
+            setLineWrap(true);
+            setWrapStyleWord(true);
+            setOpaque(true);
+        }
+        public Class getColumnClass(int columnIndex) {
+            return String.class;
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+            /*JLabel r = (JLabel) super.getTableCellRendererComponent(
+                    table, value, isSelected, hasFocus, row, column);
+            setIcon(((LabelIcon) value).icon);
+            setText(((LabelIcon) value).label);*/
+
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(table.getBackground());
+            }
+            setFont(table.getFont());
+            if (hasFocus) {
+                setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+                if (table.isCellEditable(row, column)) {
+                    setForeground(UIManager.getColor("Table.focusCellForeground"));
+                    setBackground(UIManager.getColor("Table.focusCellBackground"));
+                }
+            } else {
+                setBorder(new EmptyBorder(1, 2, 1, 2));
+            }
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
+    }
 
     /*
      * Display the loaded files with icon and name
@@ -349,17 +428,18 @@ public class Utils {
     static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
         int selectedRow, selectedColumn;
 
-        boolean heicextension = false;
-        String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
-
-        boolean bSimpleExtension = false;
-        String thumbfilename = "";
-        File thumbfile = null;
         ImageIcon icon = null;
         File[] files = MyVariables.getSelectedFiles();
+        boolean singleColumnTable = false;
+        //if (!singleColumnTable) {*/
         DefaultTableModel model = (DefaultTableModel) jTable_File_Names.getModel();
-        //model.setColumnIdentifiers(new String[]{"File Name(s)"});
-        //ListexiftoolInfotable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
+
+        /*DefaultTableModel model = new DefaultTableModel() {
+            public Class getColumnClass(int columnIndex) {
+                return String.class;
+            }
+        };
+        jTable_File_Names.setModel(model);*/
         jTable_File_Names.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             protected void setValue(Object value) {
                 if (value instanceof ImageIcon) {
@@ -369,12 +449,39 @@ public class Utils {
                     setIcon(null);
                     super.setValue(value);
                 }
+                /*if (value instanceof LabelIcon) {
+                    setIcon(((LabelIcon) value).icon);
+                    //setHorizontalTextPosition(JLabel.CENTER);
+                    //setVerticalTextPosition(JLabel.BOTTOM);
+                    setText(((LabelIcon) value).label);
+                } else if (value instanceof ImageIcon) {
+                    setIcon((ImageIcon) value);
+                    setText("");
+                } else if (value instanceof String) {
+                    setText(((String) value).toString());
+                } else if (value instanceof String[]) {
+                    setText(((String[]) value).toString());
+                } else {
+                    setIcon(null);
+                    super.setValue(value);
+                }*/
             }
         });
 
-        //model.setColumnIdentifiers(new String[]{"A", "B", "C"});
-        model.setColumnIdentifiers(new String[]{"Photo", "Filename"});
+
+        if (singleColumnTable) {
+            jTable_File_Names.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
+            model.setColumnIdentifiers(new String[]{"Photo / Filename"});
+            //model.setColumnIdentifiers(new String[]{"Photo", "Filename"});
+        } else {
+            //jTable_File_Names.setDefaultRenderer(String.class, new MultiLineCellRenderer());
+            //jTable_File_Names.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
+            model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
+        }
+        //model.setColumnIdentifiers(new String[]{"Photo", "Filename"});
         model.setRowCount(0);
+        jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
+        jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(260);
         model.fireTableDataChanged();
         jTable_File_Names.clearSelection();
         jTable_File_Names.setCellSelectionEnabled(true);
@@ -389,129 +496,99 @@ public class Utils {
         Application.OS_NAMES currentOsName = getCurrentOsName();
         for (File file : files) {
             //logger.trace(file.getName().replace("\\", "/"));
-            bSimpleExtension = false;
+            //bSimpleExtension = false;
             filename = file.getName().replace("\\", "/");
             logger.debug("Now working on image: " +filename);
-            String filenameExt = getFileExtension(filename);
-            if (filenameExt.toLowerCase().equals("heic")) {
-                heicextension = true;
-            }
-            for (String ext : SimpleExtensions) {
-                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png or tif(f)
-                    bSimpleExtension = true;
-                    break;
-                }
-            }
 
-            if ( (heicextension) && currentOsName == APPLE) { // For Apple we deviate
-//            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
-                logger.info("do sipsConvertToJPG for {}", filename);
-                String exportResult = ImageFunctions.sipsConvertToJPG(file, "thumb");
-                if ("Success".equals(exportResult)) {
-                    logger.info("back from sipsconvert: result {}", exportResult);
-                    //Hoping we have a thumbnail
-                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
-                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                    if (thumbfile.exists()) {
-                        // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
-                        logger.trace("create thumb nr1");
-                        icon = ImageFunctions.createIcon(thumbfile);
-                        if (icon != null) {
-                            // display our created icon from the thumbnail
-                            ImgFilenameRow[0] = icon;
-                        }
-                    }
-                }
-                //reset our heic flag
-                heicextension = false;
-            } else if (bSimpleExtension) {
-                /*if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
-                    String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file, "RAW");
-                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                    icon = ImageFunctions.createIcon(file);
-                } else {
-                    icon = ImageFunctions.createIcon(file);
-                } */
-                icon = ImageFunctions.createIcon(file);
+            icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+            // hashmap basicImgData: ImageWidth, ImageHeight, Orientation, ISO, FNumber, ExposureTime, focallength, focallengthin35mmformat
+            HashMap<String, String> imgBasicData = MyVariables.getimgBasicData();
+            StringBuilder imginfo = new StringBuilder();
+            imginfo.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
+            imginfo.append("<br><br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") +": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
+            //imginfo.append("<br>Orientation" + imgBasicData.get("Orientation"));
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") +": " + imgBasicData.get("ISO"));
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") +": " + imgBasicData.get("FNumber"));
+            if (!(imgBasicData.get("ExposureTime") == null)) {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
+            } else {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + imgBasicData.get("ExposureTime"));
+            }
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") +": " + imgBasicData.get("FocalLength") + " mm");
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") +": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+
+            if (singleColumnTable){
+                jTable_File_Names.setRowHeight(150); //180
+                ImgFilenameRow[0] = new LabelIcon(icon, filename);
+                //ImgFilenameRow[1] = labelText;
+                //ImgFilenameRow[0] = new LabelIcon(icon, labelText);
+            } else {
                 ImgFilenameRow[0] = icon;
-            } else { //We have a RAW image extension or tiff or something else like audio/video
-                // Export previews for current (RAW) image to tempWorkfolder
-                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
-                if ("Success".equals(exportResult)) {
-                    //Hoping we have a thumbnail
-                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-                    thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                    logger.trace("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                    if (thumbfile.exists()) {
-                        // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
-                        logger.trace("create thumb nr1");
-                        //icon = ImageFunctions.createIcon(file, thumbfile);
-                        icon = ImageFunctions.createIcon(thumbfile);
-                        if (icon != null) {
-                            // display our created icon from the thumbnail
-                            ImgFilenameRow[0] = icon;
-                        }
-                    } else { //thumbnail image probably doesn't exist, move to 2nd option
-                        thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
-                        thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                        if (thumbfile.exists()) {
-                            // Create icon of this Preview
-                            logger.trace("create thumb nr2");
-                            //icon = ImageFunctions.createIcon(file, thumbfile);
-                            icon = ImageFunctions.createIcon(thumbfile);
-                            if (icon != null) {
-                                // display our created icon from the preview
-                                ImgFilenameRow[0] = icon;
-                            }
-                        } else { // So thumbnail and previewImage don't exist. Try 3rd option
-                            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
-                            thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                            if (thumbfile.exists()) {
-                                // Create icon of this Preview
-                                //icon = ImageFunctions.createIcon(file, thumbfile);
-                                icon = ImageFunctions.createIcon(thumbfile);
-                                if (icon != null) {
-                                    // display our created icon from the preview
-                                    ImgFilenameRow[0] = icon;
-                                }
-                            } else {
-                                // Use the cantdisplay.png for this preview. Should actually not be necessary here
-                                thumbfile = new File(MyVariables.getcantdisplaypng());
-                                if (thumbfile.exists()) {
-                                    // Create icon of this Preview
-                                    icon = ImageFunctions.createIcon(thumbfile);
-                                    if (icon != null) {
-                                        // display our created icon from the preview
-                                        ImgFilenameRow[0] = icon;
-                                    }
-                                }
-                            } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
-                        } // end of 2nd option creation ("else if") and 3rd option creation (else)
-                    } // end of 1st option creation ("else if") and 2nd option creation (else)
-
-                } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
-                    // Use the cantdisplay.png for this preview
-                    thumbfile = new File(MyVariables.getcantdisplaypng());
-                    if (thumbfile.exists()) {
-                        // Create icon of this Preview
-                        icon = ImageFunctions.createIcon(thumbfile);
-                        if (icon != null) {
-                            // display our created icon from the preview
-                            ImgFilenameRow[0] = icon;
-                        }
-                    }
-                }
-
+                //ImgFilenameRow[1] = labelText;
+                ImgFilenameRow[1] = imginfo.toString();
+                jTable_File_Names.setRowHeight(150);
             }
-
+            /*ImgFilenameRow[0] = icon;
             ImgFilenameRow[1] = filename;
-            jTable_File_Names.setRowHeight(150);
+            jTable_File_Names.setRowHeight(150);*/
             model.addRow(ImgFilenameRow);
         }
 
         MyVariables.setSelectedRow(0);
         MyVariables.setSelectedColumn(0);
+    }
+
+    public static void getImageInfoFromSelectedTreeFile(String[] whichInfo,JTable ListexiftoolInfotable) {
+
+        //String fpath = "";
+        List<String> cmdparams = new ArrayList<String>();
+        //int selectedRow = MyVariables.getSelectedRow();
+        //List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
+
+        //if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
+            Application.OS_NAMES currentOsName = getCurrentOsName();
+
+            cmdparams.add(Utils.platformExiftool().trim());
+            // Check if we want to use G1 instead of G
+            boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+            if (useGroup1) {
+                for (int i = 0; i < whichInfo.length; i++) {
+                    if ("-G".equals(whichInfo[i])) {
+                        whichInfo[i] = whichInfo[i].replace("-G", "-G1");
+                    }
+                }
+            }
+            // Check for chosen metadata language
+            if (!"".equals(getmetadataLanguage())) {
+                cmdparams.add("-lang");
+                cmdparams.add(getmetadataLanguage());
+            }
+            // Check if user wants to see decimal degrees
+            if (UseDecimalDegrees()) {
+                cmdparams.add("-c");
+                cmdparams.add("%.6f");
+            }
+            cmdparams.addAll(Arrays.asList(whichInfo));
+            logger.trace("image file path: {}", MyVariables.getSelectedImagePath());
+            cmdparams.add(MyVariables.getSelectedImagePath());
+
+            logger.trace("before runCommand: {}", cmdparams);
+            try {
+                String res = CommandRunner.runCommand(cmdparams);
+                logger.trace("res is {}", res);
+                displayInfoForSelectedImage(res, ListexiftoolInfotable);
+            } catch (IOException | InterruptedException ex) {
+                logger.error("Error executing command", ex);
+            }
+        /*} else {
+            // We have multiple images selected. There is no direct link to the images anymore,
+            // apart from the fact that the last image is automatically selected
+            String res = "jExifToolGUI\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfiles") + "\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.seloption");
+            displayInfoForSelectedImage(res, ListexiftoolInfotable);
+        }*/
+
     }
 
     /*
@@ -531,10 +608,6 @@ public class Utils {
             } else {
                 fpath = files[selectedRow].getPath();
             }
-            //Testje metadata extractor
-            /*logger.info("\n\nStart of test metadata extractor {}\n\n", fpath);
-            File imgfile = new File(files[selectedRow].getPath());
-            ImageFunctions.getbasicImageData(imgfile); */
 
             // Need to build exiftool prefs check
             MyVariables.setSelectedImagePath(fpath);
@@ -777,13 +850,25 @@ public class Utils {
     }
 
     /*
-    *
+    * Setc checkboxes on first copy data tab. These are the cehckboxes for the selective copy
      */
     static void setCopyMetaDatacheckboxes(boolean state, JCheckBox[] CopyMetaDatacheckboxes) {
         for (JCheckBox chkbx : CopyMetaDatacheckboxes) {
             chkbx.setEnabled(state);
         }
     }
+    /*
+    / Set checkboxes and radiobuttons on the second copy data tab
+     */
+    static void setInsideCopyCheckboxesRadiobuttons(boolean state, JRadioButton[] InsideCopyMetadataradiobuttons, JCheckBox[] InsideCopyMetadacheckboxes) {
+        for (JRadioButton rdbtn: InsideCopyMetadataradiobuttons) {
+            rdbtn.setEnabled(state);
+        }
+        for (JCheckBox chkbx : InsideCopyMetadacheckboxes) {
+            chkbx.setEnabled(state);
+        }
+    }
+
     /*
     / Retrieves the icone that is used for the window bar icons in the app (windows/linux)
      */
@@ -860,7 +945,8 @@ public class Utils {
      */
     public static void displaySelectedImageInExternalViewer() {
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
-        String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;;
+        //String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
+        String[] SimpleExtensions = MyConstants.SUPPORTED_IMAGES;
 
         String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
         boolean AlwaysUseRawViewer = prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false);
@@ -904,7 +990,29 @@ public class Utils {
                 viewInDefaultViewer();
             }
         } else { // Whatever other extension, simply try by default mime type
-            viewInDefaultViewer();
+            //viewInDefaultViewer();
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                //Application.OS_NAMES currentOsName = getCurrentOsName();
+                switch (currentOsName) {
+                    case APPLE:
+                        runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                        return;
+                    case MICROSOFT:
+                        String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
+                        String[] commands = {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
+                        runtime.exec(commands);
+                        return;
+                    case LINUX:
+                        String selectedImagePath = MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        logger.trace("xdg-open {}", selectedImagePath);
+                        runtime.exec("xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                        return;
+                }
+            } catch (IOException e) {
+                logger.error("Could not open image app.", e);
+            }
+
         }
 
     }

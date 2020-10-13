@@ -127,7 +127,12 @@ public class CreateMenu {
         menuItem.setActionCommand("DeleteLenses");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
-
+        myMenu.addSeparator();
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("tmenu.exiftooldb"));
+        menuItem.setActionCommand("ExiftoolDatabase");
+        //myMenu.setMnemonic(KeyEvent.VK_R);
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
 
 
         // exiftool database
