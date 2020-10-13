@@ -538,6 +538,59 @@ public class Utils {
         MyVariables.setSelectedColumn(0);
     }
 
+    public static void getImageInfoFromSelectedTreeFile(String[] whichInfo,JTable ListexiftoolInfotable) {
+
+        //String fpath = "";
+        List<String> cmdparams = new ArrayList<String>();
+        //int selectedRow = MyVariables.getSelectedRow();
+        //List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
+
+        //if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
+            Application.OS_NAMES currentOsName = getCurrentOsName();
+
+            cmdparams.add(Utils.platformExiftool().trim());
+            // Check if we want to use G1 instead of G
+            boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+            if (useGroup1) {
+                for (int i = 0; i < whichInfo.length; i++) {
+                    if ("-G".equals(whichInfo[i])) {
+                        whichInfo[i] = whichInfo[i].replace("-G", "-G1");
+                    }
+                }
+            }
+            // Check for chosen metadata language
+            if (!"".equals(getmetadataLanguage())) {
+                cmdparams.add("-lang");
+                cmdparams.add(getmetadataLanguage());
+            }
+            // Check if user wants to see decimal degrees
+            if (UseDecimalDegrees()) {
+                cmdparams.add("-c");
+                cmdparams.add("%.6f");
+            }
+            cmdparams.addAll(Arrays.asList(whichInfo));
+            logger.trace("image file path: {}", MyVariables.getSelectedImagePath());
+            cmdparams.add(MyVariables.getSelectedImagePath());
+
+            logger.trace("before runCommand: {}", cmdparams);
+            try {
+                String res = CommandRunner.runCommand(cmdparams);
+                logger.trace("res is {}", res);
+                displayInfoForSelectedImage(res, ListexiftoolInfotable);
+            } catch (IOException | InterruptedException ex) {
+                logger.error("Error executing command", ex);
+            }
+        /*} else {
+            // We have multiple images selected. There is no direct link to the images anymore,
+            // apart from the fact that the last image is automatically selected
+            String res = "jExifToolGUI\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfiles") + "\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.seloption");
+            displayInfoForSelectedImage(res, ListexiftoolInfotable);
+        }*/
+
+    }
+
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
@@ -555,10 +608,6 @@ public class Utils {
             } else {
                 fpath = files[selectedRow].getPath();
             }
-            //Testje metadata extractor
-            /*logger.info("\n\nStart of test metadata extractor {}\n\n", fpath);
-            File imgfile = new File(files[selectedRow].getPath());
-            ImageFunctions.getbasicImageData(imgfile); */
 
             // Need to build exiftool prefs check
             MyVariables.setSelectedImagePath(fpath);
@@ -896,7 +945,8 @@ public class Utils {
      */
     public static void displaySelectedImageInExternalViewer() {
         //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
-        String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;;
+        //String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
+        String[] SimpleExtensions = MyConstants.SUPPORTED_IMAGES;
 
         String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
         boolean AlwaysUseRawViewer = prefs.getByKey(RAW_VIEWER_ALL_IMAGES, false);
@@ -940,7 +990,29 @@ public class Utils {
                 viewInDefaultViewer();
             }
         } else { // Whatever other extension, simply try by default mime type
-            viewInDefaultViewer();
+            //viewInDefaultViewer();
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                //Application.OS_NAMES currentOsName = getCurrentOsName();
+                switch (currentOsName) {
+                    case APPLE:
+                        runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                        return;
+                    case MICROSOFT:
+                        String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
+                        String[] commands = {"cmd.exe", "/c", "start", "\"DummyTitle\"", String.format("\"%s\"", convImg)};
+                        runtime.exec(commands);
+                        return;
+                    case LINUX:
+                        String selectedImagePath = MyVariables.getSelectedImagePath().replace(" ", "\\ ");
+                        logger.trace("xdg-open {}", selectedImagePath);
+                        runtime.exec("xdg-open " + MyVariables.getSelectedImagePath().replace(" ", "\\ "));
+                        return;
+                }
+            } catch (IOException e) {
+                logger.error("Could not open image app.", e);
+            }
+
         }
 
     }
