@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
@@ -96,8 +97,8 @@ public class SelectmyLens extends JDialog {
     private String loadlensnames() {
         String sql = "select lens_name,lens_description from myLenses order by lens_Name";
         String lensnames = SQLiteJDBC.generalQuery(sql);
+        logger.debug("retrieved following lens names {}", lensnames);
         return lensnames;
-
     }
 
     private void displaylensnames(String lensnames) {
@@ -111,15 +112,20 @@ public class SelectmyLens extends JDialog {
 
         if (lensnames.length() > 0) {
             String[] lines = lensnames.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+            //logger.debug("String[] lines {}", lines.toString());
 
             for (String line : lines) {
+                logger.debug("line {}", line);
                 String[] cells = line.split("\\t");
-                model.addRow(new Object[]{cells[0], cells[1]});
+                logger.debug("number of elements after splitted line {}", cells.length);
+                if (cells.length > 1) {
+                    model.addRow(new Object[]{cells[0], cells[1]});
+                } else {
+                    model.addRow(new Object[]{line, ""});
+                }
             }
         }
-
     }
-
 
     private void onCancel() {
         // add your code here if necessary

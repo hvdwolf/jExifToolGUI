@@ -70,7 +70,7 @@ public class StandardFileIO {
         }
         if ("".equals(copyresult)) {
             copyresult = "success";
-            logger.info("success copying {}", resourcePath);
+            logger.debug("success copying {}", resourcePath);
         }
         return copyresult;
     }
