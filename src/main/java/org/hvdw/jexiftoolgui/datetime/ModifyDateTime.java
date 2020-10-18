@@ -151,7 +151,7 @@ public class ModifyDateTime extends JDialog {
 
     public void showDialog(JProgressBar progressBar) {
         selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-        files = MyVariables.getSelectedFiles();
+        files = MyVariables.getLoadedFiles();
         progBar = progressBar;
         //selectedFilenamesIndices = selectedIndices;
         //files = openedfiles;

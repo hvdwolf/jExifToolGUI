@@ -19,7 +19,8 @@ public class MouseListeners {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(MouseListeners.class);
 
 
-    public static void fileTreeAndFileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, JTree fileTree, String params[]) {
+    //public static void fileTreeAndFileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, JTree fileTree, String params[]) {
+    public static void fileTreeAndFileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, String params[]) {
         // Use the mouse listener for the single cell double-click selection for the left table to be able to
         // display the image in the default viewer
 
@@ -35,7 +36,7 @@ public class MouseListeners {
             }
         });
         // the mouse listener on the tree
-        MouseListener ml = new MouseAdapter() {
+/*        MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 String fpath;
                 int selRow = fileTree.getRowForLocation(e.getX(), e.getY());
@@ -65,7 +66,7 @@ public class MouseListeners {
                 }
             }
         };
-        fileTree.addMouseListener(ml);
+        fileTree.addMouseListener(ml); */
     }
 
 }

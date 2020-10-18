@@ -8,10 +8,7 @@ import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.hvdw.jexiftoolgui.view.JavaImageViewer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,6 +24,8 @@ import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -79,6 +78,72 @@ public class Utils {
             default:
                 logger.setLevel(Level.INFO);
                 break;
+        }
+    }
+
+    /**
+     * The GetSetGuiSize method "gets" the size on exit and saves it to Preferences
+     * and "sets" the size on startup reading from the Preferences
+     * @param frame
+     * @param action
+     */
+    public static void GetSetGuiSize(JFrame frame, String action) {
+        String strWidth;
+        String strHeight;
+        int Width;
+        int Height;
+
+        Application.OS_NAMES os = Utils.getCurrentOsName();
+        if ("startup".equals(action)) {
+            strWidth = prefs.getByKey(GUI_WIDTH, "1"); // 1450 Apple, 1360 others
+            strHeight = prefs.getByKey(GUI_HEIGHT, "1"); //850
+            if ("1".equals(strWidth)) {
+                if (os == Application.OS_NAMES.APPLE) {
+                    //frame.setSize(1450, 850);
+                    Width = 1450;
+                } else {
+                    //frame.setSize(1360, 850);
+                    Width = 850;
+                    //frame.pack();
+                }
+            } else {
+                Width = Integer.parseInt(strWidth);
+            }
+            if ("1".equals(strHeight)) {
+                Height = 850;
+            } else {
+                Height = Integer.parseInt(strHeight);
+            }
+            frame.setSize(Width, Height);
+        } else if ("save".equals(action)) {
+            Width = frame.getWidth();
+            Height = frame.getHeight();
+            logger.info("Gui Width x Height: {} x {}", Width, Height);
+            prefs.storeByKey(GUI_WIDTH, String.valueOf(Width));
+            prefs.storeByKey(GUI_HEIGHT, String.valueOf(Height));
+        }
+    }
+    /**
+     * The GetSetLeftPanelSize method "gets" the size on exit and saves it to Preferences
+     * and "sets" the size on startup reading from the Preferences
+     * @param LeftPanel
+     * @param action
+     */
+    public static void GetSetLeftPanelWidth( JPanel LeftPanel, String action) {
+        int Width;
+        String strWidth;
+
+        if ("startup".equals(action)) {
+            strWidth = prefs.getByKey(LEFTPANEL_WIDTH, "1");
+            if ("1".equals(strWidth)) {
+                Width = 430;
+            } else {
+                Width = Integer.parseInt(strWidth);
+            }
+            LeftPanel.setPreferredSize(new Dimension(Width, -1));
+        } else if ("save".equals(action)) {
+            Width = LeftPanel.getWidth();
+            prefs.storeByKey(LEFTPANEL_WIDTH,String.valueOf(Width));
         }
     }
 
@@ -422,66 +487,209 @@ public class Utils {
         }
     }
 
+    static public String returnBasicImageDataString(String filename, String stringType) {
+        String strImgData = "";
+        // hashmap basicImgData: ImageWidth, ImageHeight, Orientation, ISO, FNumber, ExposureTime, focallength, focallengthin35mmformat
+        HashMap<String, String> imgBasicData = MyVariables.getimgBasicData();
+        StringBuilder imginfo = new StringBuilder();
+
+        if ("html".equals(stringType)) {
+            //imginfo.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
+            imginfo.append("<html>" + filename);
+            imginfo.append("<br><br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
+            //imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + imgBasicData.get("ISO"));
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + imgBasicData.get("FNumber"));
+            if (!(imgBasicData.get("ExposureTime") == null)) {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
+            } else {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + imgBasicData.get("ExposureTime"));
+            }
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
+            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            strImgData = imginfo.toString();
+        } else {
+            imginfo.append(ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
+            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
+            //imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
+            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + imgBasicData.get("ISO"));
+            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + imgBasicData.get("FNumber"));
+            if (!(imgBasicData.get("ExposureTime") == null)) {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
+            } else {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + imgBasicData.get("ExposureTime"));
+            }
+            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
+            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            strImgData = imginfo.toString();
+        }
+        return strImgData;
+    }
+
+    public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JTable tableListfiles, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params) {
+        File[] files;
+
+        // "Translate" for clarity, instead of using the array index;
+        JLabel OutputLabel = mainScreenLabels[0];
+        JLabel lblLoadedFiles = mainScreenLabels[1];
+        JButton buttonShowImage = commandButtons[2];
+        JButton buttonCompare = commandButtons[3];
+        JButton buttonSlideshow = commandButtons[4];
+
+
+        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
+        if ("images".equals(loadingType)) {
+            logger.debug("load images pushed or menu load images");
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages"));
+            if ("jfilechooser".equals(prefFileDialog)) {
+                logger.debug("load images using jfilechooser");
+                files = StandardFileIO.getFileNames(rootPanel);
+                logger.debug("AFTER load images using jfilechooser");
+            } else {
+                logger.debug("load images pushed or menu load images using AWT file dialog");
+                files = StandardFileIO.getFileNamesAwt(rootPanel);
+                logger.debug("AFTER load images using AWT file dialog");
+            }
+        } else if ("folder".equals(loadingType)) { // loadingType = folder
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingdirectory"));
+            logger.debug("load folder pushed or menu load folder");
+            if ("jfilechooser".equals(prefFileDialog)) {
+                logger.debug("load folder using jfilechooser");
+                files = StandardFileIO.getFolderFiles(rootPanel);
+                logger.debug("AFTER load folder using jfilechooser");
+            } else {
+                logger.debug("load folder using AWT file dialog");
+                files = StandardFileIO.getFolderFilesAwt(rootPanel);
+                logger.debug("AFTER load folder using AWT file dialog");
+            }
+        } else { // files dropped onto our app
+            OutputLabel.setText("Loading files dropped onto the app");
+            files = MyVariables.getLoadedFiles();
+        }
+        if (files != null) {
+            lblLoadedFiles.setText(String.valueOf(files.length));
+            logger.debug("After loading images, loading files or dropping files: no. of files > 0");
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    int jpegcounter = 0;
+                    String filename;
+                    for (File file : files) {
+                        filename = file.getName().replace("\\", "/");
+                        logger.debug("Checking on extension for JPG extraction on image: " +filename);
+                        String filenameExt = Utils.getFileExtension(filename);
+                        if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+                            jpegcounter++;
+                        }
+                    }
+                    if (jpegcounter >= 3) {
+                        // Always try to extract thumbnails and previews of selected images. This normally only works for JPGs and RAWs
+                        ImageFunctions.extractThumbnails();
+                    }
+                    Utils.displayFiles(tableListfiles, LeftPanel);
+                    MyVariables.setSelectedRow(0);
+                    //tableListfiles.getSelectionBackground();
+                    // Select first row and repaint table
+                    /*tableListfiles.setRowSelectionInterval(0,0);
+                    tableListfiles.setSelectionModel(listSelectionModel);
+                    tableListfiles.repaint(); */
+                    //tableListfiles.addRowSelectionInterval(0,0);
+                    //DefaultTableModel model = (DefaultTableModel) tableListfiles.getModel();
+                    //model.setRowColour(0, tableListfiles.getSelectionBackground());
+                    //tableListfiles.set
+                    /*Component prepareRenderer(TableCellRenderer, int row, int column){
+                        if (tableListfiles.isRowSelected(0)) {
+                            Component c = super.prepareRenderer(renderer, row, column);
+                        }
+                    }*/
+                    //String[] params = whichRBselected();
+                    String res = Utils.getImageInfoFromSelectedFile(params, files);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    buttonShowImage.setEnabled(true);
+                    buttonCompare.setEnabled(true);
+                    buttonSlideshow.setEnabled(true);
+                    //OutputLabel.setText(" Images loaded ...");
+                    OutputLabel.setText("");
+                    // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
+                    Utils.progressStatus(progressBar, false);
+                }
+            });
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    progressBar.setVisible(true);
+                }
+            });
+        } else {
+            logger.debug("no files loaded. User pressed cancel.");
+            lblLoadedFiles.setText("");
+            OutputLabel.setText("");
+        }
+        List<Integer> selectedIndicesList = new ArrayList<>();
+        MyVariables.setselectedIndicesList(selectedIndicesList);
+        MyVariables.setLoadedFiles(files);
+
+        return files;
+    }
+
+
     /*
      * Display the loaded files with icon and name
      */
-    static void displayFiles(JTable jTable_File_Names, JTable ListexiftoolInfotable, JLabel Thumbview) {
+    static void displayFiles(JTable jTable_File_Names, JPanel LeftPanel) {
         int selectedRow, selectedColumn;
 
         ImageIcon icon = null;
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         boolean singleColumnTable = false;
-        //if (!singleColumnTable) {*/
+        boolean columns = prefs.getByKey(DUAL_COLUMN, true);
+        if (columns) {
+            singleColumnTable = false;
+        } else {
+            singleColumnTable = true;
+        }
+
         DefaultTableModel model = (DefaultTableModel) jTable_File_Names.getModel();
 
-        /*DefaultTableModel model = new DefaultTableModel() {
-            public Class getColumnClass(int columnIndex) {
-                return String.class;
-            }
-        };
-        jTable_File_Names.setModel(model);*/
+        boolean finalSingleColumnTable = singleColumnTable;
         jTable_File_Names.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             protected void setValue(Object value) {
-                if (value instanceof ImageIcon) {
-                    setIcon((ImageIcon) value);
-                    setText("");
+                if (finalSingleColumnTable) {
+                    if (value instanceof LabelIcon) {
+                        setIcon(((LabelIcon) value).icon);
+                        setHorizontalTextPosition(JLabel.CENTER);
+                        setVerticalTextPosition(JLabel.BOTTOM);
+                        setText(((LabelIcon) value).label);
+                    }
                 } else {
-                    setIcon(null);
-                    super.setValue(value);
+                    if (value instanceof ImageIcon) {
+                        setIcon((ImageIcon) value);
+                        setText("");
+                    } else {
+                        setIcon(null);
+                        super.setValue(value);
+                    }
                 }
-                /*if (value instanceof LabelIcon) {
-                    setIcon(((LabelIcon) value).icon);
-                    //setHorizontalTextPosition(JLabel.CENTER);
-                    //setVerticalTextPosition(JLabel.BOTTOM);
-                    setText(((LabelIcon) value).label);
-                } else if (value instanceof ImageIcon) {
-                    setIcon((ImageIcon) value);
-                    setText("");
-                } else if (value instanceof String) {
-                    setText(((String) value).toString());
-                } else if (value instanceof String[]) {
-                    setText(((String[]) value).toString());
-                } else {
-                    setIcon(null);
-                    super.setValue(value);
-                }*/
             }
         });
-
 
         if (singleColumnTable) {
             jTable_File_Names.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
             model.setColumnIdentifiers(new String[]{"Photo / Filename"});
-            //model.setColumnIdentifiers(new String[]{"Photo", "Filename"});
+            jTable_File_Names.getColumnModel().getColumn(0).setMinWidth(170);
+            jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(210);
+            jTable_File_Names.setRowHeight(180); //180
+            //LeftPanel.setSize(220,-1);
+            LeftPanel.setPreferredSize(new Dimension(230, -1));
         } else {
-            //jTable_File_Names.setDefaultRenderer(String.class, new MultiLineCellRenderer());
-            //jTable_File_Names.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
             model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
+            jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
+            jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(260);
+            jTable_File_Names.setRowHeight(150);
+            //LeftPanel.setSize(430,-1);
+            LeftPanel.setPreferredSize(new Dimension(440, -1));
         }
-        //model.setColumnIdentifiers(new String[]{"Photo", "Filename"});
         model.setRowCount(0);
-        jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
-        jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(260);
         model.fireTableDataChanged();
         jTable_File_Names.clearSelection();
         jTable_File_Names.setCellSelectionEnabled(true);
@@ -490,47 +698,23 @@ public class Utils {
         Object[] FilenameRow = new Object[3];
         Object[] ImgFilenameRow = new Object[2];
         String filename = "";
-        int trow = 0;
-        int tcolumn = 0;
 
         Application.OS_NAMES currentOsName = getCurrentOsName();
         for (File file : files) {
-            //logger.trace(file.getName().replace("\\", "/"));
-            //bSimpleExtension = false;
             filename = file.getName().replace("\\", "/");
             logger.debug("Now working on image: " +filename);
 
             icon = ImageFunctions.analyzeImageAndCreateIcon(file);
-            // hashmap basicImgData: ImageWidth, ImageHeight, Orientation, ISO, FNumber, ExposureTime, focallength, focallengthin35mmformat
-            HashMap<String, String> imgBasicData = MyVariables.getimgBasicData();
-            StringBuilder imginfo = new StringBuilder();
-            imginfo.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
-            imginfo.append("<br><br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") +": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
-            //imginfo.append("<br>Orientation" + imgBasicData.get("Orientation"));
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") +": " + imgBasicData.get("ISO"));
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") +": " + imgBasicData.get("FNumber"));
-            if (!(imgBasicData.get("ExposureTime") == null)) {
-                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
-            } else {
-                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + imgBasicData.get("ExposureTime"));
-            }
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") +": " + imgBasicData.get("FocalLength") + " mm");
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") +": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
 
             if (singleColumnTable){
-                jTable_File_Names.setRowHeight(150); //180
+
                 ImgFilenameRow[0] = new LabelIcon(icon, filename);
-                //ImgFilenameRow[1] = labelText;
-                //ImgFilenameRow[0] = new LabelIcon(icon, labelText);
             } else {
+                String imginfo = returnBasicImageDataString(filename, "html");
+                logger.warn("imginfo {}", imginfo);
                 ImgFilenameRow[0] = icon;
-                //ImgFilenameRow[1] = labelText;
-                ImgFilenameRow[1] = imginfo.toString();
-                jTable_File_Names.setRowHeight(150);
+                ImgFilenameRow[1] = imginfo;
             }
-            /*ImgFilenameRow[0] = icon;
-            ImgFilenameRow[1] = filename;
-            jTable_File_Names.setRowHeight(150);*/
             model.addRow(ImgFilenameRow);
         }
 
@@ -594,8 +778,9 @@ public class Utils {
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    static void getImageInfoFromSelectedFile(String[] whichInfo, File[] files, JTable ListexiftoolInfotable) {
+    static String getImageInfoFromSelectedFile(String[] whichInfo, File[] files) {
 
+        String res = "";
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
         int selectedRow = MyVariables.getSelectedRow();
@@ -639,25 +824,26 @@ public class Utils {
 
             logger.trace("before runCommand: {}", cmdparams);
             try {
-                String res = CommandRunner.runCommand(cmdparams);
+                res = CommandRunner.runCommand(cmdparams);
                 logger.trace("res is {}", res);
-                displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                //displayInfoForSelectedImage(res, ListexiftoolInfotable);
             } catch (IOException | InterruptedException ex) {
                 logger.error("Error executing command", ex);
             }
         } else {
             // We have multiple images selected. There is no direct link to the images anymore,
             // apart from the fact that the last image is automatically selected
-            String res = "jExifToolGUI\t" +
+            res = "jExifToolGUI\t" +
                     ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfiles") + "\t" +
                     ResourceBundle.getBundle("translations/program_strings").getString("vdtab.seloption");
-            displayInfoForSelectedImage(res, ListexiftoolInfotable);
+            //displayInfoForSelectedImage(res, ListexiftoolInfotable);
         }
 
+        return res;
     }
 
     // This is the "pre-ImageInfo" that is called when the option is chosen to display for a specific Tag Name from the dropdown list without changing the selected image.
-    static void selectImageInfoByTagName(JComboBox comboBoxViewByTagName, File[] files, JTable ListexiftoolInfotable) {
+    public static String selectImageInfoByTagName(JComboBox comboBoxViewByTagName, File[] files) {
 
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
         String[] params = new String[3];
@@ -669,7 +855,9 @@ public class Utils {
             params[1] = "-G";
         }
         params[2] = "-tab";
-        getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
+        String res = getImageInfoFromSelectedFile(params, files);
+        //displayInfoForSelectedImage(res, ListexiftoolInfotable);
+        return res;
     }
 
     // This is for the "all tags" and "camera makes"
@@ -768,7 +956,7 @@ public class Utils {
     /*
      * This method displays the exiftool info in the right 3-column table
      */
-    private static void displayInfoForSelectedImage(String exiftoolInfo, JTable ListexiftoolInfotable) {
+    public static void displayInfoForSelectedImage(String exiftoolInfo, JTable ListexiftoolInfotable) {
         // This will display the metadata info in the right panel
 
         logger.trace("String exiftoolInfo {}", exiftoolInfo);
@@ -1121,7 +1309,7 @@ public class Utils {
         File myFilePath;
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         logger.debug("Export previews/thumbnails..");
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("ept.dlgtext")),ResourceBundle.getBundle("translations/program_strings").getString("ept.dlgtitle"),

@@ -204,7 +204,7 @@ public class RemoveMetadata extends JDialog {
         //ExportMetadata dialog = new ExportMetadata();
         //setSize(400, 250);
         selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-        files = MyVariables.getSelectedFiles();
+        files = MyVariables.getLoadedFiles();
         progBar = progressBar;
 
         pack();

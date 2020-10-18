@@ -50,6 +50,8 @@ public class PreferencesDialog extends JDialog {
     private JCheckBox useG1GroupcheckBox;
     private JTextField udFilefiltertextField;
     private JCheckBox preserveModDatecheckBox;
+    private JCheckBox DualColumncheckBox;
+    private JLabel ExampleColumnImage;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -102,6 +104,12 @@ public class PreferencesDialog extends JDialog {
                     RawViewercheckBox.setSelected(false);
                     JOptionPane.showMessageDialog(generalPanel, ResourceBundle.getBundle("translations/program_strings").getString("prefs.chkboxrawtext"), ResourceBundle.getBundle("translations/program_strings").getString("prefs.chkboxrawtitle"), JOptionPane.WARNING_MESSAGE);
                 }
+            }
+        });
+        DualColumncheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                setExampleImage();
             }
         });
     }
@@ -188,6 +196,22 @@ public class PreferencesDialog extends JDialog {
             selectedBinary = chooser.getSelectedFile().getAbsolutePath();
             RawViewerLocationtextField.setText(selectedBinary);
         }
+    }
+
+    /*
+    / Set ExampleImage for dual-colum single-colum
+    /
+     */
+    private void setExampleImage() {
+        ImageIcon imageIcon = null;
+
+        if (DualColumncheckBox.isSelected()) {
+            imageIcon = new ImageIcon(this.getClass().getResource("/dual_column_example.jpg"));
+        } else {
+            imageIcon = new ImageIcon(this.getClass().getResource("/single_column_example.jpg"));
+        }
+        ExampleColumnImage.setIcon(imageIcon);
+
     }
 
     private void savePrefs() {
@@ -283,6 +307,9 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{}: {}", LOG_LEVEL.key, loglevelcomboBox.getSelectedItem());
         prefs.storeByKey(LOG_LEVEL, (String) loglevelcomboBox.getSelectedItem());
 
+        logger.trace("{} {}", DUAL_COLUMN.key, DualColumncheckBox.isSelected());
+        prefs.storeByKey(DUAL_COLUMN, DualColumncheckBox.isSelected());
+
         JOptionPane.showMessageDialog(generalPanel, ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -329,6 +356,8 @@ public class PreferencesDialog extends JDialog {
         retrievedPreferences.put("preserveModDate", String.valueOf(prefs.getByKey(PRESERVE_MODIFY_DATE, false)));
         udFilefiltertextField.setText(prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
         retrievedPreferences.put("udFilefilter", prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
+        DualColumncheckBox.setSelected(prefs.getByKey(DUAL_COLUMN, true));
+        setExampleImage();
     }
 
     // The  main" function of this class
@@ -598,19 +627,35 @@ public class PreferencesDialog extends JDialog {
         this.$$$loadButtonText$$$(preserveModDatecheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.presmoddate"));
         panel14.add(preserveModDatecheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel16 = new JPanel();
-        panel16.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPanel.add(panel16, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
-        final Spacer spacer3 = new Spacer();
-        panel16.add(spacer3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel16.setLayout(new GridLayoutManager(2, 1, new Insets(5, 5, 5, 5), -1, -1));
+        tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.lookandfeeltab"), panel16);
         final JPanel panel17 = new JPanel();
-        panel17.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel16.add(panel17, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel17.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel16.add(panel17, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel17.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        DualColumncheckBox = new JCheckBox();
+        DualColumncheckBox.setSelected(true);
+        this.$$$loadButtonText$$$(DualColumncheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.dualcolumn"));
+        panel17.add(DualColumncheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        ExampleColumnImage = new JLabel();
+        ExampleColumnImage.setText("");
+        panel17.add(ExampleColumnImage, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 300), null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        panel16.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JPanel panel18 = new JPanel();
+        panel18.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        contentPanel.add(panel18, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
+        final Spacer spacer4 = new Spacer();
+        panel18.add(spacer4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JPanel panel19 = new JPanel();
+        panel19.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
+        panel18.add(panel19, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonSave = new JButton();
         this.$$$loadButtonText$$$(buttonSave, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.save"));
-        panel17.add(buttonSave, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel19.add(buttonSave, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
-        panel17.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel19.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(JFilechooserradioButton);

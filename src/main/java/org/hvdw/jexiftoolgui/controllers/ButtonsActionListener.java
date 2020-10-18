@@ -7,8 +7,6 @@ import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
 import org.hvdw.jexiftoolgui.view.MetadataUserCombinations;
 import org.hvdw.jexiftoolgui.view.SimpleWebView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

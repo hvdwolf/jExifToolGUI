@@ -36,7 +36,7 @@ public class EditStringdata {
     }
 
     public void copyStringPlusFromSelected(JTextField[] stringPlusFields, JCheckBox[] stringPlusCheckboxes) {
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String[] xmpcopyparams = {"-e", "-n", "-xmp-acdsee:keywords","-xmp:Subject", "-xmp:PersonInImage"};
         String fpath = "";
@@ -95,7 +95,7 @@ public class EditStringdata {
     public void writeStringPlusTags(JTextField[] stringPlusFields, JCheckBox[] stringPlusBoxes, String[] selectedRadioButtons, JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         cmdparams.add(Utils.platformExiftool());
         boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);

@@ -170,7 +170,7 @@ public class ImageFunctions {
         cmdparams.add(exiftool.trim());
 
         boolean isWindows = Utils.isOsFromMicrosoft();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         // Get the temporary directory
         String tempWorkDir = MyVariables.gettmpWorkFolder();

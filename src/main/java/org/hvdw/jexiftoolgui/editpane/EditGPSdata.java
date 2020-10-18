@@ -82,7 +82,7 @@ public class EditGPSdata {
     }
 
     public void copyGPSFromSelected(JFormattedTextField[] gpsNumFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes) {
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         // Use "-n" for numerical values, like GPSAltitudeRef 0/1, instead of Above Sea Level/Below Sea Level
         String[] gpscopyparams = {"-e","-n","-exif:GPSLatitude","-exif:GPSLongitude","-exif:GPSAltitude","-exif:GPSAltitudeRef","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
@@ -155,7 +155,7 @@ public class EditGPSdata {
     public void writeGPSTags(JFormattedTextField[] gpsNumFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes, JProgressBar progressBar) {
 
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         List<String> cmdparams = new ArrayList<String>();
 
         cmdparams.add(Utils.platformExiftool());

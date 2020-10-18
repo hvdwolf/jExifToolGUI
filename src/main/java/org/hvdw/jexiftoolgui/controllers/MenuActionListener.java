@@ -44,13 +44,17 @@ public class MenuActionListener implements ActionListener  {
 
     public JLabel OutputLabel;
     public JMenuBar menuBar;
+    public JFrame frame;
     public JPanel rootPanel;
+    public JPanel LeftPanel;
     public JProgressBar progressBar;
     public JComboBox UserCombiscomboBox;
 
-    public MenuActionListener(JPanel rootPanel, JMenuBar menuBar, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
+    public MenuActionListener(JFrame frame, JPanel rootPanel, JPanel LeftPanel, JMenuBar menuBar, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
 
+        this.frame = frame;
         this.rootPanel = rootPanel;
+        this.LeftPanel = LeftPanel;
         this.menuBar = menuBar;
         this.OutputLabel = OutputLabel;
         this.progressBar = progressBar;
@@ -75,6 +79,8 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Exit":
                 StandardFileIO.deleteDirectory(new File(MyVariables.gettmpWorkFolder()) );
+                Utils.GetSetLeftPanelWidth(LeftPanel, "save");
+                Utils.GetSetGuiSize(frame, "save");
                 System.exit(0);
                 break;
             case "Rename photos":
@@ -106,7 +112,7 @@ public class MenuActionListener implements ActionListener  {
             case "Export metadata":
                 if (selectedIndicesList.size() > 0) {
                     ExportMetadata expMetadata = new ExportMetadata();
-                    expMetadata.showDialog(selectedIndices, MyVariables.getSelectedFiles(), progressBar);
+                    expMetadata.showDialog(selectedIndices, MyVariables.getLoadedFiles(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
@@ -188,7 +194,7 @@ public class MenuActionListener implements ActionListener  {
             case "Create args file(s)":
                 if (selectedIndicesList.size() > 0) {
                     CreateArgsFile CAF = new CreateArgsFile();
-                    CAF.showDialog(selectedIndices, MyVariables.getSelectedFiles(), progressBar);
+                    CAF.showDialog(selectedIndices, MyVariables.getLoadedFiles(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }

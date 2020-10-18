@@ -40,7 +40,7 @@ public class EditExifdata {
 
     public void copyExifFromSelected(JTextField[] exifFields, JTextArea exiftextArea) {
         String[] exifcopyparams = {"-e","-n","-exif:Make","-exif:Model","-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate","-exif:Artist","-exif:Copyright","-exif:UserComment","-exif:ImageDescription"};
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String fpath;
         String res = "";
@@ -111,7 +111,7 @@ public class EditExifdata {
     public void writeExifTags(JTextField[] exifFields, JTextArea Description, JCheckBox[] exifBoxes, JProgressBar progressBar) {
 
         List<String> cmdparams = new LinkedList<>();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
 
         cmdparams.add(Utils.platformExiftool());

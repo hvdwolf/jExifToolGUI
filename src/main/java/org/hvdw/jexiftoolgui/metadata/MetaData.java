@@ -25,7 +25,7 @@ public class MetaData {
         String fpath = "";
         StringBuilder TotalOutput = new StringBuilder();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
@@ -78,7 +78,7 @@ public class MetaData {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         logger.info("Repair corrupted metadata in JPG(s)");
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtext")), ResourceBundle.getBundle("translations/program_strings").getString("rjpg.dialogtitle"),
@@ -111,7 +111,7 @@ public class MetaData {
     public void copyMetaData(JPanel rootpanel, JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
         //int selectedRow = MyVariables.getSelectedRow();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         boolean atLeastOneSelected = false;
         boolean copyAllToXMP = false;
@@ -216,7 +216,7 @@ public class MetaData {
     public void copyInsideMetaData(JPanel rootpanel, JRadioButton[] InsideCopyMetaDataRadiobuttons, JRadioButton[] InsideSubCopyMetaDataRadiobuttons, JCheckBox[] InsideCopyMetaDataCheckBoxes, JLabel OutputLabel) {
         StringBuilder TotalOutput = new StringBuilder();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         String strjexiftoolguiARGSfolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER + File.separator + "args";
 
         boolean atLeastOneSelected = false;
@@ -374,7 +374,7 @@ public class MetaData {
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmp"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
         //String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
 
         logger.info("Create xmp sidecar");
         int choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
@@ -437,7 +437,7 @@ public class MetaData {
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int choice = 999;
         String logstring = "";
         String export_extension = exportoption.toLowerCase().trim();

@@ -14,7 +14,7 @@ public class PreferencesFacade implements IPreferencesFacade {
     }
 
     @Override
-    public String getByKey(PreferenceKey key) {
+    public String getByKey(PreferenceKey key, int i) {
         return rootNode.get(key.key, null);
     }
 
@@ -25,7 +25,7 @@ public class PreferencesFacade implements IPreferencesFacade {
     }
 
     public boolean keyIsSet(PreferenceKey key) {
-        return getByKey(key) != null;
+        return getByKey(key, 1360) != null;
     }
 
     @Override

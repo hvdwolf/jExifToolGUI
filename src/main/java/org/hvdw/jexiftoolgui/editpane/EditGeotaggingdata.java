@@ -84,7 +84,7 @@ public class EditGeotaggingdata {
         File[] files = new File[]{};
         if (images_selected) {
             selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-            files = MyVariables.getSelectedFiles();
+            files = MyVariables.getLoadedFiles();
         }
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();

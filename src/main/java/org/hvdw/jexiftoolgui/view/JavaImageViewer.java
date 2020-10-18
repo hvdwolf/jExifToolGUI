@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
 
@@ -62,6 +63,11 @@ public class JavaImageViewer {
 
     private class ImagePanel extends JPanel {
     }
+
+    /**
+     * This is purely the imageviewer. Lter we are going to use it also for Slideshows adding buttons.
+     * The Slideshow.java will then call the imageviewer.
+     **/
     public void ViewImageInFullscreenFrame () {
         BufferedImage img = null;
         BufferedImage resizedImg = null;
@@ -116,14 +122,9 @@ public class JavaImageViewer {
         int scrwidth = screenSize.width;
         int scrheight = screenSize.height;
         float scrratio = scrwidth / scrheight;
-        int[] basicdata = {0, 0, 0};
+        int[] basicdata = {0, 0, 0, 0, 0, 0, 0, 0};
         boolean bde = false;
 
-        /*if (imgratio >= scrratio) {
-            scrheight = (int) (scrwidth / imgratio);
-        } else {
-            scrwidth = (int) (scrheight * imgratio);
-        } */
 
         if ( (imgWidth <= scrwidth)  && (imgHeight <= scrheight)) {
             // no rescaling necessary
@@ -131,48 +132,9 @@ public class JavaImageViewer {
             panelWidth = imgWidth;
             panelHeight = imgHeight;
         } else {
-            /*if (imgWidth > imgHeight) { //landscape mode
-                if (imgWidth > scrwidth) {
-                    panelWidth = scrwidth;
-                    panelHeight = Math.round( (float) scrwidth / imgratio);
-                    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                } else {
-                    //if (imgHeight > scrheight) { // so imgwidth < screenwidth, but imgheight > screenheight
-                    //}
-                    panelWidth = imgWidth;
-                    panelHeight = imgHeight;
-                }
-
-            } else { //portrait mode
-                if (imgHeight > scrheight) {
-                    panelHeight = scrheight;
-                    panelWidth = Math.round((float) scrheight / (float) imgHeight * imgWidth);
-                    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                } else {
-                    panelWidth = imgWidth;
-                    panelHeight = imgHeight;
-                }
-
-            } */
-
-/*            if (imgHeight > scrheight) {
-                panelHeight = scrheight;
-                panelWidth = Math.round(scrheight * imgratio);
-                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            } else {
-                panelHeight = imgHeight;
-                //panelWidth = imgWidth;
-            } */
-
-            /*resizedImg = new BufferedImage(panelWidth, panelHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = resizedImg.createGraphics();
-//        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR); //Faster
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);   //more accurate
-            g2.drawImage(img, 0, 0, panelWidth, panelHeight, null);
-            g2.dispose(); */
-
             try {
                 basicdata = ImageFunctions.getbasicImageData(image);
+
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
                 bde = true;
@@ -207,6 +169,10 @@ public class JavaImageViewer {
         }
         logger.info("Image: {} ; Width {} ; Height {}", fileName, panelWidth, panelHeight);
 
+        String imginfo = Utils.returnBasicImageDataString(fileName, "plain");
+
+
+        frame.setTitle(imginfo);
         JPanel thePanel = new JPanel(new BorderLayout());
         thePanel.setBackground(Color.white);
         thePanel.setOpaque(true);
@@ -216,7 +182,8 @@ public class JavaImageViewer {
         frame.add(thePanel);
 
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        frame.setUndecorated(true);
+        //frame.setUndecorated(true) will create a borderless window, but how do I close it then without ugly buttons.
+        //frame.setUndecorated(true);
         frame.pack();
         frame.setVisible(true);
 

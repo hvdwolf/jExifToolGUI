@@ -14,13 +14,12 @@ public class MyVariables {
     private final static MyVariables staticInstance = new MyVariables();
 
     private MyVariables() {
-
     }
 
     private int SelectedRow;
     private int SelectedColumn;
     private String SelectedImagePath;
-    private File[] selectedFiles;
+    private File[] loadedFiles;
     private int[] selectedFilenamesIndices;
     private String jexiftoolguiDBPath;
     private String cantdisplaypng;
@@ -74,11 +73,11 @@ public class MyVariables {
         staticInstance.selectedLensConfig = sLC;
     }
 
-    public static void setSelectedFiles(File[] openedFiles) {
-        staticInstance.selectedFiles = Arrays.copyOf(openedFiles, openedFiles.length);
+    public static void setLoadedFiles(File[] loadedFiles) {
+        staticInstance.loadedFiles = Arrays.copyOf(loadedFiles, loadedFiles.length);
     }
-    public static File[] getSelectedFiles() {
-        return Arrays.copyOf(staticInstance.selectedFiles, staticInstance.selectedFiles.length);
+    public static File[] getLoadedFiles() {
+        return Arrays.copyOf(staticInstance.loadedFiles, staticInstance.loadedFiles.length);
     }
 
     public static String gettmpWorkFolder() {

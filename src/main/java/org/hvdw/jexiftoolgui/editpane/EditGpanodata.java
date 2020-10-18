@@ -60,7 +60,7 @@ public class EditGpanodata {
     }
 
     public void copyGpanoFromSelected(JFormattedTextField[] gpanoFields, JTextField gpanoStitchingSoftwaretextField, JComboBox gpanoPTCombobox, JCheckBox[] gpanoBoxes) {
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String[] gpano_params =  {"-xmp:StitchingSoftware","-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:InitialHorizontalFOVDegrees"};
         String fpath ="";
@@ -147,7 +147,7 @@ public class EditGpanodata {
     public void writeGpanoTags(JFormattedTextField[] gpanoFields, JCheckBox[] gpanoBoxes, JTextField gpanoStitchingSoftwaretextField, JComboBox gpanoPTcomboBox, JProgressBar progressBar) {
 
         List<String> cmdparams = new ArrayList<String>();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
 
         cmdparams.add(Utils.platformExiftool());

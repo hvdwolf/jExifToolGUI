@@ -25,7 +25,7 @@ public class YourCommands {
     public void executeCommands(String Commands, JEditorPane Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar) {
 //    public void executeCommands(String Commands, JTextArea Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar) {
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         String fpath ="";
         String Result = "";
         StringBuilder commandOutput = new StringBuilder("");

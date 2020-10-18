@@ -24,7 +24,7 @@ public class DateTime {
 
     public static void setFileDateTimeToDateTimeOriginal( JProgressBar progressBar) {
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         List<String> cmdparams = new ArrayList<>();
         StringBuilder tmpcmpstring = new StringBuilder();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.no"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.yes")};

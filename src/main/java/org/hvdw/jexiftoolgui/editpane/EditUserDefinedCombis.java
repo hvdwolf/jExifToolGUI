@@ -106,7 +106,7 @@ public class EditUserDefinedCombis {
     public void SaveTableValues(JCheckBox udcOverwriteOriginalscheckBox, JProgressBar progressBar) {
         // if changed => save
         // else if !empty => save
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         tablerowdata = MyVariables.getuserCombiTableValues();
         int rowcounter = 0;
@@ -156,7 +156,7 @@ public class EditUserDefinedCombis {
     }
 
     public void CopyFromSelectedImage() {
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         tablerowdata = MyVariables.getuserCombiTableValues();
         int rowcounter = 0;

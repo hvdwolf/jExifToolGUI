@@ -174,7 +174,7 @@ public class RenamePhotos extends JDialog {
 
     private void rename_photos() {
         //int[] selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-        //File[] files = MyVariables.getSelectedFiles();
+        //File[] files = MyVariables.getLoadedFiles();
         StringBuilder res = new StringBuilder();
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
@@ -513,7 +513,7 @@ public class RenamePhotos extends JDialog {
         if (files_selected) {
             selected_files = true;
             selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
-            files = MyVariables.getSelectedFiles();
+            files = MyVariables.getLoadedFiles();
         }
 
         progressBar.setVisible(false);

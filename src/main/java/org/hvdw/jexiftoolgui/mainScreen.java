@@ -19,7 +19,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.ImageIcon;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
@@ -39,6 +38,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.LEFTPANEL_WIDTH;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_FILEDIALOG;
 
 
@@ -55,7 +55,7 @@ public class mainScreen {
     private JTabbedPane tabbedPaneRight;
     private JButton buttonLoadImages;
     private JButton buttonShowImage;
-    private JPanel LeftPanel;
+    public JPanel LeftPanel;
     private JPanel LeftbuttonBar;
     private JRadioButton radioButtonViewAll;
     private JPanel ViewRadiobuttonpanel;
@@ -343,6 +343,8 @@ public class mainScreen {
     private JCheckBox xmp2pdfCheckBox;
     private JCheckBox CopyInsideImageMakeCopyOfOriginalscheckBox;
     private JButton copyInsideSaveDataTo;
+    private JButton buttonCompare;
+    private JButton buttonSlideshow;
     private ImageIcon icon;
 
 
@@ -355,6 +357,8 @@ public class mainScreen {
 
     public String exiftool_path = "";
     private ListSelectionModel listSelectionModel;
+
+    private JPopupMenu myPopupMenu;
 
     // Initialize all the helper classes
     PreferencesDialog prefsDialog = new PreferencesDialog();
@@ -379,6 +383,17 @@ public class mainScreen {
 //////////////////////////////////////////////////////////////////////////////////
     // Define the several arrays for the several Edit panes on the right side. An interface or getter/setter methods would be more "correct java", but also
     // creates way more code which doesn't make it clearer either.
+
+    public JPanel getRootPanel() {
+        return rootPanel;
+    }
+    public  JPanel getLeftPanel() { return LeftPanel; }
+
+    private JButton[] commandButtons() {
+        return new JButton[] {buttonLoadDirectory, buttonLoadImages, buttonShowImage, buttonCompare, buttonSlideshow};
+    }
+
+    private JLabel[] mainScreenLabels() { return new JLabel[] {OutputLabel, lblLoadedFiles}; }
 
     private JTextField[] getExifFields() {
         return new JTextField[]{ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField, ExifCreateDatetextField,
@@ -479,99 +494,7 @@ public class mainScreen {
         return new JCheckBox[] {CopyExifcheckBox, CopyXmpcheckBox, CopyIptccheckBox, CopyIcc_profileDataCheckBox, CopyGpsCheckBox, CopyJfifcheckBox, CopyMakernotescheckBox};
     }
 
-    private JPanel getRootPanel() {
-        return rootPanel;
-    }
 
-    public void loadImages(String loadingType) {
-        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
-        if ("images".equals(loadingType)) {
-            logger.debug("load images pushed or menu load images");
-            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages"));
-            if ("jfilechooser".equals(prefFileDialog)) {
-                logger.debug("load images using jfilechooser");
-                files = StandardFileIO.getFileNames(rootPanel);
-                logger.debug("AFTER load images using jfilechooser");
-            } else {
-                logger.debug("load images pushed or menu load images using AWT file dialog");
-                files = StandardFileIO.getFileNamesAwt(rootPanel);
-                logger.debug("AFTER load images using AWT file dialog");
-            }
-        } else if ("folder".equals(loadingType)) { // loadingType = folder
-            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingdirectory"));
-            logger.debug("load folder pushed or menu load folder");
-            if ("jfilechooser".equals(prefFileDialog)) {
-                logger.debug("load folder using jfilechooser");
-                files = StandardFileIO.getFolderFiles(rootPanel);
-                logger.debug("AFTER load folder using jfilechooser");
-            } else {
-                logger.debug("load folder using AWT file dialog");
-                files = StandardFileIO.getFolderFilesAwt(rootPanel);
-                logger.debug("AFTER load folder using AWT file dialog");
-            }
-        } else { // files dropped onto our app
-            OutputLabel.setText("Loading files dropped onto the app");
-            files = MyVariables.getSelectedFiles();
-        }
-        if (files != null) {
-            lblLoadedFiles.setText(String.valueOf(files.length));
-            logger.debug("After loading images, loading files or dropping files: no. of files > 0");
-            Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    int jpegcounter = 0;
-                    String filename;
-                    for (File file : files) {
-                        filename = file.getName().replace("\\", "/");
-                        logger.debug("Checking on extension for JPG extraction on image: " +filename);
-                        String filenameExt = Utils.getFileExtension(filename);
-                        if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
-                            jpegcounter++;
-                        }
-                    }
-                    if (jpegcounter >= 3) {
-                        // Always try to extract thumbnails and previews of selected images. This normally only works for JPGs and RAWs
-                        ImageFunctions.extractThumbnails();
-                    }
-                    Utils.displayFiles(mainScreen.this.tableListfiles, mainScreen.this.ListexiftoolInfotable, mainScreen.this.iconLabel);
-                    MyVariables.setSelectedRow(0);
-                    //tableListfiles.getSelectionBackground();
-                    // Select first row and repaint table
-                    /*tableListfiles.setRowSelectionInterval(0,0);
-                    tableListfiles.setSelectionModel(listSelectionModel);
-                    tableListfiles.repaint(); */
-                    //tableListfiles.addRowSelectionInterval(0,0);
-                    //DefaultTableModel model = (DefaultTableModel) tableListfiles.getModel();
-                    //model.setRowColour(0, tableListfiles.getSelectionBackground());
-                    //tableListfiles.set
-                    /*Component prepareRenderer(TableCellRenderer, int row, int column){
-                        if (tableListfiles.isRowSelected(0)) {
-                            Component c = super.prepareRenderer(renderer, row, column);
-                        }
-                    }*/
-                    String[] params = whichRBselected();
-                    Utils.getImageInfoFromSelectedFile(params, files, mainScreen.this.ListexiftoolInfotable);
-                    mainScreen.this.buttonShowImage.setEnabled(true);
-                    //OutputLabel.setText(" Images loaded ...");
-                    OutputLabel.setText("");
-                    // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
-                    Utils.progressStatus(progressBar, false);
-                }
-            });
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    progressBar.setVisible(true);
-                }
-            });
-        } else {
-            logger.debug("no files loaded. User pressed cancel.");
-            lblLoadedFiles.setText("");
-            OutputLabel.setText("");
-        }
-        selectedIndicesList = new ArrayList<>();
-        MyVariables.setselectedIndicesList(selectedIndicesList);
-    }
 
 
 
@@ -633,31 +556,65 @@ public class mainScreen {
     private void $$$setupUI$$$() {
         rootPanel = new JPanel();
         rootPanel.setLayout(new GridLayoutManager(2, 2, new Insets(10, 10, 10, 10), -1, -1));
-        rootPanel.setMinimumSize(new Dimension(1200, 720));
+        rootPanel.setMinimumSize(new Dimension(1100, 720));
         rootPanel.setPreferredSize(new Dimension(1350, 800));
         rootPanel.setRequestFocusEnabled(true);
         LeftPanel = new JPanel();
         LeftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        rootPanel.add(LeftPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(320, -1), new Dimension(450, -1), null, 2, false));
+        rootPanel.add(LeftPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(230, -1), null, null, 1, false));
         LeftbuttonBar = new JPanel();
         LeftbuttonBar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         LeftPanel.add(LeftbuttonBar, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonLoadDirectory = new JButton();
+        buttonLoadDirectory.setIcon(new ImageIcon(getClass().getResource("/icons/outline_folder_black_36dp.png")));
         buttonLoadDirectory.setIconTextGap(2);
-        this.$$$loadButtonText$$$(buttonLoadDirectory, this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.loaddirectory"));
+        buttonLoadDirectory.setMaximumSize(new Dimension(38, 38));
+        buttonLoadDirectory.setMinimumSize(new Dimension(38, 38));
+        buttonLoadDirectory.setPreferredSize(new Dimension(38, 38));
+        buttonLoadDirectory.setText("");
+        buttonLoadDirectory.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.loaddirectory"));
         LeftbuttonBar.add(buttonLoadDirectory);
         buttonLoadImages = new JButton();
+        buttonLoadImages.setIcon(new ImageIcon(getClass().getResource("/icons/outline_collections_black_36dp.png")));
         buttonLoadImages.setIconTextGap(2);
-        this.$$$loadButtonText$$$(buttonLoadImages, this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.loadimages"));
-        buttonLoadImages.setToolTipText("Load images for which you want to view or edit metadata");
+        buttonLoadImages.setMaximumSize(new Dimension(38, 38));
+        buttonLoadImages.setMinimumSize(new Dimension(38, 38));
+        buttonLoadImages.setPreferredSize(new Dimension(38, 38));
+        buttonLoadImages.setText("");
+        buttonLoadImages.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.loadimages"));
         LeftbuttonBar.add(buttonLoadImages);
         buttonShowImage = new JButton();
         buttonShowImage.setEnabled(false);
+        buttonShowImage.setIcon(new ImageIcon(getClass().getResource("/icons/outline_open_in_full_black_36dp.png")));
         buttonShowImage.setIconTextGap(2);
-        this.$$$loadButtonText$$$(buttonShowImage, this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.displayimages"));
-        buttonShowImage.setToolTipText("Display the selected image in the default image viewer (if supported movies will play in the default movie player)");
+        buttonShowImage.setMaximumSize(new Dimension(38, 38));
+        buttonShowImage.setMinimumSize(new Dimension(38, 38));
+        buttonShowImage.setPreferredSize(new Dimension(38, 38));
+        buttonShowImage.setText("");
+        buttonShowImage.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.displayimages"));
         buttonShowImage.putClientProperty("hideActionText", Boolean.FALSE);
         LeftbuttonBar.add(buttonShowImage);
+        buttonCompare = new JButton();
+        buttonCompare.setEnabled(false);
+        buttonCompare.setFocusTraversalPolicyProvider(true);
+        buttonCompare.setIcon(new ImageIcon(getClass().getResource("/icons/outline_compare_arrows_black_36dp.png")));
+        buttonCompare.setIconTextGap(2);
+        buttonCompare.setMaximumSize(new Dimension(38, 38));
+        buttonCompare.setMinimumSize(new Dimension(38, 38));
+        buttonCompare.setPreferredSize(new Dimension(38, 38));
+        buttonCompare.setText("");
+        buttonCompare.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.compareimgs"));
+        LeftbuttonBar.add(buttonCompare);
+        buttonSlideshow = new JButton();
+        buttonSlideshow.setEnabled(false);
+        buttonSlideshow.setIcon(new ImageIcon(getClass().getResource("/icons/outline_slideshow_black_36dp.png")));
+        buttonSlideshow.setIconTextGap(2);
+        buttonSlideshow.setMaximumSize(new Dimension(38, 38));
+        buttonSlideshow.setMinimumSize(new Dimension(38, 38));
+        buttonSlideshow.setPreferredSize(new Dimension(38, 38));
+        buttonSlideshow.setText("");
+        buttonSlideshow.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.slideshow"));
+        LeftbuttonBar.add(buttonSlideshow);
         Leftscrollpane = new JScrollPane();
         LeftPanel.add(Leftscrollpane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tableListfiles = new JTable();
@@ -665,7 +622,7 @@ public class mainScreen {
         tableListfiles.setPreferredScrollableViewportSize(new Dimension(-1, -1));
         tableListfiles.setShowHorizontalLines(true);
         tableListfiles.setShowVerticalLines(false);
-        tableListfiles.setToolTipText("Double-clicking the thumbnail or filename will open the image in the default viewer");
+        tableListfiles.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.tooltip"));
         Leftscrollpane.setViewportView(tableListfiles);
         tabbedPaneRight = new JTabbedPane();
         rootPanel.add(tabbedPaneRight, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(700, -1), new Dimension(850, -1), null, 2, false));
@@ -692,7 +649,7 @@ public class mainScreen {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("By Camera");
+        radioButtonCameraMakes.setLabel("per Camera");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1165,7 +1122,7 @@ public class mainScreen {
         decimalToMinutesSecondsButton.setVisible(false);
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
-        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
+        minutesSecondsToDecimalButton.setLabel("Converteer naar decimale graden");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(4, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         copyToInputFieldsButton = new JButton();
@@ -2275,17 +2232,119 @@ public class mainScreen {
                 case "Load Images":
                     logger.debug("menu File -> Load Images pressed");
                     // identical to button "Load Images"
-                    loadImages("images");
+                    //loadImages("images");
+                    files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
                     break;
                 case "Load Directory":
                     logger.debug("menu File -> Load Folder pressed");
                     // identical to button "Load Directory"
-                    loadImages("folder");
+                    //loadImages("folder");
+                    files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
                     break;
                 default:
                     break;
             }
         }
+    }
+
+
+
+    /**
+     * Add a popup menu to the left tablelistfiles table to handle insertion and
+     * deletion of rows.
+     */
+    public void createPopupMenu(JPopupMenu myPopupMenu) {
+
+        //JPopupMenu myPopupMenu = new JPopupMenu();
+        // Menu items.
+        JMenuItem menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loaddirectory")); // index 0
+        menuItem.addActionListener(new MyPopupMenuHandler());
+        myPopupMenu.add(menuItem);
+
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loadimages"));           // index 1
+        menuItem.addActionListener(new MyPopupMenuHandler());
+        myPopupMenu.add(menuItem);
+
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("btn.displayimages"));           // index 2
+        menuItem.addActionListener(new MyPopupMenuHandler());
+        myPopupMenu.add(menuItem);
+
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("btn.compareimgs"));           // index 3
+        menuItem.addActionListener(new MyPopupMenuHandler());
+        myPopupMenu.add(menuItem);
+
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("btn.slideshow"));           // index 4
+        menuItem.addActionListener(new MyPopupMenuHandler());
+        myPopupMenu.add(menuItem);
+
+        tableListfiles.addMouseListener(new MyPopupListener());
+    }
+
+    /**
+     * Listen for popup menu invocation.
+     * Need both mousePressed and mouseReleased for cross platform support.
+     */
+    public class MyPopupListener extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            showPopup(e);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            showPopup(e);
+        }
+
+        private void showPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                // Enable or disable the "Display Image" and "Sildeshow" menu item
+                // depending on whether a row is selected.
+                myPopupMenu.getComponent(2).setEnabled(
+                        tableListfiles.getSelectedRowCount() > 0);
+                myPopupMenu.getComponent(4).setEnabled(
+                        tableListfiles.getSelectedRowCount() > 0);
+                // Enable or disable "Compare images" >= 2 rows selected
+                myPopupMenu.getComponent(3).setEnabled(
+                        tableListfiles.getSelectedRowCount() > 1);
+
+                myPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        }
+    }
+
+    /**
+     * Handle popup menu commands.
+     */
+    class MyPopupMenuHandler implements ActionListener {
+        /**
+         * Popup menu actions.
+         *
+         * @param e the menu event.
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem item = (JMenuItem) e.getSource();
+            if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loaddirectory"))) {
+                //loadDirectory(e);
+                //mainScreen.loadImages("images");
+            } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loadimages"))) {
+                //loadImages(e);
+            } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("btn.displayimages"))) {
+                //loadImages(e);
+            } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("btn.compareimgs"))) {
+                //loadImages(e);
+            } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("btn.slideshow"))) {
+                //loadImages(e);
+            }
+        }
+    }
+
+
+    private void leftPanePopupMenuLister() {
+        //JPopupMenu myPopupMenu = new JPopupMenu();
+        //LeftPanePopupMenuListener lpppml = new LeftPanePopupMenuListener(tableListfiles, myPopupMenu);
+        //addPopupMenu();
     }
 
 
@@ -2306,7 +2365,8 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadImages pressed");
                 //File opener: Load the images; identical to Menu option Load Images.
-                loadImages("images");
+                //loadImages("images");
+                files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
             }
         });
         buttonLoadDirectory.addActionListener(new ActionListener() {
@@ -2314,7 +2374,8 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadFolder pressed");
                 //File opener: Load folder with images; identical to Menu option Load Directory.
-                loadImages("folder");
+                //loadImages("folder");
+                files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
             }
         });
         buttonShowImage.setActionCommand("bSI");
@@ -2731,16 +2792,16 @@ public class mainScreen {
         });
         udcHelpbutton.setActionCommand("udcHb");
         udcHelpbutton.addActionListener(gal);
-    }
+    } // End of private void programButtonListeners()
 
     private void ViewRadiobuttonListener() {
-
-        //Add listeners
+                //Add listeners
         radioButtonViewAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 logger.trace("radiobutton selected: {}", radioButtonViewAll.getText());
-                Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files, mainScreen.this.ListexiftoolInfotable);
+                String res  = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
@@ -2748,7 +2809,8 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
                 //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                Utils.getImageInfoFromSelectedFile(params, files, mainScreen.this.ListexiftoolInfotable);
+                String res = Utils.getImageInfoFromSelectedFile(params, files);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
@@ -2757,41 +2819,46 @@ public class mainScreen {
                 if (radioButtoncommonTags.isSelected()) {
                     String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
                     //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                    Utils.getImageInfoFromSelectedFile(params, files, mainScreen.this.ListexiftoolInfotable);
+                    String res = Utils.getImageInfoFromSelectedFile(params, files);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 }
             }
         });
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Utils.selectImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
+                String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
             }
         });
         comboBoxViewByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonByTagName.isSelected()) {
-                    Utils.selectImageInfoByTagName(comboBoxViewByTagName, files, mainScreen.this.ListexiftoolInfotable);
+                    String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 }
             }
         });
         radioButtonCameraMakes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
+                String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
             }
         });
         comboBoxViewCameraMake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtonCameraMakes.isSelected()) {
-                    Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files, mainScreen.this.ListexiftoolInfotable);
+                    String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 }
             }
         });
     }
 
-
+// radioButtonViewAll, radioButtoncommonTags,
 
     private String[] whichRBselected() {
         // just to make sure anything is returned we defaultly return all
@@ -2832,10 +2899,11 @@ public class mainScreen {
                     }
                 }
                 String[] params = whichRBselected();
-                Utils.getImageInfoFromSelectedFile(params, files, ListexiftoolInfotable);
+                String res = Utils.getImageInfoFromSelectedFile(params, files);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
-                logger.trace("Selected indices: {}", tmpselectedIndices);
+                logger.debug("Selected indices: {}", tmpselectedIndices);
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setselectedIndicesList(selectedIndicesList);
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
@@ -2858,8 +2926,9 @@ public class mainScreen {
                         logger.debug("File path is: {}", file.getPath());
                     }
                     File[] droppedFilesArray = (File[]) droppedFiles.toArray(new File[droppedFiles.size()]);
-                    MyVariables.setSelectedFiles(droppedFilesArray);
-                    loadImages("dropped files");
+                    MyVariables.setLoadedFiles(droppedFilesArray);
+                    //loadImages("dropped files");
+                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     logger.error("Drag drop on rootpanel error {}", ex);
@@ -2869,22 +2938,6 @@ public class mainScreen {
     }
 
 
-    void fileNamesTableMouseListener() {
-        // Use the mouse listener for the single cell double-click selection for the left table to be able to
-        // display the image in the default viewer
-
-        tableListfiles.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent mouseEvent) {
-                JTable table =(JTable) mouseEvent.getSource();
-                Point point = mouseEvent.getPoint();
-                int row = table.rowAtPoint(point);
-                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Utils.displaySelectedImageInExternalViewer();
-                    logger.info("double-click registered");
-                }
-            }
-        });
-    }
     // endregion
 
     /*
@@ -2913,7 +2966,7 @@ public class mainScreen {
 
         // Now we continue with the rest of the entire menu outside the mainScreen in the external CreateMenu class
         CreateMenu crMenu = new CreateMenu();
-        crMenu.CreateMenuBar(frame, rootPanel, menuBar, myMenu, OutputLabel, progressBar, UserCombiscomboBox);
+        crMenu.CreateMenuBar(frame, rootPanel, LeftPanel, menuBar, myMenu, OutputLabel, progressBar, UserCombiscomboBox);
     }
 
 
@@ -2990,13 +3043,24 @@ public class mainScreen {
     public mainScreen(JFrame frame) throws IOException, InterruptedException {
         boolean preferences = false;
 
+        // Set LeftPanel Width
+        //Utils.GetSetLeftPanelWidth(LeftPanel, "startup");
+        int Width = 430;
+        String strWidth = prefs.getByKey(LEFTPANEL_WIDTH, "1"); //430 for dual colum, 220 for single column
+        if ("1".equals(strWidth)) {
+            Width = 430;
+        } else {
+            Width = Integer.parseInt(strWidth);
+        }
+        //LeftPanel.setPreferredSize(new Dimension(Width, -1));
+
+
         $$$setupUI$$$();
         Utils.progressStatus(progressBar, false);
 
         createMenuBar(frame);
-        //CreateMenu CM = new CreateMenu();
-        //menuBar = new JMenuBar();
-        //CM.createMenuBar(frame, rootPanel, menuBar);
+        //createPopupMenu(myPopupMenu);
+
 
         // Check if our custom folder exists and create it
         String check_result = checkforjexiftoolguiFolder();
@@ -3031,7 +3095,11 @@ public class mainScreen {
 
 
         // Use the mouselistener for the double-click to display the image
-        fileNamesTableMouseListener();
+        // on both the filetree and the filenamestable
+        // temporararily disable FileTree
+        //MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, fileTree, whichRBselected());
+        MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
+
         //Use the table listener for theselection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
         tableListfiles.setRowSelectionAllowed(true);
@@ -3061,6 +3129,7 @@ public class mainScreen {
 
 
         programButtonListeners();
+        leftPanePopupMenuLister();
         // Some texts
         setProgramScreenTexts();
         // Set formatting for the JFormatted textFields
@@ -3093,6 +3162,10 @@ public class mainScreen {
             @Override
             public void windowClosing(WindowEvent e) {
                 StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
+                //Utils.GetSetGuiSize(frame, "save");
+                //Utils.GetSetLeftPanelWidth(new JPanel LeftPanel, "set");
+                //int Width = LeftPanel.getWidth();
+                //prefs.storeByKey(LEFTPANEL_WIDTH,String.valueOf(Width));
                 System.exit(0);
             }
         });
@@ -3117,11 +3190,15 @@ public class mainScreen {
            logger.error("Could not start GUI.", weTried);
         }
 
+        //Utils.GetSetGuiSize(frame, "startup");
         if (os == Application.OS_NAMES.APPLE) {
-            frame.setSize(1450,850);
+            frame.setSize(1450, 850);
         } else {
             frame.pack();
         }
+
+
+        logger.debug("Gui Width x Height: {} x {}", frame.getWidth(), String.valueOf(frame.getHeight()));
         //frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);

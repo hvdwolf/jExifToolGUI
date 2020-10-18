@@ -203,9 +203,12 @@ public class StandardFileIO {
         //logger.trace("Status returned from ");
         if (status == JFileChooser.APPROVE_OPTION) {
             files = jchooser.getSelectedFiles();
-            MyVariables.setSelectedFiles(files);
+            MyVariables.setLoadedFiles(files);
             prefs.storeByKey(LAST_OPENED_FOLDER, jchooser.getCurrentDirectory().getAbsolutePath());
             logger.debug("jchooser.getCurrentDirectory().getAbsolutePath() {}", jchooser.getCurrentDirectory().getAbsolutePath());
+            return files;
+        } else {
+            files = null;
         }
         return files;
     }
@@ -260,9 +263,9 @@ public class StandardFileIO {
         //File[] files = chooser.getSelectedFiles();
         if ( files.length == 0) {
             // no selection
-            files = null;
+            return files = null;
         }
-        MyVariables.setSelectedFiles(files);
+        MyVariables.setLoadedFiles(files);
         prefs.storeByKey(LAST_OPENED_FOLDER, fdchooser.getDirectory());
         return files;
     }
@@ -298,12 +301,15 @@ public class StandardFileIO {
             File folder = new File(SelectedFolder);
             //files = listFiles(SelectedFolder);
             files = folder.listFiles();
-            MyVariables.setSelectedFiles(files);
+            MyVariables.setLoadedFiles(files);
             prefs.storeByKey(LAST_OPENED_FOLDER, jchooser.getCurrentDirectory().getAbsolutePath());
             logger.debug("jchooser.getCurrentDirectory().getAbsolutePath() {}", jchooser.getCurrentDirectory().getAbsolutePath());
+            return files;
+        } else {
+            return files = null;
         }
 
-        return files;
+        //return files;
     }
 
     /*
@@ -336,7 +342,7 @@ public class StandardFileIO {
         }
         File folder = new File(SelectedFolder);
         files = folder.listFiles();
-        MyVariables.setSelectedFiles(files);
+        MyVariables.setLoadedFiles(files);
         prefs.storeByKey(LAST_OPENED_FOLDER, fdchooser.getDirectory());
         /*if (os == APPLE) {
             System.setProperty("apple.awt.fileDialogForDirectories", "false");

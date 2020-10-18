@@ -334,16 +334,6 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mduc.delete"));           // index 1
         menuItem.addActionListener(new MyMenuHandler());
         myPopupMenu.add(menuItem);
-        /*myPopupMenu.addSeparator();                     // index 2
-
-        JMenuItem menuItem0 = new JMenuItem(HIER_CMD);  // index 3
-        menuItem0.addActionListener(new MyMenuHandler());
-        myPopupMenu.add(menuItem0);
-        myPopupMenu.addSeparator();
-
-        menuItem = new JMenuItem(UPDATE_CMD);
-        menuItem.addActionListener(new MyMenuHandler());
-        myPopupMenu.add(menuItem); */
 
         // Listen for menu invocation.
         metadataTable.addMouseListener(new MyPopupListener());

@@ -48,7 +48,7 @@ public class EditLensdata {
 
     public void copyLensDataFromSelected(JTextField[] lensFields, JComboBox meteringmodecomboBox, JCheckBox[] lensBoxes) {
         String[] lenscopyparams = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-makernotes:lensserialnumber","-exif:focallength","-exif:focallengthin35mmformat","-exif:fnumber","-exif:maxaperturevalue","-exif:meteringmode","-makernotes:focusdistance","-composite:lensid","-composite:lens","-makernotes:focusdistance","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensfirmwareversion"};
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String fpath = "";
         String res = "";
@@ -156,7 +156,7 @@ public class EditLensdata {
         public void writeLensTags(JTextField[] lensFields, JCheckBox[] lensBoxes, JComboBox meteringmodecomboBox, JProgressBar progressBar) {
             List<String> cmdparams = new ArrayList<String>();
             int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
-            File[] files = MyVariables.getSelectedFiles();
+            File[] files = MyVariables.getLoadedFiles();
 
             cmdparams.add(Utils.platformExiftool());
             boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);

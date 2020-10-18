@@ -11,10 +11,10 @@ public class CreateMenu {
     
     private JMenuItem menuItem;
 
-    public void CreateMenuBar(JFrame frame, JPanel rootPanel, JMenuBar menuBar, JMenu myMenu, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
+    public void CreateMenuBar(JFrame frame, JPanel rootPanel, JPanel LeftPanel, JMenuBar menuBar, JMenu myMenu, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
 
 
-        MenuActionListener mal = new MenuActionListener(rootPanel, menuBar, OutputLabel, progressBar, UserCombiscomboBox);
+        MenuActionListener mal = new MenuActionListener(frame, rootPanel, LeftPanel, menuBar, OutputLabel, progressBar, UserCombiscomboBox);
 
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.preferences"));
         myMenu.setMnemonic(KeyEvent.VK_P);

@@ -40,7 +40,7 @@ public class EditXmpdata {
 
 
     public void copyXmpFromSelected(JTextField[] xmpFields, JTextArea Description) {
-        File[] files = MyVariables.getSelectedFiles();
+        File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
         String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Credit", "-xmp:Rights", "-xmp:Label", "-xmp-pdf:Keywords", "-xmp:Subject", "-xmp:Title", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage"};
         String fpath = "";
@@ -117,7 +117,7 @@ public class EditXmpdata {
         public void writeXmpTags(JTextField[] xmpFields, JTextArea Description, JCheckBox[] xmpBoxes, JProgressBar progressBar) {
             List<String> cmdparams = new ArrayList<String>();
             int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
-            File[] files = MyVariables.getSelectedFiles();
+            File[] files = MyVariables.getLoadedFiles();
 
             cmdparams.add(Utils.platformExiftool());
             boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);

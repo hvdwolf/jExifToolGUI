@@ -20,7 +20,11 @@ public interface IPreferencesFacade {
         SHOW_DECIMAL_DEGREES("showdecimaldegrees"), // exiftool shows coordinates by default as Deg Min Sec
         USE_G1_GROUP ("useg1group"),
         USER_DEFINED_FILE_FILTER("userdefinedfilefilter"),
-        PRESERVE_MODIFY_DATE("preservemodifydate")
+        PRESERVE_MODIFY_DATE("preservemodifydate"),
+        DUAL_COLUMN("dualcolumn"),
+        GUI_WIDTH("guiwidth"),
+        GUI_HEIGHT("guiheight"),
+        LEFTPANEL_WIDTH("leftpanelwidth"),
         ;
 
         public final String key;
@@ -31,7 +35,7 @@ public interface IPreferencesFacade {
 
     boolean keyIsSet(PreferenceKey key);
 
-    String getByKey(PreferenceKey key);
+    String getByKey(PreferenceKey key, int i);
     String getByKey(PreferenceKey key, String defaultValue);
     boolean getByKey(PreferenceKey key, boolean defaultValue);
     void storeByKey(PreferenceKey key, String value);
