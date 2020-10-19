@@ -10,10 +10,7 @@ import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
-import org.hvdw.jexiftoolgui.view.DeleteFavorite;
-import org.hvdw.jexiftoolgui.view.MetadataUserCombinations;
-import org.hvdw.jexiftoolgui.view.SelectmyLens;
-import org.hvdw.jexiftoolgui.view.SimpleWebView;
+import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,19 +39,19 @@ public class MenuActionListener implements ActionListener  {
     public int[] selectedIndices;
     public List<Integer> selectedIndicesList = new ArrayList<>();
 
-    public JLabel OutputLabel;
-    public JMenuBar menuBar;
     public JFrame frame;
     public JPanel rootPanel;
-    public JPanel LeftPanel;
+    public JSplitPane splitPanel;
+    public JLabel OutputLabel;
+    public JMenuBar menuBar;
     public JProgressBar progressBar;
     public JComboBox UserCombiscomboBox;
 
-    public MenuActionListener(JFrame frame, JPanel rootPanel, JPanel LeftPanel, JMenuBar menuBar, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
+    public MenuActionListener(JFrame frame, JPanel rootPanel, JSplitPane splitPanel, JMenuBar menuBar, JLabel OutputLabel, JProgressBar progressBar, JComboBox UserCombiscomboBox) {
 
         this.frame = frame;
         this.rootPanel = rootPanel;
-        this.LeftPanel = LeftPanel;
+        this.splitPanel = splitPanel;
         this.menuBar = menuBar;
         this.OutputLabel = OutputLabel;
         this.progressBar = progressBar;
@@ -79,8 +76,7 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Exit":
                 StandardFileIO.deleteDirectory(new File(MyVariables.gettmpWorkFolder()) );
-                Utils.GetSetLeftPanelWidth(LeftPanel, "save");
-                Utils.GetSetGuiSize(frame, "save");
+                GuiSettings.SaveGuiConfig(frame, rootPanel, splitPanel);
                 System.exit(0);
                 break;
             case "Rename photos":

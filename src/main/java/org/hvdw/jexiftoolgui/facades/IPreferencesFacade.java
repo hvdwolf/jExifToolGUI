@@ -22,9 +22,9 @@ public interface IPreferencesFacade {
         USER_DEFINED_FILE_FILTER("userdefinedfilefilter"),
         PRESERVE_MODIFY_DATE("preservemodifydate"),
         DUAL_COLUMN("dualcolumn"),
-        GUI_WIDTH("guiwidth"),
-        GUI_HEIGHT("guiheight"),
-        LEFTPANEL_WIDTH("leftpanelwidth"),
+        GUI_WIDTH("guiwidth"), //rootpanel width
+        GUI_HEIGHT("guiheight"), //rootpanel height
+        SPLITPANEL_POSITION("splitpanelpostion") //percentual position left/right splitpane
         ;
 
         public final String key;

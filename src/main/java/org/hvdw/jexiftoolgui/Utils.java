@@ -81,71 +81,6 @@ public class Utils {
         }
     }
 
-    /**
-     * The GetSetGuiSize method "gets" the size on exit and saves it to Preferences
-     * and "sets" the size on startup reading from the Preferences
-     * @param frame
-     * @param action
-     */
-    public static void GetSetGuiSize(JFrame frame, String action) {
-        String strWidth;
-        String strHeight;
-        int Width;
-        int Height;
-
-        Application.OS_NAMES os = Utils.getCurrentOsName();
-        if ("startup".equals(action)) {
-            strWidth = prefs.getByKey(GUI_WIDTH, "1"); // 1450 Apple, 1360 others
-            strHeight = prefs.getByKey(GUI_HEIGHT, "1"); //850
-            if ("1".equals(strWidth)) {
-                if (os == Application.OS_NAMES.APPLE) {
-                    //frame.setSize(1450, 850);
-                    Width = 1450;
-                } else {
-                    //frame.setSize(1360, 850);
-                    Width = 850;
-                    //frame.pack();
-                }
-            } else {
-                Width = Integer.parseInt(strWidth);
-            }
-            if ("1".equals(strHeight)) {
-                Height = 850;
-            } else {
-                Height = Integer.parseInt(strHeight);
-            }
-            frame.setSize(Width, Height);
-        } else if ("save".equals(action)) {
-            Width = frame.getWidth();
-            Height = frame.getHeight();
-            logger.info("Gui Width x Height: {} x {}", Width, Height);
-            prefs.storeByKey(GUI_WIDTH, String.valueOf(Width));
-            prefs.storeByKey(GUI_HEIGHT, String.valueOf(Height));
-        }
-    }
-    /**
-     * The GetSetLeftPanelSize method "gets" the size on exit and saves it to Preferences
-     * and "sets" the size on startup reading from the Preferences
-     * @param LeftPanel
-     * @param action
-     */
-    public static void GetSetLeftPanelWidth( JPanel LeftPanel, String action) {
-        int Width;
-        String strWidth;
-
-        if ("startup".equals(action)) {
-            strWidth = prefs.getByKey(LEFTPANEL_WIDTH, "1");
-            if ("1".equals(strWidth)) {
-                Width = 430;
-            } else {
-                Width = Integer.parseInt(strWidth);
-            }
-            LeftPanel.setPreferredSize(new Dimension(Width, -1));
-        } else if ("save".equals(action)) {
-            Width = LeftPanel.getWidth();
-            prefs.storeByKey(LEFTPANEL_WIDTH,String.valueOf(Width));
-        }
-    }
 
     /*
     / Set default font for everything in the Application
@@ -711,7 +646,7 @@ public class Utils {
                 ImgFilenameRow[0] = new LabelIcon(icon, filename);
             } else {
                 String imginfo = returnBasicImageDataString(filename, "html");
-                logger.warn("imginfo {}", imginfo);
+                logger.debug("imginfo {}", imginfo);
                 ImgFilenameRow[0] = icon;
                 ImgFilenameRow[1] = imginfo;
             }
