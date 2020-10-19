@@ -86,14 +86,14 @@ public class MenuActionListener implements ActionListener  {
             case "Rename photos":
                 RenamePhotos renPhotos = new RenamePhotos();
                 //renPhotos.setTitle(ResourceBundle.getBundle("translations/program_strings").getString("renamephotos.title"));
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     renPhotos.showDialog(true);
                 } else {
                     renPhotos.showDialog(false);
                 }
                 break;
             case "Copy all metadata to xmp format":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     metaData.copyToXmp(OutputLabel);
                     OutputLabel.setText("");
                 } else {
@@ -101,7 +101,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "Repair JPGs with corrupted metadata":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.repairjpgs"));
                     metaData.repairJPGMetadata( progressBar);
                     OutputLabel.setText("");
@@ -109,19 +109,19 @@ public class MenuActionListener implements ActionListener  {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
                 break;
-            case "Export metadata":
-                if (selectedIndicesList.size() > 0) {
+            /*case "Export metadata":
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ExportMetadata expMetadata = new ExportMetadata();
                     expMetadata.showDialog(selectedIndices, MyVariables.getLoadedFiles(), progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
-                break;
+                break; */
             case "sidecarhelp":
                 Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
                 break;
             case "exportexifsidecar":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
                     metaData.exportExifMieExvSidecar(rootPanel, progressBar, "exif");
                     OutputLabel.setText("");
@@ -130,7 +130,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "exportxmpsidecar":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
                     metaData.exportXMPSidecar(rootPanel, progressBar);
                     OutputLabel.setText("");
@@ -139,7 +139,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "exportmiesidecar":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.miesidecar"));
                     metaData.exportExifMieExvSidecar(rootPanel, progressBar, "mie");
                     //metaData.exportMIESidecar(progressBar);
@@ -149,7 +149,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "exportexvsidecar":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exvsidecar"));
                     metaData.exportExifMieExvSidecar(rootPanel, progressBar, "exv");
                     OutputLabel.setText("");
@@ -158,7 +158,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "Remove metadata":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     RemoveMetadata rmMetadata = new RemoveMetadata();
                     rmMetadata.showDialog(progressBar);
                     OutputLabel.setText("");
@@ -167,7 +167,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "Shift Date/time":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ShiftDateTime SDT = new ShiftDateTime();
                     SDT.showDialog(progressBar);
                     OutputLabel.setText("");
@@ -176,7 +176,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "Modify Date/time":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ModifyDateTime MDT = new ModifyDateTime();
                     MDT.showDialog(progressBar);
                     OutputLabel.setText("");
@@ -185,14 +185,14 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "Set file date to DateTimeOriginal":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     dateTime.setFileDateTimeToDateTimeOriginal(progressBar);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
                 break;
             case "Create args file(s)":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     CreateArgsFile CAF = new CreateArgsFile();
                     CAF.showDialog(selectedIndices, MyVariables.getLoadedFiles(), progressBar);
                 } else {
@@ -200,7 +200,7 @@ public class MenuActionListener implements ActionListener  {
                 }
                 break;
             case "Export all previews/thumbs from selected":
-                if (selectedIndicesList.size() > 0) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.extractpreviewsthumbs"));
                     Utils.ExportPreviewsThumbnails(progressBar);
                     OutputLabel.setText("");

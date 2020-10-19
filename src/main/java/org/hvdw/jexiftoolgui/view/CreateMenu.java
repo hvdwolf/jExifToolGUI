@@ -64,10 +64,10 @@ public class CreateMenu {
         myMenu.setMnemonic(KeyEvent.VK_M);
         menuBar.add(myMenu);
         //myMenu.addSeparator();
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportmetadata"));
+        /*menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportmetadata"));
         menuItem.setActionCommand("Export metadata");
         menuItem.addActionListener(mal);
-        myMenu.add(menuItem);
+        myMenu.add(menuItem); */
         myMenu.add(exportSidecarSubMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.copyallmetadatatoxmpformat"));
         menuItem.setActionCommand("Copy all metadata to xmp format");

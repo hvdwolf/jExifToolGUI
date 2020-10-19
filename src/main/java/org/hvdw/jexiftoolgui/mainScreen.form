@@ -3488,6 +3488,311 @@
               </tabbedpane>
             </children>
           </grid>
+          <grid id="c194c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.exportimport"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <tabbedpane id="6bcfb" binding="tabbedPaneExportImport">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="200"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="c08ff" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="10" left="10" bottom="10" right="10"/>
+                    <constraints>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="expimp.generalexp"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="b3695" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="b8fea" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="1e3ab" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="emd.exportoption"/>
+                                </properties>
+                              </component>
+                              <component id="9ffce" class="javax.swing.JRadioButton" binding="catmetadataradioButton">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <selected value="true"/>
+                                  <text resource-bundle="translations/program_strings" key="emd.catmetadata"/>
+                                </properties>
+                              </component>
+                              <component id="2b65c" class="javax.swing.JRadioButton" binding="exportFromUserCombisradioButton">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="emd.usercombi"/>
+                                </properties>
+                              </component>
+                              <grid id="8e2f" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="bevel-raised"/>
+                                <children>
+                                  <component id="58f2" class="javax.swing.JCheckBox" binding="exportAllMetadataCheckBox">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="emd.exportall"/>
+                                    </properties>
+                                  </component>
+                                  <grid id="f4d88" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="15" bottom="0" right="0"/>
+                                    <constraints>
+                                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="a4508" class="javax.swing.JCheckBox" binding="exportExifDataCheckBox">
+                                        <constraints>
+                                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="emd.exportexif"/>
+                                        </properties>
+                                      </component>
+                                      <component id="fca0c" class="javax.swing.JCheckBox" binding="exportXmpDataCheckBox">
+                                        <constraints>
+                                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="emd.extportxmp"/>
+                                        </properties>
+                                      </component>
+                                      <component id="47a9" class="javax.swing.JCheckBox" binding="exportGpsDataCheckBox">
+                                        <constraints>
+                                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="emd.exportgps"/>
+                                        </properties>
+                                      </component>
+                                      <component id="f2fdb" class="javax.swing.JCheckBox" binding="exportIptcDataCheckBox">
+                                        <constraints>
+                                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="emd.exportiptc"/>
+                                        </properties>
+                                      </component>
+                                      <component id="e7cf2" class="javax.swing.JCheckBox" binding="exportICCDataCheckBox">
+                                        <constraints>
+                                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="emd.exporticc"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </grid>
+                                </children>
+                              </grid>
+                              <grid id="9e114" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="bevel-raised"/>
+                                <children>
+                                  <component id="a51be" class="javax.swing.JComboBox" binding="exportUserCombicomboBox">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                  </component>
+                                </children>
+                              </grid>
+                            </children>
+                          </grid>
+                          <component id="92d81" class="javax.swing.JLabel" binding="exportMetaDataUiText">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <enabled value="true"/>
+                              <requestFocusEnabled value="false"/>
+                              <text value=""/>
+                              <verifyInputWhenFocusTarget value="false"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="21dc8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="c3480" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="44e71" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="emd.exportto"/>
+                                </properties>
+                              </component>
+                              <hspacer id="71648">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                              </hspacer>
+                              <vspacer id="8c667">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                              </vspacer>
+                              <grid id="65704" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="101f3" class="javax.swing.JRadioButton" binding="txtRadioButton" default-binding="true">
+                                    <constraints/>
+                                    <properties>
+                                      <selected value="true"/>
+                                      <text resource-bundle="translations/program_strings" key="emd.txt"/>
+                                    </properties>
+                                  </component>
+                                  <component id="7aff3" class="javax.swing.JRadioButton" binding="tabRadioButton" default-binding="true">
+                                    <constraints/>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="emd.tab"/>
+                                    </properties>
+                                  </component>
+                                  <component id="dbe40" class="javax.swing.JRadioButton" binding="xmlRadioButton" default-binding="true">
+                                    <constraints/>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="emd.xml"/>
+                                    </properties>
+                                  </component>
+                                  <component id="d94fd" class="javax.swing.JRadioButton" binding="htmlRadioButton" default-binding="true">
+                                    <constraints/>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="emd.html"/>
+                                    </properties>
+                                  </component>
+                                  <component id="58538" class="javax.swing.JRadioButton" binding="xmpRadioButton" default-binding="true">
+                                    <constraints/>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="emd.xmp"/>
+                                      <visible value="false"/>
+                                    </properties>
+                                  </component>
+                                  <component id="62e98" class="javax.swing.JRadioButton" binding="csvRadioButton" default-binding="true">
+                                    <constraints/>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="emd.csv"/>
+                                    </properties>
+                                  </component>
+                                </children>
+                              </grid>
+                            </children>
+                          </grid>
+                        </children>
+                      </grid>
+                      <grid id="1a39e" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="65612" class="javax.swing.JButton" binding="GenExportbuttonOK">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text resource-bundle="translations/program_strings" key="dlg.Export"/>
+                            </properties>
+                          </component>
+                          <component id="890c9" class="javax.swing.JButton" binding="GenExportbuttonCancel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text resource-bundle="translations/program_strings" key="dlg.cancel"/>
+                            </properties>
+                          </component>
+                          <hspacer id="951db">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </hspacer>
+                        </children>
+                      </grid>
+                      <component id="cb5f7" class="javax.swing.JCheckBox" binding="GenExpuseMetadataTagLanguageCheckBoxport">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="true"/>
+                          <text resource-bundle="translations/program_strings" key="emd.uselang"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="4dacf" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <tabbedpane title-resource-bundle="translations/program_strings" title-key="expimp.exptopdf"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </tabbedpane>
+            </children>
+          </grid>
           <grid id="e08b" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
@@ -3780,6 +4085,19 @@
       <member id="48cc1"/>
       <member id="d76cd"/>
       <member id="68325"/>
+    </group>
+    <group name="ExportCategoryGeneral">
+      <member id="2b65c"/>
+      <member id="2b65c"/>
+      <member id="9ffce"/>
+    </group>
+    <group name="ExportFileTypes">
+      <member id="101f3"/>
+      <member id="7aff3"/>
+      <member id="dbe40"/>
+      <member id="d94fd"/>
+      <member id="58538"/>
+      <member id="62e98"/>
     </group>
   </buttonGroups>
   <inspectionSuppressions>
