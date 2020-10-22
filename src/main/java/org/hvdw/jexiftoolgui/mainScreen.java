@@ -11,6 +11,7 @@ import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
+import org.hvdw.jexiftoolgui.model.GuiConfig;
 import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 //import java.util.Arrays;
 import java.util.Arrays;
@@ -372,6 +374,13 @@ public class mainScreen {
     private JRadioButton pdfCombinedradioButton;
     private JButton ExpPDFOKbutton;
     private JSplitPane splitPanel;
+    private JLabel exppdfDataText;
+    private JRadioButton pdfradioButtonExpAll;
+    private JComboBox pdfcomboBoxExpCommonTags;
+    private JComboBox pdfcomboBoxExpByTagName;
+    private JRadioButton pdfradioButtonExpCommonTags;
+    private JRadioButton pdfradioButtonExpByTagName;
+    private JLabel pdfLabelSupported;
     private ImageIcon icon;
 
 
@@ -528,7 +537,12 @@ public class mainScreen {
         return new JCheckBox[] {exportAllMetadataCheckBox, exportExifDataCheckBox, exportXmpDataCheckBox, exportGpsDataCheckBox, exportIptcDataCheckBox, exportICCDataCheckBox, GenExpuseMetadataTagLanguageCheckBoxport};
     }
 
-
+    private JRadioButton[] getPDFradiobuttons() {
+        return new JRadioButton[] {A4radioButton, LetterradioButton, ImgSizeLargeradioButton, ImgSizeSmallradioButton, pdfPerImgradioButton, pdfCombinedradioButton, pdfradioButtonExpAll, pdfradioButtonExpCommonTags, pdfradioButtonExpByTagName};
+    }
+    private JComboBox[] getPDFcomboboxes() {
+        return new JComboBox[] {pdfcomboBoxExpCommonTags, pdfcomboBoxExpByTagName};
+    }
 
 
     private void fillAllComboboxes() {
@@ -540,6 +554,8 @@ public class mainScreen {
         UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
         exportUserCombicomboBox.setModel(new DefaultComboBoxModel(views));
         exportUserCombicomboBox.setEnabled(false);
+
+
 
         // Fill all combo boxes in the View panel
         String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CommonTags.txt");
@@ -553,11 +569,13 @@ public class mainScreen {
         System.arraycopy(views, 0, allTags, length1, length2);
         Arrays.sort(allTags);
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(allTags));
+        pdfcomboBoxExpCommonTags.setModel(new DefaultComboBoxModel(allTags));
 
         String sqlGroups = SQLiteJDBC.getGroups();
         Tags = sqlGroups.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
         //comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
+        pdfcomboBoxExpByTagName.setModel(new DefaultComboBoxModel(Tags));
 
 
         TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
@@ -2162,120 +2180,131 @@ public class mainScreen {
         final Spacer spacer20 = new Spacer();
         panel63.add(spacer20, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel64 = new JPanel();
-        panel64.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        panel63.add(panel64, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
-        final JPanel panel65 = new JPanel();
-        panel65.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        panel63.add(panel65, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
-        final JPanel panel66 = new JPanel();
-        panel66.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
-        panel63.add(panel66, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
-        final JPanel panel67 = new JPanel();
-        panel67.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
-        panel63.add(panel67, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel64.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
+        panel63.add(panel64, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         ExpPDFOKbutton = new JButton();
         this.$$$loadButtonText$$$(ExpPDFOKbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.Export"));
-        panel67.add(ExpPDFOKbutton);
-        final JPanel panel68 = new JPanel();
-        panel68.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
-        panel63.add(panel68, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel64.add(ExpPDFOKbutton);
+        final JPanel panel65 = new JPanel();
+        panel65.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel63.add(panel65, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel65.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label95 = new JLabel();
         this.$$$loadLabelText$$$(label95, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.paper"));
-        panel68.add(label95, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel65.add(label95, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         LetterradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(LetterradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.letter"));
-        panel68.add(LetterradioButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel65.add(LetterradioButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         A4radioButton = new JRadioButton();
         A4radioButton.setSelected(true);
         this.$$$loadButtonText$$$(A4radioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.a4"));
-        panel68.add(A4radioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel65.add(A4radioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label96 = new JLabel();
-        this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.imgsize"));
-        panel68.add(label96, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        ImgSizeLargeradioButton = new JRadioButton();
-        ImgSizeLargeradioButton.setSelected(true);
-        this.$$$loadButtonText$$$(ImgSizeLargeradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.imgsizel"));
-        panel68.add(ImgSizeLargeradioButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        ImgSizeSmallradioButton = new JRadioButton();
-        this.$$$loadButtonText$$$(ImgSizeSmallradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.imgsizes"));
-        panel68.add(ImgSizeSmallradioButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JLabel label97 = new JLabel();
-        this.$$$loadLabelText$$$(label97, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.output"));
-        panel68.add(label97, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.output"));
+        panel65.add(label96, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         pdfPerImgradioButton = new JRadioButton();
         pdfPerImgradioButton.setSelected(true);
-        this.$$$loadButtonText$$$(pdfPerImgradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.image"));
-        panel68.add(pdfPerImgradioButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        this.$$$loadButtonText$$$(pdfPerImgradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.single"));
+        panel65.add(pdfPerImgradioButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         pdfCombinedradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(pdfCombinedradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.combined"));
-        panel68.add(pdfCombinedradioButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel65.add(pdfCombinedradioButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel66 = new JPanel();
+        panel66.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel63.add(panel66, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel66.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        exppdfDataText = new JLabel();
+        this.$$$loadLabelText$$$(exppdfDataText, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.whichdata"));
+        panel66.add(exppdfDataText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer21 = new Spacer();
+        panel66.add(spacer21, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JPanel panel67 = new JPanel();
+        panel67.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 5));
+        panel66.add(panel67, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pdfradioButtonExpAll = new JRadioButton();
+        pdfradioButtonExpAll.setSelected(true);
+        this.$$$loadButtonText$$$(pdfradioButtonExpAll, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.allradiobutton"));
+        panel67.add(pdfradioButtonExpAll);
+        pdfradioButtonExpCommonTags = new JRadioButton();
+        this.$$$loadButtonText$$$(pdfradioButtonExpCommonTags, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.commontags"));
+        panel67.add(pdfradioButtonExpCommonTags);
+        pdfcomboBoxExpCommonTags = new JComboBox();
+        panel67.add(pdfcomboBoxExpCommonTags);
+        pdfradioButtonExpByTagName = new JRadioButton();
+        this.$$$loadButtonText$$$(pdfradioButtonExpByTagName, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bygroup"));
+        panel67.add(pdfradioButtonExpByTagName);
+        pdfcomboBoxExpByTagName = new JComboBox();
+        panel67.add(pdfcomboBoxExpByTagName);
+        pdfLabelSupported = new JLabel();
+        pdfLabelSupported.setText("Label");
+        panel63.add(pdfLabelSupported, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel68 = new JPanel();
+        panel68.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        panel68.setPreferredSize(new Dimension(800, -1));
+        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.yourcommands"), panel68);
         final JPanel panel69 = new JPanel();
-        panel69.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        panel69.setPreferredSize(new Dimension(800, 253));
-        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.yourcommands"), panel69);
-        final JPanel panel70 = new JPanel();
-        panel70.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel69.add(panel70, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel69.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel68.add(panel69, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         CommandsParameterstextField = new JTextField();
-        panel70.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label98 = new JLabel();
-        Font label98Font = this.$$$getFont$$$(null, Font.BOLD, -1, label98.getFont());
-        if (label98Font != null) label98.setFont(label98Font);
-        this.$$$loadLabelText$$$(label98, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.parameters"));
-        panel70.add(label98, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel71 = new JPanel();
-        panel71.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel70.add(panel71, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel69.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label97 = new JLabel();
+        Font label97Font = this.$$$getFont$$$(null, Font.BOLD, -1, label97.getFont());
+        if (label97Font != null) label97.setFont(label97Font);
+        this.$$$loadLabelText$$$(label97, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.parameters"));
+        panel69.add(label97, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel70 = new JPanel();
+        panel70.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel69.add(panel70, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         CommandsclearParameterSFieldButton = new JButton();
         this.$$$loadButtonText$$$(CommandsclearParameterSFieldButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnclrparamfield"));
-        panel71.add(CommandsclearParameterSFieldButton);
+        panel70.add(CommandsclearParameterSFieldButton);
         CommandsclearOutputFieldButton = new JButton();
         this.$$$loadButtonText$$$(CommandsclearOutputFieldButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnclroutput"));
-        panel71.add(CommandsclearOutputFieldButton);
+        panel70.add(CommandsclearOutputFieldButton);
         CommandsgoButton = new JButton();
         this.$$$loadButtonText$$$(CommandsgoButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btngo"));
-        panel71.add(CommandsgoButton);
+        panel70.add(CommandsgoButton);
         CommandshelpButton = new JButton();
         this.$$$loadButtonText$$$(CommandshelpButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
-        panel71.add(CommandshelpButton);
-        final Spacer spacer21 = new Spacer();
-        panel71.add(spacer21);
-        final JPanel panel72 = new JPanel();
-        panel72.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        panel71.add(panel72);
+        panel70.add(CommandshelpButton);
         final Spacer spacer22 = new Spacer();
-        panel72.add(spacer22);
+        panel70.add(spacer22);
+        final JPanel panel71 = new JPanel();
+        panel71.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        panel70.add(panel71);
+        final Spacer spacer23 = new Spacer();
+        panel71.add(spacer23);
         AddCommandFavoritebutton = new JButton();
         this.$$$loadButtonText$$$(AddCommandFavoritebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnaddfav"));
-        panel72.add(AddCommandFavoritebutton);
+        panel71.add(AddCommandFavoritebutton);
         LoadCommandFavoritebutton = new JButton();
         this.$$$loadButtonText$$$(LoadCommandFavoritebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnloadfav"));
-        panel72.add(LoadCommandFavoritebutton);
-        final JPanel panel73 = new JPanel();
-        panel73.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel70.add(panel73, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JLabel label99 = new JLabel();
-        this.$$$loadLabelText$$$(label99, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.labeloutput"));
-        label99.setVerticalTextPosition(1);
-        panel73.add(label99, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel71.add(LoadCommandFavoritebutton);
+        final JPanel panel72 = new JPanel();
+        panel72.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel69.add(panel72, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JLabel label98 = new JLabel();
+        this.$$$loadLabelText$$$(label98, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.labeloutput"));
+        label98.setVerticalTextPosition(1);
+        panel72.add(label98, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel73.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel72.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         YourCommandsOutputText = new JEditorPane();
         YourCommandsOutputText.setText("");
         scrollPane1.setViewportView(YourCommandsOutputText);
-        final JPanel panel74 = new JPanel();
-        panel74.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
-        panel73.add(panel74, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel73 = new JPanel();
+        panel73.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        panel72.add(panel73, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         UseNonPropFontradioButton = new JRadioButton();
         UseNonPropFontradioButton.setSelected(true);
         this.$$$loadButtonText$$$(UseNonPropFontradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.radbtnmonospace"));
-        panel74.add(UseNonPropFontradioButton);
+        panel73.add(UseNonPropFontradioButton);
         UsePropFontradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(UsePropFontradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.radbtnproportional"));
-        panel74.add(UsePropFontradioButton);
+        panel73.add(UsePropFontradioButton);
         MyCommandsText = new JLabel();
         MyCommandsText.setText("MyCommandsText");
-        panel69.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
+        panel68.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(CalcNorthRadioButton);
@@ -2334,11 +2363,12 @@ public class mainScreen {
         buttonGroup.add(A4radioButton);
         buttonGroup.add(LetterradioButton);
         buttonGroup = new ButtonGroup();
-        buttonGroup.add(ImgSizeLargeradioButton);
-        buttonGroup.add(ImgSizeSmallradioButton);
-        buttonGroup = new ButtonGroup();
         buttonGroup.add(pdfPerImgradioButton);
         buttonGroup.add(pdfCombinedradioButton);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(pdfradioButtonExpAll);
+        buttonGroup.add(pdfradioButtonExpCommonTags);
+        buttonGroup.add(pdfradioButtonExpByTagName);
     }
 
     /**
@@ -3123,6 +3153,21 @@ public class mainScreen {
                 }
             }
         });
+        ExpPDFOKbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                    try {
+                        ExportToPDF.WriteToPDF(getPDFradiobuttons(), getPDFcomboboxes(), progressBar);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
     } // End of private void programButtonListeners()
 
     private void ViewRadiobuttonListener() {
@@ -3131,7 +3176,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 logger.trace("radiobutton selected: {}", radioButtonViewAll.getText());
-                String res  = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS, files);
+                String res  = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
             }
         });
@@ -3140,7 +3185,7 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
                 //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                String res = Utils.getImageInfoFromSelectedFile(params, files);
+                String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
             }
         });
@@ -3150,7 +3195,7 @@ public class mainScreen {
                 if (radioButtoncommonTags.isSelected()) {
                     String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
                     //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
-                    String res = Utils.getImageInfoFromSelectedFile(params, files);
+                    String res = Utils.getImageInfoFromSelectedFile(params);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 }
             }
@@ -3230,7 +3275,7 @@ public class mainScreen {
                     }
                 }
                 String[] params = whichRBselected();
-                String res = Utils.getImageInfoFromSelectedFile(params, files);
+                String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
@@ -3321,6 +3366,7 @@ public class mainScreen {
         UserCombiTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("udc.toptext")));
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("emd.toptext")));
         pdftextLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.toptext")));
+        pdfLabelSupported.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.supp")));
 
 
         // database version
@@ -3379,7 +3425,7 @@ public class mainScreen {
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
-            { GuiSettings.SetSplitPaneDivider(splitPanel); }
+            { GuiConfig.SetSplitPaneDivider(splitPanel); }
         });
 
         // Do not simply exit on closing the window. First delete our temp stuff and save gui settings
@@ -3388,7 +3434,7 @@ public class mainScreen {
             @Override
             public void windowClosing(WindowEvent e) {
                 StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
-                GuiSettings.SaveGuiConfig(frame, rootPanel, splitPanel);
+                GuiConfig.SaveGuiConfig(frame, rootPanel, splitPanel);
                 System.exit(0);
             }
         });
@@ -3514,7 +3560,7 @@ public class mainScreen {
         }
 
         logger.debug("Gui Width x Height: {} x {}", frame.getWidth(), String.valueOf(frame.getHeight()));
-        GuiSettings.LoadGuiConfig(frame);
+        GuiConfig.LoadGuiConfig(frame);
         //frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);

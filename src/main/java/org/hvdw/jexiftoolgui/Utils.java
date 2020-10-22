@@ -539,7 +539,7 @@ public class Utils {
                         }
                     }*/
                     //String[] params = whichRBselected();
-                    String res = Utils.getImageInfoFromSelectedFile(params, files);
+                    String res = Utils.getImageInfoFromSelectedFile(params);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     buttonShowImage.setEnabled(true);
                     buttonCompare.setEnabled(true);
@@ -619,7 +619,7 @@ public class Utils {
         } else {
             model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
             jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
-            jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(260);
+            jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(250);
             jTable_File_Names.setRowHeight(150);
             //LeftPanel.setSize(430,-1);
             LeftPanel.setPreferredSize(new Dimension(440, -1));
@@ -713,13 +713,14 @@ public class Utils {
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    static String getImageInfoFromSelectedFile(String[] whichInfo, File[] files) {
+    static String getImageInfoFromSelectedFile(String[] whichInfo) {
 
         String res = "";
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
         int selectedRow = MyVariables.getSelectedRow();
         List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
+        File[] files = MyVariables.getLoadedFiles();
 
         if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
             logger.debug("selectedRow: {}", String.valueOf(selectedRow));
@@ -777,6 +778,67 @@ public class Utils {
         return res;
     }
 
+    /**
+     * This getImageInfoFromSelectedFile is called from methods that loop through files and need info
+     * @param whichInfo
+     * @param index
+     * @return
+     */
+    static String getImageInfoFromSelectedFile(String[] whichInfo, int index) {
+
+        String res = "";
+        String fpath = "";
+        List<String> cmdparams = new ArrayList<String>();
+        File[] files = MyVariables.getLoadedFiles();
+
+        logger.debug("selectedRow: {}", String.valueOf(index));
+        if (isOsFromMicrosoft()) {
+            fpath = files[index].getPath().replace("\\", "/");
+        } else {
+            fpath = files[index].getPath();
+        }
+
+        // Need to build exiftool prefs check
+        MyVariables.setSelectedImagePath(fpath);
+        Application.OS_NAMES currentOsName = getCurrentOsName();
+
+        cmdparams.add(Utils.platformExiftool().trim());
+        // Check if we want to use G1 instead of G
+        boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
+        if (useGroup1) {
+            for (int i = 0; i < whichInfo.length; i++) {
+                if ("-G".equals(whichInfo[i])) {
+                    whichInfo[i] = whichInfo[i].replace("-G", "-G1");
+                }
+            }
+        }
+        // Check for chosen metadata language
+        if (!"".equals(getmetadataLanguage())) {
+            cmdparams.add("-lang");
+            cmdparams.add(getmetadataLanguage());
+        }
+        // Check if user wants to see decimal degrees
+        if (UseDecimalDegrees()) {
+            cmdparams.add("-c");
+            cmdparams.add("%.6f");
+        }
+        cmdparams.addAll(Arrays.asList(whichInfo));
+        logger.trace("image file path: {}", fpath);
+        cmdparams.add(MyVariables.getSelectedImagePath());
+
+        logger.trace("before runCommand: {}", cmdparams);
+        try {
+            res = CommandRunner.runCommand(cmdparams);
+            logger.trace("res is {}", res);
+            //displayInfoForSelectedImage(res, ListexiftoolInfotable);
+        } catch (IOException | InterruptedException ex) {
+            logger.error("Error executing command", ex);
+        }
+
+        return res;
+    }
+
+
     // This is the "pre-ImageInfo" that is called when the option is chosen to display for a specific Tag Name from the dropdown list without changing the selected image.
     public static String selectImageInfoByTagName(JComboBox comboBoxViewByTagName, File[] files) {
 
@@ -790,7 +852,7 @@ public class Utils {
             params[1] = "-G";
         }
         params[2] = "-tab";
-        String res = getImageInfoFromSelectedFile(params, files);
+        String res = getImageInfoFromSelectedFile(params);
         //displayInfoForSelectedImage(res, ListexiftoolInfotable);
         return res;
     }
@@ -901,7 +963,7 @@ public class Utils {
                 ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tablevalue")});
         ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
         ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
-        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(500);
+        ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(440);
         model.setRowCount(0);
 
         Object[] row = new Object[1];

@@ -3,7 +3,6 @@ package org.hvdw.jexiftoolgui.metadata;
 import ch.qos.logback.classic.Logger;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
-import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.slf4j.LoggerFactory;

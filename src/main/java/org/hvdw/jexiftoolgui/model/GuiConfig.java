@@ -1,4 +1,4 @@
-package org.hvdw.jexiftoolgui.view;
+package org.hvdw.jexiftoolgui.model;
 
 import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.Utils;
@@ -11,13 +11,13 @@ import java.awt.*;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class GuiSettings {
+public class GuiConfig {
 
     public static int guiWidth;
     public static int guiHeight;
 
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(GuiSettings.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(GuiConfig.class);
 
     /**
      * Gets the current width and height from the rootPanel (not the frame)
@@ -59,7 +59,7 @@ public class GuiSettings {
         prefs.storeByKey(GUI_WIDTH, String.valueOf(guiWidth));
         prefs.storeByKey(GUI_HEIGHT, String.valueOf(guiHeight));
         prefs.storeByKey(SPLITPANEL_POSITION, String.valueOf(SPP));
-        logger.info("Save Gui Settings: Width x Height {}x{}; splitpanel postion {}", guiWidth, guiHeight, String.valueOf(SPP));
+        logger.debug("Save Gui Settings: Width x Height {}x{}; splitpanel postion {}", guiWidth, guiHeight, String.valueOf(SPP));
     }
 
     /**
@@ -103,7 +103,7 @@ public class GuiSettings {
         } else {
             Height = Integer.parseInt(strHeight);
         }
-        logger.info("rootPanel.setSize {} x {}", Width, Height);
+        logger.debug("rootPanel.setSize {} x {}", Width, Height);
         rootPanel.setPreferredSize(new Dimension(Width, Height));
     }
 
@@ -147,7 +147,7 @@ public class GuiSettings {
         } else {
             Height = Integer.parseInt(strHeight);
         }
-        logger.info("frame.setSize {} x {}", Width, Height);
+        logger.debug("frame.setSize {} x {}", Width, Height);
         frame.setSize(Width, Height);
     }
 

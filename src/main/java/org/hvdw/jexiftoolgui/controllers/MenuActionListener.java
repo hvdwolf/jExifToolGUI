@@ -6,19 +6,16 @@ import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
 import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
-import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
+import org.hvdw.jexiftoolgui.model.GuiConfig;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -76,7 +73,7 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Exit":
                 StandardFileIO.deleteDirectory(new File(MyVariables.gettmpWorkFolder()) );
-                GuiSettings.SaveGuiConfig(frame, rootPanel, splitPanel);
+                GuiConfig.SaveGuiConfig(frame, rootPanel, splitPanel);
                 System.exit(0);
                 break;
             case "Rename photos":
@@ -240,7 +237,7 @@ public class MenuActionListener implements ActionListener  {
             case "Credits":
                 //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
                 String Credits = StandardFileIO.readTextFileAsStringFromResource("texts/credits.html");
-                WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"), String.format(ProgramTexts.HTML, 500, Credits), 600, 800);
+                WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"), String.format(ProgramTexts.HTML, 600, Credits), 700, 600);
                 break;
             case "System/Program info":
                 String os = SystemPropertyFacade.getPropertyByKey(OS_NAME);

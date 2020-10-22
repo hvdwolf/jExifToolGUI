@@ -53,6 +53,9 @@ dependencies {
 
     // At some time maybe when I feel like adding charts to display ISOs, focal length, aperture and the like
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
+    // Or use Xchart: https://github.com/knowm/XChart    https://knowm.org/open-source/xchart/
+    //implementation(group = "org.knowm.xchart", name = "xchart", version = "3.6.5")
+
 
     // Twelve monkeys imageio (supports bmp, jpeg, jpeg-2000, PNM (PBM/PGM/PPM/PAM), PSD, TIFF, HDR, IFF, PCX
     // PICT, SGI, TGA, ICNS, ICO & CUR, SVG, WMF)
@@ -72,8 +75,9 @@ dependencies {
     implementation("com.twelvemonkeys.imageio:imageio-tiff:3.6")
 //    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    //metadata-extractor Drew Noakes https://github.com/drewnoakes/metadata-extractor
-    //implementation("com.drewnoakes:metadata-extractor:2.14.0")
+    // This is the itext pdf "community" library released under AGPL
+    // implementation(group = "com.itextpdf", name = "itextpdf", version="5.5.13.2")
+    implementation(group = "com.itextpdf", name = "itext7-core", version="7.1.12")
 
     // Minimal json (35Kb), to be used for Nominatim queries (not yet)
     implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
