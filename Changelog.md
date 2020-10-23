@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-10-23 1.6.3.1
+Bugfix release only:
+* Fix: the default translations file contained a number of incorrect characters which made it impossible to use the "Load Images" and "Load Folder" options on all systems NOT running English, German, Spanish or Dutch. This seems like some sort of text file corruption but I do not know how it occurred. It is fixed now.
+* Lens configurations: Saving of lens descriptions is optional, but retrieval expected it to be there. That now works correct.
+
 ## 2020-10-04 1.6.3
 * MacOS Feature request: [issue #35](https://github.com/hvdwolf/jExifToolGUI/issues/35) heic (heif) thumbnails and full screen / full size view are now supported using sips as converting engine. Unfortunately it is not really fast (I am now on MacOS Catalina and could finally test myself and make it work).
 * Feature request: [issue #72](https://github.com/hvdwolf/jExifToolGUI/issues/72) Preserve file modification date/time. (Preferences -> system)
