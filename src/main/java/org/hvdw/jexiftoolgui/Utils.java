@@ -330,6 +330,12 @@ public class Utils {
         return value.substring(adjustedPosA, posB);
     }
     ////////////////////////////////// Load images and display them  ///////////////////////////////////
+
+    /**
+     * This method returns the file extension based on a filename String
+     * @param filename
+     * @return file extension
+     */
     public static String getFileExtension(String filename) {
 
         int lastIndexOf = filename.lastIndexOf(".") + 1;
@@ -338,6 +344,22 @@ public class Utils {
         }
         return filename.substring(lastIndexOf);
     }
+
+    /**
+     * This method returns the file extension based on a File object
+     * @param file
+     * @return file extension
+     */
+    public static String getFileExtension(File file) {
+
+        String filename = file.getPath();
+        int lastIndexOf = filename.lastIndexOf(".") + 1;
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return filename.substring(lastIndexOf);
+    }
+
     public static String getFileNameWithoutExtension(String filename) {
         return filename.replaceFirst("[.][^.]+$", "");
     }
@@ -345,6 +367,7 @@ public class Utils {
         // Duplicate of above, but makes it easier when working with file paths or only file names
         return filepath.replaceFirst("[.][^.]+$", "");
     }
+
 
     /*
     / an instance of LabelIcon holds an icon and label pair for each row.
@@ -1181,7 +1204,22 @@ public class Utils {
                 //Application.OS_NAMES currentOsName = getCurrentOsName();
                 switch (currentOsName) {
                     case APPLE:
-                        runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                        filenameExt = getFileExtension(MyVariables.getSelectedImagePath());
+                        String[] Videos = MyConstants.SUPPORTED_VIDEOS;
+                        boolean video = false;
+                        for (String ext : Videos) {
+                            if ( filenameExt.toLowerCase().equals(ext)) { //We have a video
+                                video = true;
+                            }
+                        }
+                        if (video) {
+                            runtime.exec("open /Applications/QuickTime\\ Player.app " + MyVariables.getSelectedImagePath());
+                            logger.info("quicktime command {}", "open /Applications/QuickTime\\ Player.app " + MyVariables.getSelectedImagePath());
+                        } else {
+                            runtime.exec("open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                            logger.info("preview command {}", "open /Applications/Preview.app " + MyVariables.getSelectedImagePath());
+                        }
+
                         return;
                     case MICROSOFT:
                         String convImg = MyVariables.getSelectedImagePath().replace("/", "\\");
@@ -1341,44 +1379,6 @@ public class Utils {
             CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
         }
     }
-
-    /*
-    * This method is used to try to get a preview image for those (RAW) images that can't be converted directly to be displayed in the left images column
-    * We will try to extract a jpg from the RAW to the tempdir and resize/display that one
-     */
-/*    public static String ExportPreviewsThumbnailsForIconDisplay(File file) {
-        List<String> cmdparams = new ArrayList<String>();
-        String exportResult = "Success";
-
-        cmdparams.add(Utils.platformExiftool());
-        boolean isWindows = Utils.isOsFromMicrosoft();
-
-        // Get the temporary directory
-        String tempWorkDir = MyVariables.gettmpWorkFolder();
-
-        cmdparams.add("-a");
-        cmdparams.add("-m");
-        cmdparams.add("-b");
-        cmdparams.add("-W");
-        cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
-        cmdparams.add("-preview:ThumbnailImage");
-        cmdparams.add("-preview:PreviewImage");
-
-        if (isWindows) {
-            cmdparams.add(file.getPath().replace("\\", "/"));
-        } else {
-            cmdparams.add(file.getPath());
-        }
-
-        try {
-            String cmdResult = CommandRunner.runCommand(cmdparams);
-            //logger.info("cmd result from export previews for single RAW" + cmdResult);
-        } catch (IOException | InterruptedException ex) {
-            logger.debug("Error executing command to export previews for one RAW");
-            exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
-        }
-        return exportResult;
-    } */
 
 
     @SuppressWarnings("SameParameterValue")

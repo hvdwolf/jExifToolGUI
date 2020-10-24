@@ -23,6 +23,7 @@ public class MyVariables {
     private int[] selectedFilenamesIndices;
     private String jexiftoolguiDBPath;
     private String cantdisplaypng;
+    private String cantconvertpng;
     private String selectedLensConfig;
     private String tmpWorkFolder;
     private File CurrentWorkFile;
@@ -33,6 +34,7 @@ public class MyVariables {
     private String[] CustomCombis;
     private String delayedOutput;
     private HashMap<String, String> imgBasicData;
+    private String pdfDocs;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -65,6 +67,9 @@ public class MyVariables {
     public static void setcantdisplaypng(String pngPath) {
         staticInstance.cantdisplaypng = pngPath;
     }
+
+    public static String getcantconvertpng() { return staticInstance.cantconvertpng; }
+    public static void setcantconvertpng(String cpngPath) { staticInstance.cantconvertpng = cpngPath; }
 
     public static String getselectedLensConfig() {
         return staticInstance.selectedLensConfig;
@@ -129,5 +134,8 @@ public class MyVariables {
 
     public static HashMap<String, String> getimgBasicData () { return staticInstance.imgBasicData; };
     public static void setimgBasicData( HashMap<String, String> imgBasData) {staticInstance.imgBasicData = imgBasData; }
+
+    public static String getpdfDocs() { return staticInstance.pdfDocs; }
+    public static void setpdfDocs(String pdfDcs) { staticInstance.pdfDocs = pdfDcs; }
 
 }

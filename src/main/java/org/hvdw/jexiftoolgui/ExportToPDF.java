@@ -6,10 +6,8 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.*;
+import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +15,17 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
+import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
+import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
+import static org.hvdw.jexiftoolgui.Utils.getFileExtension;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class ExportToPDF {
@@ -45,13 +49,131 @@ public class ExportToPDF {
         return params;
     }
 
-    private static Table topTable(Table table, File tmpfile) {
+    private static String GetConvertImage(File tmpfile) {
+        boolean basicextension = false;
+        boolean RAWextension = false;
+        String imageFile = "";
+        String tmpfilename = "";
+        String[] raw_extensions = MyConstants.RAW_IMAGES;
+        String[] basic_extensions = MyConstants.BASIC_EXTENSIONS;
+
+        String filenameExt = getFileExtension(tmpfile);
+        String filename = tmpfile.getName();
+
+        for (String ext : basic_extensions) {
+            if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png or tif(f)
+                basicextension = true;
+                break;
+            }
+        }
+        if (basicextension) {
+            imageFile = tmpfile.getPath();
+        } else {
+            // loop through RAW extensions
+            for (String ext : raw_extensions) {
+                if (filenameExt.toLowerCase().equals(ext)) { // it is either bmp, gif, jp(e)g, png or tif(f)
+                    RAWextension = true;
+                    break;
+                }
+            }
+            logger.debug("pdfexport getconvertimage RAW RAWextion {}", RAWextension);
+            //Use the ImageFunctions.ExtractPreviews(File file) for Raws and check on jpgfromraw and previewimage
+            if (RAWextension) {
+                String exportResult = ImageFunctions.ExtractPreviews(tmpfile);
+                if ("Success".equals(exportResult)) {
+                    //hoping we have a JPGfromRAW
+                    tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
+                    tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
+                    logger.debug("pdfexport getconvertimage RAW jpgfromraw {}", tmpfile.toString());
+                    if (tmpfile.exists()) {
+                        imageFile = tmpfile.getPath();
+                    } else {
+                        tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
+                        tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
+                        logger.debug("pdfexport getconvertimage RAW jPreviewImage {}", tmpfile.toString());
+                        if (tmpfile.exists()) {
+                            imageFile = tmpfile.getPath();
+                        } else {
+                            tmpfile = new File(MyVariables.getcantconvertpng());
+                            logger.debug("pdfexport getconvertimage RAW cantconvert {}", tmpfile.toString());
+                        }
+                        imageFile = tmpfile.getPath();
+                    }
+                } else {
+                    tmpfile = new File(MyVariables.getcantconvertpng());
+                    imageFile = tmpfile.getPath();
+                }
+
+            } else if ( (filenameExt.toLowerCase().equals("heic")) || (filenameExt.toLowerCase().equals("heif")) ) {
+                Application.OS_NAMES currentOsName = getCurrentOsName();
+                if ( currentOsName == APPLE) {
+                    String exportResult = ImageFunctions.sipsConvertToJPG(tmpfile, "pdfexport");
+                    if ("Success".equals(exportResult)) {
+                        tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
+                        tmpfile = new File(MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
+                        logger.debug("pdfexport getconvertimage HEIC convert {}", tmpfile.toString());
+                    } else { // we have some error
+                        tmpfile = new File(MyVariables.getcantconvertpng());
+                        logger.debug("pdfexport getconvertimage HEIC cantconvert{}", tmpfile.toString());
+                    }
+                } else { //we are not on Apple
+                    tmpfile = new File(MyVariables.getcantconvertpng());
+                }
+                imageFile = tmpfile.getPath();
+
+            } else if ( (filenameExt.toLowerCase().equals("mp4")) || (filenameExt.toLowerCase().equals("m4v")) ) {
+                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(tmpfile);
+                if ("Success".equals(exportResult)) {
+                    logger.debug("pdfexport getconvertimage MP4 export thumbnails successful");
+                    tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
+                    tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
+                    if (tmpfile.exists()) {
+                        imageFile = tmpfile.getPath();
+                        logger.debug("pdfexport getconvertimage MP4 convert {}", tmpfile.toString());
+                    } else {
+                        tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                        tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
+                        if (tmpfile.exists()) {
+                            imageFile = tmpfile.getPath();
+                            logger.debug("pdfexport getconvertimage MP4 convert {}", tmpfile.toString());
+                        } else {
+                            tmpfile = new File(MyVariables.getcantconvertpng());
+                            logger.debug("pdfexport getconvertimage MP4 cant convert {}", tmpfile.toString());
+                        }
+                        imageFile = tmpfile.getPath();
+                    }
+                } else {
+                    tmpfile = new File(MyVariables.getcantconvertpng());
+                    imageFile = tmpfile.getPath();
+                }
+
+            } else { // if all fails .....
+                tmpfile = new File(MyVariables.getcantconvertpng());
+                imageFile = tmpfile.getPath();
+                logger.debug("pdfexport getconvertimage ..if all fails .. cant convert {}", tmpfile.toString());
+            }
+        }
+
+        return imageFile;
+    }
+
+
+    /**
+     * Method toptable writes the table with the filename, path and the image itself
+     * @param tmpfile
+     * @return
+     */
+    private static Table topTable(File tmpfile) {
+
+        float[] pointColumnWidths = {150f, 150f};
+        Table table = new Table(pointColumnWidths);
         table.addCell(new Cell().add(new Paragraph(ResourceBundle.getBundle("translations/program_strings").getString("exppdf.name"))));
         table.addCell(new Cell().add(new Paragraph(tmpfile.getName())));
         table.addCell(new Cell().add(new Paragraph(ResourceBundle.getBundle("translations/program_strings").getString("exppdf.path"))));
         table.addCell(new Cell().add(new Paragraph(tmpfile.getParent())));
         table.addCell(new Cell().add(new Paragraph(ResourceBundle.getBundle("translations/program_strings").getString("exppdf.image"))));
-        String imageFile = tmpfile.getPath();
+
+        String imageFile = GetConvertImage(tmpfile);
         try {
             ImageData data = ImageDataFactory.create(imageFile);
             Image img = new Image(data);
@@ -67,10 +189,13 @@ public class ExportToPDF {
     /**
      * This fillMetadataTable creates the table with the requested metadata and returns it to the document
      * @param exiftoolInfo
-     * @param table
      * @return
      */
-    private static Table fillMetadataTable(String exiftoolInfo, Table table) {
+    private static Table fillMetadataTable(String exiftoolInfo) {
+        float[] mdpointColumnWidths = {100f, 260f, 450f};
+        Table table = new Table(mdpointColumnWidths);
+
+        table.setFontSize(10);
         if (exiftoolInfo.length() > 0) {
             if (exiftoolInfo.trim().startsWith("Warning")) {
                 table.addCell(new Cell().add(new Paragraph("ExifTool")));
@@ -95,63 +220,118 @@ public class ExportToPDF {
         return table;
     }
 
+    /**
+     * This method is called from the mainScreen and starts a background task "WriteToPDF" while an infinite progressbar is keeping the user informed
+     * @param rootPanel
+     * @param PDFradiobuttons
+     * @param PDFcomboboxes
+     * @param progressBar
+     * @return
+     */
+    public static void CreatePDFs(JPanel rootPanel, JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes, JProgressBar progressBar, JLabel outputLabel) {
+        String pdfdocs = "";
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    try {
+                        WriteToPDF(PDFradiobuttons, PDFcomboboxes, progressBar);
+                        progressBar.setVisible(false);
+                        outputLabel.setText("");
+                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated") + ":<br><br>" + MyVariables.getpdfDocs()), ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated"), JOptionPane.INFORMATION_MESSAGE));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (Exception ex) {
+                    logger.debug("Error executing command");
+                }
+            }
+        });
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                progressBar.setVisible(true);
+                outputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exppdf"));
+            }
+        });
+
+    }
+
+    /**
+     * This method really writes the PDF. either a pdf per image, or one big pdf for all images
+     * @param PDFradiobuttons
+     * @param PDFcomboboxes
+     * @param progressBar
+     * @return
+     */
     public static void WriteToPDF(JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes, JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         File[] files = MyVariables.getLoadedFiles();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        String imgPath;
+        File tmpfile;
         String filename;
-        String filepath;
-        String pdfnamepath;
+        String pdfnamepath = "";
+        Document doc = null;
+        String producedDocs = "";
 
         boolean isWindows = Utils.isOsFromMicrosoft();
-
         String[] params = GetDesiredParams(PDFradiobuttons, PDFcomboboxes);
         cmdparams.add(Utils.platformExiftool());
-        for (int index : selectedIndices) {
-            String res = Utils.getImageInfoFromSelectedFile(params, index);
-            //image
-            if (isWindows) {
-                imgPath = files[index].getPath().replace("\\", "/");
-            } else {
-                imgPath = files[index].getPath();
-            }
-            filename = files[index].getName();
 
-            File tmpfile = files[index];
-            filepath = files[index].getParent();
-            pdfnamepath = filepath + File.separator + Utils.getFileNameWithoutExtension(filename) + ".pdf";
-            logger.debug("filename {}; filepath {}", filename, filepath);
-            logger.debug("pdfnamepath {}", pdfnamepath);
-
-            // Creating a PdfWriter object
+        if (PDFradiobuttons[5].isSelected()) { // one combined document
             try {
-                PdfWriter writer = new PdfWriter(pdfnamepath);
-                // Creating a PdfDocument object
-                PdfDocument pdfDoc = new PdfDocument(writer);
-                // Creating a Document object
-                Document doc = new Document(pdfDoc);
-                //Document doc = new Document(pdfDoc, pdfDoc.setDefaultPageSize(PageSize.A4));
-                // Creating a table
-                float[] pointColumnWidths = {150f, 150f};
-                Table table = new Table(pointColumnWidths);
-                doc.add(topTable(table, tmpfile));
-                Paragraph paragraph1 = new Paragraph("\n\n"+ ResourceBundle.getBundle("translations/program_strings").getString("exppdf.metadata") + " " + filename);
-                doc.add(paragraph1);
-
-                // Now writing the metadata table
-                float[] mdpointColumnWidths = {100f, 260f, 450f};
-                Table metadatatable = new Table(mdpointColumnWidths);
-                metadatatable.setFontSize(10);
-                doc.add(fillMetadataTable(res, metadatatable));
-
-                doc.close();
-
+                tmpfile = files[0];
+                pdfnamepath = tmpfile.getParent() + File.separator + "Combined.pdf";
+                PdfWriter bigWriter = new PdfWriter(pdfnamepath);
+                PdfDocument pdfCombiDoc = new PdfDocument(bigWriter);
+                doc = new Document(pdfCombiDoc);
             } catch (FileNotFoundException e) {
                 logger.error("pdf file not found error {}", e);
                 e.printStackTrace();
             }
-
         }
+        for (int index : selectedIndices) {
+            String res = Utils.getImageInfoFromSelectedFile(params, index);
+            filename = files[index].getName();
+
+            tmpfile = files[index];
+
+            if (!(PDFradiobuttons[5].isSelected())) { //document per image
+                pdfnamepath = tmpfile.getParent() + File.separator + Utils.getFileNameWithoutExtension(filename) + ".pdf";
+                logger.debug("pdfnamepath {}", pdfnamepath);
+                try {
+                    PdfWriter writer = new PdfWriter(pdfnamepath);
+                    PdfDocument pdfDoc = new PdfDocument(writer);
+                    doc = new Document(pdfDoc);
+                    // Creating the top table
+                    doc.add(topTable(tmpfile));
+                    Paragraph paragraph1 = new Paragraph("\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.metadata") + " " + filename);
+                    doc.add(paragraph1);
+                    // Now writing the metadata table
+                    doc.add(fillMetadataTable(res));
+                    doc.close();
+                    producedDocs += pdfnamepath + "<br>";
+                } catch (FileNotFoundException e) {
+                    logger.error("pdf file not found error {}", e);
+                    e.printStackTrace();
+                }
+            } else {
+                doc.add(topTable(tmpfile));
+                Paragraph paragraph1 = new Paragraph("\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.metadata") + " " + filename);
+                doc.add(paragraph1);
+                // Now writing the metadata table
+                doc.add(fillMetadataTable(res));
+                doc.add(new AreaBreak());
+            }
+        }
+        if (PDFradiobuttons[5].isSelected()) { // one combined document
+            producedDocs = pdfnamepath;
+            doc.close();
+        }
+
+        MyVariables.setpdfDocs(producedDocs);
+        logger.debug("producedDocs {}", producedDocs);
+
     }
 }

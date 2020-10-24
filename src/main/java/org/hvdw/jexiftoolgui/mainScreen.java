@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 
@@ -2176,7 +2178,7 @@ public class mainScreen {
         tabbedPaneExportImport.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "expimp.exptopdf"), panel63);
         pdftextLabel = new JLabel();
         pdftextLabel.setText("Label");
-        panel63.add(pdftextLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel63.add(pdftextLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final Spacer spacer20 = new Spacer();
         panel63.add(spacer20, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel64 = new JPanel();
@@ -2191,13 +2193,16 @@ public class mainScreen {
         panel65.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label95 = new JLabel();
         this.$$$loadLabelText$$$(label95, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.paper"));
+        label95.setVisible(false);
         panel65.add(label95, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         LetterradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(LetterradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.letter"));
+        LetterradioButton.setVisible(false);
         panel65.add(LetterradioButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         A4radioButton = new JRadioButton();
         A4radioButton.setSelected(true);
         this.$$$loadButtonText$$$(A4radioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.a4"));
+        A4radioButton.setVisible(false);
         panel65.add(A4radioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label96 = new JLabel();
         this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.output"));
@@ -2237,7 +2242,7 @@ public class mainScreen {
         panel67.add(pdfcomboBoxExpByTagName);
         pdfLabelSupported = new JLabel();
         pdfLabelSupported.setText("Label");
-        panel63.add(pdfLabelSupported, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel63.add(pdfLabelSupported, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel68 = new JPanel();
         panel68.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         panel68.setPreferredSize(new Dimension(800, -1));
@@ -3157,12 +3162,9 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    try {
-                        ExportToPDF.WriteToPDF(getPDFradiobuttons(), getPDFcomboboxes(), progressBar);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
+                    MyVariables.setpdfDocs("");
+                    ExportToPDF.CreatePDFs(rootPanel, getPDFradiobuttons(), getPDFcomboboxes(), progressBar, OutputLabel);
+                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
             }
@@ -3366,7 +3368,7 @@ public class mainScreen {
         UserCombiTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("udc.toptext")));
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("emd.toptext")));
         pdftextLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.toptext")));
-        pdfLabelSupported.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.supp")));
+        pdfLabelSupported.setText(String.format(ProgramTexts.HTML, 600, "<br>" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.supp")));
 
 
         // database version

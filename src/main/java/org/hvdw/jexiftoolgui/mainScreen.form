@@ -3850,7 +3850,7 @@
                         <children>
                           <component id="eced9" class="javax.swing.JLabel" binding="pdftextLabel">
                             <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Label"/>
@@ -3890,6 +3890,7 @@
                                 </constraints>
                                 <properties>
                                   <text resource-bundle="translations/program_strings" key="exppdf.paper"/>
+                                  <visible value="false"/>
                                 </properties>
                               </component>
                               <component id="e55b0" class="javax.swing.JRadioButton" binding="LetterradioButton">
@@ -3898,6 +3899,7 @@
                                 </constraints>
                                 <properties>
                                   <text resource-bundle="translations/program_strings" key="exppdf.letter"/>
+                                  <visible value="false"/>
                                 </properties>
                               </component>
                               <component id="9359f" class="javax.swing.JRadioButton" binding="A4radioButton">
@@ -3907,6 +3909,7 @@
                                 <properties>
                                   <selected value="true"/>
                                   <text resource-bundle="translations/program_strings" key="exppdf.a4"/>
+                                  <visible value="false"/>
                                 </properties>
                               </component>
                               <component id="eccee" class="javax.swing.JLabel">
@@ -3997,7 +4000,7 @@
                           </grid>
                           <component id="e7654" class="javax.swing.JLabel" binding="pdfLabelSupported">
                             <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                             </constraints>
                             <properties>
                               <text value="Label"/>

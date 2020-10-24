@@ -221,10 +221,6 @@ public class ImageFunctions {
         cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
         cmdparams.add("-preview:ThumbnailImage");
         cmdparams.add("-preview:PreviewImage");
-        // dont' do _JpgFromRaw.jpg as all RAWs have either a thumb or a preview and a _JpgFromRaw.jpg is again quite big
-        /*if ("RAW".equals(type)) {
-            cmdparams.add("-preview:PreviewImage");
-        }*/
 
         if (isWindows) {
             cmdparams.add(file.getPath().replace("\\", "/"));
@@ -241,6 +237,47 @@ public class ImageFunctions {
         }
         return exportResult;
     }
+
+    /**
+     * This method extract previews for PDF export and likewise exports
+     * @param file
+     * @return
+     */
+    public static String ExtractPreviews(File file) {
+        List<String> cmdparams = new ArrayList<String>();
+        String exportResult = "Success";
+
+        cmdparams.add(Utils.platformExiftool());
+        boolean isWindows = Utils.isOsFromMicrosoft();
+
+        // Get the temporary directory
+        String tempWorkDir = MyVariables.gettmpWorkFolder();
+
+        cmdparams.add("-a");
+        cmdparams.add("-m");
+        cmdparams.add("-b");
+        cmdparams.add("-W");
+        cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
+        cmdparams.add("-preview:JpgFromRaw");
+        cmdparams.add("-preview:PreviewImage");
+
+        if (isWindows) {
+            cmdparams.add(file.getPath().replace("\\", "/"));
+        } else {
+            cmdparams.add(file.getPath());
+        }
+
+        try {
+            String cmdResult = CommandRunner.runCommand(cmdparams);
+            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+        } catch (IOException | InterruptedException ex) {
+            logger.debug("Error executing command to export previews for one RAW");
+            exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
+        }
+        return exportResult;
+    }
+
+
 
     public static ImageIcon analyzeImageAndCreateIcon (File file) {
         boolean heicextension = false;
@@ -475,6 +512,9 @@ public class ImageFunctions {
         if (size.toLowerCase().equals("thumb")) {
             cmdparams.add("-Z");
             cmdparams.add("160");
+        } else if (size.toLowerCase().equals("pdfexport")) {
+            cmdparams.add("-Z");
+            cmdparams.add("1600");
         }
         // Get the file
         cmdparams.add(file.getPath().replace(" ", "\\ "));

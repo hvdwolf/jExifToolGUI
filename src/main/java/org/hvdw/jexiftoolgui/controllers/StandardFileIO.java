@@ -433,6 +433,22 @@ public class StandardFileIO {
             logger.debug("the cantdisplay.png already exists.");
             MyVariables.setcantdisplaypng(fileToBecopied);
         }
+        // Now check if our "cantconvert.png" already exists which is the placeholder for non-displayable formats in our exportpdf
+        fileToBecopied = strjexiftoolguifolder + File.separator + "cantconvert.png";
+        copyFile = new File(fileToBecopied);
+        if (!copyFile.exists()) {
+            logger.debug("no cantconvert.png yet; trying to create it");
+            method_result = extract_resource_to_jexiftoolguiFolder("cantconvert.png", strjexiftoolguifolder, "");
+            if ("success".equals(method_result)) {
+                MyVariables.setcantconvertpng(fileToBecopied);
+                logger.debug("copied cantconvert.png");
+            }
+        } else { // the png already exists
+            method_result = "exists";
+            logger.debug("the cantconvert.png already exists.");
+            MyVariables.setcantconvertpng(fileToBecopied);
+        }
+
 
         //logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
         return method_result;
