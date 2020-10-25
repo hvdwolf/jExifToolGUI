@@ -1,13 +1,20 @@
 package org.hvdw.jexiftoolgui;
 
 import ch.qos.logback.classic.Level;
-import org.hvdw.jexiftoolgui.controllers.CommandRunner;
-import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
-import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
-import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
+import org.hvdw.jexiftoolgui.controllers.*;
+import org.hvdw.jexiftoolgui.datetime.DateTime;
+import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
+import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
+import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.hvdw.jexiftoolgui.view.JavaImageViewer;
+import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
+import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
+import org.hvdw.jexiftoolgui.metadata.MetaData;
+import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
+import org.hvdw.jexiftoolgui.model.GuiConfig;
+import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
+import org.hvdw.jexiftoolgui.view.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -44,6 +51,68 @@ public class Utils {
         SetLoggingLevel(Utils.class);
         //logger.setLevel(Level.ALL);
     }
+
+    public static void SetApplicationWideLogLevel() {
+        //Do this for all classes
+        // first to do
+        //main level
+        Utils.SetLoggingLevel(Application.class);
+        Utils.SetLoggingLevel(Utils.class);
+        Utils.SetLoggingLevel(MenuActionListener.class);
+        Utils.SetLoggingLevel(ButtonsActionListener.class);
+        Utils.SetLoggingLevel(SQLiteJDBC.class);
+        Utils.SetLoggingLevel(StandardFileIO.class);
+        Utils.SetLoggingLevel(CheckPreferences.class);
+        Utils.SetLoggingLevel(CommandRunner.class);
+        Utils.SetLoggingLevel(ExifTool.class);
+        Utils.SetLoggingLevel(UpdateActions.class);
+        Utils.SetLoggingLevel(YourCommands.class);
+        Utils.SetLoggingLevel(CommandLineArguments.class);
+        Utils.SetLoggingLevel(ImageFunctions.class);
+        Utils.SetLoggingLevel(MouseListeners.class);
+        Utils.SetLoggingLevel(mainScreen.class);
+        Utils.SetLoggingLevel(ExportToPDF.class);
+
+        Utils.SetLoggingLevel(TablePasteAdapter.class);
+        Utils.SetLoggingLevel(PreferencesDialog.class);
+        Utils.SetLoggingLevel(RenamePhotos.class);
+
+        Utils.SetLoggingLevel(DateTime.class);
+        Utils.SetLoggingLevel(ModifyDateTime.class);
+        Utils.SetLoggingLevel(ShiftDateTime.class);
+
+        Utils.SetLoggingLevel(EditExifdata.class);
+        Utils.SetLoggingLevel(EditGeotaggingdata.class);
+        Utils.SetLoggingLevel(EditGpanodata.class);
+        Utils.SetLoggingLevel(EditGPSdata.class);
+        Utils.SetLoggingLevel(EditLensdata.class);
+        Utils.SetLoggingLevel(EditStringdata.class);
+        Utils.SetLoggingLevel(EditUserDefinedCombis.class);
+        Utils.SetLoggingLevel(EditXmpdata.class);
+
+        Utils.SetLoggingLevel(MetaData.class);
+        Utils.SetLoggingLevel(CreateArgsFile.class);
+        Utils.SetLoggingLevel(ExportMetadata.class);
+        Utils.SetLoggingLevel(RemoveMetadata.class);
+
+        Utils.SetLoggingLevel(GuiConfig.class);
+
+        Utils.SetLoggingLevel(CreateMenu.class);
+        Utils.SetLoggingLevel(DatabasePanel.class);
+        Utils.SetLoggingLevel(JavaImageViewer.class);
+        Utils.SetLoggingLevel(LinkListener.class);
+        Utils.SetLoggingLevel(WebPageInPanel.class);
+        Utils.SetLoggingLevel(AddFavorite.class);
+        Utils.SetLoggingLevel(CreateUpdatemyLens.class);
+        Utils.SetLoggingLevel(DeleteFavorite.class);
+        Utils.SetLoggingLevel(MetadataUserCombinations.class);
+        Utils.SetLoggingLevel(SelectFavorite.class);
+        Utils.SetLoggingLevel(SelectmyLens.class);
+        Utils.SetLoggingLevel(SimpleWebView.class);
+    }
+
+
+
 
     public static boolean containsIndices(int[] selectedIndices) {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());

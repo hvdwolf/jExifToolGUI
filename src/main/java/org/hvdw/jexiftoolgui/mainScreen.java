@@ -642,7 +642,7 @@ public class mainScreen {
         progressBar.setStringPainted(false);
         panel2.add(progressBar);
         splitPanel = new JSplitPane();
-        splitPanel.setDividerLocation(254);
+        splitPanel.setDividerLocation(181);
         rootPanel.add(splitPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         LeftPanel = new JPanel();
         LeftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -689,6 +689,7 @@ public class mainScreen {
         buttonCompare.setPreferredSize(new Dimension(38, 38));
         buttonCompare.setText("");
         buttonCompare.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.compareimgs"));
+        buttonCompare.setVisible(false);
         LeftbuttonBar.add(buttonCompare);
         buttonSlideshow = new JButton();
         buttonSlideshow.setEnabled(false);
@@ -699,6 +700,7 @@ public class mainScreen {
         buttonSlideshow.setPreferredSize(new Dimension(38, 38));
         buttonSlideshow.setText("");
         buttonSlideshow.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.slideshow"));
+        buttonSlideshow.setVisible(false);
         LeftbuttonBar.add(buttonSlideshow);
         Leftscrollpane = new JScrollPane();
         LeftPanel.add(Leftscrollpane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
