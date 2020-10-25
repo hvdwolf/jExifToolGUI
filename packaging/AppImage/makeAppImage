@@ -67,7 +67,7 @@ HERE=$(dirname $(readlink -f "${0}"))
 export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
 export JAVA_HOME="${HERE}"/jre
 export PATH="${HERE}"/usr/bin:SPATH
-"${HERE}"/jre/bin/java -jar "${HERE}"/usr/share/jexiftoolgui/jExifToolGUI.jar
+"${HERE}"/jre/bin/java -jar "${HERE}"/usr/share/jexiftoolgui/jExifToolGUI.jar $@ &
 EOF
 
 chmod a+x ./AppRun

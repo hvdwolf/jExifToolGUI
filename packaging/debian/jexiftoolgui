@@ -3,4 +3,4 @@
 CLASSPATH=/usr/share/jexiftoolgui/jExifToolGUI.jar
 jtgdir="/usr/share/jexiftoolgui/"
 
-java -Xmx2048M -Dlogback.configurationFile="${jtgdir}"/logback.xml -jar "${jtgdir}"/jExifToolGUI.jar &
+java -Xmx2048M -Dlogback.configurationFile="${jtgdir}"/logback.xml -jar "${jtgdir}"/jExifToolGUI.jar $@ &

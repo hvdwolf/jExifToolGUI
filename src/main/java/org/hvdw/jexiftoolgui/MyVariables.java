@@ -36,6 +36,7 @@ public class MyVariables {
     private HashMap<String, String> imgBasicData;
     private String pdfDocs;
     private String[] commandLineArgs;
+    private boolean commandLineArgsgiven = false;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -141,4 +142,7 @@ public class MyVariables {
 
     public static String[] getcommandLineArgs() { return Arrays.copyOf(staticInstance.commandLineArgs, staticInstance.commandLineArgs.length); }
     public static void setcommandLineArgs(String[] setcmdlnargs) { staticInstance.commandLineArgs = Arrays.copyOf(setcmdlnargs, setcmdlnargs.length); }
+
+    public static boolean getcommandLineArgsgiven() { return staticInstance.commandLineArgsgiven;}
+    public static void setcommandLineArgsgiven(boolean cmdlnrgsgvn) {staticInstance.commandLineArgsgiven = cmdlnrgsgvn; }
 }

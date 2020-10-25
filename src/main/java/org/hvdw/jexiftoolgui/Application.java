@@ -43,7 +43,13 @@ public class Application {
 
 
         if (args.length > 0) {
+            MyVariables.setcommandLineArgsgiven(true);
             MyVariables.setcommandLineArgs(args);
+            for (String arg : args) {
+                logger.debug("arg: {}", arg);
+            }
+        } else {
+            MyVariables.setcommandLineArgsgiven(false);
         }
 
         String prefLocale = prefs.getByKey(PREFERRED_APP_LANGUAGE, "System default");

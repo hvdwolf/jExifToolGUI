@@ -589,8 +589,11 @@ public class Utils {
                 files = StandardFileIO.getFolderFilesAwt(rootPanel);
                 logger.debug("AFTER load folder using AWT file dialog");
             }
-        } else { // files dropped onto our app
-            OutputLabel.setText("Loading files dropped onto the app");
+        } else if ("dropped files".equals(loadingType)){ // files dropped onto our app
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.droppedfiles"));
+            files = MyVariables.getLoadedFiles();
+        } else { // Use files from command line
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.commandline"));
             files = MyVariables.getLoadedFiles();
         }
         if (files != null) {

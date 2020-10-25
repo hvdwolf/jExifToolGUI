@@ -3526,6 +3526,13 @@ public class mainScreen {
         // Set jFormattedFields
         EGPSd.setFormattedFieldMasks(getNumGPSFields(), getGPScalcFields());
 
+        //Check on command line arguments
+        if ( MyVariables.getcommandLineArgsgiven()) {
+            List<File> filesList = new ArrayList<File>();
+            File[] files = CommandLineArguments.ProcessArguments(filesList);
+            MyVariables.setLoadedFiles(files);
+            files = Utils.loadImages("commandline", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+        }
 
         Utils.checkForNewVersion("startup");
         //JLabelDropReady.addPropertyChangeListener(new PropertyChangeListener() {
