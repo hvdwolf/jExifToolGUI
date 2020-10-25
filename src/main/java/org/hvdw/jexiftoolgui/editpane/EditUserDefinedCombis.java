@@ -120,7 +120,7 @@ public class EditUserDefinedCombis {
             cmdparams.add("-config");
             cmdparams.add(strjexiftoolguifolder + File.separator + strcustomconfigfile);
         }
-        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
         if (preserveModifyDate) {
             cmdparams.add("-preserve");
         }

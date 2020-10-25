@@ -352,8 +352,8 @@ public class PreferencesDialog extends JDialog {
         retrievedPreferences.put("loglevel", prefs.getByKey(LOG_LEVEL, "Info"));
         useG1GroupcheckBox.setSelected(prefs.getByKey(USE_G1_GROUP, false));
         retrievedPreferences.put("useG1Group", String.valueOf(prefs.getByKey(USE_G1_GROUP, false)));
-        preserveModDatecheckBox.setSelected(prefs.getByKey(PRESERVE_MODIFY_DATE, false));
-        retrievedPreferences.put("preserveModDate", String.valueOf(prefs.getByKey(PRESERVE_MODIFY_DATE, false)));
+        preserveModDatecheckBox.setSelected(prefs.getByKey(PRESERVE_MODIFY_DATE, true));
+        retrievedPreferences.put("preserveModDate", String.valueOf(prefs.getByKey(PRESERVE_MODIFY_DATE, true)));
         udFilefiltertextField.setText(prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
         retrievedPreferences.put("udFilefilter", prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
         DualColumncheckBox.setSelected(prefs.getByKey(DUAL_COLUMN, true));

@@ -33,7 +33,7 @@ public class DateTime {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             // Do something
-            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
             boolean isWindows = Utils.isOsFromMicrosoft();
             if (isWindows) {
                 cmdparams.add(Utils.platformExiftool());

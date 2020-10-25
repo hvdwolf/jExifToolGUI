@@ -50,7 +50,7 @@ public class MetaData {
                     cmdparams.add("-TagsFromfile");
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                     cmdparams.add("\"-all>xmp:all\"");
-                    boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                    boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
                     if (preserveModifyDate) {
                         cmdparams.add("-preserve");
                     }
@@ -85,7 +85,7 @@ public class MetaData {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) { //Yes
             cmdparams.add(Utils.platformExiftool());
-            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
             if (preserveModifyDate) {
                 cmdparams.add("-preserve");
             }
@@ -181,7 +181,7 @@ public class MetaData {
             Message.append("</ul><br><br>");
         }
         //if (!copyAllToXMP) { // This is actually a dirty way of starting the copyalltoxmp and bypassing the rest in this method
-            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
             if (preserveModifyDate) {
                 params.add("-preserve");
             }
@@ -316,7 +316,7 @@ public class MetaData {
             Message.append("</ul><br><br>");
         }
         if (!copyAllToXMP) { // This is actually a dirty way of bypassing the copyalltoxmp which has been called earlier
-            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
             if (preserveModifyDate) {
                 params.add("-preserve");
             }
@@ -392,7 +392,7 @@ public class MetaData {
                 cmdparams = new ArrayList<String>();; // initialize on every file
                 cmdparams.add(Utils.platformExiftool());
                 commandstring += Utils.platformExiftool();
-                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
                 if (preserveModifyDate) {
                     cmdparams.add("-preserve");
                 }

@@ -96,7 +96,7 @@ public class EditGeotaggingdata {
         boolean isWindows = Utils.isOsFromMicrosoft();
 
         cmdparams.add(Utils.platformExiftool());
-        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
         if (preserveModifyDate) {
             cmdparams.add("-preserve");
         }

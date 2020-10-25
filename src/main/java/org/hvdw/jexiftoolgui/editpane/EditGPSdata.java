@@ -159,7 +159,7 @@ public class EditGPSdata {
         List<String> cmdparams = new ArrayList<String>();
 
         cmdparams.add(Utils.platformExiftool());
-        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
         if (preserveModifyDate) {
             cmdparams.add("-preserve");
         }

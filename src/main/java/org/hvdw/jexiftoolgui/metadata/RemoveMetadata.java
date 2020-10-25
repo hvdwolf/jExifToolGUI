@@ -176,7 +176,7 @@ public class RemoveMetadata extends JDialog {
             int choice = JOptionPane.showOptionDialog(null, Message, ResourceBundle.getBundle("translations/program_strings").getString("rmd.dlgyouwantto"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == 1) { //Yes
-                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
                 if (preserveModifyDate) {
                     params.add("-preserve");
                 }

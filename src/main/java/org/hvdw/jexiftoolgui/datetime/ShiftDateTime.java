@@ -77,7 +77,7 @@ public class ShiftDateTime extends JDialog {
 
         String exiftool = Utils.platformExiftool();
         cmdparams.add(exiftool);
-        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
         if (preserveModifyDate) {
             cmdparams.add("-preserve");
         }

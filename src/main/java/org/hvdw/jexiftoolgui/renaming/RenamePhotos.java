@@ -395,7 +395,7 @@ public class RenamePhotos extends JDialog {
                 // When it does have spaces we need to create an addition cdmparams
 
                 // Check if wee need to preserver the file modify date
-                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, false);
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
                 if ((suffixDonNotUseradioButton.isSelected()) && (prefixStringradioButton.isSelected())) {
                     // string as prefix and no suffix
                     if (isWindows) {
