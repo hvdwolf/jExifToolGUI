@@ -56,7 +56,7 @@ dependencies {
     // Or use Xchart: https://github.com/knowm/XChart    https://knowm.org/open-source/xchart/
     //implementation(group = "org.knowm.xchart", name = "xchart", version = "3.6.5")
 
-
+////////////////////////////////////////////////////////////////////////////
     // Twelve monkeys imageio (supports bmp, jpeg, jpeg-2000, PNM (PBM/PGM/PPM/PAM), PSD, TIFF, HDR, IFF, PCX
     // PICT, SGI, TGA, ICNS, ICO & CUR, SVG, WMF)
     implementation("com.twelvemonkeys.imageio:imageio-core:3.6")
@@ -75,16 +75,37 @@ dependencies {
     implementation("com.twelvemonkeys.imageio:imageio-tiff:3.6")
 //    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    // This is the itext pdf "community" library released under AGPL
-    // implementation(group = "com.itextpdf", name = "itextpdf", version="5.5.13.2")
-    implementation(group = "com.itextpdf", name = "itext7-core", version="7.1.12")
+    /*implementation(files("$projectDir/libs/imageio-core-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-bmp-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-hdr-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-icns-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-iff-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-jpeg-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-metadata-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-pcx-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-pict-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-pnm-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-psd-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-sgi-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-tga-3.6.jar"))
+    implementation(files("$projectDir/libs/imageio-tiff-3.6.jar"))*/
+    //implementation(fileTree(mapOf("dir" to "tw-libs", "include" to listOf("*.jar"))))
 
+
+/////////////////////////////////////////////////
+    // This is the itext pdf "community" library released under AGPL
+    //implementation(group = "com.itextpdf", name = "itext7-core", version="7.1.12")
+    implementation(files("$projectDir/libs/kernel-7.1.12.jar"))
+    implementation(files("$projectDir/libs/io-7.1.12.jar"))
+    implementation(files("$projectDir/libs/layout-7.1.12.jar"))
+    implementation(files("$projectDir/libs/pdfa-7.1.12.jar"))
+//////////////////////////////////////////////////
     // Minimal json (35Kb), to be used for Nominatim queries (not yet)
     implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
 
     // sqlite
-    implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
-
+    //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
+    implementation(files("$projectDir/libs/sqlite-jdbc-3.32.3.2.jar"))
 
     // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")
