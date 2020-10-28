@@ -217,7 +217,7 @@ public class ExiftoolDatabase {
         logger.debug("returned selected favorite: " + favName);
         if (!"".equals(favName)) {
             String sql = "select command_query from userFavorites where favorite_type='DB_query' and favorite_name='" + favName + "' limit 1";
-            queryresult = SQLiteJDBC.generalQuery(sql);
+            queryresult = SQLiteJDBC.generalQuery(sql, "disk");
             logger.debug("returned command: " + queryresult);
  /*           // We do save to the database using single quotes, so if the command or the query contains single quotes we need to escape them
             // Upon retrieval we need to rool back as the user would see those escaped single quotes in his/her command
@@ -447,7 +447,7 @@ public class ExiftoolDatabase {
         JPanel thePanel = new JPanel(new BorderLayout());
         thePanel.setBackground(Color.white);
         thePanel.setOpaque(true);
-        thePanel.add(new JLabel(new ImageIcon(img)), BorderLayout.NORTH);
+        thePanel.add(new JLabel(new ImageIcon(img)), BorderLayout.PAGE_START);
 
         JScrollPane theScroller = new JScrollPane(thePanel);
         theScroller.setPreferredSize(new Dimension(830, 600));

@@ -368,7 +368,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         }
         if ("insert".equals(writetype)) {
             sql = "insert into CustomMetadataset(customset_name, custom_config) values('" + setName + "','" + custom_config + "')";
-            queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+            queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
             if (!"".equals(queryresult)) { //means we have an error
                 JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                 queryresultcounter += 1;
@@ -380,7 +380,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     sql = "insert into CustomMetadatasetLines(customset_name, rowcount, screen_label, tag, default_value) "
                             + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
                     logger.info(sql);
-                    queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                    queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                         queryresultcounter += 1;
@@ -406,7 +406,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     sql = "insert into CustomMetadatasetLines(customset_name, rowcount, screen_label, tag, default_value) "
                             + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
                     logger.info(sql);
-                    queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                    queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);
                         queryresultcounter += 1;
@@ -854,7 +854,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         } else {
             String setName = customSetcomboBox.getSelectedItem().toString();
             String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "' order by rowcount";
-            String queryResult = SQLiteJDBC.generalQuery(sql);
+            String queryResult = SQLiteJDBC.generalQuery(sql, "disk");
             if (queryResult.length() > 0) {
                 String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 

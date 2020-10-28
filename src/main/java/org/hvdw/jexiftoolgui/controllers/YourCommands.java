@@ -131,7 +131,7 @@ public class YourCommands {
         logger.debug("returned selected favorite: " + favName);
         if (!"".equals(favName)) {
             String sql = "select command_query from userFavorites where favorite_type='Exiftool_Command' and favorite_name='" + favName + "' limit 1";
-            queryresult = SQLiteJDBC.generalQuery(sql);
+            queryresult = SQLiteJDBC.generalQuery(sql, "disk");
             logger.debug("returned command: " + queryresult);
 
             CommandsParameterstextField.setText(queryresult);

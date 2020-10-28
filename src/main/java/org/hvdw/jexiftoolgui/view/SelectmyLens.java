@@ -62,7 +62,7 @@ public class SelectmyLens extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.info("lens selected for deletion {}", lensname);
                 String sql = "delete from myLenses where lens_Name = '" + lensname + "'";
-                queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                 if (!"".equals(queryresult)) { //means we have an error
                     JOptionPane.showMessageDialog(rp, ResourceBundle.getBundle("translations/program_strings").getString("sellens.delerror") + lensname, ResourceBundle.getBundle("translations/program_strings").getString("fav.delerrorshort"), JOptionPane.ERROR_MESSAGE);
                 } else { //success
@@ -96,7 +96,7 @@ public class SelectmyLens extends JDialog {
 
     private String loadlensnames() {
         String sql = "select lens_name,lens_description from myLenses order by lens_Name";
-        String lensnames = SQLiteJDBC.generalQuery(sql);
+        String lensnames = SQLiteJDBC.generalQuery(sql, "disk");
         logger.debug("retrieved following lens names {}", lensnames);
         return lensnames;
     }

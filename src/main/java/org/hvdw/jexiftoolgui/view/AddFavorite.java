@@ -87,7 +87,7 @@ public class AddFavorite extends JDialog {
 
     private String loadfavorites(String favoriteType) {
         String sql = "select favorite_name, command_query from userFavorites where favorite_type='" + favoriteType + "' order by favorite_Name";
-        String favorites = SQLiteJDBC.generalQuery(sql);
+        String favorites = SQLiteJDBC.generalQuery(sql, "disk");
         //lblfavorites.setText(String.format(ProgramTexts.HTML, 300, favorites.replace("\n", "<br>")));
         return favorites;
 
@@ -143,7 +143,7 @@ public class AddFavorite extends JDialog {
                             + " where favorite_name='" + chosenname + "'"
                             + " and favorite_type='" + favtype + "'";
                     logger.debug("update sql:" + sql);
-                    queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                    queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerror") + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerrshort"), JOptionPane.ERROR_MESSAGE);
                     } else { //success
@@ -158,7 +158,7 @@ public class AddFavorite extends JDialog {
                         + chosenname + "','"
                         + cmd_qry_escaped + "')";
                 logger.info("insert sql: " + sql);
-                queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                 if (!"".equals(queryresult)) { //means we have an error
                     JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterror") + " " + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterrshort"), JOptionPane.ERROR_MESSAGE);
                 } else { //success

@@ -27,6 +27,7 @@ public class MyVariables {
     private String selectedLensConfig;
     private String tmpWorkFolder;
     private File CurrentWorkFile;
+    private File CurrentFileInViewer;
     private String ExiftoolVersion;
     private List<List> tableRowsCells;
     private List<String> userCombiTableValues;
@@ -100,6 +101,9 @@ public class MyVariables {
     public static void setCurrentWorkFile(File file) {
         staticInstance.CurrentWorkFile = file;
     }
+
+    public static File getCurrentFileInViewer() { return staticInstance.CurrentFileInViewer; }
+    public static void setCurrentFileInViewer(File file) { staticInstance.CurrentFileInViewer = file; }
 
     public static int[] getSelectedFilenamesIndices() {
         return Arrays.copyOf(staticInstance.selectedFilenamesIndices, staticInstance.selectedFilenamesIndices.length);

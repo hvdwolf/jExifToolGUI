@@ -42,6 +42,38 @@ public class SQLiteJDBC {
         return conn;
     }
 
+    static public Connection connect(String dbType) {
+
+        // ######################### The basic necessary stuff ###################3
+        Connection conn = null;
+        String url;
+        try {
+            // db parameters
+            boolean isWindows = Utils.isOsFromMicrosoft();
+            if ("inmemory".equals(dbType)) {
+                url = "jdbc:sqlite::memory:";
+            } else {
+                if (isWindows) {
+                    url = "jdbc:sqlite:" + MyVariables.getjexiftoolguiDBPath();
+                } else {
+                    url = "jdbc:sqlite:" + MyVariables.getjexiftoolguiDBPath().replace(" ", "\\ ");
+                }
+            }
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+            if ("inmemory".equals(dbType)) {
+                logger.debug("Connection to in Memeory SQLite DB has been established.");
+            } else {
+                logger.debug("Connection to SQLite DB has been established.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
+
+
+
     static public Connection imConnect() {
 
         // ################ The basic necessary stuff for in memory DB###################3
@@ -58,7 +90,7 @@ public class SQLiteJDBC {
         return imconn;
     }
 
-    static public String generalQuery(String sql) {
+    static public String generalQuery(String sql, String dbType) {
         String DBresult = "";
         StringBuilder sbresult = new StringBuilder();
 
@@ -67,7 +99,7 @@ public class SQLiteJDBC {
         logger.debug("the general query queryfields returned string: " + queryFields);
         String[] dbFields = queryFields.split(",");
 
-        try (Connection conn = connect();
+        try (Connection conn = connect(dbType);
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
@@ -99,8 +131,10 @@ public class SQLiteJDBC {
     static public String singleFieldQuery(String sql, String field) {
         String DBresult = "";
         StringBuilder sbresult = new StringBuilder();
+        String typeDB = "inmemory";
 
-        try (Connection conn = connect();
+        try (
+             Connection conn = connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
@@ -131,11 +165,11 @@ public class SQLiteJDBC {
         return DBresult;
     }
 
-    static public String insertUpdateQuery(String sql) {
+    static public String insertUpdateQuery(String sql, String dbType) {
         String queryresult = "";
 
         try {
-            Connection conn = connect();
+            Connection conn = connect(dbType);
              Statement stmt  = conn.createStatement();
              stmt.executeUpdate(sql);
 
@@ -172,7 +206,7 @@ public class SQLiteJDBC {
 
     static public String deleteCustomSetRows( String setName) {
         String sql = "delete from CustomMetadatasetLines where customset_name='" + setName + "'";
-        return insertUpdateQuery(sql);
+        return insertUpdateQuery(sql, "disk");
     }
 
     static public String queryByTagname(String searchString, boolean likequery) {
@@ -189,14 +223,14 @@ public class SQLiteJDBC {
             //sql = "select taggroup,tagname,tagtype,writable from v_tags_groups where taggroup='" + searchString + "'";
         }
 
-        sqlresult = SQLiteJDBC.generalQuery(sql);
+        sqlresult = SQLiteJDBC.generalQuery(sql, "disk");
         return sqlresult;
     }
 
     static public String ownQuery(String sql) {
         String sqlresult = "";
 
-        sqlresult = SQLiteJDBC.generalQuery(sql);
+        sqlresult = SQLiteJDBC.generalQuery(sql, "disk");
         return sqlresult;
     }
 

@@ -265,7 +265,7 @@ public class EditLensdata {
                                 +" exif_meteringmode='" + meteringmodecomboBox.getSelectedItem() + "'"
                                 +" where lens_name='" + chosenValues[0] + "'";
                         logger.info("update sql:" + sql);
-                        queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                        queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                         if (!"".equals(queryresult)) { //means we have an error
                             JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.updateerror") + chosenValues[0], ResourceBundle.getBundle("translations/program_strings").getString("addlens.updateerrorshort"), JOptionPane.ERROR_MESSAGE);
                         } else { //success
@@ -294,7 +294,7 @@ public class EditLensdata {
                             + LensFields[11].getText().trim() + "','"
                             + meteringmodecomboBox.getSelectedItem() + "')";
                     logger.info("insert sql: " + sql);
-                    queryresult = SQLiteJDBC.insertUpdateQuery(sql);
+                    queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("addlens.inserterror") + " " + chosenValues[0], ResourceBundle.getBundle("translations/program_strings").getString("addlens.inserterrorshort"), JOptionPane.ERROR_MESSAGE);
                     } else { //success
@@ -320,7 +320,7 @@ public class EditLensdata {
                         +"exif_focallengthIn35mmformat, exif_fnumber, exif_maxaperturevalue, makernotes_focusdistance, "
                         +"composite_lensid, makernotes_conversionlens, makernotes_lenstype, makernotes_lensfirmwareversion, exif_meteringmode "
                         +"from myLenses where lens_name ='" + lensname + "'";
-                queryresult = SQLiteJDBC.generalQuery(sql);
+                queryresult = SQLiteJDBC.generalQuery(sql, "disk");
                 logger.debug("returned lens: " + queryresult);
                 for (JTextField field: lensFields) {
                     field.setText("");

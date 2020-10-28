@@ -80,7 +80,7 @@ public class CreateUpdatemyLens extends JDialog {
 
     private String loadlensnames() {
         String sql = "select lens_name,lens_description from myLenses order by lens_Name";
-        String lensnames = SQLiteJDBC.generalQuery(sql);
+        String lensnames = SQLiteJDBC.generalQuery(sql, "disk");
         //lblLensNames.setText(String.format(ProgramTexts.HTML, 300, lensnames.replace("\n", "<br>")));
         return lensnames;
 

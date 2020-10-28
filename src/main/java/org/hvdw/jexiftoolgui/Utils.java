@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -535,7 +536,7 @@ public class Utils {
             imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
             imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
             strImgData = imginfo.toString();
-        } else {
+        } else if ("OneLine".equals(stringType)) {
             imginfo.append(ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
             imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
             //imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
@@ -549,6 +550,21 @@ public class Utils {
             imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
             imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
             strImgData = imginfo.toString();
+        } else if ("OneLineHtml".equals(stringType)) {
+            imginfo.append("<html><b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + "</b>: " + filename);
+            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight") + "</b>");
+            //imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
+            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ":</b> " + imgBasicData.get("ISO"));
+            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ":</b> " + imgBasicData.get("FNumber"));
+            if (!(imgBasicData.get("ExposureTime") == null)) {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ":</b> 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
+            } else {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ":</b> " + imgBasicData.get("ExposureTime"));
+            }
+            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ":</b> " + imgBasicData.get("FocalLength") + " mm");
+            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ":</b> " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            strImgData = imginfo.toString();
+
         }
         return strImgData;
     }
@@ -619,21 +635,17 @@ public class Utils {
                     }
                     Utils.displayFiles(tableListfiles, LeftPanel);
                     MyVariables.setSelectedRow(0);
-                    //tableListfiles.getSelectionBackground();
-                    // Select first row and repaint table
-                    /*tableListfiles.setRowSelectionInterval(0,0);
-                    tableListfiles.setSelectionModel(listSelectionModel);
-                    tableListfiles.repaint(); */
-                    //tableListfiles.addRowSelectionInterval(0,0);
-                    //DefaultTableModel model = (DefaultTableModel) tableListfiles.getModel();
-                    //model.setRowColour(0, tableListfiles.getSelectionBackground());
-                    //tableListfiles.set
-                    /*Component prepareRenderer(TableCellRenderer, int row, int column){
-                        if (tableListfiles.isRowSelected(0)) {
-                            Component c = super.prepareRenderer(renderer, row, column);
-                        }
-                    }*/
-                    //String[] params = whichRBselected();
+                    // Below should color the selected row, but probably need a tablecellrenderer exta
+                    tableListfiles.setRowSelectionInterval(0,0);
+                    tableListfiles.addRowSelectionInterval(0,0);
+                    tableListfiles.setSelectionBackground(tableListfiles.getSelectionBackground());
+                    if (tableListfiles.isCellSelected(0,0) || tableListfiles.isCellSelected(0,1)) {
+                        tableListfiles.setSelectionBackground(tableListfiles.getSelectionBackground());
+                        tableListfiles.setBackground(tableListfiles.getSelectionBackground());
+                    }
+                    tableListfiles.repaint();
+                    ///////
+
                     String res = Utils.getImageInfoFromSelectedFile(params);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     buttonShowImage.setEnabled(true);
@@ -1214,7 +1226,7 @@ public class Utils {
     static void viewInDefaultViewer() {
 
         JavaImageViewer JIV = new JavaImageViewer();
-        JIV.ViewImageInFullscreenFrame();
+        JIV.ViewImageInFullscreenFrame(false);
     }
 
     /*

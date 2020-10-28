@@ -71,7 +71,7 @@ public class SelectFavorite extends JDialog {
 
     private String loadfavorites(String favoriteType) {
         String sql = "select favorite_name,command_query from userFavorites where favorite_type='" + favoriteType + "' order by favorite_name";
-        String favorite_names = SQLiteJDBC.generalQuery(sql);
+        String favorite_names = SQLiteJDBC.generalQuery(sql, "disk");
         return favorite_names;
 
     }

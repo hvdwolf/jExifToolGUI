@@ -24,7 +24,7 @@ public class UpdateActions {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(UpdateActions.class);
 
     static void do_Update( String sql, String Comments) {
-        String qr = SQLiteJDBC.insertUpdateQuery(sql);
+        String qr = SQLiteJDBC.insertUpdateQuery(sql, "disk");
         if (!"".equals(qr)) { //means we have an error
             JOptionPane.showMessageDialog(null, "Encountered an error " + Comments);
             logger.trace("Encountered an error: {}", Comments);
@@ -92,7 +92,7 @@ public class UpdateActions {
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
 
         // pre-fill both tables if necessary with isadg data
-        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg'");
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg'", "disk");
         logger.debug("isadg test {}", queryresult.trim());
         if (!"26".equals(queryresult.trim())) {
             fill_UserMetadataCustomSet_Tables("sql/fill_isadg.sql");
@@ -107,14 +107,14 @@ public class UpdateActions {
             String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder, "");
 
         // pre-fill both tables if necessary with gps_location data
-        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'");
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'", "disk");
         logger.debug("gps_location test {}", queryresult.trim());
         if (!"19".equals(queryresult.trim())) {
             fill_UserMetadataCustomSet_Tables("sql/fill_location.sql");
         }
 
         // pre-fill both tables if necessary with gps_location data
-        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='Google Photos'");
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='Google Photos'", "disk");
         logger.debug("Google Photos test {}", queryresult.trim());
         if (!"38".equals(queryresult.trim())) {
             fill_UserMetadataCustomSet_Tables("sql/fill_gphotos.sql");

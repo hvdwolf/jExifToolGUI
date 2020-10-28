@@ -76,7 +76,7 @@ public class ExportToPDF {
                     break;
                 }
             }
-            logger.debug("pdfexport getconvertimage RAW RAWextion {}", RAWextension);
+            logger.debug("getconvertimage RAW RAWextion {}", RAWextension);
             //Use the ImageFunctions.ExtractPreviews(File file) for Raws and check on jpgfromraw and previewimage
             if (RAWextension) {
                 String exportResult = ImageFunctions.ExtractPreviews(tmpfile);
@@ -84,18 +84,18 @@ public class ExportToPDF {
                     //hoping we have a JPGfromRAW
                     tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
                     tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
-                    logger.debug("pdfexport getconvertimage RAW jpgfromraw {}", tmpfile.toString());
+                    logger.debug("getconvertimage RAW jpgfromraw {}", tmpfile.toString());
                     if (tmpfile.exists()) {
                         imageFile = tmpfile.getPath();
                     } else {
                         tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
                         tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
-                        logger.debug("pdfexport getconvertimage RAW jPreviewImage {}", tmpfile.toString());
+                        logger.debug("getconvertimage RAW jPreviewImage {}", tmpfile.toString());
                         if (tmpfile.exists()) {
                             imageFile = tmpfile.getPath();
                         } else {
                             tmpfile = new File(MyVariables.getcantconvertpng());
-                            logger.debug("pdfexport getconvertimage RAW cantconvert {}", tmpfile.toString());
+                            logger.debug("getconvertimage RAW cantconvert {}", tmpfile.toString());
                         }
                         imageFile = tmpfile.getPath();
                     }
@@ -111,10 +111,10 @@ public class ExportToPDF {
                     if ("Success".equals(exportResult)) {
                         tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
                         tmpfile = new File(MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
-                        logger.debug("pdfexport getconvertimage HEIC convert {}", tmpfile.toString());
+                        logger.debug("getconvertimage HEIC convert {}", tmpfile.toString());
                     } else { // we have some error
                         tmpfile = new File(MyVariables.getcantconvertpng());
-                        logger.debug("pdfexport getconvertimage HEIC cantconvert{}", tmpfile.toString());
+                        logger.debug("getconvertimage HEIC cantconvert{}", tmpfile.toString());
                     }
                 } else { //we are not on Apple
                     tmpfile = new File(MyVariables.getcantconvertpng());
@@ -124,21 +124,21 @@ public class ExportToPDF {
             } else if ( (filenameExt.toLowerCase().equals("mp4")) || (filenameExt.toLowerCase().equals("m4v")) ) {
                 String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(tmpfile);
                 if ("Success".equals(exportResult)) {
-                    logger.debug("pdfexport getconvertimage MP4 export thumbnails successful");
+                    logger.debug("getconvertimage MP4 export thumbnails successful");
                     tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
                     tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
                     if (tmpfile.exists()) {
                         imageFile = tmpfile.getPath();
-                        logger.debug("pdfexport getconvertimage MP4 convert {}", tmpfile.toString());
+                        logger.debug("getconvertimage MP4 convert {}", tmpfile.toString());
                     } else {
                         tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
                         tmpfile = new File (MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
                         if (tmpfile.exists()) {
                             imageFile = tmpfile.getPath();
-                            logger.debug("pdfexport getconvertimage MP4 convert {}", tmpfile.toString());
+                            logger.debug("getconvertimage MP4 convert {}", tmpfile.toString());
                         } else {
                             tmpfile = new File(MyVariables.getcantconvertpng());
-                            logger.debug("pdfexport getconvertimage MP4 cant convert {}", tmpfile.toString());
+                            logger.debug("getconvertimage MP4 cant convert {}", tmpfile.toString());
                         }
                         imageFile = tmpfile.getPath();
                     }
@@ -150,7 +150,7 @@ public class ExportToPDF {
             } else { // if all fails .....
                 tmpfile = new File(MyVariables.getcantconvertpng());
                 imageFile = tmpfile.getPath();
-                logger.debug("pdfexport getconvertimage ..if all fails .. cant convert {}", tmpfile.toString());
+                logger.debug("getconvertimage ..if all fails .. cant convert {}", tmpfile.toString());
             }
         }
 
@@ -240,6 +240,10 @@ public class ExportToPDF {
                         progressBar.setVisible(false);
                         outputLabel.setText("");
                         JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated") + ":<br><br>" + MyVariables.getpdfDocs()), ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated"), JOptionPane.INFORMATION_MESSAGE));
+                        // Somehow something keeps the focus off of the main window
+                        rootPanel.setFocusable(true);
+                        rootPanel.requestFocus();
+                        //rootPanel.requestFocusInWindow();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -255,7 +259,6 @@ public class ExportToPDF {
                 outputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exppdf"));
             }
         });
-
     }
 
     /**
@@ -289,6 +292,7 @@ public class ExportToPDF {
             } catch (FileNotFoundException e) {
                 logger.error("pdf file not found error {}", e);
                 e.printStackTrace();
+                doc.close();
             }
         }
         for (int index : selectedIndices) {
@@ -315,8 +319,9 @@ public class ExportToPDF {
                 } catch (FileNotFoundException e) {
                     logger.error("pdf file not found error {}", e);
                     e.printStackTrace();
+                    doc.close();
                 }
-            } else {
+            } else { // So the user wants one big document
                 doc.add(topTable(tmpfile));
                 Paragraph paragraph1 = new Paragraph("\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.metadata") + " " + filename);
                 doc.add(paragraph1);
@@ -332,6 +337,7 @@ public class ExportToPDF {
 
         MyVariables.setpdfDocs(producedDocs);
         logger.debug("producedDocs {}", producedDocs);
+        
 
     }
 }

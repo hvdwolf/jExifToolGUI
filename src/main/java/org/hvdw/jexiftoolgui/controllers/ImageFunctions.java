@@ -35,7 +35,7 @@ public class ImageFunctions {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ImageFunctions.class);
 
     public static int[] getbasicImageData (File file) {
-        int[] basicdata = {0, 0, 999};
+        int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
         long tmpvalue;
         String tmpValue;
         HashMap<String, String> imgBasicData = new HashMap<String, String>();
