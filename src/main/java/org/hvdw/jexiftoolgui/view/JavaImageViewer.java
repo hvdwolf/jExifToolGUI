@@ -184,7 +184,7 @@ public class JavaImageViewer {
 
         resizedImg = ResizeImage(image, screenSize.width, screenSize.height, basicdata[2]);
 
-        String imginfo = Utils.returnBasicImageDataString(fileName, "OneLine");
+        String imginfo = Utils.returnBasicImageDataString(fileName, "OneLineHtml");
 
         frame.setTitle(imginfo);
         JPanel thePanel = new JPanel(new BorderLayout());
