@@ -10,6 +10,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -40,6 +41,7 @@ public class YourCommands {
             Output.setFont(new Font("SansSerif", Font.PLAIN, 12));
         }
         Commands = Commands.trim();
+        logger.info(" Commands {}", Commands);
         String exiftool = Utils.platformExiftool();
 
         if (Commands.contains("-t") || Commands.contains("-tab")) {
@@ -66,9 +68,25 @@ public class YourCommands {
             cmdparams.clear();
             cmdparams.add(exiftool);
             //cmdparams.add("-h");
-            if (Commands.contains(" ")) {
-                String[] splitCommands = Commands.split("\\s+");
-                Collections.addAll(cmdparams, splitCommands);
+            if (Commands.contains(" -")) {
+                //String[] splitCommands = Commands.split("\\s+"); //split also on multiple spaces
+                //String[] splitCommands = Commands.split("\\s-");
+                List<String> tmpcommands = Arrays.asList(Commands.split("\\s-"));
+                //logger.info("splitCommands {}", splitCommands.toString());
+                String tmp;
+                for (int i = 1; i < tmpcommands.size(); i++) {
+                    tmp = tmpcommands.get(i).trim();
+                    if (tmp.startsWith("-")) { // first element starts with -, or maybe with <space>- if the user is sloppy
+                        tmpcommands.set(i, tmpcommands.get(i).trim());
+                    } else {
+                        tmpcommands.set(i, "-" + tmpcommands.get(i).trim());
+                    }
+                    logger.debug("command after split {}", tmpcommands.get(i));
+                }
+                //String[] splitCommands = tmpcommands.toArray(new String[tmpcommands.size()]);
+                //logger.info("splitCommands {}", splitCommands.toString());
+                //Collections.addAll(cmdparams, splitCommands);
+                cmdparams.addAll(tmpcommands);
             } else {
                 cmdparams.add(Commands);
             }
