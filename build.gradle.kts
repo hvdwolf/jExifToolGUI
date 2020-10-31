@@ -93,6 +93,12 @@ dependencies {
     //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
     implementation(files("$projectDir/libs/sqlite-jdbc-3.32.3.2.jar"))
 
+    // The opencsv library jar
+    implementation(files("$projectDir/libs/opencsv-5.3.jar"))
+    //implementation(group = "com.opencsv", name = "opencsv", version = "5.3")
+
+
+
     // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")
     testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
