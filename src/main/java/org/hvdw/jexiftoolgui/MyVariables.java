@@ -38,6 +38,8 @@ public class MyVariables {
     private String pdfDocs;
     private String[] commandLineArgs;
     private boolean commandLineArgsgiven = false;
+    private int ScreenWidth;
+    private int ScreenHeight;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -149,4 +151,11 @@ public class MyVariables {
 
     public static boolean getcommandLineArgsgiven() { return staticInstance.commandLineArgsgiven;}
     public static void setcommandLineArgsgiven(boolean cmdlnrgsgvn) {staticInstance.commandLineArgsgiven = cmdlnrgsgvn; }
+
+    public static int getScreenWidth() { return staticInstance.ScreenWidth;}
+    public static void setScreenWidth(int width) {staticInstance.ScreenWidth = width; }
+
+    public static int getScreenHeight() { return staticInstance.ScreenHeight;}
+    public static void setScreenHeight(int height) {staticInstance.ScreenHeight = height; }
+
 }

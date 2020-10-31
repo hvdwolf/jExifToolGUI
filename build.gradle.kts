@@ -75,20 +75,6 @@ dependencies {
     implementation("com.twelvemonkeys.imageio:imageio-tiff:3.6")
 //    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    /*implementation(files("$projectDir/libs/imageio-core-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-bmp-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-hdr-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-icns-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-iff-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-jpeg-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-metadata-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-pcx-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-pict-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-pnm-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-psd-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-sgi-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-tga-3.6.jar"))
-    implementation(files("$projectDir/libs/imageio-tiff-3.6.jar"))*/
     //implementation(fileTree(mapOf("dir" to "tw-libs", "include" to listOf("*.jar"))))
 
 

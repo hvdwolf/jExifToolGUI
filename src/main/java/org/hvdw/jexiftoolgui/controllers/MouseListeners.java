@@ -1,18 +1,12 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
-import org.hvdw.jexiftoolgui.mainScreen;
 
 import javax.swing.*;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
 
-import static org.hvdw.jexiftoolgui.Utils.isOsFromMicrosoft;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MouseListeners {

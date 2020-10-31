@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,48 +24,15 @@ import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
  */
 public class JavaImageViewer {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DatabasePanel.class);
-    private ImagePanel imageViewPane;
     public BufferedImage resizedImg = null;
     public int panelWidth = 0;
     public int panelHeight = 0;
 
-    private void makeFrameFullSize(JFrame aFrame) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        aFrame.setSize(screenSize.width, screenSize.height);
-    }
 
+    private BufferedImage ResizeImage(File image, int orientation) {
 
-    private static BufferedImage ImageForViewing (BufferedImage img, int scrWidth, int scrHeight) {
-        if (img == null) return null;
-
-        int imgWidth = img.getWidth();
-        int imgHeight = img.getHeight();
-        float imgratio = img.getWidth() / img.getHeight();
-        float scrratio = scrWidth / scrHeight;
-
-        if (imgratio >= scrratio) {
-            scrHeight = (int) (scrWidth / imgratio);
-        } else {
-            scrWidth = (int) (scrHeight * imgratio);
-        }
-        // Make sure we do not get divided by zero errors
-        if (scrWidth <= 0 || scrHeight <= 0) {
-            scrWidth = 1;
-            scrHeight = 1;
-        }
-
-        BufferedImage resizedImg = new BufferedImage(scrWidth, scrHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-//        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR); //Faster
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);   //more accurate
-        g2.drawImage(img, 0, 0, scrWidth, scrHeight, null);
-        g2.dispose();
-
-        return resizedImg;
-    }
-
-    private BufferedImage ResizeImage(File image, int scrwidth, int scrheight, int orientation) {
-
+        int scrwidth = MyVariables.getScreenWidth();
+        int scrheight = MyVariables.getScreenHeight();
         try {
             BufferedImage img = ImageIO.read(new File(image.getPath().replace("\\", "/")));
             if (orientation > 1) {
@@ -82,7 +48,7 @@ public class JavaImageViewer {
     }
 
 
-    private void LoadShowImage(JLabel ImgLabel, JLabel infoLabel, int scrwidth, int scrheight, String whichaction) {
+    private void LoadShowImage(JLabel ImgLabel, JLabel infoLabel, String whichaction) {
         int newindex;
         boolean bde = false;
         int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
@@ -101,7 +67,7 @@ public class JavaImageViewer {
                 newindex = 0; // loop from last to first
             }
         }
-        logger.info("current index {}; new index {}", curIndex, newindex);
+        logger.debug("current index {}; new index {}", curIndex, newindex);
         image = files[newindex];
         MyVariables.setCurrentFileInViewer(image);
         try {
@@ -118,18 +84,49 @@ public class JavaImageViewer {
         String fileName = image.getName();
         String imginfo = Utils.returnBasicImageDataString(fileName, "OneLineHtml");
         infoLabel.setText(imginfo);
-        BufferedImage resizedImg = ResizeImage(image, scrwidth, scrheight, basicdata[2]);
+        BufferedImage resizedImg = ResizeImage(image, basicdata[2]);
         ImageIcon icon = new ImageIcon(resizedImg);
         ImgLabel.setIcon(icon);
     }
 
 
-    private class ImagePanel extends JPanel {
+    public class ArrowAction extends AbstractAction {
+
+        private String cmd;
+        private JFrame frame;
+        private JLabel ImgLabel;
+        private JLabel infoLabel;
+
+        public ArrowAction(String cmd, JFrame frame, JLabel ImgLabel, JLabel infoLabel) {
+            this.cmd = cmd;
+            this.frame = frame;
+            this.ImgLabel = ImgLabel;
+            this.infoLabel = infoLabel;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (cmd.equalsIgnoreCase("Escape")) {
+                logger.debug("The Escape key was pressed!");
+                frame.dispose();
+            } else if (cmd.equalsIgnoreCase("LeftArrow")) {
+                logger.debug("The left arrow was pressed!");
+                LoadShowImage(ImgLabel, infoLabel, "previous");
+            } else if (cmd.equalsIgnoreCase("RightArrow")) {
+                logger.debug("The right arrow was pressed!");
+                LoadShowImage(ImgLabel, infoLabel, "next");
+            /*} else if (cmd.equalsIgnoreCase("UpArrow")) {
+                logger.info("The up arrow was pressed!");
+            } else if (cmd.equalsIgnoreCase("DownArrow")) {
+                logger.info("The down arrow was pressed!"); */
+            }
+        }
     }
 
+
     /**
-     * This is purely the imageviewer. Lter we are going to use it also for Slideshows adding buttons.
-     * The Slideshow.java will then call the imageviewer.
+     * This is the imageviewer. Currently with close/previous/next buttons.
+     * Later we might make it a time based slideshow also with pause play buttons.
      **/
     public void ViewImageInFullscreenFrame (boolean isSlideshow) {
         BufferedImage img = null;
@@ -154,18 +151,20 @@ public class JavaImageViewer {
         try {
             img = ImageIO.read(image);
         } catch (IOException ioe) {
-            logger.info("erorr loading image {}", ioe.toString());
+            logger.error("error loading image {}", ioe.toString());
         }
 
         JFrame frame = new JFrame(fileName);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        imageViewPane = new ImagePanel();
+        JPanel imageViewPane = new JPanel();
         frame.setContentPane(imageViewPane);
         frame.setIconImage(Utils.getFrameIcon());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int scrwidth = screenSize.width;
+        MyVariables.setScreenWidth(screenSize.width);
         int scrheight = screenSize.height;
+        MyVariables.setScreenHeight(screenSize.height);
         float scrratio = scrwidth / scrheight;
         int[] basicdata = {0, 0, 9999, 0, 0, 0, 0, 0};
         boolean bde = false;
@@ -179,14 +178,14 @@ public class JavaImageViewer {
         }
         if (bde) {
             // We had some error. Mostly this is the orientation
-            basicdata[2]= 1;
+            basicdata[2] = 1;
         }
 
-        resizedImg = ResizeImage(image, screenSize.width, screenSize.height, basicdata[2]);
+        resizedImg = ResizeImage(image, basicdata[2]);
 
         String imginfo = Utils.returnBasicImageDataString(fileName, "OneLineHtml");
 
-        frame.setTitle(imginfo);
+        frame.setTitle(Utils.returnBasicImageDataString(fileName, "OneLine"));
         JPanel thePanel = new JPanel(new BorderLayout());
         thePanel.setBackground(Color.white);
         thePanel.setOpaque(true);
@@ -195,6 +194,7 @@ public class JavaImageViewer {
         ImgLabel.setVerticalAlignment(JLabel.CENTER);
         // Create the top info panel
         JPanel InfoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        //InfoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel infoLabel = new JLabel();
         infoLabel.setText(imginfo);
         InfoPanel.add(infoLabel);
@@ -227,7 +227,7 @@ public class JavaImageViewer {
         btnSkipPrevious.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                LoadShowImage(ImgLabel, infoLabel, screenSize.width, screenSize.height, "previous");
+                LoadShowImage(ImgLabel, infoLabel,"previous");
             }
         });
         // play button for slide show
@@ -244,7 +244,7 @@ public class JavaImageViewer {
         btnSkipNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                LoadShowImage(ImgLabel, infoLabel, screenSize.width, screenSize.height, "next");
+                LoadShowImage(ImgLabel, infoLabel, "next");
             }
         });
 
@@ -261,6 +261,25 @@ public class JavaImageViewer {
             buttonPanel.add(btnSkipNext);
             buttonPanel.setPreferredSize(new Dimension(75, 45));
         }
+
+        // Create keybindings. No issues with focusing like the keylistener
+        InputMap im = imageViewPane.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = imageViewPane.getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Escape");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "RightArrow");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "LeftArrow");
+        //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "UpArrow");
+        //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "DownArrow");
+
+        am.put("Escape", new ArrowAction("Escape", frame, ImgLabel, infoLabel));
+        am.put("RightArrow", new ArrowAction("RightArrow", frame, ImgLabel, infoLabel));
+        am.put("LeftArrow", new ArrowAction("LeftArrow", frame, ImgLabel, infoLabel));
+        //am.put("UpArrow", new ArrowAction("UpArrow", frame, ImgLabel, infoLabel));
+        //am.put("DownArrow", new ArrowAction("DownArrow", frame, ImgLabel, infoLabel));
+        // End of the key bindings
+
+
+
 
 
         thePanel.add(InfoPanel, BorderLayout.PAGE_START);
