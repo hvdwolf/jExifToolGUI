@@ -27,9 +27,9 @@ public class UpdateActions {
         String qr = SQLiteJDBC.insertUpdateQuery(sql, "disk");
         if (!"".equals(qr)) { //means we have an error
             JOptionPane.showMessageDialog(null, "Encountered an error " + Comments);
-            logger.trace("Encountered an error: {}", Comments);
+            logger.error("Encountered an error: {}", Comments);
         } else { // we were successful
-            logger.trace("Successfully did: " + Comments);
+            logger.error("Successfully did: " + Comments);
         }
     }
 

@@ -12,6 +12,7 @@ import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.model.GuiConfig;
+import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +32,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 
@@ -548,7 +546,7 @@ public class mainScreen {
 
     private void fillAllComboboxes() {
         //Combobox on User combi edit tab; do as first as we need it again
-        String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+        String sqlsets = SQLiteModel.getdefinedCustomSets();
         String[] views = sqlsets.split("\\r?\\n"); // split on new lines
         // use setter to be later use it for common tags in Utils.getWhichCommonTagSelected
         MyVariables.setCustomCombis(views);
@@ -572,7 +570,7 @@ public class mainScreen {
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(allTags));
         pdfcomboBoxExpCommonTags.setModel(new DefaultComboBoxModel(allTags));
 
-        String sqlGroups = SQLiteJDBC.getGroups();
+        String sqlGroups = SQLiteModel.getGroups();
         Tags = sqlGroups.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
         //comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));

@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.controllers;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
+import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
 import org.hvdw.jexiftoolgui.view.MetadataUserCombinations;
@@ -145,7 +146,7 @@ public class ButtonsActionListener implements ActionListener {
                 logger.debug("button udcCreateNewButton pressed");
                 MD.showDialog(rootPanel);
                 // Update GPS box, no matter whether we were succesful or not
-                String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+                String sqlsets = SQLiteModel.getdefinedCustomSets();
                 String[] views = sqlsets.split("\\r?\\n"); // split on new lines
                 UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                 break;

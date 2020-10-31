@@ -1,26 +1,22 @@
 package org.hvdw.jexiftoolgui.view;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.TablePasteAdapter;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
+import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.TransferHandler;
-import javax.swing.event.RowSorterEvent;
-import javax.swing.event.RowSorterListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -50,7 +46,7 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
  * Modified by Harry van der Wolf
  */
 public class MetadataUserCombinations extends JDialog implements TableModelListener {
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Utils.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(Utils.class);
 
 
     // The graphic components for the MetadataViewPanel.form
@@ -395,7 +391,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                 JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
             }
         } else { // update
-            queryresult = SQLiteJDBC.deleteCustomSetRows(setName);
+            queryresult = SQLiteModel.deleteCustomSetRows(setName);
             if (!"".equals(queryresult)) { //means we have an error
                 JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetitle"), JOptionPane.ERROR_MESSAGE);
             } else {
@@ -822,7 +818,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
     }
 
     private String[] loadCurrentSets(String check) {
-        String sqlsets = SQLiteJDBC.getdefinedCustomSets();
+        String sqlsets = SQLiteModel.getdefinedCustomSets();
         logger.info("retrieved CustomSets: " + sqlsets);
         String[] views = sqlsets.split("\\r?\\n"); // split on new lines
         if ("fill_combo".equals(check)) { // We use this one also for "Save As" to check if user has chosen same name

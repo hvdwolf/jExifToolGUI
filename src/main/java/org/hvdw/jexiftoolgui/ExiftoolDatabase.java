@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
+import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -60,7 +61,7 @@ public class ExiftoolDatabase {
         setModal(true);
         this.setIconImage(Utils.getFrameIcon());*/
 
-        String sqlGroups = SQLiteJDBC.getGroups();
+        String sqlGroups = SQLiteModel.getGroups();
         String[] Tags = sqlGroups.split("\\r?\\n"); // split on new lines
         comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
         String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
@@ -68,7 +69,7 @@ public class ExiftoolDatabase {
         comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags));
         exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
         // database version
-        exiftoolDBversion.setText(String.format(ProgramTexts.HTML, 100, "exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
+        exiftoolDBversion.setText(String.format(ProgramTexts.HTML, 100, "exiftool DB version:<br>" + SQLiteModel.getDBversion()));
         // Make all tables read-only unless ....
         DBResultsTable.setDefaultEditor(Object.class, null);
 
@@ -77,7 +78,7 @@ public class ExiftoolDatabase {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!"".equals(queryTagLiketextField.getText())) {
-                    String queryResult = SQLiteJDBC.queryByTagname(queryTagLiketextField.getText(), true);
+                    String queryResult = SQLiteModel.queryByTagname(queryTagLiketextField.getText(), true);
                     displayQueryResults(queryResult, DBResultsTable);
                 } else {
                     JOptionPane.showMessageDialog(ExiftoolDBPanel, "No search string provided!", "No search string", JOptionPane.WARNING_MESSAGE);
@@ -88,7 +89,7 @@ public class ExiftoolDatabase {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radiobuttonQueryByGroup.isSelected()) {
-                    String queryResult = SQLiteJDBC.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
+                    String queryResult = SQLiteModel.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
                     displayQueryResults(queryResult, DBResultsTable);
                 }
             }
@@ -97,7 +98,7 @@ public class ExiftoolDatabase {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radiobuttonQueryByCameraMake.isSelected()) {
-                    String queryResult = SQLiteJDBC.queryByTagname(comboBoxQueryCameraMake.getSelectedItem().toString(), false);
+                    String queryResult = SQLiteModel.queryByTagname(comboBoxQueryCameraMake.getSelectedItem().toString(), false);
                     displayQueryResults(queryResult, DBResultsTable);
                 }
             }
@@ -114,7 +115,7 @@ public class ExiftoolDatabase {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!"".equals(sqlQuerytextField.getText())) {
-                    String queryResult = SQLiteJDBC.ownQuery(sqlQuerytextField.getText());
+                    String queryResult = SQLiteModel.ownQuery(sqlQuerytextField.getText());
                     if (!queryResult.contains("SQLITE_ERROR")) {
                         displayOwnQueryResults(sqlQuerytextField.getText(), queryResult, DBResultsTable);
                     } else { // We do have an "[SQLITE_ERROR] SQL error or missing database ...."
