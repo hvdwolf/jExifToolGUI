@@ -11,6 +11,7 @@ import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
+import org.hvdw.jexiftoolgui.model.CompareImages;
 import org.hvdw.jexiftoolgui.model.GuiConfig;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.view.*;
@@ -617,12 +618,12 @@ public class mainScreen {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
         bottomPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
-        final JLabel label1 = new JLabel();
-        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "pt.filesloaded"));
-        panel1.add(label1);
         lblLoadedFiles = new JLabel();
         lblLoadedFiles.setText("");
         panel1.add(lblLoadedFiles);
+        final JLabel label1 = new JLabel();
+        this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("translations/program_strings", "pt.filesloaded"));
+        panel1.add(label1);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         bottomPanel.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -686,7 +687,7 @@ public class mainScreen {
         buttonCompare.setPreferredSize(new Dimension(38, 38));
         buttonCompare.setText("");
         buttonCompare.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.compareimgs"));
-        buttonCompare.setVisible(false);
+        buttonCompare.setVisible(true);
         LeftbuttonBar.add(buttonCompare);
         buttonSlideshow = new JButton();
         buttonSlideshow.setEnabled(false);
@@ -2642,6 +2643,23 @@ public class mainScreen {
         buttonShowImage.setActionCommand("bSI");
         buttonShowImage.addActionListener(gal);
 
+        //buttonCompare.setActionCommand("bCo");
+        //buttonCompare.addActionListener(gal);
+        buttonCompare.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("buttonCompare pressed");
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                    //List<String[]> allMetadata = CompareImages.CompareImages(selectedIndicesList, whichRBselected(), progressBar, OutputLabel);
+                    CompareImages.CompareImages(selectedIndicesList, whichRBselected(), progressBar, OutputLabel);
+                    //CompareImagesWindow.Initialize(allMetadata);
+                }else {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        });
+
         // Your Commands pane buttons
         CommandsclearParameterSFieldButton.setActionCommand("CommandsclearPSFB");
         CommandsclearParameterSFieldButton.addActionListener(gal);
@@ -3250,6 +3268,8 @@ public class mainScreen {
         } else if (radioButtonCameraMakes.isSelected()) {
             params = Utils.getWhichTagSelected(comboBoxViewCameraMake);
         }
+        logger.debug("MyVariables.setmainScreenParams(params) {}", String.join(",", params));
+        MyVariables.setmainScreenParams(params);
         return params;
     }
 
@@ -3387,7 +3407,7 @@ public class mainScreen {
             version = (CommandRunner.runCommand(cmdparams));
             logger.trace("raw exiftool version: {}", version);
         } catch (IOException | InterruptedException ex) {
-            logger.debug("Error executing command");
+            logger.error("Error executing command");
             version = "I cannot determine the exiftool version";
         }
         Float floatversion = Float.parseFloat(version.trim());
@@ -3436,6 +3456,7 @@ public class mainScreen {
             public void windowClosing(WindowEvent e) {
                 StandardFileIO.deleteDirectory(new File (MyVariables.gettmpWorkFolder()) );
                 GuiConfig.SaveGuiConfig(frame, rootPanel, splitPanel);
+                CompareImages.CleanUp();
                 System.exit(0);
             }
         });
@@ -3508,7 +3529,7 @@ public class mainScreen {
         try {
             icon = new ImageIcon(ImageIO.read(stream));
         } catch (IOException ex) {
-            logger.debug("Error executing command");
+            logger.error("Error executing command");
         }
 
         setArtistCreditsCopyrightDefaults();

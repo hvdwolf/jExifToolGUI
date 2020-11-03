@@ -8,6 +8,7 @@ import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
+import org.hvdw.jexiftoolgui.model.CompareImages;
 import org.hvdw.jexiftoolgui.model.GuiConfig;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
@@ -74,6 +75,7 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Exit":
                 StandardFileIO.deleteDirectory(new File(MyVariables.gettmpWorkFolder()) );
+                CompareImages.CleanUp();
                 GuiConfig.SaveGuiConfig(frame, rootPanel, splitPanel);
                 System.exit(0);
                 break;

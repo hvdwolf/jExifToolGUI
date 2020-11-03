@@ -569,6 +569,26 @@ public class Utils {
         return strImgData;
     }
 
+    /*public static void progressDialog(JFrame rootPanel) {
+        final JDialog dlg = new JDialog((Window) null, "Progress Dialog");
+        JProgressBar dpb = new JProgressBar(0, 500);
+        dlg.add(BorderLayout.CENTER, dpb);
+        dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dlg.setSize(300, 75);
+        dlg.setLocationRelativeTo(rootPanel);
+    } */
+    public static void progressPane (JPanel rootPanel, boolean visible) {
+        JOptionPane pane = new JOptionPane();
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setSize(200,20);
+        progressBar.setBorderPainted(true);
+        pane.add(progressBar);
+        progressBar.repaint();
+        pane.createDialog(progressBar, "busy");
+        pane.setVisible(visible);
+    }
+
     public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JTable tableListfiles, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params) {
         File[] files;
 
@@ -655,11 +675,13 @@ public class Utils {
                     OutputLabel.setText("");
                     // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
                     Utils.progressStatus(progressBar, false);
+                    //progressPane(rootPanel, false);
                 }
             });
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     progressBar.setVisible(true);
+                    //progressPane(rootPanel, true);
                 }
             });
         } else {
@@ -735,9 +757,9 @@ public class Utils {
         model.fireTableDataChanged();
         jTable_File_Names.clearSelection();
         jTable_File_Names.setCellSelectionEnabled(true);
-        Object[] row = new Object[1];
+        /*Object[] row = new Object[1];
         Object[] ImgRow = new Object[3];
-        Object[] FilenameRow = new Object[3];
+        Object[] FilenameRow = new Object[3]; */
         Object[] ImgFilenameRow = new Object[2];
         String filename = "";
 
@@ -764,7 +786,7 @@ public class Utils {
         MyVariables.setSelectedColumn(0);
     }
 
-    public static void getImageInfoFromSelectedTreeFile(String[] whichInfo,JTable ListexiftoolInfotable) {
+    private static void getImageInfoFromSelectedTreeFile(String[] whichInfo,JTable ListexiftoolInfotable) {
 
         //String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
@@ -820,7 +842,7 @@ public class Utils {
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
      */
-    static String getImageInfoFromSelectedFile(String[] whichInfo) {
+    public static String getImageInfoFromSelectedFile(String[] whichInfo) {
 
         String res = "";
         String fpath = "";
@@ -891,7 +913,7 @@ public class Utils {
      * @param index
      * @return
      */
-    static String getImageInfoFromSelectedFile(String[] whichInfo, int index) {
+    public static String getImageInfoFromSelectedFile(String[] whichInfo, int index) {
 
         String res = "";
         String fpath = "";
@@ -980,7 +1002,7 @@ public class Utils {
     }
 
     // This is for the Common Tags as they can contain combined info
-    static String[] getWhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
+    public static String[] getWhichCommonTagSelected(JComboBox comboBoxViewByTagName) {
         String[] params = {"-a","-G","-tab","-exiftool:all"}; // We need to initialize with something
         String SelectedTagName = String.valueOf(comboBoxViewByTagName.getSelectedItem());
 

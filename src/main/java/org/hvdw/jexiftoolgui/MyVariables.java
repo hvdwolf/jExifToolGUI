@@ -1,7 +1,5 @@
 package org.hvdw.jexiftoolgui;
 
-// Actually this shouldn't be done but as I'm such a lousy programmer and don't know how to do it otherwise I do it anyway
-// The only option I know is to drag these variables through all methods
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This is the big setter/getter class for the entire program
+ */
 public class MyVariables {
 
     private final static MyVariables staticInstance = new MyVariables();
@@ -40,6 +41,7 @@ public class MyVariables {
     private boolean commandLineArgsgiven = false;
     private int ScreenWidth;
     private int ScreenHeight;
+    private String[] mainScreenParams;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -158,4 +160,6 @@ public class MyVariables {
     public static int getScreenHeight() { return staticInstance.ScreenHeight;}
     public static void setScreenHeight(int height) {staticInstance.ScreenHeight = height; }
 
+    public static String[] getmainScreenParams() { return Arrays.copyOf(staticInstance.mainScreenParams, staticInstance.mainScreenParams.length); }
+    public static void setmainScreenParams(String[] setmnscrnprms) { staticInstance.mainScreenParams = Arrays.copyOf(setmnscrnprms, setmnscrnprms.length); }
 }

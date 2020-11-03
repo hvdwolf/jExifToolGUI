@@ -74,28 +74,17 @@ public class SQLiteJDBC {
 
 
 
-    static public Connection imConnect() {
-
-        // ################ The basic necessary stuff for in memory DB###################3
-        Connection imconn = null;
-        try {
-            // db parameters
-            String url = "jdbc:sqlite::memory:";
-            // create a connection to the database
-            imconn = DriverManager.getConnection(url);
-            logger.debug("Connection to SQLite in memory DB has been established.");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return imconn;
-    }
-
     static public String generalQuery(String sql, String dbType) {
         String DBresult = "";
+        String queryFields;
         StringBuilder sbresult = new StringBuilder();
 
         // get the fields that are being queried on and immediately remove spaces
-        String queryFields = Utils.stringBetween(sql.toLowerCase(), "select", "from").replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \;
+        if (sql.contains("distinct")) {
+            queryFields = Utils.stringBetween(sql.toLowerCase(), "select distinct", "from").replaceAll("\\s+", "");  // regex "\s" is space, extra \ to escape the first \;
+        } else {
+            queryFields = Utils.stringBetween(sql.toLowerCase(), "select", "from").replaceAll("\\s+", "");  // regex "\s" is space, extra \ to escape the first \;
+        }
         logger.debug("the general query queryfields returned string: " + queryFields);
         String[] dbFields = queryFields.split(",");
 

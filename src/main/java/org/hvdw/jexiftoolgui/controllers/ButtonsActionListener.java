@@ -1,8 +1,10 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
+import org.hvdw.jexiftoolgui.model.CompareImages;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.view.AddFavorite;
 import org.hvdw.jexiftoolgui.view.DatabasePanel;
@@ -12,6 +14,8 @@ import org.hvdw.jexiftoolgui.view.SimpleWebView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -35,6 +39,7 @@ public class ButtonsActionListener implements ActionListener {
     public JTextField geotaggingGPSLogtextField;
     public JTextField sqlQuerytextField;
     public JComboBox UserCombiscomboBox;
+    private String[] params;
 
     public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox) {
 
@@ -49,6 +54,7 @@ public class ButtonsActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent gav) { // gav = gui ActionEvent
+        List<Integer> selectedIndicesList = new ArrayList<Integer>();
 
         // This is not nice object oriented programming but gives a nice clear structured overview
         switch (gav.getActionCommand()) {
@@ -56,6 +62,15 @@ public class ButtonsActionListener implements ActionListener {
                 logger.debug("button buttonShowImage pressed");
                 Utils.displaySelectedImageInExternalViewer();
                 break;
+            /*case "bCo":
+                logger.info("buttonCompare pressed");
+                selectedIndicesList = MyVariables.getselectedIndicesList();
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                    CompareImages.CompareImages(selectedIndicesList);
+                }else {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                }
+                break; */
             case "CommandshB":
                 logger.debug("button CommandshelpButton pressed");
                 WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);

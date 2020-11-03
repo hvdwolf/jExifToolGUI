@@ -27,16 +27,16 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="8c4" class="javax.swing.JLabel">
-                <constraints/>
-                <properties>
-                  <text resource-bundle="translations/program_strings" key="pt.filesloaded"/>
-                </properties>
-              </component>
               <component id="77658" class="javax.swing.JLabel" binding="lblLoadedFiles">
                 <constraints/>
                 <properties>
                   <text value=""/>
+                </properties>
+              </component>
+              <component id="8c4" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="pt.filesloaded"/>
                 </properties>
               </component>
             </children>
@@ -149,7 +149,7 @@
                       <preferredSize width="38" height="38"/>
                       <text value=""/>
                       <toolTipText resource-bundle="translations/program_strings" key="btn.compareimgs"/>
-                      <visible value="false"/>
+                      <visible value="true"/>
                     </properties>
                   </component>
                   <component id="88a0d" class="javax.swing.JButton" binding="buttonSlideshow">
