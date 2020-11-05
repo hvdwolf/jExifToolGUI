@@ -169,6 +169,26 @@ public class SQLiteJDBC {
         logger.trace("insertUpdateQueryResult {}", queryresult);
         return queryresult;
     }
+
+    static public String bulkInsertUpdateQuery(String[] sqls, String dbType) {
+        String queryresult = "";
+
+        try {
+            Connection conn = connect(dbType);
+            Statement stmt  = conn.createStatement();
+            //stmt.executeUpdate(sql);
+            for (String sql : sqls) {
+                stmt.executeUpdate(sql);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            queryresult = e.getMessage();
+        }
+        logger.trace("insertUpdateQueryResult {}", queryresult);
+        return queryresult;
+    }
+
     // ################### End of the basic necessary stuff ###################
 
 }

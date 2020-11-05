@@ -42,6 +42,7 @@ public class MyVariables {
     private int ScreenWidth;
     private int ScreenHeight;
     private String[] mainScreenParams;
+    private ArrayList<String> category_tag;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -162,4 +163,7 @@ public class MyVariables {
 
     public static String[] getmainScreenParams() { return Arrays.copyOf(staticInstance.mainScreenParams, staticInstance.mainScreenParams.length); }
     public static void setmainScreenParams(String[] setmnscrnprms) { staticInstance.mainScreenParams = Arrays.copyOf(setmnscrnprms, setmnscrnprms.length); }
+
+    public static ArrayList<String> getcategory_tag() { return staticInstance.category_tag; }
+    public static void setcategory_tag (ArrayList<String> ctgr_tg) { staticInstance.category_tag = ctgr_tg; }
 }
