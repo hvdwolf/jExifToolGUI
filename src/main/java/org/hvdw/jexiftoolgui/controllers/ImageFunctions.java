@@ -313,9 +313,9 @@ public class ImageFunctions {
                 thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                 if (thumbfile.exists()) {
                     // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
-                    logger.trace("create thumb nr1");
+                    logger.debug("create thumb nr1");
                     //icon = ImageFunctions.createIcon(thumbfile);
-                    icon = ImageFunctions.createIcon(file);
+                    icon = ImageFunctions.createIcon(thumbfile);
                     if (icon != null) {
                         // display our created icon from the thumbnail
                         return icon;
