@@ -8,6 +8,8 @@ import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,7 +66,18 @@ public class CompareImagesWindow {
         String[] tableheader = theader.stream().toArray(String[]::new);
 
         // now we create the metadatatable
-        JTable ciwTable = new JTable();
+        //JTable ciwTable = new JTable();
+        JTable ciwTable = new JTable(){
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component component = super.prepareRenderer(renderer, row, column);
+                int rendererWidth = component.getPreferredSize().width;
+                TableColumn tableColumn = getColumnModel().getColumn(column);
+                tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
+                return component;
+            }
+        };
+        ciwTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         DefaultTableModel model = (DefaultTableModel) ciwTable.getModel();
         ciwTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             protected void setValue(Object value){
