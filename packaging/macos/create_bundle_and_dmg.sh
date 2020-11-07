@@ -27,10 +27,10 @@ printf "Now copy the jar and modified script into the app\n\n"
 cp ../../jExifToolGUI.jar $App/Contents/MacOS/
 cp jexiftoolgui.jar_only $App/Contents/MacOS/jexiftoolgui
 
-printf "Create the 15MB dmg\n\n"
+printf "Create the 20MB dmg\n\n"
 mkdir -p tmp/dmg
-# 15MB dmg
-dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=15
+# 20MB dmg
+dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=20
 
 mkfs.hfsplus -v "jExifToolGUI-x86_64 $Version" tmp/jExifToolGUI.dmg
 
