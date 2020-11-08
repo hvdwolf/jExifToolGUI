@@ -171,8 +171,8 @@ public class CreateMenu {
         menuItem.setActionCommand("copydata");
         menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.yourcommands"));
-        menuItem.setActionCommand("yourcommands");
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.exiftoolcommands"));
+        menuItem.setActionCommand("exiftoolcommands");
         menuItem.addActionListener(mal);
         helpSubMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subhmenu.exiftooldb"));

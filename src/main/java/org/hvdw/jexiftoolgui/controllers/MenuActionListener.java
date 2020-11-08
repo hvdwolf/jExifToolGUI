@@ -293,9 +293,9 @@ public class MenuActionListener implements ActionListener  {
             case "copydata":
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
                 break;
-            case "yourcommands":
+            case "exiftoolcommands":
 //                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
-                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
+                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommands"), 700, 500);
                 break;
             case "exiftooldb":
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);

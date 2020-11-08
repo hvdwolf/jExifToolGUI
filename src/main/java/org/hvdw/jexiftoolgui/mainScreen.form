@@ -4017,7 +4017,7 @@
               <grid id="e08b" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="10" left="10" bottom="10" right="10"/>
                 <constraints>
-                  <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.yourcommands"/>
+                  <tabbedpane title-resource-bundle="translations/program_strings" title-key="maintab.exiftoolcommands"/>
                 </constraints>
                 <properties>
                   <preferredSize width="800" height="-1"/>

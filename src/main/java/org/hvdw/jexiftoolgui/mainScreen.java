@@ -2246,7 +2246,7 @@ public class mainScreen {
         final JPanel panel68 = new JPanel();
         panel68.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         panel68.setPreferredSize(new Dimension(800, -1));
-        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.yourcommands"), panel68);
+        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exiftoolcommands"), panel68);
         final JPanel panel69 = new JPanel();
         panel69.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel68.add(panel69, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));

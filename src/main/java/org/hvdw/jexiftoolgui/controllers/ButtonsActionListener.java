@@ -73,7 +73,7 @@ public class ButtonsActionListener implements ActionListener {
                 break; */
             case "CommandshB":
                 logger.debug("button CommandshelpButton pressed");
-                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands"), 700, 500);
+                WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommands"), 700, 500);
                 break;
             case "ExifhB":
             case "xmpHB":
