@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
@@ -186,7 +187,7 @@ public class ExportToPDF {
     }
 
     /**
-     * This fillMetadataTable creates the table with the requested metadata and returns it to the document
+     * This fillMetadataTable creates the table with the requested metadata based on the info returned from exiftool and returns the table to the document
      * @param exiftoolInfo
      * @return
      */
@@ -213,6 +214,28 @@ public class ExportToPDF {
                     table.addCell(new Cell().add(new Paragraph(cells[1])));
                     table.addCell(new Cell().add(new Paragraph(cells[2])));
                 }
+            }
+        }
+
+        return table;
+    }
+
+    /**
+     * This fillMetadataTable creates the table with the requested metadata based on the allMetadata ListArray coming
+     * from the CompareImagesWindow and returns the table to the document
+     * @param imageMetadata
+     * @return
+     */
+    private static Table fillMetadataTable(List<String[]> imageMetadata) {
+        float[] mdpointColumnWidths = {100f, 260f, 450f};
+        Table table = new Table(mdpointColumnWidths);
+
+        table.setFontSize(10);
+        if (imageMetadata.size() > 0) {
+            for (String[] row : imageMetadata) {
+                table.addCell(new Cell().add(new Paragraph(row[2])));
+                table.addCell(new Cell().add(new Paragraph(row[3])));
+                table.addCell(new Cell().add(new Paragraph(row[4])));
             }
         }
 
@@ -261,7 +284,8 @@ public class ExportToPDF {
     }
 
     /**
-     * This method really writes the PDF. either a pdf per image, or one big pdf for all images
+     * This method really writes the PDF. either a pdf per image, or one big pdf for all images.
+     * It is called from the Export/Import tab
      * @param PDFradiobuttons
      * @param PDFcomboboxes
      * @param progressBar
@@ -336,7 +360,53 @@ public class ExportToPDF {
 
         MyVariables.setpdfDocs(producedDocs);
         logger.debug("producedDocs {}", producedDocs);
-        
 
+    }
+
+    public static void WriteToPDF(List<String[]> allMetadata) {
+        List<String> cmdparams = new ArrayList<String>();
+        List<String[]> imageMetadata = new ArrayList<String[]>();
+        File[] files = MyVariables.getLoadedFiles();
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File tmpfile;
+        String filename;
+        String pdfnamepath = "";
+        Document doc = null;
+        String producedDocs = "";
+
+        boolean isWindows = Utils.isOsFromMicrosoft();
+        for (int index : selectedIndices) {
+            // First get the data belonging to this file (index)
+            for (String[] row : allMetadata) {
+                if (Integer.valueOf(row[1]) == index) {
+                    imageMetadata.add(row);
+                    logger.trace("index {} rowdata {}", index, Arrays.toString(row));
+                }
+            }
+            filename = files[index].getName();
+
+            tmpfile = files[index];
+            pdfnamepath = tmpfile.getParent() + File.separator + Utils.getFileNameWithoutExtension(filename) + ".pdf";
+            logger.debug("pdfnamepath {}", pdfnamepath);
+            try {
+                PdfWriter writer = new PdfWriter(pdfnamepath);
+                PdfDocument pdfDoc = new PdfDocument(writer);
+                doc = new Document(pdfDoc);
+                // Creating the top table
+                doc.add(topTable(tmpfile));
+                Paragraph paragraph1 = new Paragraph("\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.metadata") + " " + filename);
+                doc.add(paragraph1);
+                // Now writing the metadata table
+                doc.add(fillMetadataTable(imageMetadata));
+                doc.close();
+                producedDocs += pdfnamepath + "<br>";
+            } catch (FileNotFoundException e) {
+                logger.error("pdf file not found error {}", e);
+                e.printStackTrace();
+                doc.close();
+            }
+            MyVariables.setpdfDocs(producedDocs);
+            logger.debug("producedDocs {}", producedDocs);
+        }
     }
 }

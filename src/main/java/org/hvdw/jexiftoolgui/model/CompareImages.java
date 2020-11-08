@@ -288,7 +288,7 @@ public class CompareImages {
                     logger.debug("raw data to table data {}", (end - start));
 
                     //Now display our data
-                    CompareImagesWindow.Initialize(tableMetadata);
+                    CompareImagesWindow.Initialize(tableMetadata, allMetadata);
                     logger.debug("Now starting CompareImagesWindow to show the data");
                     progressBar.setVisible(false);
                     outputLabel.setText("");
