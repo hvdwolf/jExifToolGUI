@@ -196,7 +196,7 @@ public class CompareImages {
                     long end = System.currentTimeMillis();
                     logger.debug("Reading exiftool info and adding to List {} ms", (end - start));
 
-                    logger.info("final allMetadata {}", allMetadata.size());
+                    logger.debug("final allMetadata {}", allMetadata.size());
                     start = System.currentTimeMillis();
                     for (String[] oneRow : allMetadata) {
                         //logger.info(Arrays.toString(oneRow));
@@ -204,7 +204,7 @@ public class CompareImages {
                     }
                     Set<String> unique_cat_tag = new HashSet<String>(category_tagname);
                     end = System.currentTimeMillis();
-                    logger.info("Creating category_tagname list + hashset {} ms", (end - start));
+                    logger.debug("Creating category_tagname list + hashset {} ms", (end - start));
 
 
                     // Create the category_tagname hashmap based on DB
@@ -255,19 +255,22 @@ public class CompareImages {
                     start = System.currentTimeMillis();
                     for (String cat_tag : unique_cat_tag) {
                         String[] values = new String[selectedIndices.size() + 2];
-                        // Create list with 15 values: more than we will ever process on files
+                        // Create list with 27 values: more than we will ever process on files: 2 for category and tgname, 25 for images
                         List<String> listvalues = new ArrayList<String>();
-                        for (int i = 0; i < 15; i++) {
+                        for (int i = 0; i < 27; i++) {
                             listvalues.add("9999");
                         }
                         for (String[] metadata : allMetadata) {
                             //logger.info("cat_tag {} metadata {}", cat_tag, metadata);
+                            int counter = 2;
                             for (int index : selectedIndices) {
                                 if ((cat_tag.equals(metadata[0])) && (Integer.valueOf(metadata[1]) == index)) {
                                     listvalues.set(0, metadata[2]);
                                     listvalues.set(1, metadata[3]);
-                                    listvalues.set((Integer.valueOf(index) + 2), metadata[4]);
+                                    //listvalues.set((Integer.valueOf(index) + 2), metadata[4]);
+                                    listvalues.set(counter, metadata[4]);
                                 }
+                                counter++;
                             }
                         }
                         //logger.info("list values {}", listvalues);
@@ -282,7 +285,7 @@ public class CompareImages {
                         tableMetadata.add(values);
                     }
                     end = System.currentTimeMillis();
-                    logger.info("raw data to table data {}", (end - start));
+                    logger.debug("raw data to table data {}", (end - start));
 
                     //Now display our data
                     CompareImagesWindow.Initialize(tableMetadata);

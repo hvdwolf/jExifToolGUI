@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui.view;
 
 import ch.qos.logback.classic.Logger;
+import com.itextpdf.layout.element.Table;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
@@ -31,7 +32,12 @@ public class CompareImagesWindow {
         File[] files = MyVariables.getLoadedFiles();
 
         // Quick test
-        /*for (String metadata[] : allMetadata) {
+        /*for (int index : selectedIndices) {
+            File file = files[index];
+            String filename = file.getName();
+            logger.info("index {} filename {}", index, filename);
+        }
+        for (String metadata[] : allMetadata) {
             logger.info("array for table {}", Arrays.toString(metadata));
         }*/
 
@@ -41,6 +47,7 @@ public class CompareImagesWindow {
         frame.setIconImage(Utils.getFrameIcon());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel ciwRootPanel = new JPanel(new BorderLayout());
+        //JPanel ciwRootPanel = new JPanel(new GridLayout(2,1));
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -101,14 +108,25 @@ public class CompareImagesWindow {
         // Below line makes table uneditable (read-only)
         ciwTable.setDefaultEditor(Object.class, null);
         model.setColumnIdentifiers(tableheader);
+
+        ciwTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+        ciwTable.getColumnModel().getColumn(1).setPreferredWidth(250);
+        int counter = 2;
+        for (int index: selectedIndices) {
+            ciwTable.getColumnModel().getColumn(counter).setPreferredWidth(375);
+            counter++;
+        }
         // Add thumbnails for files to table
         Object[] ImgFilenameRow = new Object[(selectedIndices.length + 2)];
         ImgFilenameRow[0] = "";
         ImgFilenameRow[1] = "";
+        counter = 2;
         for (int index : selectedIndices) {
             File file = files[index];
             icon = ImageFunctions.analyzeImageAndCreateIcon(file);
-            ImgFilenameRow[(index + 2)] = icon;
+            //ImgFilenameRow[(index + 2)] = icon;
+            ImgFilenameRow[counter] = icon;
+            counter++;
         }
         ciwTable.setRowHeight(0,150);
         model.addRow(ImgFilenameRow);
@@ -118,23 +136,28 @@ public class CompareImagesWindow {
             model.addRow(metadata);
         }
         ciwTable.setRowHeight(0,150);
-        ciwTable.repaint();
+        //ciwTable.repaint();
 
         JScrollPane ciwScrollPanel = new JScrollPane(ciwTable);
-        //ciwScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        ciwScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         // Add the panels to the big container panel
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int TableWidth = 150 + 250 + (selectedIndices.length * 375);
+        ciwTable.setSize(TableWidth, screenSize.height-100);
+        ciwTable.repaint();
         ciwRootPanel.add(ciwScrollPanel, BorderLayout.CENTER);
         ciwRootPanel.add(buttonPanel, BorderLayout.PAGE_END);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int scrwidth = screenSize.width;
         MyVariables.setScreenWidth(screenSize.width);
-        int scrheight = screenSize.height;
         MyVariables.setScreenHeight(screenSize.height);
         frame.add(ciwRootPanel);
-        frame.setSize(screenSize.width, screenSize.height-50);
+        if ((screenSize.width - 50) > (TableWidth)) {
+            MyVariables.setScreenWidth(TableWidth);
+            frame.setSize(TableWidth, screenSize.height-50);
+        } else {
+            frame.setSize(screenSize.width, screenSize.height-50);
+        }
+
 
         //frame.pack();
         frame.setVisible(true);
