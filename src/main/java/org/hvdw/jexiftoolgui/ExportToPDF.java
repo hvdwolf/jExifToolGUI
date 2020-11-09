@@ -324,7 +324,7 @@ public class ExportToPDF {
 
             tmpfile = files[index];
 
-            if (!(PDFradiobuttons[5].isSelected())) { //document per image
+            if (!(PDFradiobuttons[5].isSelected())) { //User wants a document per image
                 pdfnamepath = tmpfile.getParent() + File.separator + Utils.getFileNameWithoutExtension(filename) + ".pdf";
                 logger.debug("pdfnamepath {}", pdfnamepath);
                 try {
@@ -363,8 +363,11 @@ public class ExportToPDF {
 
     }
 
+    /**
+     * This method writes the pdf and is called from the CompareImagesWindow for the there displayed info
+     * @param allMetadata
+     */
     public static void WriteToPDF(List<String[]> allMetadata) {
-        List<String> cmdparams = new ArrayList<String>();
         List<String[]> imageMetadata = new ArrayList<String[]>();
         File[] files = MyVariables.getLoadedFiles();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();

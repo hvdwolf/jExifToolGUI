@@ -4,8 +4,10 @@ import ch.qos.logback.classic.Logger;
 import com.itextpdf.layout.element.Table;
 import org.hvdw.jexiftoolgui.ExportToPDF;
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.ImageFunctions;
+import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -71,6 +73,7 @@ public class CompareImagesWindow {
         JPanel ciwRootPanel = new JPanel(new BorderLayout());
         //JPanel ciwRootPanel = new JPanel(new GridLayout(2,1));
 
+        ////////////////
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         JButton ciwCloseButton = new JButton();
@@ -90,7 +93,7 @@ public class CompareImagesWindow {
             }
         });
         JButton ciwExportToPDFbutton = new JButton();
-        ciwExportToPDFbutton.setText(ResourceBundle.getBundle("translations/program_strings").getString("expimp.exptopdf"));
+        ciwExportToPDFbutton.setText(ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.exptopdf"));
         ciwExportToPDFbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -101,6 +104,7 @@ public class CompareImagesWindow {
                         ExportToPDF.WriteToPDF(allMetadata);
                         progressBar.setVisible(false);
                         outputLabel.setText("");
+                        JOptionPane.showMessageDialog(ciwRootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated") + ":<br><br>" + MyVariables.getpdfDocs()), ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated"), JOptionPane.INFORMATION_MESSAGE));
                     }
                 });
                 SwingUtilities.invokeLater(new Runnable() {
@@ -112,10 +116,31 @@ public class CompareImagesWindow {
 
             }
         });
+        JButton ciwExpToCSVbutton = new JButton();
+        ciwExpToCSVbutton.setText(ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.exptocsv"));
+        ciwExpToCSVbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                CsvFromCompareImages CVCI = new CsvFromCompareImages();
+                String selection = CVCI.showDialog(ciwRootPanel);
+                if ("onecsvperimage".equals(selection)) {
+                    ExportMetadata.WriteCSVFromImgComp(allMetadata, ciwRootPanel, selection);
+                    // Below option pane als uses the MyVariables.getpdfDocs() variable as we also use that for csvdocs
+                    JOptionPane.showMessageDialog(ciwRootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.csvscreated") + ":<br><br>" + MyVariables.getpdfDocs()), ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.csvscreated"), JOptionPane.INFORMATION_MESSAGE));
+                } else if ("onecombinedcsv".equals(selection)){
+                    ExportMetadata.WriteCSVFromImgComp(tableMetadata, ciwRootPanel, selection);
+                    // Below option pane als uses the MyVariables.getpdfDocs() variable as we also use that for csvdocs
+                    JOptionPane.showMessageDialog(ciwRootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.csvscreated") + ":<br><br>" + MyVariables.getpdfDocs()), ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.csvscreated"), JOptionPane.INFORMATION_MESSAGE));
+                }
+                //JOptionPane.showMessageDialog(ciwRootPanel, selection, selection, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        buttonPanel.add(ciwExpToCSVbutton);
         buttonPanel.add(ciwExportToPDFbutton);
         buttonPanel.add(ciwCloseButton);
         buttonPanel.add(progressBar);
         buttonPanel.add(outputLabel);
+        ////////////////
 
         //Create the table header for both tables
         List<String> theader = new ArrayList<String>();

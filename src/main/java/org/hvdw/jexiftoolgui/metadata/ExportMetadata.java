@@ -12,9 +12,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.nio.charset.Charset;
+import java.util.*;
 
 public class ExportMetadata {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(ExportMetadata.class);
@@ -209,4 +208,91 @@ public class ExportMetadata {
         }
     }
 
+    /**
+     * This method is indirectly called from the "Compare images" screen. That screens opens a popup request the format to export to
+     * @param allMetadata
+     * @param ciwRootPanel
+     * @param output ==> onecsvperimage or onecombinedcsv
+     */
+    public static void WriteCSVFromImgComp(List<String[]> allMetadata, JPanel ciwRootPanel, String output) {
+        List<String[]> imageMetadata = new ArrayList<String[]>();
+        File[] files = MyVariables.getLoadedFiles();
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File tmpfile;
+        String filename;
+        String csvnamepath = "";
+        String csvdata = "";
+        String producedDocs = "";
+
+        if ("onecsvperimage".equals(output)) {
+            for (int index : selectedIndices) {
+                String[] csv;
+                filename = files[index].getName();
+                csvdata = "";
+
+                tmpfile = files[index];
+                csvnamepath = tmpfile.getParent() + File.separator + Utils.getFileNameWithoutExtension(filename) + ".csv";
+                File csvfile = new File(csvnamepath);
+                logger.debug("csvnamepath {}", csvnamepath);
+                // Get the data belonging to this file (index)
+                for (String[] row : allMetadata) {
+                    if (Integer.valueOf(row[1]) == index) {
+                        csvdata = csvdata + "\"" + row[2] + "\",\"" + row[3] + "\",\"" + row[4] + "\"\r\n";
+                        //logger.trace("index {} rowdata {}", index, Arrays.toString(row));
+                    }
+                }
+                try {
+                    //FileWriter fw = new FileWriter(csvfile, Charset.forName("UTF8"));
+                    FileWriter fw = new FileWriter(csvnamepath);
+                    fw.write(csvdata);
+                    fw.close();
+                    producedDocs += csvnamepath + "<br>";
+                } catch (IOException e) {
+                    logger.error("error writing csv {}", e);
+                    e.printStackTrace();
+                }
+            }
+            // use the setpdfDocs variabel for it. No use to create another variable
+            MyVariables.setpdfDocs(producedDocs);
+            logger.debug("produced csv Docs {}", producedDocs);
+        } else {   //onecombinedcsv
+            List<String> csvrows = new ArrayList<String>();
+            filename = files[0].getName();
+            tmpfile = files[0];
+            csvnamepath = tmpfile.getParent() + File.separator + "Output.csv";
+            csvdata = "\"Category name\",\"Tag name\"";
+            for (int index : selectedIndices) {
+                tmpfile = files[index];
+                filename = files[index].getName();
+                csvdata = csvdata + ",\"" + filename + "\"";
+            }
+            csvrows.add(csvdata);
+            // The allMetadata is in this case tableMetadata
+            for (String[] row : allMetadata) {
+                int columns = row.length;
+                csvdata= "\"" + row[0] + "\"";
+                for (int i = 1; i < columns; i++) {
+                    csvdata = csvdata + ",\"" + row[i] + "\"";
+                }
+                //csvdata = csvdata;
+                csvrows.add(csvdata);
+            }
+            // Sort the arraylist
+            Collections.sort(csvrows);
+            csvdata = "";
+            for (String row : csvrows) {
+                csvdata = csvdata + row + "\n";
+            }
+            try {
+                FileWriter fw = new FileWriter(csvnamepath);
+                fw.write(csvdata);
+                fw.close();
+                producedDocs += csvnamepath + "<br>";
+            } catch (IOException e) {
+                logger.error("error writing csv {}", e);
+                e.printStackTrace();
+            }
+        }
+
+    }
 }
