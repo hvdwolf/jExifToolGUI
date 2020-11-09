@@ -202,7 +202,9 @@ public class CompareImages {
                         //logger.info(Arrays.toString(oneRow));
                         category_tagname.add(oneRow[0]);
                     }
-                    Set<String> unique_cat_tag = new HashSet<String>(category_tagname);
+                    Set<String> unique_cat_tag_set = new HashSet<String>(category_tagname);
+                    List<String> unique_cat_tag = new ArrayList<>(unique_cat_tag_set);
+                    Collections.sort(unique_cat_tag);
                     end = System.currentTimeMillis();
                     logger.debug("Creating category_tagname list + hashset {} ms", (end - start));
 

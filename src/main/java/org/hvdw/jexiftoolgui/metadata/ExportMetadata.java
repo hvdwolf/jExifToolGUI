@@ -252,10 +252,11 @@ public class ExportMetadata {
                     e.printStackTrace();
                 }
             }
-            // use the setpdfDocs variabel for it. No use to create another variable
+            // use the setpdfDocs variable for it. No use to create another variable
             MyVariables.setpdfDocs(producedDocs);
             logger.debug("produced csv Docs {}", producedDocs);
         } else {   //onecombinedcsv
+            producedDocs = "";
             List<String> csvrows = new ArrayList<String>();
             filename = files[0].getName();
             tmpfile = files[0];
@@ -292,6 +293,7 @@ public class ExportMetadata {
                 logger.error("error writing csv {}", e);
                 e.printStackTrace();
             }
+            MyVariables.setpdfDocs(producedDocs);
         }
 
     }
