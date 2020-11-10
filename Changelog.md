@@ -1,8 +1,45 @@
 # Changelog
 
+## 2020-11-10 1.7.0
+* Add new "compare images metadata screen" screen where you can [compare the metadata of images](https://youtu.be/TvvtIIa50QA). The selection options on the main screen (all, common tags, by group, etc.) can be used. You can select and compare up to 25 images.
+    * From compare screen an "Export to pdf" and "Export to csv" option. The second with "one csv per image" or "all images into one csv".
+* Text buttons changed to "iconified" buttons with "tooltips" when you hover over them (material design icons).
+* Add "Help -> Youtube instruction videos". Opens browser to playlist with sort 1-3 minutes instruction videos. Will be expanded in future.
+* Add command line parameters/arguments handling. Supports (multiple) folder(s), multiple file(s) and combinations. Supports releative paths and symbolic links (Linux/MacOS). **Note:** The MacOS app bundle does not support command line arguments as Apple is really picky on this.
+See also the Youtube video [Loading images](https://youtu.be/ytgnbJBAQ4g) about the several ways of loading images.
+This functionality does NOT support recursively parsing sub-directories as that could lead to tens of thousands of files which might not be a problem for a commandline tool, but is a problem for a Gui needing to load the files.
+Note: In windows this also means that you can drag&drop images onto the "closed" jExifToolGUI.exe in the file manager, and it will open and load the files.
+    Examples: 
+    `java -jar jExifToolGUI.jar ../../Pictures/Summer2015  a.jpg  b.png  /home/pipodeclown/screenshots/*.jpg  ../c.cr2  d.nef`
+    `jExifToolGUI.exe Pictures\Malaga2012 c:\tmp\pics\*.jpg c:\tmp\pics\*.RAF a.jpg d:\stuff\b.jpg`
+* Change/Expand default imageviewer. Now always fullscreen (also for smaller than screen images) with "close/previous/next" buttons and "Escape/key-left/key-right" keylistener to loop through the loaded images (loaded images, not (only) selected images).
+* Option to select ["dual column" or "single column" thumbnail panel](https://youtu.be/SMv1IFesJcA) (from Preferences -> Look & Feel). The left thumbnail panel will auto-size to "two-column width" when necessary.
+    * single column: thumbnail plus file name (top - bottom)
+    * dual column: thumbnail left, basic image data right (basic image data is new, was only file name).
+* Add "SplitPane" bar to divide left & right screen. User can shift the bar and the left/right/top/bottom according to the users preferences.
+* Remember GUI width/height and "splitPane" settings upon exit.
+* Renamed tab "Your Commands" to "Exiftool Commands"
+* Remove "Exiftool Database" from the tab in the main screen as it does not act on images. Put it under the "Tools" menu and give it its own screen.
+* Restructure and expand "Copy Data" tab
+    * Sub-tab "From image to image": This is the original tab where you can copy metadata from one image to multiple images.
+    * Sub-tab "Inside same image" (new)
+        * All metadata to xmp: This copies all tags from all categories to xmp format, when possible (Moved from (menu) "Metadata -> Copy all metadata to XMP format" to here).
+        * From multiple categories to category (To Exif, To XMP, To IPTC, To GPS, To PDF)
+* Add new Export/Import tab (currently only Export)
+    * Move (menu) Other -> export metadata to new Export tab under "General Export"
+    * Create "Export to PDF"
+* [Export to pdf](https://youtu.be/N0yQNEDC-q4). The image plus metadata is written to a pdf. One image + metadata per pdf, or everything in one big pdf document.
+* Fix: [issue #80](https://github.com/hvdwolf/jExifToolGUI/issues/80) Spaces in tags in "Your Commands"  lead to incomplete tags.
+* Program checked for selected images, but did not always check if images had been loaded at all before menu selection or button push: resulted in null value errors.
+* Fix Linux/MacOs: "Copy all tags to XMP": Fix issue with spaces in path.
+* Fix: rotation of RAW images in thumbnails.
+
+
+
+
 ## 2020-10-23 1.6.3.1
 Bugfix release only:
-* Fix: the default translations file contained a number of incorrect characters which made it impossible to use the "Load Images" and "Load Folder" options on all systems NOT running English, German, Spanish or Dutch. This seems like some sort of text file corruption but I do not know how it occurred. It is fixed now.
+* Fix: [issue #78](https://github.com/hvdwolf/jExifToolGUI/issues/78) and [issue #57](https://github.com/hvdwolf/jExifToolGUI/issues/57)the default translations file contained a number of incorrect characters which made it impossible to use the "Load Images" and "Load Folder" options on all systems NOT running English, German, Spanish or Dutch. This seems like some sort of text file corruption but I do not know how it occurred. It is fixed now.
 * Lens configurations: Saving of lens descriptions is optional, but retrieval expected it to be there. That now works correct.
 
 ## 2020-10-04 1.6.3
