@@ -6,6 +6,7 @@ import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
 import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
+import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.model.CompareImages;
@@ -33,6 +34,7 @@ public class MenuActionListener implements ActionListener  {
     private DateTime dateTime = new DateTime();
     private MetadataUserCombinations MD = new MetadataUserCombinations();
     private MetaData metaData = new MetaData();
+    private ExportMetadata ExpMD = new ExportMetadata();
     private SimpleWebView WV = new SimpleWebView();
 
     public int[] selectedIndices;
@@ -119,7 +121,7 @@ public class MenuActionListener implements ActionListener  {
             case "exportexifsidecar":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
-                    metaData.exportExifMieExvSidecar(rootPanel, progressBar, "exif");
+                    ExpMD.exportExifMieExvSidecar(rootPanel, progressBar, "exif");
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -137,7 +139,7 @@ public class MenuActionListener implements ActionListener  {
             case "exportmiesidecar":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.miesidecar"));
-                    metaData.exportExifMieExvSidecar(rootPanel, progressBar, "mie");
+                    ExpMD.exportExifMieExvSidecar(rootPanel, progressBar, "mie");
                     //metaData.exportMIESidecar(progressBar);
                     OutputLabel.setText("");
                 } else {
@@ -147,7 +149,7 @@ public class MenuActionListener implements ActionListener  {
             case "exportexvsidecar":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exvsidecar"));
-                    metaData.exportExifMieExvSidecar(rootPanel, progressBar, "exv");
+                    ExpMD.exportExifMieExvSidecar(rootPanel, progressBar, "exv");
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -248,9 +250,9 @@ public class MenuActionListener implements ActionListener  {
             case "System/Program info":
                 String os = SystemPropertyFacade.getPropertyByKey(OS_NAME);
                 if (os.contains("APPLE") || os.contains("Mac") ) {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 650, Utils.systemProgramInfo()), "System and Program Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 650, Utils.systemProgramInfo()), ResourceBundle.getBundle("translations/program_strings").getString("sys.title"), JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 500, Utils.systemProgramInfo()), "System and Program Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 500, Utils.systemProgramInfo()), ResourceBundle.getBundle("translations/program_strings").getString("sys.title"), JOptionPane.INFORMATION_MESSAGE);
                 }
                 break;
             case "License":

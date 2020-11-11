@@ -201,18 +201,18 @@ public class Utils {
     public static String systemProgramInfo() {
         StringBuilder infostring = new StringBuilder();
 
-        infostring.append("<big>System and Program Info</big><hr><br><table width=\"90%\" border=0>");
-        infostring.append("<tr><td>Operating system:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_NAME) + "</td></tr>");
-        infostring.append("<tr><td>Operating system architecture:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH).replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<big>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.title") + "</big><hr><br><table width=\"90%\" border=0>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.os") + "</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_NAME) + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.osarch") + "</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_ARCH).replaceAll("(\\r|\\n)", "") + "</td></tr>");
         // or use replaceAll(LINE_SEPATATOR, "") or replaceAll("(\\r|\\n)", "")
-        infostring.append("<tr><td>Operating system version:</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
-        infostring.append("<tr><td>User home directory:</td><td>" + SystemPropertyFacade.getPropertyByKey(USER_HOME).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.osv") + "</td><td>" + SystemPropertyFacade.getPropertyByKey(OS_VERSION).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.uhome") + "</td><td>" + SystemPropertyFacade.getPropertyByKey(USER_HOME).replaceAll(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR), "") + "</td></tr>");
         infostring.append("<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
-        infostring.append("<tr><td>jExifToolGUI version:</td><td>" + ProgramTexts.Version.replaceAll("(\\r|\\n)", "") + "</td></tr>");
-        infostring.append("<tr><td>Exiftool version:</td><td>" + (MyVariables.getExiftoolVersion()).replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.jtgv") + "</td><td>" + ProgramTexts.Version.replaceAll("(\\r|\\n)", "") + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.ev") + "</td><td>" + (MyVariables.getExiftoolVersion()).replaceAll("(\\r|\\n)", "") + "</td></tr>");
         infostring.append("<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
-        infostring.append("<tr><td>java version:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_VERSION) + "</td></tr>");
-        infostring.append("<tr><td>java home:</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_HOME) + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.jv") + "</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_VERSION) + "</td></tr>");
+        infostring.append("<tr><td>" + ResourceBundle.getBundle("translations/program_strings").getString("sys.jhome") + "</td><td>" + SystemPropertyFacade.getPropertyByKey(JAVA_HOME) + "</td></tr>");
         infostring.append("</table></html>");
 
         return infostring.toString();
