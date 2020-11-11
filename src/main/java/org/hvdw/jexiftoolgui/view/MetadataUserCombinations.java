@@ -120,10 +120,11 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     if (!"".equals(name_writetype[0])) {
                         saveMetadata(name_writetype[0], name_writetype[1], name_writetype[2]);
                         if (!name_writetype[3].equals("")) {
-                            File testFile = new File(name_writetype[3]);
+                            /*File testFile = new File(name_writetype[3]);
                             if (testFile.exists()) {
                                 testFile.delete();
-                            }
+                            }*/
+                            logger.info("filename {} pad {}", name_writetype[1], name_writetype[3]);
                             String copyresult = StandardFileIO.CopyCustomConfigFile(name_writetype[1], name_writetype[3]);
                             if (!copyresult.startsWith("successfully copied")) {
                                 JOptionPane.showMessageDialog(metadatapanel, String.format(ProgramTexts.HTML, 200, "Copying your custom configuration file failed"), "Copy configfile failed", JOptionPane.ERROR_MESSAGE);
@@ -242,8 +243,8 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         custom_config_selector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                custom_config_field.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile") + " " + CustomconfigFile(myPanel, custom_config_field));
-            }
+                //custom_config_field.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile") + " " + CustomconfigFile(myPanel, custom_config_field));
+                custom_config_field.setText(CustomconfigFile(myPanel, custom_config_field));           }
         });
 
         //JPanel myPanel = new JPanel();
@@ -375,7 +376,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                 for (List<String> cells : tableRowsCells) {
                     sql = "insert into CustomMetadatasetLines(customset_name, rowcount, screen_label, tag, default_value) "
                             + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
-                    logger.info(sql);
+                    logger.debug(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
@@ -395,13 +396,13 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             if (!"".equals(queryresult)) { //means we have an error
                 JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetitle"), JOptionPane.ERROR_MESSAGE);
             } else {
-                logger.info("no of tablerowcells {}", tableRowsCells.size());
+                logger.debug("no of tablerowcells {}", tableRowsCells.size());
                 // deleting the old records went OK, now (re)insert the rows
                 rowcount = 0;
                 for (List<String> cells : tableRowsCells) {
                     sql = "insert into CustomMetadatasetLines(customset_name, rowcount, screen_label, tag, default_value) "
                             + "values('" + setName + "', " + rowcount + ",'" + cells.get(0) + "','" + cells.get(1) + "','" + cells.get(2) + "')";
-                    logger.info(sql);
+                    logger.debug(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
                         JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);

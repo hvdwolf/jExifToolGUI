@@ -361,12 +361,17 @@ public class StandardFileIO {
         //NIO copy with replace existing
         Path copyFrom = Paths.get(configFilePath);
         Path copyTo = Paths.get(strfileToBe);
+        //logger.info("copyFrom {} copyTo {}", configFilePath, strfileToBe);
+        File testFile = new File(strfileToBe);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
         try {
-            Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
+            Path path = Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
             copyResult = "successfully copied config file";
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error("copy of \"{}\" to \"{}\" failed with {}", configFilePath, strfileToBe, e);
+            logger.error("copy of \"{}\" to \"{}\" failed with {}", configFilePath, strfileToBe, e.toString());
             copyResult = e.toString();
         }
         return copyResult;
