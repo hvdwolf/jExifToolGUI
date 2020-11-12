@@ -66,6 +66,8 @@ public class Application {
         Application.OS_NAMES os = Utils.getCurrentOsName();
         if (os == OS_NAMES.LINUX) {
             Utils.setUIFont (new FontUIResource("SansSerif", Font.PLAIN,12));
+        } else if (os == OS_NAMES.APPLE) {
+            System.setProperty("apple.laf.UseScreenMenuBar", "true");
         }
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

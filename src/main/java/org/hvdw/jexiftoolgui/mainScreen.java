@@ -3563,13 +3563,6 @@ public class mainScreen {
     static void createAndShowGUI() {
 
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
-        frame.setIconImage(Utils.getFrameIcon());
-        try {
-            frame.setContentPane(new mainScreen(frame).rootPanel);
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-            logger.error("InterruptedException or IOException: {}", e);
-        }
 
         // Should work, but doesn't work
         Application.OS_NAMES os = Utils.getCurrentOsName();
@@ -3588,6 +3581,14 @@ public class mainScreen {
             //UIManager.setLookAndFeel(GTKLookAndFeel);
         } catch (Exception weTried) {
            logger.error("Could not start GUI.", weTried);
+        }
+
+        frame.setIconImage(Utils.getFrameIcon());
+        try {
+            frame.setContentPane(new mainScreen(frame).rootPanel);
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+            logger.error("InterruptedException or IOException: {}", e);
         }
 
         logger.debug("Gui Width x Height: {} x {}", frame.getWidth(), String.valueOf(frame.getHeight()));
