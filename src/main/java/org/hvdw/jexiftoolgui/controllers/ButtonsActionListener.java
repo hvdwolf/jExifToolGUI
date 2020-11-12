@@ -170,6 +170,9 @@ public class ButtonsActionListener implements ActionListener {
                 //Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/jexiftoolgui_usercombis.html");
                 Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#userdefinedmetadatacombinations");
                 break;
+            case "sidecarhelp":
+                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
+                break;
         }
 
 

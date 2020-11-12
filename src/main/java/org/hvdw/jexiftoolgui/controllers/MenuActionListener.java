@@ -115,7 +115,7 @@ public class MenuActionListener implements ActionListener  {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
                 break; */
-            case "sidecarhelp":
+            /*case "sidecarhelp":
                 Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
                 break;
             case "exportexifsidecar":
@@ -154,7 +154,7 @@ public class MenuActionListener implements ActionListener  {
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
-                break;
+                break; */
             case "Remove metadata":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     RemoveMetadata rmMetadata = new RemoveMetadata();

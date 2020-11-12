@@ -303,7 +303,36 @@ public class ExportMetadata {
     }
 
 
-    public void exportExifMieExvSidecar(JPanel rootpanel, JProgressBar progressBar, String exportoption) {
+    /////////////////////// Below the Sidecar exports
+    public static void SidecarChoices(JRadioButton[] SCradiobuttons, JPanel rootPanel, JProgressBar progressBar, JLabel OutputLabel) {
+        if (SCradiobuttons[0].isSelected()) {
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
+            exportExifMieExvSidecar(rootPanel, progressBar, "exif");
+            OutputLabel.setText("");
+        } else if (SCradiobuttons[1].isSelected()) {
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
+            exportXMPSidecar(rootPanel, progressBar);
+            OutputLabel.setText("");
+        } else if (SCradiobuttons[2].isSelected()) {
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.miesidecar"));
+            exportExifMieExvSidecar(rootPanel, progressBar, "mie");
+            OutputLabel.setText("");
+        } else {
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exvsidecar"));
+            exportExifMieExvSidecar(rootPanel, progressBar, "exv");
+            OutputLabel.setText("");
+        }
+
+
+        /*case "sidecarhelp":
+        Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
+        break;*/
+
+
+    }
+
+
+    public static void exportExifMieExvSidecar(JPanel rootpanel, JProgressBar progressBar, String exportoption) {
         String commandstring = "";
         String pathwithoutextension = "";
         List<String> cmdparams = new ArrayList<String>();
@@ -377,7 +406,7 @@ public class ExportMetadata {
         }
     }
 
-    public void exportXMPSidecar(JPanel rootpanel, JProgressBar progressBar) {
+    public static void exportXMPSidecar(JPanel rootpanel, JProgressBar progressBar) {
         String commandstring = "";
         String pathwithoutextension = "";
         List<String> cmdparams = new ArrayList<String>();

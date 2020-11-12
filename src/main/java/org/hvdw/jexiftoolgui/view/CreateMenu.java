@@ -36,7 +36,7 @@ public class CreateMenu {
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
 
-        JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
+/*        JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.help"));
         menuItem.setActionCommand("sidecarhelp");
         menuItem.addActionListener(mal);
@@ -56,7 +56,7 @@ public class CreateMenu {
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exv"));
         menuItem.setActionCommand("exportexvsidecar");
         menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
+        exportSidecarSubMenu.add(menuItem); */
 
 
         // metadata menu
@@ -68,7 +68,7 @@ public class CreateMenu {
         menuItem.setActionCommand("Export metadata");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem); */
-        myMenu.add(exportSidecarSubMenu);
+        //myMenu.add(exportSidecarSubMenu);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.copyallmetadatatoxmpformat"));
         menuItem.setActionCommand("Copy all metadata to xmp format");
         menuItem.addActionListener(mal);

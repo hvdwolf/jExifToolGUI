@@ -4010,6 +4010,90 @@
                           </component>
                         </children>
                       </grid>
+                      <grid id="80099" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title-resource-bundle="translations/program_strings" title-key="mmenu.exportsidecar"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="f1e5f" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="10" left="10" bottom="10" right="10"/>
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="11c55" class="javax.swing.JRadioButton" binding="exifSCradioButton">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <selected value="true"/>
+                                  <text resource-bundle="translations/program_strings" key="esc.exiftitle"/>
+                                </properties>
+                              </component>
+                              <vspacer id="ed94d">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="badb" class="javax.swing.JRadioButton" binding="xmpSCradioButton">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="esc.xmptitle"/>
+                                </properties>
+                              </component>
+                              <component id="56541" class="javax.swing.JRadioButton" binding="mieSCradioButton">
+                                <constraints>
+                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="esc.mietitle"/>
+                                </properties>
+                              </component>
+                              <component id="cc98f" class="javax.swing.JRadioButton" binding="exvSCradioButton">
+                                <constraints>
+                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="esc.exvtitle"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <grid id="da385" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="7035f" class="javax.swing.JButton" binding="SidecarExportButton">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="dlg.Export"/>
+                                </properties>
+                              </component>
+                              <component id="ba6ef" class="javax.swing.JButton" binding="SideCarHelpbutton">
+                                <constraints/>
+                                <properties>
+                                  <text resource-bundle="translations/program_strings" key="button.help"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <vspacer id="4aac0">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                        </children>
+                      </grid>
                     </children>
                   </tabbedpane>
                 </children>
@@ -4287,6 +4371,12 @@
       <member id="b9a2"/>
       <member id="2fb4c"/>
       <member id="3c2dc"/>
+    </group>
+    <group name="SideCarExportbuttonGroup">
+      <member id="11c55"/>
+      <member id="badb"/>
+      <member id="56541"/>
+      <member id="cc98f"/>
     </group>
   </buttonGroups>
   <inspectionSuppressions>
