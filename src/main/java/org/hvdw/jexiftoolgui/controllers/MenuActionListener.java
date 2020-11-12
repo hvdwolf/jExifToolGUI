@@ -130,7 +130,7 @@ public class MenuActionListener implements ActionListener  {
             case "exportxmpsidecar":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
-                    metaData.exportXMPSidecar(rootPanel, progressBar);
+                    ExpMD.exportXMPSidecar(rootPanel, progressBar);
                     OutputLabel.setText("");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);

@@ -2,9 +2,11 @@ package org.hvdw.jexiftoolgui.metadata;
 
 import ch.qos.logback.classic.Logger;
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
+import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -15,8 +17,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
+
 public class ExportMetadata {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(ExportMetadata.class);
+    private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public static void writeExport(JPanel rootPanel, JRadioButton[] GeneralExportRadiobuttons, JCheckBox[] GeneralExportCheckButtons, JComboBox exportUserCombicomboBox, JProgressBar progressBar) {
         boolean atLeastOneSelected = false;
@@ -295,6 +300,146 @@ public class ExportMetadata {
             }
             MyVariables.setpdfDocs(producedDocs);
         }
-
     }
+
+
+    public void exportExifMieExvSidecar(JPanel rootpanel, JProgressBar progressBar, String exportoption) {
+        String commandstring = "";
+        String pathwithoutextension = "";
+        List<String> cmdparams = new ArrayList<String>();
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getLoadedFiles();
+        int choice = 999;
+        String logstring = "";
+        String export_extension = exportoption.toLowerCase().trim();
+
+        switch (exportoption.toLowerCase()) {
+            case "mie":
+                logger.info("Create MIE sidecar");
+                logstring = "export mie sidecar cmdparams: {}";
+                choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.mietext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.mietitle"),
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                break;
+            case "exv":
+                logger.info("Create EXV sidecar");
+                logstring = "export exv sidecar cmdparams: {}";
+                choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.exvtext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.exvtitle"),
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                break;
+            case "exif":
+                logger.info("Create EXIF sidecar");
+                logstring = "export exif sidecar cmdparams: {}";
+                choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.exiftitle"),
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                break;
+        }
+        if ((choice == 0)) {
+            // choice 0: exiftool -tagsfromfile a.jpg -all:all -icc_profile a.mie
+            // exiftool -tagsfromfile a.jpg -all:all -icc_profile a.exv
+            // exiftool -tagsfromfile a.jpg -all:all -icc_profile a.exif
+            // choice 1: Cancel
+            boolean isWindows = Utils.isOsFromMicrosoft();
+
+            for (int index : selectedIndices) {
+                cmdparams = new ArrayList<String>();; // initialize on every file
+                cmdparams.add(Utils.platformExiftool());
+                cmdparams.add("-tagsfromfile");
+
+                if (isWindows) {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add("-all:all");
+                    if (!"exif".equals(export_extension)) {
+                        cmdparams.add("-icc_profile");
+                    }
+                    cmdparams.add(pathwithoutextension + "." + export_extension);
+                } else {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                    //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                    //cmdparams.add("\"" + files[index].getPath() + "\"");
+                    cmdparams.add(files[index].getPath());
+                    commandstring += files[index].getPath().replace(" ", "\\ ");
+                    cmdparams.add("-all:all");
+                    if (!"exif".equals(export_extension)) {
+                        cmdparams.add("-icc_profile");
+                    }
+                    //cmdparams.add((pathwithoutextension + "." + export_extension).replace(" ", "\\ "));
+                    //cmdparams.add("\"" + (pathwithoutextension + "." + export_extension) + "\"");
+                    cmdparams.add((pathwithoutextension + "." + export_extension));
+                }
+                // export metadata
+                logger.info(logstring, cmdparams);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,"off");
+                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+            }
+            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void exportXMPSidecar(JPanel rootpanel, JProgressBar progressBar) {
+        String commandstring = "";
+        String pathwithoutextension = "";
+        List<String> cmdparams = new ArrayList<String>();
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmp"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        //String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
+        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = MyVariables.getLoadedFiles();
+
+        logger.info("Create xmp sidecar");
+        int choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (!(choice == 2)) {
+            // choice 0: exiftool -tagsfromfile SRC.EXT DST.xmp
+            // choice 1: exiftool -tagsfromfile SRC.EXT -xmp DST.xmp
+            // choice 2: Cancel
+            boolean isWindows = Utils.isOsFromMicrosoft();
+
+            for (int index : selectedIndices) {
+                commandstring = "";
+                //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                cmdparams = new ArrayList<String>();; // initialize on every file
+                cmdparams.add(Utils.platformExiftool());
+                commandstring += Utils.platformExiftool();
+                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
+                if (preserveModifyDate) {
+                    cmdparams.add("-preserve");
+                }
+                //cmdparams.add("-overwrite_original");
+                cmdparams.add("-tagsfromfile");
+                commandstring += " -tagsfromfile ";
+
+                if (isWindows) {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    commandstring += files[index].getPath().replace("\\", "/");
+                    if (choice == 1) {
+                        cmdparams.add("-xmp");
+                        commandstring += " -xmp ";
+                    }
+                    cmdparams.add(pathwithoutextension + ".xmp");
+                    commandstring += pathwithoutextension + ".xmp";
+                } else {
+                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                    //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                    cmdparams.add(files[index].getPath());
+                    commandstring += files[index].getPath().replace(" ", "\\ ");
+                    if (choice == 1) {
+                        cmdparams.add("-xmp");
+                        commandstring += " -xmp ";
+                    }
+                    //cmdparams.add((pathwithoutextension + ".xmp").replace(" ", "\\ "));
+                    cmdparams.add(pathwithoutextension + ".xmp");
+                    commandstring += (pathwithoutextension + ".xmp").replace(" ", "\\ ");
+                }
+                // export metadata
+                logger.info("exportxmpsidecar cmdparams: {}", cmdparams);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,"off");
+                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+            }
+            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
 }
