@@ -120,10 +120,6 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     if (!"".equals(name_writetype[0])) {
                         saveMetadata(name_writetype[0], name_writetype[1], name_writetype[2]);
                         if (!name_writetype[3].equals("")) {
-                            /*File testFile = new File(name_writetype[3]);
-                            if (testFile.exists()) {
-                                testFile.delete();
-                            }*/
                             logger.info("filename {} pad {}", name_writetype[1], name_writetype[3]);
                             String copyresult = StandardFileIO.CopyCustomConfigFile(name_writetype[1], name_writetype[3]);
                             if (!copyresult.startsWith("successfully copied")) {
