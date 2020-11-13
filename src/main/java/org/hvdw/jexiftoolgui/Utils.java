@@ -1210,28 +1210,38 @@ public class Utils {
 
         logger.debug("RAW viewer started (trying to start)");
         Application.OS_NAMES currentOsName = getCurrentOsName();
-        Runtime runtime = Runtime.getRuntime();
-        //ProcessBuilder builder = new ProcessBuilder(cmdparams);
-        //Process process;
+        //Runtime runtime = Runtime.getRuntime();
+        ProcessBuilder builder = new ProcessBuilder();
+        Process p;
         try {
             switch (currentOsName) {
                 case APPLE:
                     String file_ext = getFileExtension(RawViewerPath);
                     if ("app".equals(file_ext)) {
-                        command = "open " + RawViewerPath + " " + StandardFileIO.noSpacePath();
+                        //command = "open " + RawViewerPath + " " + StandardFileIO.noSpacePath();
+                        //command = "open " + RawViewerPath + " " + MyVariables.getSelectedImagePath();
+                        builder.command("open", RawViewerPath.trim(), MyVariables.getSelectedImagePath());
                     } else {
-                        command = RawViewerPath + " " + StandardFileIO.noSpacePath();
+                        //command = RawViewerPath + " " + StandardFileIO.noSpacePath();
+                        builder.command(RawViewerPath.trim(), MyVariables.getSelectedImagePath());
                     }
-                    runtime.exec(command);
+                    //runtime.exec(command);
+                    p = builder.start();
                     return;
                 case MICROSOFT:
                     String convImg = "\"" + StandardFileIO.noSpacePath().replace("/", "\\") + "\"";
-                    commands = new String[] {RawViewerPath, convImg};
-                    runtime.exec(commands);
+                    //commands = new String[] {RawViewerPath, convImg};
+                    //runtime.exec(commands);
+                    builder.command(RawViewerPath.trim(),MyVariables.getSelectedImagePath());
+                    p = builder.start();
                     return;
                 case LINUX:
-                    command = RawViewerPath + " " + StandardFileIO.noSpacePath();
-                    runtime.exec(command);
+                    //command = RawViewerPath + " " + StandardFileIO.noSpacePath();
+                    command = RawViewerPath + " " + MyVariables.getSelectedImagePath();
+                    //runtime.exec(command);
+                    builder.command(RawViewerPath.trim(),MyVariables.getSelectedImagePath());
+                    p = builder.start();
+
                     return;
             }
         } catch (IOException e) {
