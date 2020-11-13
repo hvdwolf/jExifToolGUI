@@ -10,8 +10,8 @@ See also the Youtube video [Loading images](https://youtu.be/ytgnbJBAQ4g) about 
 This functionality does NOT support recursively parsing sub-directories as that could lead to tens of thousands of files which might not be a problem for a commandline tool, but is a problem for a Gui needing to load the files.
 Note: In windows this also means that you can drag&drop images onto the "closed" jExifToolGUI.exe in the file manager, and it will open and load the files.
     Examples: 
-    `java -jar jExifToolGUI.jar ../../Pictures/Summer2015  a.jpg  b.png  /home/pipodeclown/screenshots/*.jpg  ../c.cr2  d.nef`
-    `jExifToolGUI.exe Pictures\Malaga2012 c:\tmp\pics\*.jpg c:\tmp\pics\*.RAF a.jpg d:\stuff\b.jpg`
+    `java -jar jExifToolGUI.jar ../../Pictures/Summer2015  a.jpg  b.png  /home/pipodeclown/screenshots/*.jpg  ../c.cr2  d.nef`<br>
+    `jExifToolGUI.exe Pictures\Malaga2012 c:\tmp\pics\*.jpg c:\tmp\pics\*.RAF a.jpg d:\stuff\b.jpg`<br>
 * Change/Expand default imageviewer. Now always fullscreen (also for smaller than screen images) with "close/previous/next" buttons and "Escape/key-left/key-right" keylistener to loop through the loaded images (loaded images, not (only) selected images).
 * Option to select ["dual column" or "single column" thumbnail panel](https://youtu.be/SMv1IFesJcA) (from Preferences -> Look & Feel). The left thumbnail panel will auto-size to "two-column width" when necessary.
     * single column: thumbnail plus file name (top - bottom)
@@ -39,7 +39,7 @@ Note: In windows this also means that you can drag&drop images onto the "closed"
 
 ## 2020-10-23 1.6.3.1
 Bugfix release only:
-* Fix: [issue #78](https://github.com/hvdwolf/jExifToolGUI/issues/78) and [issue #57](https://github.com/hvdwolf/jExifToolGUI/issues/57)the default translations file contained a number of incorrect characters which made it impossible to use the "Load Images" and "Load Folder" options on all systems NOT running English, German, Spanish or Dutch. This seems like some sort of text file corruption but I do not know how it occurred. It is fixed now.
+* Fix: [issue #78](https://github.com/hvdwolf/jExifToolGUI/issues/78) and [issue #57](https://github.com/hvdwolf/jExifToolGUI/issues/57) the default translations file contained a number of incorrect characters which made it impossible to use the "Load Images" and "Load Folder" options on all systems NOT running English, German, Spanish or Dutch. This seems like some sort of text file corruption but I do not know how it occurred. It is fixed now.
 * Lens configurations: Saving of lens descriptions is optional, but retrieval expected it to be there. That now works correct.
 
 ## 2020-10-04 1.6.3
