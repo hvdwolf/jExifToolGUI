@@ -239,6 +239,9 @@ public class MenuActionListener implements ActionListener  {
             case "Online manual":
                 Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html");
                 break;
+            case "onlinemanuales":
+                Utils.openBrowser("https://docs.museosabiertos.org/jexiftoolgui");
+                break;
             case "Youtube channel":
                 Utils.openBrowser("https://www.youtube.com/playlist?list=PLAHD8RNkeuGdyRH7BKFefc7p72Dp6jVjW");
                 break;

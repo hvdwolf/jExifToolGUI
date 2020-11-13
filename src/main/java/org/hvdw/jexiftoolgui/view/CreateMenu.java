@@ -206,6 +206,10 @@ public class CreateMenu {
         menuItem.setActionCommand("Online manual");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.onlinemanueles"));
+        menuItem.setActionCommand("onlinemanuales");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.youtube"));
         menuItem.setActionCommand("Youtube channel");
         menuItem.addActionListener(mal);
