@@ -2,6 +2,7 @@
 
 ## 2020-11-14 1.7.1
 * Add "Remove metadata by category". Use the same drop-down as in the main screen to be able to select any possible category and delete the metadata in that category.
+* Add Spanish online manual (Thanks to mrtngrsbch martingggg)
 * Fix (Linux) [issue #84](https://github.com/hvdwolf/jExifToolGUI/issues/84): Fix (stupid) typo in appImage PATH statement.
 * Fix/enhancement (MacOS): [issue #85](https://github.com/hvdwolf/jExifToolGUI/issues/85): decoupled menu behavior on MacOS. The menu is now (finally) correctly integrated with the MacOS system menu bar.
 * Fix [issue #83](https://github.com/hvdwolf/jExifToolGUI/issues/83): Export sidecar metadata failed for images with spaces in paths/file names.
