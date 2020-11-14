@@ -40,7 +40,7 @@ public class DeleteFavorite extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.info("favorite for deletion {}", favorite_name);
-                String sql = "delete from userFavorites where favorite_name = '" + favorite_name + "'";
+                String sql = "delete from userFavorites where favorite_name = '" + favorite_name.trim() + "'";
                 queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                 if (!"".equals(queryresult)) { //means we have an error
                     JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.delerror") + favorite_name, ResourceBundle.getBundle("translations/program_strings").getString("fav.delerrorshort"), JOptionPane.ERROR_MESSAGE);

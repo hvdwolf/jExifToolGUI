@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
+import org.hvdw.jexiftoolgui.model.Lenses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -60,8 +62,8 @@ public class SelectmyLens extends JDialog {
         Deletebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                logger.info("lens selected for deletion {}", lensname);
-                String sql = "delete from myLenses where lens_Name = '" + lensname + "'";
+                logger.info("lens selected for deletion -{}-", lensname);
+                String sql = "delete from myLenses where lens_name = '" + lensname.trim() + "'";
                 queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                 if (!"".equals(queryresult)) { //means we have an error
                     JOptionPane.showMessageDialog(rp, ResourceBundle.getBundle("translations/program_strings").getString("sellens.delerror") + lensname, ResourceBundle.getBundle("translations/program_strings").getString("fav.delerrorshort"), JOptionPane.ERROR_MESSAGE);
@@ -94,39 +96,6 @@ public class SelectmyLens extends JDialog {
         });
     }
 
-    private String loadlensnames() {
-        String sql = "select lens_name,lens_description from myLenses order by lens_Name";
-        String lensnames = SQLiteJDBC.generalQuery(sql, "disk");
-        logger.debug("retrieved following lens names {}", lensnames);
-        return lensnames;
-    }
-
-    private void displaylensnames(String lensnames) {
-        DefaultTableModel model = (DefaultTableModel) lensnametable.getModel();
-        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("sellens.name"), ResourceBundle.getBundle("translations/program_strings").getString("sellens.descr")});
-        lensnametable.getColumnModel().getColumn(0).setPreferredWidth(150);
-        lensnametable.getColumnModel().getColumn(1).setPreferredWidth(300);
-        model.setRowCount(0);
-
-        Object[] row = new Object[1];
-
-        if (lensnames.length() > 0) {
-            String[] lines = lensnames.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
-            //logger.debug("String[] lines {}", lines.toString());
-
-            for (String line : lines) {
-                logger.debug("line {}", line);
-                String[] cells = line.split("\\t");
-                logger.debug("number of elements after splitted line {}", cells.length);
-                if (cells.length > 1) {
-                    model.addRow(new Object[]{cells[0], cells[1]});
-                } else {
-                    model.addRow(new Object[]{line, ""});
-                }
-            }
-        }
-    }
-
     private void onCancel() {
         // add your code here if necessary
         setVisible(false);
@@ -155,9 +124,9 @@ public class SelectmyLens extends JDialog {
         // Make table readonly
         lensnametable.setDefaultEditor(Object.class, null);
         // Get current defined lenses
-        String lensnames = loadlensnames();
+        String lensnames = Lenses.loadlensnames();
         logger.info("retrieved lensnames: " + lensnames);
-        displaylensnames(lensnames);
+        Lenses.displaylensnames(lensnames, lensnametable);
 
         setVisible(true);
         return lensname;

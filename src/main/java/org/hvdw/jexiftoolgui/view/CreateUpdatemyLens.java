@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
+import org.hvdw.jexiftoolgui.model.Lenses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,44 +79,6 @@ public class CreateUpdatemyLens extends JDialog {
         });
     }
 
-    private String loadlensnames() {
-        String sql = "select lens_name,lens_description from myLenses order by lens_Name";
-        String lensnames = SQLiteJDBC.generalQuery(sql, "disk");
-        //lblLensNames.setText(String.format(ProgramTexts.HTML, 300, lensnames.replace("\n", "<br>")));
-        return lensnames;
-
-    }
-
-    private void displaylensnames(String lensnames) {
-        /*DefaultTableModel model = new DefaultTableModel() {
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells disables
-                return false;
-            }
-        };*/
-        DefaultTableModel model = (DefaultTableModel) lensnametable.getModel();
-        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("sellens.name"), ResourceBundle.getBundle("translations/program_strings").getString("sellens.descr")});
-        //lensnametable.setModel(model);
-        lensnametable.getColumnModel().getColumn(0).setPreferredWidth(150);
-        lensnametable.getColumnModel().getColumn(1).setPreferredWidth(300);
-        model.setRowCount(0);
-
-        Object[] row = new Object[1];
-
-        if (lensnames.length() > 0) {
-            String[] lines = lensnames.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
-
-            for (String line : lines) {
-                //String[] cells = lines[i].split(":", 1); // Only split on first : as some tags also contain (multiple) :
-                String[] cells = line.split("\\t");
-                model.addRow(new Object[]{cells[0], cells[1]});
-                //model.addRow(new Object[]{line});
-            }
-        }
-
-    }
 
     private void onOK() {
         // add your code here
@@ -141,9 +104,9 @@ public class CreateUpdatemyLens extends JDialog {
         lensnametable.setDefaultEditor(Object.class, null);
 
         // Get current defined lenses
-        String lensnames = loadlensnames();
+        String lensnames = Lenses.loadlensnames();
         logger.info("retrieved lensnames: " + lensnames);
-        displaylensnames(lensnames);
+        Lenses.displaylensnames(lensnames, lensnametable);
 
         setVisible(true);
 

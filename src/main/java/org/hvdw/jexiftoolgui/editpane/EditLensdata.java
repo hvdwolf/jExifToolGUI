@@ -278,8 +278,8 @@ public class EditLensdata {
                             +"exif_focallengthIn35mmformat, exif_fnumber, exif_maxaperturevalue, makernotes_focusdistance,"
                             +"composite_lensid, makernotes_conversionlens, makernotes_lenstype, makernotes_lensfirmwareversion, exif_meteringmode)"
                             +"values('"
-                            + chosenValues[0] + "','"
-                            + chosenValues[1] + "','"
+                            + chosenValues[0].trim() + "','"
+                            + chosenValues[1].trim() + "','"
                             + LensFields[0].getText().trim() + "','"
                             + LensFields[1].getText().trim() + "','"
                             + LensFields[2].getText().trim() + "','"
@@ -319,7 +319,7 @@ public class EditLensdata {
                 String sql = "select exif_lensmake, exif_lensmodel, exif_lensserialnumber, exif_focallength, "
                         +"exif_focallengthIn35mmformat, exif_fnumber, exif_maxaperturevalue, makernotes_focusdistance, "
                         +"composite_lensid, makernotes_conversionlens, makernotes_lenstype, makernotes_lensfirmwareversion, exif_meteringmode "
-                        +"from myLenses where lens_name ='" + lensname + "'";
+                        +"from myLenses where lens_name ='" + lensname.trim() + "'";
                 queryresult = SQLiteJDBC.generalQuery(sql, "disk");
                 logger.debug("returned lens: " + queryresult);
                 for (JTextField field: lensFields) {
