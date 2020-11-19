@@ -43,8 +43,13 @@ dependencies {
     implementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
     implementation(files("$projectDir/libs/logback-core-1.2.3.jar"))
     implementation(files("$projectDir/libs/logback-classic-1.2.3.jar"))
-    implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = "2.9.9")
-    implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.9.9")
+    // No longer use bloated jackson
+    //implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = "2.11.3")
+    //implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.11.3")
+
+    // Add minimal json (35Kb), to be used for Nominatim queries (not yet)
+    implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
+
     // Add dependencies of forms
     implementation(group = "com.intellij", name = "forms_rt", version = "7.0.3")
 
@@ -86,17 +91,19 @@ dependencies {
     implementation(files("$projectDir/libs/layout-7.1.12.jar"))
     implementation(files("$projectDir/libs/pdfa-7.1.12.jar"))
 //////////////////////////////////////////////////
-    // Minimal json (35Kb), to be used for Nominatim queries (not yet)
-    implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
-
     // sqlite
     //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
     implementation(files("$projectDir/libs/sqlite-jdbc-3.32.3.2.jar"))
+
+    // Jeremie Hutchets's Nominatim Java API (5MB)
+    //implementation(group = "fr.dudie", name = "nominatim-api", version = "3.4")
 
     // The opencsv library jar
     implementation(files("$projectDir/libs/opencsv-5.3.jar"))
     //implementation(group = "com.opencsv", name = "opencsv", version = "5.3")
 
+    //jxmapviewer2 https://github.com/msteiger/jxmapviewer2
+    implementation(group = "org.jxmapviewer", name = "jxmapviewer2", version = "2.6")
 
 
     // Testing dependencies

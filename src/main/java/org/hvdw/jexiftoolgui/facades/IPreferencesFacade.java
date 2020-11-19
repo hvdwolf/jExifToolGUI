@@ -24,7 +24,9 @@ public interface IPreferencesFacade {
         DUAL_COLUMN("dualcolumn"),
         GUI_WIDTH("guiwidth"), //rootpanel width
         GUI_HEIGHT("guiheight"), //rootpanel height
-        SPLITPANEL_POSITION("splitpanelpostion") //percentual position left/right splitpane
+        SPLITPANEL_POSITION("splitpanelpostion"), //percentual position left/right splitpane
+        LATITUDE("latitude"), // latitude for mapviewer screen
+        LONGITUDE("longitude")
         ;
 
         public final String key;

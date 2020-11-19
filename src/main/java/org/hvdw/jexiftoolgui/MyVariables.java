@@ -43,6 +43,8 @@ public class MyVariables {
     private int ScreenHeight;
     private String[] mainScreenParams;
     private ArrayList<String> category_tag;
+    private String Latitude;
+    private String Longitude;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -166,4 +168,10 @@ public class MyVariables {
 
     public static ArrayList<String> getcategory_tag() { return staticInstance.category_tag; }
     public static void setcategory_tag (ArrayList<String> ctgr_tg) { staticInstance.category_tag = ctgr_tg; }
+
+    public static String getLatitude() { return staticInstance.Latitude; }
+    public static void setLatitude(String lat) { staticInstance.Latitude = lat; }
+
+    public static String getLongitude() { return staticInstance.Longitude; }
+    public static void setLongitude(String lng) { staticInstance.Longitude = lng; }
 }

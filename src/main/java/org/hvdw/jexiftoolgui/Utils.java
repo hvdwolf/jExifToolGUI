@@ -591,6 +591,7 @@ public class Utils {
 
     public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JTable tableListfiles, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params) {
         File[] files;
+        boolean files_null = false;
 
         // "Translate" for clarity, instead of using the array index;
         JLabel OutputLabel = mainScreenLabels[0];
@@ -686,6 +687,7 @@ public class Utils {
             });
         } else {
             logger.debug("no files loaded. User pressed cancel.");
+            files_null = true;
             lblLoadedFiles.setText("");
             OutputLabel.setText("");
         }

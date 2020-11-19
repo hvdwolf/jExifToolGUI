@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="1373" height="720"/>
+      <xy x="20" y="20" width="1571" height="720"/>
     </constraints>
     <properties>
       <minimumSize width="1100" height="720"/>
@@ -990,7 +990,7 @@
                           </component>
                         </children>
                       </grid>
-                      <grid id="9f2e1" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="9f2e1" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="5" left="5" bottom="5" right="10"/>
                         <constraints>
                           <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.gpstab"/>
@@ -1004,7 +1004,7 @@
                           <grid id="873fb" binding="gpsLocationPanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="5" left="5" bottom="5" right="5"/>
                             <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
                             </constraints>
                             <properties/>
                             <border type="bevel-raised"/>
@@ -1142,320 +1142,15 @@
                               </component>
                             </children>
                           </grid>
-                          <grid id="2d4d9" binding="gpsLatLonAltPanel" layout-manager="GridLayoutManager" row-count="5" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="5" left="5" bottom="5" right="5"/>
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="bevel-raised"/>
-                            <children>
-                              <component id="43c2d" class="javax.swing.JCheckBox" binding="SaveLatLonAltcheckBox">
-                                <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text resource-bundle="translations/program_strings" key="gps.savella"/>
-                                </properties>
-                              </component>
-                              <component id="b07bc" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.gps"/>
-                                </properties>
-                              </component>
-                              <component id="e4641" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.decimal"/>
-                                </properties>
-                              </component>
-                              <component id="12b74" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.latitude"/>
-                                </properties>
-                              </component>
-                              <component id="4e5c" class="javax.swing.JFormattedTextField" binding="gpsLatDecimaltextField">
-                                <constraints>
-                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="100" height="25"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="32aee" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.altitude"/>
-                                </properties>
-                              </component>
-                              <component id="3f022" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.longitude"/>
-                                </properties>
-                              </component>
-                              <component id="efb59" class="javax.swing.JFormattedTextField" binding="gpsLonDecimaltextField">
-                                <constraints>
-                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="100" height="25"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="522f4" class="javax.swing.JFormattedTextField" binding="gpsAltDecimaltextField">
-                                <constraints>
-                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="100" height="25"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="23a6a" class="javax.swing.JCheckBox" binding="gpsAboveSealevelcheckBox">
-                                <constraints>
-                                  <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text resource-bundle="translations/program_strings" key="gps.above"/>
-                                </properties>
-                              </component>
-                            </children>
-                          </grid>
-                          <grid id="454cb" binding="gpsCalculationPanel" layout-manager="GridLayoutManager" row-count="5" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="5" left="5" bottom="5" right="5"/>
-                            <constraints>
-                              <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="bevel-raised"/>
-                            <children>
-                              <component id="7daeb" class="javax.swing.JLabel" binding="gpsCalculatorLabelText">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false">
-                                    <preferred-size width="200" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties>
-                                  <text value="Label"/>
-                                </properties>
-                              </component>
-                              <component id="865f0" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.decdegrees"/>
-                                  <toolTipText resource-bundle="translations/program_strings" key="gps.decdegrees"/>
-                                </properties>
-                              </component>
-                              <component id="24e54" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.degrees"/>
-                                </properties>
-                              </component>
-                              <component id="b2ab2" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.minutes"/>
-                                </properties>
-                              </component>
-                              <component id="71263" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.seconds"/>
-                                </properties>
-                              </component>
-                              <component id="ce02c" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.latitude"/>
-                                </properties>
-                              </component>
-                              <component id="62427" class="javax.swing.JLabel" binding="CalcLatDecimaltextLabel">
-                                <constraints>
-                                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="75" height="25"/>
-                                  </grid>
-                                </constraints>
-                                <properties>
-                                  <text value="00.00000"/>
-                                </properties>
-                              </component>
-                              <component id="d6e50" class="javax.swing.JFormattedTextField" binding="CalcLatDegtextField">
-                                <constraints>
-                                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="30" height="25"/>
-                                    <maximum-size width="40" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="2246a" class="javax.swing.JFormattedTextField" binding="CalcLatMintextField">
-                                <constraints>
-                                  <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="30" height="25"/>
-                                    <maximum-size width="40" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="98f1c" class="javax.swing.JFormattedTextField" binding="CalcLatSectextField">
-                                <constraints>
-                                  <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="30" height="25"/>
-                                    <maximum-size width="40" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="ef243" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.longitude"/>
-                                </properties>
-                              </component>
-                              <component id="48e47" class="javax.swing.JLabel" binding="CalcLonDecimaltextLabel">
-                                <constraints>
-                                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="75" height="25"/>
-                                  </grid>
-                                </constraints>
-                                <properties>
-                                  <text value="00.00000"/>
-                                </properties>
-                              </component>
-                              <component id="1d4b1" class="javax.swing.JFormattedTextField" binding="CalcLonDegtextField">
-                                <constraints>
-                                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="30" height="25"/>
-                                    <maximum-size width="40" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="c8f08" class="javax.swing.JFormattedTextField" binding="CalcLonMintextField">
-                                <constraints>
-                                  <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="30" height="25"/>
-                                    <maximum-size width="40" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="5fe90" class="javax.swing.JFormattedTextField" binding="CalcLonSectextField">
-                                <constraints>
-                                  <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="30" height="25"/>
-                                    <maximum-size width="40" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="6a2a6" class="javax.swing.JRadioButton" binding="CalcNorthRadioButton">
-                                <constraints>
-                                  <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text resource-bundle="translations/program_strings" key="gps.n"/>
-                                </properties>
-                              </component>
-                              <component id="9470d" class="javax.swing.JRadioButton" binding="CalcSouthRadioButton">
-                                <constraints>
-                                  <grid row="2" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.s"/>
-                                </properties>
-                              </component>
-                              <component id="c5470" class="javax.swing.JRadioButton" binding="CalcEastradioButton">
-                                <constraints>
-                                  <grid row="3" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text resource-bundle="translations/program_strings" key="gps.e"/>
-                                </properties>
-                              </component>
-                              <component id="4d83c" class="javax.swing.JRadioButton" binding="CalcWestRadioButton">
-                                <constraints>
-                                  <grid row="3" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.w"/>
-                                </properties>
-                              </component>
-                              <component id="563e9" class="javax.swing.JButton" binding="decimalToMinutesSecondsButton" default-binding="true">
-                                <constraints>
-                                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <enabled value="false"/>
-                                  <text value="Decimal to minutes-seconds =&gt;"/>
-                                  <visible value="false"/>
-                                </properties>
-                              </component>
-                              <component id="93ce0" class="javax.swing.JButton" binding="minutesSecondsToDecimalButton" default-binding="true">
-                                <constraints>
-                                  <grid row="4" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <label value="Converteer naar decimale graden"/>
-                                  <text resource-bundle="translations/program_strings" key="gps.btnconvert"/>
-                                </properties>
-                              </component>
-                              <component id="12440" class="javax.swing.JButton" binding="copyToInputFieldsButton" default-binding="true">
-                                <constraints>
-                                  <grid row="4" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text resource-bundle="translations/program_strings" key="gps.btncopytoinp"/>
-                                </properties>
-                              </component>
-                              <component id="b38c8" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font style="1"/>
-                                  <text resource-bundle="translations/program_strings" key="gps.calc"/>
-                                </properties>
-                              </component>
-                            </children>
-                          </grid>
                           <vspacer id="d96">
                             <constraints>
-                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                             </constraints>
                           </vspacer>
                           <grid id="416d8" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="5" left="5" bottom="5" right="5"/>
                             <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
@@ -1500,6 +1195,12 @@
                                       <text resource-bundle="translations/program_strings" key="button.resetfields"/>
                                     </properties>
                                   </component>
+                                  <component id="dad4d" class="javax.swing.JButton" binding="gpssearchLocationButton">
+                                    <constraints/>
+                                    <properties>
+                                      <text resource-bundle="translations/program_strings" key="gps.searchbtn"/>
+                                    </properties>
+                                  </component>
                                   <component id="35a54" class="javax.swing.JButton" binding="gpsMapcoordinatesbutton">
                                     <constraints/>
                                     <properties>
@@ -1516,6 +1217,345 @@
                               </grid>
                             </children>
                           </grid>
+                          <tabbedpane id="e1d21" binding="geoformattabbedPane">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false">
+                                <preferred-size width="600" height="200"/>
+                                <maximum-size width="600" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <grid id="755d7" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <tabbedpane title-resource-bundle="translations/program_strings" title-key="gps.decdegrees"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <grid id="2d4d9" binding="gpsLatLonAltPanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="5" left="5" bottom="5" right="5"/>
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false">
+                                        <preferred-size width="550" height="-1"/>
+                                        <maximum-size width="550" height="-1"/>
+                                      </grid>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="b07bc" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.gps"/>
+                                        </properties>
+                                      </component>
+                                      <component id="e4641" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.decimal"/>
+                                        </properties>
+                                      </component>
+                                      <component id="12b74" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.latitude"/>
+                                        </properties>
+                                      </component>
+                                      <component id="4e5c" class="javax.swing.JFormattedTextField" binding="gpsLatDecimaltextField">
+                                        <constraints>
+                                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="100" height="25"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="32aee" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.altitude"/>
+                                        </properties>
+                                      </component>
+                                      <component id="3f022" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.longitude"/>
+                                        </properties>
+                                      </component>
+                                      <component id="efb59" class="javax.swing.JFormattedTextField" binding="gpsLonDecimaltextField">
+                                        <constraints>
+                                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="100" height="25"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="522f4" class="javax.swing.JFormattedTextField" binding="gpsAltDecimaltextField">
+                                        <constraints>
+                                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="100" height="25"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="23a6a" class="javax.swing.JCheckBox" binding="gpsAboveSealevelcheckBox">
+                                        <constraints>
+                                          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                                            <preferred-size width="150" height="-1"/>
+                                            <maximum-size width="200" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties>
+                                          <selected value="true"/>
+                                          <text resource-bundle="translations/program_strings" key="gps.above"/>
+                                        </properties>
+                                      </component>
+                                      <component id="c8870" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text value="dd.dddddd"/>
+                                        </properties>
+                                      </component>
+                                      <component id="384f0" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text value="ddd.dddddd"/>
+                                        </properties>
+                                      </component>
+                                      <component id="69de3" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text value="ddddd.dd"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </grid>
+                                </children>
+                              </grid>
+                              <grid id="25a8f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <tabbedpane title-resource-bundle="translations/program_strings" title-key="gps.dmsformat"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <grid id="454cb" binding="gpsCalculationPanel" layout-manager="GridLayoutManager" row-count="4" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="5" left="5" bottom="5" right="5"/>
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="1" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="24e54" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.degrees"/>
+                                        </properties>
+                                      </component>
+                                      <component id="b2ab2" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.minutes"/>
+                                        </properties>
+                                      </component>
+                                      <component id="71263" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.seconds"/>
+                                        </properties>
+                                      </component>
+                                      <component id="ce02c" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.latitude"/>
+                                        </properties>
+                                      </component>
+                                      <component id="d6e50" class="javax.swing.JFormattedTextField" binding="CalcLatDegtextField">
+                                        <constraints>
+                                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="40" height="25"/>
+                                            <maximum-size width="50" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="2246a" class="javax.swing.JFormattedTextField" binding="CalcLatMintextField">
+                                        <constraints>
+                                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="40" height="25"/>
+                                            <maximum-size width="50" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="98f1c" class="javax.swing.JFormattedTextField" binding="CalcLatSectextField">
+                                        <constraints>
+                                          <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="40" height="25"/>
+                                            <maximum-size width="50" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="ef243" class="javax.swing.JLabel">
+                                        <constraints>
+                                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.longitude"/>
+                                        </properties>
+                                      </component>
+                                      <component id="1d4b1" class="javax.swing.JFormattedTextField" binding="CalcLonDegtextField">
+                                        <constraints>
+                                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="40" height="25"/>
+                                            <maximum-size width="50" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="c8f08" class="javax.swing.JFormattedTextField" binding="CalcLonMintextField">
+                                        <constraints>
+                                          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="40" height="25"/>
+                                            <maximum-size width="50" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="5fe90" class="javax.swing.JFormattedTextField" binding="CalcLonSectextField">
+                                        <constraints>
+                                          <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                            <preferred-size width="30" height="25"/>
+                                            <maximum-size width="40" height="-1"/>
+                                          </grid>
+                                        </constraints>
+                                        <properties/>
+                                      </component>
+                                      <component id="6a2a6" class="javax.swing.JRadioButton" binding="CalcNorthRadioButton">
+                                        <constraints>
+                                          <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <selected value="true"/>
+                                          <text resource-bundle="translations/program_strings" key="gps.n"/>
+                                        </properties>
+                                      </component>
+                                      <component id="9470d" class="javax.swing.JRadioButton" binding="CalcSouthRadioButton">
+                                        <constraints>
+                                          <grid row="1" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.s"/>
+                                        </properties>
+                                      </component>
+                                      <component id="c5470" class="javax.swing.JRadioButton" binding="CalcEastradioButton">
+                                        <constraints>
+                                          <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <selected value="true"/>
+                                          <text resource-bundle="translations/program_strings" key="gps.e"/>
+                                        </properties>
+                                      </component>
+                                      <component id="4d83c" class="javax.swing.JRadioButton" binding="CalcWestRadioButton">
+                                        <constraints>
+                                          <grid row="2" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text resource-bundle="translations/program_strings" key="gps.w"/>
+                                        </properties>
+                                      </component>
+                                      <component id="563e9" class="javax.swing.JButton" binding="decimalToMinutesSecondsButton" default-binding="true">
+                                        <constraints>
+                                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <enabled value="false"/>
+                                          <text value="Decimal to minutes-seconds =&gt;"/>
+                                          <visible value="false"/>
+                                        </properties>
+                                      </component>
+                                      <component id="93ce0" class="javax.swing.JButton" binding="minutesSecondsToDecimalButton" default-binding="true">
+                                        <constraints>
+                                          <grid row="3" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <enabled value="false"/>
+                                          <label value="Converteer naar decimale graden"/>
+                                          <text resource-bundle="translations/program_strings" key="gps.btnconvert"/>
+                                          <visible value="false"/>
+                                        </properties>
+                                      </component>
+                                      <component id="12440" class="javax.swing.JButton" binding="copyToInputFieldsButton" default-binding="true">
+                                        <constraints>
+                                          <grid row="3" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <enabled value="false"/>
+                                          <text resource-bundle="translations/program_strings" key="gps.btncopytoinp"/>
+                                          <visible value="false"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </grid>
+                                </children>
+                              </grid>
+                            </children>
+                          </tabbedpane>
+                          <component id="43c2d" class="javax.swing.JCheckBox" binding="SaveLatLonAltcheckBox">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text resource-bundle="translations/program_strings" key="gps.savella"/>
+                            </properties>
+                          </component>
+                          <component id="1a64d" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text resource-bundle="translations/program_strings" key="gps.searchtxt"/>
+                            </properties>
+                          </component>
+                          <component id="a55f" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text resource-bundle="translations/program_strings" key="gps.extsearch"/>
+                            </properties>
+                          </component>
                         </children>
                       </grid>
                       <grid id="9ec6" binding="GeotaggingEditpanel" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
