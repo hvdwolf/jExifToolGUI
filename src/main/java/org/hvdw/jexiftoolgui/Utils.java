@@ -1099,6 +1099,7 @@ public class Utils {
 
         Object[] row = new Object[1];
 
+
         logger.debug("exiftoolInfo.length() {}; Warning?? {}; Error ?? {}", exiftoolInfo.length(),exiftoolInfo.trim().startsWith("Warning"), exiftoolInfo.trim().startsWith("Error"));
 //        if ( (exiftoolInfo.length() > 0) && !( exiftoolInfo.trim().startsWith("Warning") || exiftoolInfo.trim().startsWith("Error") ) ) {
         if (exiftoolInfo.length() > 0) {
@@ -1109,10 +1110,21 @@ public class Utils {
             } else {
                 String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 
-                for (String line : lines) {
-                    //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
-                    String[] cells = line.split("\\t", 3);
-                    model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                boolean sort_cats_tags = prefs.getByKey(SORT_CATEGORIES_TAGS, false);
+                if (sort_cats_tags) {
+                    List<String> strList = Arrays.asList(lines);
+                    Collections.sort(strList);
+                    String[] sortedLines = strList.stream().toArray(String[]::new);
+                    for (String line : sortedLines) {
+                        String[] cells = line.split("\\t", 3);
+                        model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                    }
+                } else {
+                    for (String line : lines) {
+                        //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+                        String[] cells = line.split("\\t", 3);
+                        model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                    }
                 }
             }
         }
@@ -1390,7 +1402,7 @@ public class Utils {
         // No complex method. Simply write it out
         // first latitude
         // Note that "South" latitudes and "West" longitudes convert to negative decimal numbers.
-        // In decs-mins-secs, degrees < 90, minutes < 60, seconds <60. NOT <=
+        // In decs-mins-secs, degrees lat < 90 degrees lon < 180, minutes < 60, seconds <60. NOT <=
         if ( in_Range(Integer.parseInt(input_lat_lon[2]), 0, 60)) { //secs
             coordinate = Float.parseFloat(input_lat_lon[2]) / (float) 60;
             logger.debug("converted latitude seconds: " + coordinate);

@@ -1,6 +1,8 @@
 package org.hvdw.jexiftoolgui.editpane;
 
+import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
@@ -17,11 +19,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
+import static org.hvdw.jexiftoolgui.Utils.in_Range;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
@@ -51,13 +51,26 @@ public class EditGPSdata {
         altformatter.setMaximumIntegerDigits(5);
         altformatter.setMaximumFractionDigits(2);
         gpsNumdecFields[2].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(altformatter)));
-        //GPS calc fields
-        NumberFormat degminsecformatter = NumberFormat.getNumberInstance(Locale.US );
-        degminsecformatter.setMaximumIntegerDigits(2);
-        degminsecformatter.setMaximumFractionDigits(0);
-        for (JFormattedTextField field : gpsCalcFields) {
-            field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(degminsecformatter)));
-        }
+        //GPS GMS fields
+        // Deg (lat) and min are 2 digits integer
+        NumberFormat degminformatter = NumberFormat.getNumberInstance(Locale.US );
+        degminformatter.setMaximumIntegerDigits(2);
+        degminformatter.setMaximumFractionDigits(0);
+        //{CalcLatDegtextField, CalcLatMintextField, CalcLatSectextField, CalcLonDegtextField, CalcLonMintextField, CalcLonSectextField};
+        gpsCalcFields[0].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(degminformatter)));
+        gpsCalcFields[1].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(degminformatter)));
+        gpsCalcFields[4].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(degminformatter)));
+        // Deg lon is 3 digit integer
+        NumberFormat londegformatter = NumberFormat.getNumberInstance(Locale.US );
+        londegformatter.setMaximumIntegerDigits(3);
+        londegformatter.setMaximumFractionDigits(0);
+        gpsCalcFields[3].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(londegformatter)));
+        // secs we make 2 digit, 3 decimals floats
+        NumberFormat secformatter = NumberFormat.getNumberInstance(Locale.US );
+        secformatter.setMaximumIntegerDigits(2);
+        secformatter.setMaximumFractionDigits(3);
+        gpsCalcFields[2].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(secformatter)));
+        gpsCalcFields[5].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(secformatter)));
     }
 
 
@@ -142,11 +155,12 @@ public class EditGPSdata {
     }
 
 
-    public void writeGPSTags(JFormattedTextField[] gpsNumdecFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes, JFormattedTextField[] gpsDMSFields, JRadioButton[] gpSdmsradiobuttons, JProgressBar progressBar, int selectedTabIndex) {
+    public void writeGPSTags(JFormattedTextField[] gpsNumdecFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes, JFormattedTextField[] gpsDMSFields, JRadioButton[] gpSdmsradiobuttons, JProgressBar progressBar, int selectedTabIndex, JPanel rootPanel) {
 
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
         List<String> cmdparams = new ArrayList<String>();
+        boolean valuescorrect = true;
 
         cmdparams.add(Utils.platformExiftool());
         boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
@@ -163,43 +177,74 @@ public class EditGPSdata {
             if (selectedTabIndex == 0) { // This means the decimal format tab
                 // Exiftool prefers to only set one tag (exif or xmp) and retrieve with composite,
                 // but I prefer to set both to satisfy every user
-                cmdparams.add("-exif:GPSLatitude=" + gpsNumdecFields[0].getText().trim());
-                if (Float.parseFloat(gpsNumdecFields[0].getText().trim()) > 0) {
-                    cmdparams.add("-exif:GPSLatitudeREF=N");
+                //check for correct numbers, no trimming in case of empty field. trim in method
+                String checklat = checkValue(gpsNumdecFields[0].getText(), "double", 90);
+                String checklon = checkValue(gpsNumdecFields[1].getText(), "double", 180);
+                if ("incorrect".equals(checklat) || "incorrect".equals(checklon)) {
+                    // Values to high or too low
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 350, ResourceBundle.getBundle("translations/program_strings").getString("gps.declatlon")), ResourceBundle.getBundle("translations/program_strings").getString("gps.inputval"), JOptionPane.ERROR_MESSAGE);
+                    valuescorrect = false;
                 } else {
-                    cmdparams.add("-exif:GPSLatitudeREF=S");
-                }
-                cmdparams.add("-exif:GPSLongitude=" + gpsNumdecFields[1].getText().trim());
-                if (Float.parseFloat(gpsNumdecFields[1].getText().trim()) > 0) {
-                    cmdparams.add("-exif:GPSLongitudeREF=E");
-                } else {
-                    cmdparams.add("-exif:GPSLongitudeREF=W");
-                }
-                cmdparams.add("-exif:GPSAltitude=" + gpsNumdecFields[2].getText().trim());
-                cmdparams.add("-xmp:GPSLatitude=" + gpsNumdecFields[0].getText().trim());
-                cmdparams.add("-xmp:GPSLongitude=" + gpsNumdecFields[1].getText().trim());
-                cmdparams.add("-xmp:GPSAltitude=" + gpsNumdecFields[2].getText().trim());
-                if (gpsBoxes[1].isSelected()) { //Altitude positive
-                    cmdparams.add("-exif:GPSAltitudeREF=above");
-                } else {
-                    cmdparams.add("-exif:GPSAltitudeREF=below");
+                    cmdparams.add("-exif:GPSLatitude=" + checklat);
+                    if (Float.parseFloat(checklat) > 0) {
+                        cmdparams.add("-exif:GPSLatitudeREF=N");
+                    } else {
+                        cmdparams.add("-exif:GPSLatitudeREF=S");
+                    }
+                    cmdparams.add("-exif:GPSLongitude=" + checklon);
+                    if (Float.parseFloat(checklon) > 0) {
+                        cmdparams.add("-exif:GPSLongitudeREF=E");
+                    } else {
+                        cmdparams.add("-exif:GPSLongitudeREF=W");
+                    }
+                    if ( !(gpsNumdecFields[2].getText() == null) && !gpsNumdecFields[2].getText().trim().isEmpty()) {
+                        String alt = checkValue(gpsNumdecFields[2].getText(), "double", 100000);
+                        if ("incorrect".equals(alt)) {
+                            JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 350, ResourceBundle.getBundle("translations/program_strings").getString("gps.alterror")), ResourceBundle.getBundle("translations/program_strings").getString("gps.inputval"), JOptionPane.ERROR_MESSAGE);
+                            valuescorrect = false;
+                        } else {
+                            cmdparams.add("-exif:GPSAltitude=" + gpsNumdecFields[2].getText().trim());
+                            cmdparams.add("-xmp:GPSLatitude=" + checklat);
+                            cmdparams.add("-xmp:GPSLongitude=" + checklon);
+                            cmdparams.add("-xmp:GPSAltitude=" + gpsNumdecFields[2].getText().trim());
+                            if (gpsBoxes[1].isSelected()) { //Altitude positive
+                                cmdparams.add("-exif:GPSAltitudeREF=above");
+                            } else {
+                                cmdparams.add("-exif:GPSAltitudeREF=below");
+                            }
+                        }
+                    }
                 }
             } else { //This means the deg-min-sec format tab
-                cmdparams.add("-exif:GPSLatitude=\"" + gpsDMSFields[0].getText().trim() + " " + gpsDMSFields[1].getText().trim() + " " + gpsDMSFields[2].getText().trim() + "\"");
-                logger.info("exif lat {}", "-exif:GPSLatitude=\"" + gpsDMSFields[0].getText().trim() + " " + gpsDMSFields[1].getText().trim() + " " + gpsDMSFields[2].getText().trim() + "\"");
-                cmdparams.add("-xmp:GPSLatitude=\"" + gpsDMSFields[0].getText().trim() + " " + gpsDMSFields[1].getText().trim() + " " + gpsDMSFields[2].getText().trim() + "\"");
-                if (gpSdmsradiobuttons[0].isSelected()) {
-                    cmdparams.add("-exif:GPSLatitudeREF=N");
+                // First check values
+                String latdeg = checkValue(gpsDMSFields[0].getText().trim(), "int", 90);
+                String latmin = checkValue(gpsDMSFields[1].getText().trim(), "int", 60);
+                String latsec = checkValue(gpsDMSFields[2].getText().trim(), "int", 60);
+                String londeg = checkValue(gpsDMSFields[3].getText().trim(), "int", 180);
+                String lonmin = checkValue(gpsDMSFields[4].getText().trim(), "int", 60);
+                String lonsec = checkValue(gpsDMSFields[5].getText().trim(), "int", 60);
+                if ("incorrect".equals(latdeg) || "incorrect".equals(latmin) || "incorrect".equals(latsec) || "incorrect".equals(londeg) || "incorrect".equals(lonmin) || "incorrect".equals(lonsec)) {
+                    // Values to high or too low
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 350, ResourceBundle.getBundle("translations/program_strings").getString("gps.dmserror")), ResourceBundle.getBundle("translations/program_strings").getString("gps.inputval"), JOptionPane.ERROR_MESSAGE);
+                    valuescorrect = false;
                 } else {
-                    cmdparams.add("-exif:GPSLatitudeREF=S");
-                }
-                cmdparams.add("-exif:GPSLongitude=\"" + gpsDMSFields[3].getText().trim() + " " + gpsDMSFields[4].getText().trim() + " " + gpsDMSFields[5].getText().trim() + "\"");
-                logger.info("exif gpslongitude {}", "-exif:GPSLongitude=\"" + gpsDMSFields[3].getText().trim() + " " + gpsDMSFields[4].getText().trim() + " " + gpsDMSFields[5].getText().trim() + "\"");
-                cmdparams.add("-xmp:GPSLongitude=\"" + gpsDMSFields[3].getText().trim() + " " + gpsDMSFields[4].getText().trim() + " " + gpsDMSFields[5].getText().trim() + "\"");
-                if (gpSdmsradiobuttons[2].isSelected()) {
-                    cmdparams.add("-exif:GPSLongitudeREF=E");
-                } else {
-                    cmdparams.add("-exif:GPSLongitudeREF=W");
+                    // all values correct
+                    cmdparams.add("-exif:GPSLatitude=\"" + gpsDMSFields[0].getText().trim() + " " + gpsDMSFields[1].getText().trim() + " " + gpsDMSFields[2].getText().trim() + "\"");
+                    logger.info("exif lat {}", "-exif:GPSLatitude=\"" + gpsDMSFields[0].getText().trim() + " " + gpsDMSFields[1].getText().trim() + " " + gpsDMSFields[2].getText().trim() + "\"");
+                    cmdparams.add("-xmp:GPSLatitude=\"" + gpsDMSFields[0].getText().trim() + " " + gpsDMSFields[1].getText().trim() + " " + gpsDMSFields[2].getText().trim() + "\"");
+                    if (gpSdmsradiobuttons[0].isSelected()) {
+                        cmdparams.add("-exif:GPSLatitudeREF=N");
+                    } else {
+                        cmdparams.add("-exif:GPSLatitudeREF=S");
+                    }
+                    cmdparams.add("-exif:GPSLongitude=\"" + gpsDMSFields[3].getText().trim() + " " + gpsDMSFields[4].getText().trim() + " " + gpsDMSFields[5].getText().trim() + "\"");
+                    logger.info("exif gpslongitude {}", "-exif:GPSLongitude=\"" + gpsDMSFields[3].getText().trim() + " " + gpsDMSFields[4].getText().trim() + " " + gpsDMSFields[5].getText().trim() + "\"");
+                    cmdparams.add("-xmp:GPSLongitude=\"" + gpsDMSFields[3].getText().trim() + " " + gpsDMSFields[4].getText().trim() + " " + gpsDMSFields[5].getText().trim() + "\"");
+                    if (gpSdmsradiobuttons[2].isSelected()) {
+                        cmdparams.add("-exif:GPSLongitudeREF=E");
+                    } else {
+                        cmdparams.add("-exif:GPSLongitudeREF=W");
+                    }
                 }
             }
         }
@@ -231,10 +276,26 @@ public class EditGPSdata {
                 cmdparams.add(files[index].getPath());
             }
         }
+        if (valuescorrect) {
+            CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+        }
+    }
 
+    private String checkValue (String value, String int_or_double, int maxvalue) {
+        String checked_value = "incorrect";
 
-        CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+        if ("int".equals(int_or_double)) {
+            // deg-min-sec integers are always positive
+            if ( in_Range(Integer.parseInt(value), 0, maxvalue)) {
+                checked_value = value;
+            }
+        } else if ( "float".equals(int_or_double) && "double".equals(int_or_double) ) {
+            int minvalue = -maxvalue;
+            if ( in_Range(Integer.parseInt(value), minvalue, maxvalue)) {
+                checked_value = value;
+            }
+        }
 
-
+        return checked_value;
     }
 }

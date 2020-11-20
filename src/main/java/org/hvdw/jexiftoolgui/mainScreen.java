@@ -2878,7 +2878,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    EGPSd.writeGPSTags(getNumGPSdecFields(), getGPSLocationFields(), getGpsBoxes(), getGPSdmsFields(), getGPSdmsradiobuttons(), progressBar, geoformattabbedPane.getSelectedIndex());
+                    EGPSd.writeGPSTags(getNumGPSdecFields(), getGPSLocationFields(), getGpsBoxes(), getGPSdmsFields(), getGPSdmsradiobuttons(), progressBar, geoformattabbedPane.getSelectedIndex(), rootPanel);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }

@@ -52,6 +52,7 @@ public class PreferencesDialog extends JDialog {
     private JCheckBox preserveModDatecheckBox;
     private JCheckBox DualColumncheckBox;
     private JLabel ExampleColumnImage;
+    private JCheckBox sortCatsTagscheckBox;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -310,6 +311,9 @@ public class PreferencesDialog extends JDialog {
         logger.trace("{} {}", DUAL_COLUMN.key, DualColumncheckBox.isSelected());
         prefs.storeByKey(DUAL_COLUMN, DualColumncheckBox.isSelected());
 
+        logger.trace("{} {}", SORT_CATEGORIES_TAGS.key, sortCatsTagscheckBox.isSelected());
+        prefs.storeByKey(SORT_CATEGORIES_TAGS, sortCatsTagscheckBox.isSelected());
+
         JOptionPane.showMessageDialog(generalPanel, ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), ResourceBundle.getBundle("translations/program_strings").getString("prefs.settingssaved"), JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -357,6 +361,7 @@ public class PreferencesDialog extends JDialog {
         udFilefiltertextField.setText(prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
         retrievedPreferences.put("udFilefilter", prefs.getByKey(USER_DEFINED_FILE_FILTER, ""));
         DualColumncheckBox.setSelected(prefs.getByKey(DUAL_COLUMN, true));
+        sortCatsTagscheckBox.setSelected(prefs.getByKey(SORT_CATEGORIES_TAGS, false));
         setExampleImage();
     }
 
@@ -566,10 +571,10 @@ public class PreferencesDialog extends JDialog {
         localecomboBox = new JComboBox();
         panel13.add(localecomboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel14 = new JPanel();
-        panel14.setLayout(new GridLayoutManager(7, 1, new Insets(5, 5, 5, 5), -1, -1));
+        panel14.setLayout(new GridLayoutManager(8, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.system"), panel14);
         final Spacer spacer2 = new Spacer();
-        panel14.add(spacer2, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel14.add(spacer2, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         filechooserpanel = new JPanel();
         filechooserpanel.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
         panel14.add(filechooserpanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -595,7 +600,7 @@ public class PreferencesDialog extends JDialog {
         panel14.add(decimaldegreescheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loglevelpanel = new JPanel();
         loglevelpanel.setLayout(new GridLayoutManager(2, 3, new Insets(5, 5, 5, 5), -1, -1));
-        panel14.add(loglevelpanel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel14.add(loglevelpanel, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         loglevelpanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label14 = new JLabel();
         this.$$$loadLabelText$$$(label14, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.loglevel"));
@@ -622,10 +627,13 @@ public class PreferencesDialog extends JDialog {
         panel14.add(useG1GroupcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CheckVersioncheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(CheckVersioncheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.checknewversion"));
-        panel14.add(CheckVersioncheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(CheckVersioncheckBox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         preserveModDatecheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(preserveModDatecheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.presmoddate"));
-        panel14.add(preserveModDatecheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(preserveModDatecheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sortCatsTagscheckBox = new JCheckBox();
+        this.$$$loadButtonText$$$(sortCatsTagscheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.sortcatstags"));
+        panel14.add(sortCatsTagscheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel16 = new JPanel();
         panel16.setLayout(new GridLayoutManager(2, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.lookandfeeltab"), panel16);
