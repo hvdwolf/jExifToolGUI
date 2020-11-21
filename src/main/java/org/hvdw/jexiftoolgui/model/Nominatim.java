@@ -1,11 +1,5 @@
 package org.hvdw.jexiftoolgui.model;
 
-/*import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;*/
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
@@ -21,11 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -59,7 +48,7 @@ public class Nominatim {
             logger.debug(response.toString());
             getResponse = response.toString();
         } else {
-            logger.error(" The GET request to Nominatim {} did not work", geturl);
+            logger.error("The GET request to Nominatim {} did not work", geturl);
         }
 
         return getResponse;

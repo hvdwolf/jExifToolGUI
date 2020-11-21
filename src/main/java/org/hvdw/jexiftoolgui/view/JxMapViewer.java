@@ -9,6 +9,7 @@ import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.mainScreen;
 import org.hvdw.jexiftoolgui.model.Nominatim;
+import org.jxmapviewer.JXMapKit;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
@@ -26,6 +27,7 @@ import javax.swing.event.MouseInputListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -49,7 +51,9 @@ public class JxMapViewer extends JDialog {
     private String[] returnPlace;
     private String mapUsageHints;
     private JXMapViewer mapViewer = new JXMapViewer();
+    private JXMapKit jXMapKit = new JXMapKit();
     private List<String[]> placesList = null;
+    private boolean useXMapKit = false;
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(JxMapViewer.class);
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
@@ -185,6 +189,12 @@ public class JxMapViewer extends JDialog {
         }
     }
 
+    /**
+     * This method is called when a user select a result place from the table
+     *
+     * @param model
+     * @param row
+     */
     void updateFieldsVariablesMap(DefaultTableModel model, int row) {
         List<GeoPosition> boundingbox;
         int selectedRowIndex = searchResultstable.getSelectedRow();
@@ -201,6 +211,9 @@ public class JxMapViewer extends JDialog {
         GeoPosition newPos = new GeoPosition(Double.parseDouble(strlat), Double.parseDouble(strlon));
         addWaypoint(newPos);
         mapViewer.setAddressLocation(newPos);
+        mapViewer.setCenterPosition(newPos);
+        jXMapKit.setAddressLocation(newPos);
+        jXMapKit.setCenterPosition(newPos);
         for (String[] place : placesList) {
             if (display_name.equals(place[0])) {
                 String[] tmpbb = place[3].substring(2, place[3].length() - 2).split("\",\"");
@@ -214,8 +227,39 @@ public class JxMapViewer extends JDialog {
             }
 
         }
+    }
 
+    /**
+     * This method is called when a use right-clicks on the map to get the clicked position
+     *
+     * @param latitude
+     * @param longitude
+     * @param xLatitude
+     * @param xLongitude
+     */
+    void updateFieldsVariablesMap(double latitude, double longitude, double xLatitude, double xLongitude) {
+        List<GeoPosition> boundingbox;
 
+        if (useXMapKit) {
+            lblLatitude.setText(String.valueOf(xLatitude));
+            lblLongitude.setText(String.valueOf(xLongitude));
+            MyVariables.setLatitude(String.valueOf(xLatitude));
+            MyVariables.setLongitude(String.valueOf(xLongitude));
+        } else {
+            lblLatitude.setText(String.valueOf(latitude));
+            lblLongitude.setText(String.valueOf(longitude));
+            MyVariables.setLatitude(String.valueOf(latitude));
+            MyVariables.setLongitude(String.valueOf(longitude));
+        }
+
+        //mapViewer.setZoom(16);
+        GeoPosition newPos = new GeoPosition(latitude, longitude);
+        GeoPosition newXPos = new GeoPosition(xLatitude, xLongitude);
+        addWaypoint(newPos);
+        mapViewer.setAddressLocation(newPos);
+        mapViewer.setCenterPosition(newPos);
+        jXMapKit.setAddressLocation(newXPos);
+        jXMapKit.setCenterPosition(newXPos);
     }
 
     void addWaypoint(GeoPosition markerposition) {
@@ -225,10 +269,12 @@ public class JxMapViewer extends JDialog {
         WaypointPainter painter = new WaypointPainter();
         painter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(painter);
+        //jXMapKit.setOverlayPainter(painter);
     }
 
 
     void buildMapviewer() {
+        useXMapKit = false;
         // Create a TileFactoryInfo for OpenStreetMap
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
@@ -252,6 +298,7 @@ public class JxMapViewer extends JDialog {
         // Add interactions
         MouseInputListener mia = new PanMouseInputListener(mapViewer);
         mapViewer.addMouseListener(mia);
+
         mapViewer.addMouseMotionListener(mia);
 
         mapViewer.addMouseListener(new CenterMapListener(mapViewer));
@@ -259,12 +306,116 @@ public class JxMapViewer extends JDialog {
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
 
         mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        LocationSelector ls = new LocationSelector();
+        mapViewer.addMouseListener(ls);
         //Add stuff to mapviewer pane
         //MapViewerPane.setPreferredSize(1150, 600);
         MapViewerPane.add(new JLabel(mapUsageHints), BorderLayout.PAGE_START);
         MapViewerPane.add(mapViewer);
     }
 
+    void buildXMapkitviewer() {
+        useXMapKit = true;
+        // Create a TileFactoryInfo for OpenStreetMap
+        TileFactoryInfo info = new OSMTileFactoryInfo();
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+
+        // Setup local file cache
+        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+        // Setup JXMapViewer
+        //final JXMapViewer jXMapKit = new JXMapViewer();
+        jXMapKit.setTileFactory(tileFactory);
+
+        // Set the focus
+        jXMapKit.setZoom(7);
+        GeoPosition zwolle = new GeoPosition(52.515, 6.098);
+        String strlat = prefs.getByKey(LATITUDE, "52.515");
+        String strlon = prefs.getByKey(LONGITUDE, "6.098");
+        GeoPosition startPos = new GeoPosition(Double.parseDouble(strlat), Double.parseDouble(strlon));
+        jXMapKit.setAddressLocation(startPos);
+
+        // Add interactions
+        JXMapViewer map = jXMapKit.getMainMap();
+        MouseInputListener mia = new PanMouseInputListener(map);
+        jXMapKit.addMouseListener(mia);
+        LocationSelector ls = new LocationSelector();
+        map.addMouseListener(ls);
+
+        jXMapKit.addMouseMotionListener(mia);
+
+        jXMapKit.addMouseListener(new CenterMapListener(map));
+
+        jXMapKit.addMouseWheelListener(new ZoomMouseWheelListenerCursor(map));
+
+        jXMapKit.addKeyListener(new PanKeyListener(map));
+
+        jXMapKit.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                // ignore
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                JXMapViewer map = jXMapKit.getMainMap();
+
+                // convert to world bitmap
+                Point2D worldPos = map.getTileFactory().geoToPixel(startPos, map.getZoom());
+
+                // convert to screen
+                Rectangle rect = map.getViewportBounds();
+                int sx = (int) worldPos.getX() - rect.x;
+                int sy = (int) worldPos.getY() - rect.y;
+                Point screenPos = new Point(sx, sy);
+
+            }
+        });
+        //Add stuff to mapviewer pane
+        //MapViewerPane.setPreferredSize(1150, 600);
+        MapViewerPane.add(new JLabel(mapUsageHints), BorderLayout.PAGE_START);
+        MapViewerPane.add(jXMapKit);
+    }
+
+    private class LocationSelector implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JXMapViewer map = jXMapKit.getMainMap();
+            if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
+                Point p = e.getPoint();
+                GeoPosition geox = map.convertPointToGeoPosition(p);
+                GeoPosition geo = mapViewer.convertPointToGeoPosition(p);
+                System.out.println("X:" + geo.getLatitude() + ",Y:" + geo.getLongitude());
+                System.out.println("X:" + geox.getLatitude() + ",Y:" + geox.getLongitude());
+                GeoPosition newPos = new GeoPosition(geo.getLatitude(), geo.getLongitude());
+                GeoPosition newXPos = new GeoPosition(geox.getLatitude(), geox.getLongitude());
+                jXMapKit.setAddressLocation(newXPos);
+                jXMapKit.setCenterPosition(newXPos);
+                mapViewer.setAddressLocation(newPos);
+                mapViewer.setCenterPosition(newPos);
+                updateFieldsVariablesMap(geo.getLatitude(), geo.getLongitude(), geox.getLatitude(), geox.getLongitude());
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+    }
 
     // The  main" function of this class
     public String[] showDialog() {
@@ -279,6 +430,7 @@ public class JxMapViewer extends JDialog {
         // Create the mapviewer panel
         mapUsageHints = ResourceBundle.getBundle("translations/program_strings").getString("mpv.hints");
         buildMapviewer();
+        //buildXMapkitviewer();
         setVisible(true);
 
         return returnPlace;
