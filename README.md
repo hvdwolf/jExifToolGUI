@@ -19,7 +19,7 @@ Some links:<br>
 [Website](https://hvdwolf.github.io/jExifToolGUI/).<br>
 [English Online manual](https://hvdwolf.github.io/jExifToolGUI/manual/index.html).<br>
 [Spanish Online manual](https://docs.museosabiertos.org/jexiftoolgui).<br>
-[Youtube Instruction vidoes](https://www.youtube.com/playlist?list=PLAHD8RNkeuGdyRH7BKFefc7p72Dp6jVjW).<br>
+[Youtube Instruction videos](https://www.youtube.com/playlist?list=PLAHD8RNkeuGdyRH7BKFefc7p72Dp6jVjW).<br>
 <hr>
 
 <br><br>jExifToolGUI is a remake of my own [pyExifToolGUI](https://github.com/hvdwolf/pyExifToolGUI) ([website](https://hvdwolf.github.io/pyExifToolGUI/)).<br><br>
