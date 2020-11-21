@@ -39,12 +39,12 @@ public class EditGPSdata {
         NumberFormat latformatter = NumberFormat.getNumberInstance(Locale.US );
         // Latitude 0-90
         latformatter.setMaximumIntegerDigits(2);
-        latformatter.setMaximumFractionDigits(6);
+        latformatter.setMaximumFractionDigits(7);
         gpsNumdecFields[0].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(latformatter)));
         NumberFormat lonformatter = NumberFormat.getNumberInstance(Locale.US );
         // Longitude 0-180
         lonformatter.setMaximumIntegerDigits(3);
-        lonformatter.setMaximumFractionDigits(6);
+        lonformatter.setMaximumFractionDigits(7);
         gpsNumdecFields[1].setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(lonformatter)));
         //Altitude
         NumberFormat altformatter = NumberFormat.getNumberInstance(Locale.US );

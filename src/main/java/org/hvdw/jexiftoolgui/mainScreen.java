@@ -1191,10 +1191,10 @@ public class mainScreen {
         this.$$$loadButtonText$$$(gpsAboveSealevelcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.above"));
         gpsLatLonAltPanel.add(gpsAboveSealevelcheckBox, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), new Dimension(200, -1), 0, false));
         final JLabel label38 = new JLabel();
-        label38.setText("dd.dddddd");
+        label38.setText("dd.ddddddd");
         gpsLatLonAltPanel.add(label38, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label39 = new JLabel();
-        label39.setText("ddd.dddddd");
+        label39.setText("ddd.ddddddd");
         gpsLatLonAltPanel.add(label39, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label40 = new JLabel();
         label40.setText("ddddd.dd");
@@ -3480,6 +3480,8 @@ public class mainScreen {
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("emd.toptext")));
         pdftextLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.toptext")));
         pdfLabelSupported.setText(String.format(ProgramTexts.HTML, 600, "<br>" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.supp")));
+        lblNominatimSearch.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.searchtxt")));
+        lblMapcoordinates.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.extsearch")));
 
 
         // database version

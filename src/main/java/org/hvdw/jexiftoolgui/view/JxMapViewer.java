@@ -1,13 +1,15 @@
 package org.hvdw.jexiftoolgui.view;
 
 import ch.qos.logback.classic.Logger;
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonValue;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
-import org.hvdw.jexiftoolgui.mainScreen;
 import org.hvdw.jexiftoolgui.model.Nominatim;
 import org.jxmapviewer.JXMapKit;
 import org.jxmapviewer.JXMapViewer;
@@ -21,8 +23,6 @@ import org.jxmapviewer.viewer.*;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -36,6 +36,11 @@ import java.util.List;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
+/**
+ * This class draws the initial map, activates the mouse/key listeners. And handles the search/fin options
+ * It uses the standard jxmapviewer2 functionality,
+ * but in parallel the JXMapKit functionality is also built in, but that is not used currently
+ */
 public class JxMapViewer extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -167,6 +172,10 @@ public class JxMapViewer extends JDialog {
         dispose();
     }
 
+    /**
+     * This method fills the results table after a search for a location
+     * @param placesList
+     */
     void fillsearchResultstable(List<String[]> placesList) {
         DefaultTableModel model = (DefaultTableModel) searchResultstable.getModel();
         // make table uneditable
@@ -191,7 +200,6 @@ public class JxMapViewer extends JDialog {
 
     /**
      * This method is called when a user select a result place from the table
-     *
      * @param model
      * @param row
      */
@@ -217,7 +225,6 @@ public class JxMapViewer extends JDialog {
         for (String[] place : placesList) {
             if (display_name.equals(place[0])) {
                 String[] tmpbb = place[3].substring(2, place[3].length() - 2).split("\",\"");
-                //logger.info("my own boundingbox {}\n {}\n {}\n {}\n", tmpbb[0], tmpbb[1], tmpbb[2], tmpbb[3]);
                 GeoPosition topleft = new GeoPosition(Double.parseDouble(tmpbb[0]), Double.parseDouble(tmpbb[2]));
                 GeoPosition topright = new GeoPosition(Double.parseDouble(tmpbb[1]), Double.parseDouble(tmpbb[2]));
                 GeoPosition btmleft = new GeoPosition(Double.parseDouble(tmpbb[0]), Double.parseDouble(tmpbb[3]));
@@ -260,8 +267,31 @@ public class JxMapViewer extends JDialog {
         mapViewer.setCenterPosition(newPos);
         jXMapKit.setAddressLocation(newXPos);
         jXMapKit.setCenterPosition(newXPos);
+
+        try {
+            String getResult = Nominatim.ReverseSearch(latitude, longitude);
+            JsonValue place = Json.parse(getResult);
+            String display_Name = place.asObject().getString("display_name", "Unknown display_name");
+            lblDisplay_Name.setText(display_Name);
+            JsonArray bb = place.asObject().get("boundingbox").asArray();
+            logger.debug("display_Name {} boundingbox {}", display_Name, bb.toString());
+            GeoPosition topleft = new GeoPosition(Double.parseDouble(bb.get(0).asString()), Double.parseDouble(bb.get(2).asString()));
+            GeoPosition topright = new GeoPosition(Double.parseDouble(bb.get(1).asString()), Double.parseDouble(bb.get(2).asString()));
+            GeoPosition btmleft = new GeoPosition(Double.parseDouble(bb.get(0).asString()), Double.parseDouble(bb.get(3).asString()));
+            GeoPosition btmright = new GeoPosition(Double.parseDouble(bb.get(1).asString()), Double.parseDouble(bb.get(3).asString()));
+            boundingbox = Arrays.asList(topleft, topright, btmleft, btmright);
+            mapViewer.zoomToBestFit(new HashSet<GeoPosition>(boundingbox), 0.7);
+
+        } catch (IOException e) {
+            logger.error("Nominatim.ReverseSearch error {}", e);
+            e.printStackTrace();
+        }
     }
 
+    /** This method puts a waypoint marker on the map for the clicked location from the results table
+     * or when a user has right-clicked the map
+     * @param markerposition
+     */
     void addWaypoint(GeoPosition markerposition) {
         Set<Waypoint> waypoints = new HashSet<Waypoint>(Arrays.asList(new DefaultWaypoint(markerposition)));
 
@@ -269,10 +299,12 @@ public class JxMapViewer extends JDialog {
         WaypointPainter painter = new WaypointPainter();
         painter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(painter);
-        //jXMapKit.setOverlayPainter(painter);
     }
 
 
+    /**
+     * This method builds the standard jxmapviewer2 map and activates the mouse listeners
+     */
     void buildMapviewer() {
         useXMapKit = false;
         // Create a TileFactoryInfo for OpenStreetMap
@@ -284,7 +316,6 @@ public class JxMapViewer extends JDialog {
         tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
 
         // Setup JXMapViewer
-        //final JXMapViewer mapViewer = new JXMapViewer();
         mapViewer.setTileFactory(tileFactory);
 
         // Set the focus
@@ -310,11 +341,14 @@ public class JxMapViewer extends JDialog {
         LocationSelector ls = new LocationSelector();
         mapViewer.addMouseListener(ls);
         //Add stuff to mapviewer pane
-        //MapViewerPane.setPreferredSize(1150, 600);
         MapViewerPane.add(new JLabel(mapUsageHints), BorderLayout.PAGE_START);
         MapViewerPane.add(mapViewer);
     }
 
+    /**
+     * This method builds the JXMapKit mapviewer. On one hand it has some features like a slider, plus/min buttons and a minimap
+     * But it lacks the zoomtobestfit option
+     */
     void buildXMapkitviewer() {
         useXMapKit = true;
         // Create a TileFactoryInfo for OpenStreetMap
@@ -326,7 +360,6 @@ public class JxMapViewer extends JDialog {
         tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
 
         // Setup JXMapViewer
-        //final JXMapViewer jXMapKit = new JXMapViewer();
         jXMapKit.setTileFactory(tileFactory);
 
         // Set the focus
@@ -379,6 +412,9 @@ public class JxMapViewer extends JDialog {
         MapViewerPane.add(jXMapKit);
     }
 
+    /**
+     * This class provides the right-click mouselistener to get the geoposition from the map
+     */
     private class LocationSelector implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -387,8 +423,8 @@ public class JxMapViewer extends JDialog {
                 Point p = e.getPoint();
                 GeoPosition geox = map.convertPointToGeoPosition(p);
                 GeoPosition geo = mapViewer.convertPointToGeoPosition(p);
-                System.out.println("X:" + geo.getLatitude() + ",Y:" + geo.getLongitude());
-                System.out.println("X:" + geox.getLatitude() + ",Y:" + geox.getLongitude());
+                logger.debug("X: {} Y: {}", geo.getLatitude(), geo.getLongitude());
+                //logger.debug("X: {} Y: {}", geox.getLatitude(), geox.getLongitude());
                 GeoPosition newPos = new GeoPosition(geo.getLatitude(), geo.getLongitude());
                 GeoPosition newXPos = new GeoPosition(geox.getLatitude(), geox.getLongitude());
                 jXMapKit.setAddressLocation(newXPos);
