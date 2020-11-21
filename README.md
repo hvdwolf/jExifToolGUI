@@ -13,13 +13,16 @@ Many thanks go to Phil Harvey for his excellent tool. Without ExifTool, this Gra
 jExifToolGUI is (just) a graphical frontend for ExifTool. It can use a "reference" image to write the tags to a multiple set of photos, like gps tags for photos that were taken at the same location but somehow miss or contain the incorrect gps info.<br>
 jExifToolGUI also contains extensive renaming functionality based on the exif info in your photos.<br>
 This jExifToolGUI program is free, Open Source software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-<br><hr>
+<br><br>
+Some links:<br>
+[Releases](https://github.com/hvdwolf/jExifToolGUI/releases)<br> 
+[Website](https://hvdwolf.github.io/jExifToolGUI/).<br>
+[English Online manual](https://hvdwolf.github.io/jExifToolGUI/manual/index.html).<br>
+[Spanish Online manual](https://docs.museosabiertos.org/jexiftoolgui).<br>
+[Youtube Instruction vidoes](https://www.youtube.com/playlist?list=PLAHD8RNkeuGdyRH7BKFefc7p72Dp6jVjW).<br>
+<hr>
 
-<br><br>jExifToolGUI is a remake of [pyExifToolGUI](https://github.com/hvdwolf/pyExifToolGUI) ([website](https://hvdwolf.github.io/pyExifToolGUI/)). I discontinued pyExifToolGUI for a couple of reasons:
-* pyExifToolGUI uses python/pySide/QT4. pySide/QT have undergone some changes over the years that require quite some rework. pySide has also changed the license. The combination is cross-platform but not so easy to package for Windows and MacOS.
-* I started programming in java because I wanted "things" on my Android car head unit that nobody else would make. And now I prefer java for "bigger things" over python.
-* Java comes with the builtin Swing gui. I don't need to package any dependencies. The user downloads java and jExiftoolGUI and that's all.
-* Java/Swing supports many more platforms than pySide/QT.
+<br><br>jExifToolGUI is a remake of my own [pyExifToolGUI](https://github.com/hvdwolf/pyExifToolGUI) ([website](https://hvdwolf.github.io/pyExifToolGUI/)).<br><br>
 
 ## Developers
 The UI is designed with the GUI Designer from IntelliJ IDEA. Read [readme-intelliJ.md](readme-intellIJ.md)
