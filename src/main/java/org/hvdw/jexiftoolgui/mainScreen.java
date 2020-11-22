@@ -3373,6 +3373,8 @@ public class mainScreen {
             // Perfectly working row selection method of first program
             List<Integer> tmpselectedIndices = new ArrayList<>();
             ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            //tableListfiles.setSelectionModel(lsm);
+            //tableListfiles.setRowSelectionAllowed(true);
 
             if (lsm.isSelectionEmpty()) {
                 logger.debug("no index selected");
@@ -3595,18 +3597,18 @@ public class mainScreen {
         fillAllComboboxes();
 
 
-        // Use the mouselistener for the double-click to display the image
-        // on both the filetree and the filenamestable
-        // temporararily disable FileTree
-        //MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, fileTree, whichRBselected());
-        MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
-
         //Use the table listener for the selection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
         tableListfiles.setRowSelectionAllowed(true);
         tableListfiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(new SharedListSelectionHandler());
         //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
+
+        // Use the mouselistener for the double-click to display the image
+        // on both the filetree and the filenamestable
+        // temporararily disable FileTree
+        //MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, fileTree, whichRBselected());
+        MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
 
         //Listen to drop events
         rootPanelDropListener();

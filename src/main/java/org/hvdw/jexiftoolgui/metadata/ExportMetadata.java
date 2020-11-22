@@ -30,6 +30,8 @@ public class ExportMetadata {
         String filepath = ""; // Again: we need this for the csv option
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
+        String createdExportFiles = "";
+        String createdExportFileExtension = "";
 
         // checkboxes: exportAllMetadataCheckBox, exportExifDataCheckBox, exportXmpDataCheckBox, exportGpsDataCheckBox, exportIptcDataCheckBox, exportICCDataCheckBox, GenExpuseMetadataTagLanguageCheckBoxport
         // translate to clarify
@@ -131,18 +133,22 @@ public class ExportMetadata {
                 if (txtRadioButton.isSelected()) {
                     params.add("-w!");
                     params.add("txt");
+                    createdExportFileExtension = ".txt";
                 } else if (tabRadioButton.isSelected()) {
                     params.add("-t");
                     params.add("-w!");
                     params.add("txt");
+                    createdExportFileExtension = ".txt";
                 } else if (xmlRadioButton.isSelected()) {
                     params.add("-X");
                     params.add("-w!");
                     params.add("xml");
+                    createdExportFileExtension = ".xml";
                 } else if (htmlRadioButton.isSelected()) {
                     params.add("-h");
                     params.add("-w!");
                     params.add("html");
+                    createdExportFileExtension = ".html";
                 /*} else if (xmpRadioButton.isSelected()) {
                     params.add("xmpexport"); */
                 } else if (csvRadioButton.isSelected()) {
@@ -156,9 +162,13 @@ public class ExportMetadata {
                             params.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
                         } else {
                             params.add(files[index].getPath().replace("\\", "/"));
+                            //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
+                            createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
                         }
                     } else {
                         params.add(files[index].getPath());
+                        //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
+                        createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
                     }
                     // Again necessary for csv
                     filepath = files[index].getParent();
@@ -169,16 +179,8 @@ public class ExportMetadata {
                 // We now read the output into a string and write tht string to file with a bufferedwriter
                 if (csvRadioButton.isSelected()) {
                     if (isWindows) {
-                        //params.add(" > " + filepath.replace("\\", "/") + "/out.csv");
-                        //cmdparams.add("cmd");
-                        //cmdparams.add("/c");
-                        //cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > \"" + filepath.replace("\\", "/") + "/out.csv\" ");
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " "));
                     } else {
-                        // logger.info("params to string: {}", params.toString());
-                        //cmdparams.add("/bin/sh");
-                        //cmdparams.add("-c");
-                        //cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " ") + " > " + filepath + "/out.csv");
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " "));
                     }
                 } else {
@@ -189,18 +191,33 @@ public class ExportMetadata {
 
                 // Export metadata
                 if (!csvRadioButton.isSelected()) {
-                    logger.debug("CSV export requested");
-                    CommandRunner.runCommandWithProgressBar(params, progressBar);
+                    //CommandRunner.runCommandWithProgressBar(params, progressBar);
+                    try {
+                        CommandRunner.runCommand(params);
+                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
+                    } catch (InterruptedException e) {
+                        logger.error("Error creating your export files {}", e.toString());
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        logger.error("Error creating your export files {}", e.toString());
+                        e.printStackTrace();
+                    }
                 } else {
+                    logger.debug("CSV export requested");
+                    String outcsv;
                     try {
                         String result = CommandRunner.runCommand(params);
+                        logger.trace("\n\n\nresult {}", result);
                         if (isWindows) {
                             writer = new BufferedWriter(new FileWriter(filepath.replace("\\", "/") + File.separator + "out.csv"));
+                            outcsv = filepath.replace("\\", "/") + File.separator + "out.csv";
                         } else {
                             writer = new BufferedWriter(new FileWriter(filepath + File.separator + "out.csv"));
+                            outcsv = filepath + File.separator + "out.csv";
                         }
                         writer.write(result);
                         writer.close();
+                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + outcsv), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
                     } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
                         logger.error("metadata export failed with error {}", e);

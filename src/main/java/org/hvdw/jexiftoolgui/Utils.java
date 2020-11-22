@@ -17,6 +17,7 @@ import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -318,23 +320,30 @@ public class Utils {
         String update_url = "https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt";
 
         if (fromWhere.equals("menu") || versioncheck) {
-            try {
-                URL testurl = getResource(update_url);
-                if (!(testurl == null)) {
-                    URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                    web_version = in.readLine();
-                    in.close();
-                } else {
-                    validconnection = false;
-                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
-                }
+            /*try {
+                URL url = new URL(update_url);
+                HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+                con.getResponseCode();
             } catch (IOException ex) {
+                logger.error("upgrade check gives error {}", ex.toString());
                 ex.printStackTrace();
                 validconnection = false;
                 JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
-            }
+            }*/
+
+            //if (validconnection) {
+                try {
+                    URL url = new URL(update_url);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    web_version = in.readLine();
+                    in.close();
+                } catch (IOException ex) {
+                    logger.error("upgrade check gives error {}", ex.toString());
+                    ex.printStackTrace();
+                    validconnection = false;
+                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
+                }
+            //}
             if (validconnection) {
                 String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
                 logger.info("Using java version {}: ", jv);
@@ -667,14 +676,15 @@ public class Utils {
                     Utils.displayFiles(tableListfiles, LeftPanel);
                     MyVariables.setSelectedRow(0);
                     // Below should color the selected row, but probably need a tablecellrenderer exta
-                    tableListfiles.setRowSelectionInterval(0,0);
+                    /*tableListfiles.setRowSelectionInterval(0,0);
                     tableListfiles.addRowSelectionInterval(0,0);
                     tableListfiles.setSelectionBackground(tableListfiles.getSelectionBackground());
                     if (tableListfiles.isCellSelected(0,0) || tableListfiles.isCellSelected(0,1)) {
                         tableListfiles.setSelectionBackground(tableListfiles.getSelectionBackground());
+                        tableListfiles.setSelectionForeground(tableListfiles.getSelectionForeground());
                         tableListfiles.setBackground(tableListfiles.getSelectionBackground());
                     }
-                    tableListfiles.repaint();
+                    tableListfiles.repaint(); */
                     ///////
 
                     String res = Utils.getImageInfoFromSelectedFile(params);
