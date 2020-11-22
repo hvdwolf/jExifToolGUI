@@ -2,7 +2,6 @@ package org.hvdw.jexiftoolgui.view;
 
 import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.Utils;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.event.HyperlinkEvent;

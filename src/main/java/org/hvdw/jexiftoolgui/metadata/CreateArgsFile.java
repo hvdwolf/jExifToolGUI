@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.metadata;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -7,7 +8,6 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -18,10 +18,9 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class CreateArgsFile extends JDialog {
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CreateArgsFile.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(CreateArgsFile.class);
 
     private JPanel contentPane;
     private JButton buttonOK;

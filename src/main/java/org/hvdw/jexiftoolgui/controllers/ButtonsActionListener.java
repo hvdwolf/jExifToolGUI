@@ -1,28 +1,21 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.editpane.EditGeotaggingdata;
-import org.hvdw.jexiftoolgui.model.CompareImages;
-import org.hvdw.jexiftoolgui.model.Nominatim;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.view.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.jar.JarOutputStream;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class ButtonsActionListener implements ActionListener {
-    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ButtonsActionListener.class);
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(ButtonsActionListener.class);
 
     private DatabasePanel DBP = new DatabasePanel();
@@ -89,12 +82,6 @@ public class ButtonsActionListener implements ActionListener {
                 logger.debug("button gpsMapcoordinatesButton pressed");
                 Utils.openBrowser("https://www.mapcoordinates.net/en");
                 break;
-            /*case "gpsSearchLocation":
-                logger.debug("button gpsSearchLocationbutton pressed");
-                JxMapViewer JMV = new JxMapViewer();
-                String[] returnPlace = JMV.showDialog();
-                logger.info("place {}", returnPlace.toString());
-                break; */
             case "gpsHb":
                 logger.debug("button gpsHelpbutton pressed");
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("gpshelptitle"), JOptionPane.INFORMATION_MESSAGE);

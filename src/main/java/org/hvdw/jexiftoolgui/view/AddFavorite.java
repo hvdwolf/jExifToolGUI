@@ -1,12 +1,12 @@
 package org.hvdw.jexiftoolgui.view;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -38,7 +38,7 @@ public class AddFavorite extends JDialog {
     private final String commandTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("fav.commandtext") + "<br><br></html>";
     private final String queryTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("fav.querytext") + "<br><br></html>";
 
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(AddFavorite.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(AddFavorite.class);
 
 
     public AddFavorite() {

@@ -1,9 +1,9 @@
 package org.hvdw.jexiftoolgui.view;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.hvdw.jexiftoolgui.Utils;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class SimpleWebView extends JDialog {
     private JPanel contentPane;
 
     private final HyperlinkListener linkListener = new LinkListener();
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleWebView.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(SimpleWebView.class);
 
     public SimpleWebView() {
 

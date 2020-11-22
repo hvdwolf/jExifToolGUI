@@ -1,7 +1,6 @@
 package org.hvdw.jexiftoolgui.view;
 
 import ch.qos.logback.classic.Logger;
-import com.itextpdf.layout.element.Table;
 import org.hvdw.jexiftoolgui.ExportToPDF;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
@@ -18,10 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
@@ -37,33 +33,6 @@ public class CompareImagesWindow {
 
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
-
-        // Quick test
-        /*for (int index : selectedIndices) {
-            File file = files[index];
-            String filename = file.getName();
-            logger.info("index {} filename {}", index, filename);
-        }
-        for (String metadata[] : tableMetadata) {
-            logger.info("array for table {}", Arrays.toString(metadata));
-         }
-        try {
-            FileWriter fw = new FileWriter("/tmp/tablemetadata.txt");
-            for (String metadata[] : tableMetadata) {
-                fw.write(Arrays.toString(metadata) + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            FileWriter fw = new FileWriter("/tmp/allmetadata.txt");
-            for (String metadata[] : allMetadata) {
-                fw.write(Arrays.toString(metadata) + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
 
         // Define the frame, the ScrollPanel with the table, the buttonpanel with the close button
         JFrame frame = new JFrame();

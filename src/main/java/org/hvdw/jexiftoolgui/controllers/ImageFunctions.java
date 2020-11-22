@@ -7,7 +7,6 @@ import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.IIOException;

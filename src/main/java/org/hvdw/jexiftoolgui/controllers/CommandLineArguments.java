@@ -1,7 +1,6 @@
 package org.hvdw.jexiftoolgui.controllers;
 
 import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,20 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommandLineArguments {
-    //public List<File> filesList = new ArrayList<File>();
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CommandLineArguments.class);
 
 
     public static File[] ProcessArguments(List<File> filesList) {
         String[] args = MyVariables.getcommandLineArgs();
-        //filesList = new ArrayList<File>();
-        boolean exists;
-        boolean isDirectory;
-        boolean isFile;
 
         if (args.length > 0) {
             // Work this out

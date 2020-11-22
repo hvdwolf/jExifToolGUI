@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.renaming;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -8,12 +9,10 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.PreferencesFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -66,7 +65,7 @@ public class RenamePhotos extends JDialog {
     private JRadioButton suffixFocalLengthradioButton;
 
     private final static IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(RenamePhotos.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(RenamePhotos.class);
 
     private int[] selectedFilenamesIndices;
     public File[] files;

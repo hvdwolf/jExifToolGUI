@@ -1,12 +1,11 @@
 package org.hvdw.jexiftoolgui.view;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
-import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.hvdw.jexiftoolgui.model.Lenses;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -14,11 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-
-import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class SelectmyLens extends JDialog {
     private JPanel contentPane;
@@ -33,7 +28,7 @@ public class SelectmyLens extends JDialog {
     private String queryresult = "";
     private JPanel rp;
 
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SelectmyLens.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(SelectmyLens.class);
     private final String loadLensTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("sellens.loadlenstxt") + "<br><br></html>";
     private final String deleteLensTxt = "<html>" + ResourceBundle.getBundle("translations/program_strings").getString("sellens.deletelenstxt") + "<br><br></html>";
 

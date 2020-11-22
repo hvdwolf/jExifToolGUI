@@ -271,8 +271,7 @@ public class JxMapViewer extends JDialog {
         try {
             String getResult = Nominatim.ReverseSearch(latitude, longitude);
             JsonValue place = Json.parse(getResult);
-            String display_Name = place.asObject().getString("display_name", "Unknown display_name");
-            lblDisplay_Name.setText(display_Name);
+            String display_Name = place.asObject().getString("display_name", "");
             JsonArray bb = place.asObject().get("boundingbox").asArray();
             logger.debug("display_Name {} boundingbox {}", display_Name, bb.toString());
             GeoPosition topleft = new GeoPosition(Double.parseDouble(bb.get(0).asString()), Double.parseDouble(bb.get(2).asString()));

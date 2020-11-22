@@ -1,17 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
-import org.hvdw.jexiftoolgui.controllers.*;
-import org.hvdw.jexiftoolgui.datetime.DateTime;
-import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
-import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
-import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
-import org.hvdw.jexiftoolgui.metadata.CreateArgsFile;
-import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
-import org.hvdw.jexiftoolgui.metadata.MetaData;
-import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
-import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
-import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.LoggerFactory;
 
 
@@ -32,7 +21,6 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRE
  * May also start several threads
  */
 public class Application {
-    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Application.class);
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Application.class);
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 

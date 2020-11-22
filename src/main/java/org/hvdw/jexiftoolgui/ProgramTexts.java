@@ -8,13 +8,6 @@ public class ProgramTexts {
     public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
     public static final String Version = "1.7.2";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
-    public static final String noExifTool = "<b>I can't find exiftool in your PATH and it is not specified in the preferences either.<br>"
-            +"I can't continue without it.</b><br><br>"
-            +"You have a few options:<br>"
-            +"<ul><li>Linux: Install it via your distribution's package manager (but this might be a (slightly) older version), or download the latest from Phil Harvey's exiftool website.</li>"
-            +"<li>Windows: Download the latest version from Phil Harvey's exiftool website.</li>"
-            +"<li>Mac OS/X: Install it via MacPorts or Homebrew (but this might be a (slightly) older version), or download the latest from Phil Harvey's exiftool website.</li></ul>"
-            +"Use one of the below options.";
     public static final String cancelledETlocatefromStartup = "<html>You cancelled providing the location of exiftool.<br>I will now exit jExifToolGUI.</html>";
     public static final String downloadInstallET = "I will now open the ExifTool website in your browser and then close jExifToolGUI.<br>"
             +"After having downloaded and installed ExifTool you can reopen jExifToolGUI.<br><br>If ExifTool is in your PATH, jExifToolGUI will simply continue.<br><br>"

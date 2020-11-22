@@ -2,10 +2,8 @@ package org.hvdw.jexiftoolgui.view;
 
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
-import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
@@ -15,7 +13,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.awt.Toolkit;
 import java.io.IOException;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;

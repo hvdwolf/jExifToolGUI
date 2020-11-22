@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.hvdw.jexiftoolgui.view.ExportFromCompareImagesView">
+  <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="48" y="54" width="527" height="297"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <hspacer id="98af6">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <grid id="9538f" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="dlg.Export"/>
+                </properties>
+              </component>
+              <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="dlg.cancel"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="cf7bd" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="249c9" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="emd.exportto"/>
+                </properties>
+              </component>
+              <hspacer id="77a81">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <grid id="1c50d" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="52b57" class="javax.swing.JRadioButton" binding="txtRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <selected value="true"/>
+                      <text resource-bundle="translations/program_strings" key="emd.txt"/>
+                    </properties>
+                  </component>
+                  <component id="ce4cb" class="javax.swing.JRadioButton" binding="tabRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text resource-bundle="translations/program_strings" key="emd.tab"/>
+                    </properties>
+                  </component>
+                  <component id="6829c" class="javax.swing.JRadioButton" binding="xmlRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text resource-bundle="translations/program_strings" key="emd.xml"/>
+                    </properties>
+                  </component>
+                  <component id="e7b9c" class="javax.swing.JRadioButton" binding="htmlRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text resource-bundle="translations/program_strings" key="emd.html"/>
+                    </properties>
+                  </component>
+                  <component id="5cfcd" class="javax.swing.JRadioButton" binding="xmpRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text resource-bundle="translations/program_strings" key="emd.xmp"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="2ea7a" class="javax.swing.JRadioButton" binding="csvRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text resource-bundle="translations/program_strings" key="emd.csv"/>
+                    </properties>
+                  </component>
+                  <component id="8d44d" class="javax.swing.JRadioButton" binding="pdfRadioButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text value="pdf"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <component id="4235c" class="javax.swing.JCheckBox" binding="GenExpuseMetadataTagLanguageCheckBoxport">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text resource-bundle="translations/program_strings" key="emd.uselang"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="buttonGroupExportOptions">
+      <member id="52b57"/>
+      <member id="ce4cb"/>
+      <member id="6829c"/>
+      <member id="e7b9c"/>
+      <member id="2ea7a"/>
+      <member id="8d44d"/>
+    </group>
+  </buttonGroups>
+</form>

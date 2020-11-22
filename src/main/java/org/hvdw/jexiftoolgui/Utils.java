@@ -31,7 +31,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -45,12 +44,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class Utils {
 
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Utils.class);
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(Utils.class);
 
     private Utils() {
         SetLoggingLevel(Utils.class);
-        //logger.setLevel(Level.ALL);
     }
 
     public static void SetApplicationWideLogLevel() {
@@ -317,39 +314,52 @@ public class Utils {
     public static void checkForNewVersion(String fromWhere) {
         String web_version = "";
         boolean versioncheck = prefs.getByKey(VERSION_CHECK, true);
-
+        boolean validconnection = true;
+        String update_url = "https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt";
 
         if (fromWhere.equals("menu") || versioncheck) {
             try {
-                URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
+                URL testurl = getResource(update_url);
+                if (!(testurl == null)) {
+                    URL url = new URL("https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt");
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                web_version = in.readLine();
-                in.close();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    web_version = in.readLine();
+                    in.close();
+                } else {
+                    validconnection = false;
+                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
+                validconnection = false;
+                JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
             }
-            String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
-            logger.info("Using java version {}: ", jv);
-            logger.info("Version on the web: " + web_version);
-            logger.info("This version: " + ProgramTexts.Version);
-            int version_compare = web_version.compareTo(ProgramTexts.Version);
-            if ( version_compare > 0 ) { // This means the version on the web is newer
-            //if (Float.valueOf(web_version) > Float.valueOf(ProgramTexts.Version)) {
-                String[] options = {"No", "Yes"};
-                int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversion"),
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (choice == 1) { //Yes
-                    // Do something
-                    openBrowser("https://github.com/hvdwolf/jExifToolGUI/releases");
-                    System.exit(0);
-                }
+            if (validconnection) {
+                String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
+                logger.info("Using java version {}: ", jv);
+                logger.info("Version on the web: " + web_version);
+                logger.info("This version: " + ProgramTexts.Version);
+                int version_compare = web_version.compareTo(ProgramTexts.Version);
+                if (version_compare > 0) { // This means the version on the web is newer
+                    //if (Float.valueOf(web_version) > Float.valueOf(ProgramTexts.Version)) {
+                    String[] options = {"No", "Yes"};
+                    int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversion"),
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (choice == 1) { //Yes
+                        // Do something
+                        openBrowser("https://github.com/hvdwolf/jExifToolGUI/releases");
+                        System.exit(0);
+                    }
 
-            } else {
-                if (fromWhere.equals("menu")) {
-                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversion"), JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    if (fromWhere.equals("menu")) {
+                        JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversion"), JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
-            }
+            } /*else {
+                JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
+            }*/
         }
     }
 

@@ -1,23 +1,18 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class SQLiteJDBC {
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SQLiteJDBC.class);
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SQLiteJDBC.class);
 
     static public Connection connect() {

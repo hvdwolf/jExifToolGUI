@@ -1,11 +1,8 @@
 package org.hvdw.jexiftoolgui.controllers;
 
 import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.editpane.EditLensdata;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -15,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.extract_resource_to_jexiftoolguiFolder;
-import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.FILE_SEPARATOR;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class UpdateActions {

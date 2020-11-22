@@ -1,6 +1,5 @@
 package org.hvdw.jexiftoolgui.model;
 
-import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.slf4j.LoggerFactory;
 
 import static org.hvdw.jexiftoolgui.controllers.SQLiteJDBC.*;

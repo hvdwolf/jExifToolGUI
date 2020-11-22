@@ -6,7 +6,6 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.PreferencesFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -101,7 +100,7 @@ public class EditGeotaggingdata {
             cmdparams.add("-preserve");
         }
         if (!OverwiteOriginals) {
-            cmdparams.add("-overwrite_original_in_place");
+            cmdparams.add("-overwrite_original");
         }
         cmdparams.add("-geotag");
         cmdparams.add(gpslogfile);

@@ -1,8 +1,6 @@
 package org.hvdw.jexiftoolgui.view;
 
 import org.hvdw.jexiftoolgui.controllers.MenuActionListener;
-import org.hvdw.jexiftoolgui.mainScreen;
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
@@ -35,28 +33,6 @@ public class CreateMenu {
         //myMenu.setMnemonic(KeyEvent.VK_R);
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
-
-/*        JMenu exportSidecarSubMenu = new JMenu(ResourceBundle.getBundle("translations/program_strings").getString("mmenu.exportsidecar"));
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.help"));
-        menuItem.setActionCommand("sidecarhelp");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exif"));
-        menuItem.setActionCommand("exportexifsidecar");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.xmp"));
-        menuItem.setActionCommand("exportxmpsidecar");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.mie"));
-        menuItem.setActionCommand("exportmiesidecar");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem);
-        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("subexpsidecarmenu.exv"));
-        menuItem.setActionCommand("exportexvsidecar");
-        menuItem.addActionListener(mal);
-        exportSidecarSubMenu.add(menuItem); */
 
 
         // metadata menu

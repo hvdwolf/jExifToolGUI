@@ -8,12 +8,9 @@ import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.hvdw.jexiftoolgui.view.CreateUpdatemyLens;
 import org.hvdw.jexiftoolgui.view.SelectmyLens;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.EXIFTOOL_PATH;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 

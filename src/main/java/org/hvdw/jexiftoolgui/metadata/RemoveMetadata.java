@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.metadata;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -9,7 +10,6 @@ import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 
 public class RemoveMetadata extends JDialog {
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(RemoveMetadata.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(RemoveMetadata.class);
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     private JPanel contentPane;

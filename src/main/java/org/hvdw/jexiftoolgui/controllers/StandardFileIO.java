@@ -3,7 +3,6 @@ package org.hvdw.jexiftoolgui.controllers;
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

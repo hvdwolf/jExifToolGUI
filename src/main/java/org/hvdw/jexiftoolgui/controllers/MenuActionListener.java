@@ -27,7 +27,6 @@ import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyK
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MenuActionListener implements ActionListener  {
-    //private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(MenuActionListener.class);
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(MenuActionListener.class);
 
     PreferencesDialog prefsDialog = new PreferencesDialog();

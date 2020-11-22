@@ -1,11 +1,11 @@
 package org.hvdw.jexiftoolgui.view;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -28,7 +28,7 @@ public class DeleteFavorite extends JDialog {
     private String queryresult = "";
     private JPanel jp = null;
 
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DeleteFavorite.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(DeleteFavorite.class);
 
 
     public DeleteFavorite() {
