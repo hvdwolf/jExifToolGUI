@@ -280,7 +280,7 @@ public class Utils {
         String copyright = prefs.getByKey(COPYRIGHTS, "");
         String credits = prefs.getByKey(CREDIT, "");
         if (!prefs.getByKey(ARTIST, "").equals("") && !prefs.getByKey(ARTIST, "").equals(" ") ) {
-            exifartist = "-exif:Artist=" + prefs.getByKey(ARTIST, "");
+            exifartist = "-exif:Artist=" + (prefs.getByKey(ARTIST, "")).trim();
             AlwaysAddParams.add(exifartist);
             exifartist = "-xmp-dc:creator=" + prefs.getByKey(ARTIST, "");
             AlwaysAddParams.add(exifartist);
@@ -288,13 +288,13 @@ public class Utils {
             AlwaysAddParams.add(exifartist);
         }
         if (!prefs.getByKey(CREDIT, "").equals("") && !prefs.getByKey(CREDIT, "").equals(" ")) {
-            credits = "-xmp-photoshop:Credit=" + prefs.getByKey(CREDIT, "");
+            credits = "-xmp-photoshop:Credit=" + (prefs.getByKey(CREDIT, "")).trim();
             AlwaysAddParams.add(credits);
             credits = "-iptc:Credit=" + prefs.getByKey(CREDIT, "");
             AlwaysAddParams.add(credits);
         }
         if (!prefs.getByKey(COPYRIGHTS, "").equals("") && !prefs.getByKey(COPYRIGHTS, "").equals(" ")) {
-            copyright = "-exif:Copyright=" + prefs.getByKey(COPYRIGHTS, "");
+            copyright = "-exif:Copyright=" + (prefs.getByKey(COPYRIGHTS, "")).trim();
             AlwaysAddParams.add(copyright);
             copyright = "-xmp-dc:rights=" + prefs.getByKey(COPYRIGHTS, "");
             AlwaysAddParams.add(copyright);
