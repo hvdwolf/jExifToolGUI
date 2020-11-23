@@ -284,9 +284,11 @@ public class EditGPSdata {
             if ( in_Range(Integer.parseInt(value), 0, maxvalue)) {
                 checked_value = value;
             }
-        } else if ( "float".equals(int_or_double) && "double".equals(int_or_double) ) {
+        } else if ( "float".equals(int_or_double) || "double".equals(int_or_double) ) {
             int minvalue = -maxvalue;
-            if ( in_Range(Integer.parseInt(value), minvalue, maxvalue)) {
+            double dbl = Double.parseDouble(value);
+            int intvalue = (int) dbl;
+            if ( in_Range(intvalue, minvalue, maxvalue)) {
                 checked_value = value;
             }
         }
