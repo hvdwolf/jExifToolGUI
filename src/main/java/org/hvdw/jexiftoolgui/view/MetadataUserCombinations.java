@@ -20,7 +20,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
-import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,13 +36,8 @@ import java.awt.event.MouseEvent;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 /**
- * Handle the metadata settings table which defines the metadata that may be
- * applied to photos.<br>
- * Usage: new Metadata();<br>
- * Gets initial metadata list and saves updated metadata list from/to
- * program preferences.<br>
  * Original @author Dennis Damico
- * Modified by Harry van der Wolf
+ * Heavily modified by Harry van der Wolf
  */
 public class MetadataUserCombinations extends JDialog implements TableModelListener {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(Utils.class);
@@ -150,7 +144,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         customSetcomboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                fillTable();
+                fillTable("");
             }
         });
     }
@@ -240,7 +234,8 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //custom_config_field.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile") + " " + CustomconfigFile(myPanel, custom_config_field));
-                custom_config_field.setText(CustomconfigFile(myPanel, custom_config_field));           }
+                custom_config_field.setText(CustomconfigFile(myPanel, custom_config_field));
+            }
         });
 
         //JPanel myPanel = new JPanel();
@@ -441,29 +436,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
      */
     @Override
     public void tableChanged(TableModelEvent e) {
-        // Ignore events until initialization completes.
-        /*if (initialized) {
-            MyTableModel model = ((MyTableModel) (metadataTable.getModel()));
-            Vector theMetadata = model.getDataVector();
-
-            // Convert the vector to a linked list format
-            LinkedList<MetadataRecord> theMetadataList = new LinkedList<>();
-            for (int i=0; i<theMetadata.size(); i++) {
-                Vector vv = (Vector) theMetadata.get(i);
-                Object[] oo = (Object[])vv.toArray();
-                if (oo[0] == null) oo[0] = "";
-                if (oo[1] == null) oo[1] = "";
-                if (oo[2] == null) oo[2] = "";
-                if ( (boolean) vv.get(3)) oo[3] = "1"; else oo[3] = "0";
-
-                MetadataRecord md = new MetadataRecord(
-                        oo[0].toString(), oo[1].toString(), oo[2].toString(), oo[3].toString());
-                theMetadataList.add(md);
-            }
-            // Tell prefs and the main window that metadata has changed.
-            myPrefs.setMetadata(theMetadataList);
-            ImageTagger.getTaggerWindow().metadataChanged();
-        } */
+        // We might use this "some time"
     }
 
     {
@@ -603,22 +576,6 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
     public JComponent $$$getRootComponent$$$() {
         return metadatapanel;
     }
-
-    /**
-     * When the metadata table is sorted update the model rows to match
-     * the screen view.  This will generate a tableChanged event.
-     */
-//    class MySortListener implements RowSorterListener {
-    /**
-     * Metadata table was sorted.
-     */
-/*        @Override
-        public void sorterChanged(RowSorterEvent e) {
-            if (e.getType() == RowSorterEvent.Type.SORTED) {
-                reorderRows();
-            }
-        }
-    }*/
 
 
     /**
@@ -816,7 +773,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
 
     private String[] loadCurrentSets(String check) {
         String sqlsets = SQLiteModel.getdefinedCustomSets();
-        logger.info("retrieved CustomSets: " + sqlsets);
+        logger.debug("retrieved CustomSets: " + sqlsets);
         String[] views = sqlsets.split("\\r?\\n"); // split on new lines
         if ("fill_combo".equals(check)) { // We use this one also for "Save As" to check if user has chosen same name
             MyVariables.setCustomCombis(views);
@@ -825,7 +782,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         return views;
     }
 
-    private void fillTable() {
+    private void fillTable(String start) {
         DefaultTableModel model = ((DefaultTableModel) (metadataTable.getModel()));
         model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mduc.columnlabel"),
                 ResourceBundle.getBundle("translations/program_strings").getString("mduc.columntag"),
@@ -833,17 +790,11 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         model.setRowCount(0);
         Object[] row = new Object[1];
 
-        logger.trace("combo numberof {}, selecteditem {}", customSetcomboBox.getItemCount(), customSetcomboBox.getSelectedItem());
-        if ((customSetcomboBox.getItemCount() == 0) || (customSetcomboBox.getSelectedItem() == null) || ("".equals(customSetcomboBox.getSelectedItem()))) { // We do not have stored custom sets yet.
-            // Try to set the defaults for artist, credit and copyrights in the table if prefs available
-            String[] ArtCredCopyPrefs = Utils.checkPrefsArtistCreditsCopyRights();
-            // artist 0; credit 1; copyrights 2
-
-            model.addRow(new Object[]{"Creator", "exif:creator", ArtCredCopyPrefs[0]});
-            model.addRow(new Object[]{"Creator", "xmp-dc:creator", ArtCredCopyPrefs[0]});
-            model.addRow(new Object[]{"Credits", "xmp-dc:rights", ArtCredCopyPrefs[1]});
-            model.addRow(new Object[]{"Copyrights", "exif:copyright", ArtCredCopyPrefs[2]});
-            model.addRow(new Object[]{"Copyrights", "xmp:copyright", ArtCredCopyPrefs[2]});
+        logger.debug("combo numberof {}, selecteditem {}", customSetcomboBox.getItemCount(), customSetcomboBox.getSelectedItem());
+        if ((customSetcomboBox.getItemCount() == 0) || ("start".equals(start))) { // We do not have stored custom sets yet, or we are opening this screen.
+            for (int i = 0; i < 10; i++) {
+                model.addRow(new Object[]{"", "", ""});
+            }
         } else {
             String setName = customSetcomboBox.getSelectedItem().toString();
             String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "' order by rowcount";
@@ -852,7 +803,6 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                 String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
 
                 for (String line : lines) {
-                    //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
                     String[] cells = line.split("\\t", 4);
                     model.addRow(new Object[]{cells[0], cells[1], cells[2]});
                 }
@@ -883,7 +833,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         enablePaste();
         enableDragging();
         loadCurrentSets("fill_combo");
-        fillTable();
+        fillTable("start");
 
         // Initialization is complete.
         initialized = true;
