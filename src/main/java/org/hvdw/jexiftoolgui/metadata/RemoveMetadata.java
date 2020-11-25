@@ -10,10 +10,12 @@ import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
+import org.hvdw.jexiftoolgui.view.LinkListener;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -44,11 +46,13 @@ public class RemoveMetadata extends JDialog {
     private JRadioButton rempgroupradioButtonExpByTagName;
     private JComboBox remcomboBoxExpByTagName;
     private JRadioButton remUsedCategeriesRadioButton;
+    private JLabel lblWarning;
 
     public int[] selectedFilenamesIndices;
     public File[] files;
     public JProgressBar progBar;
 
+    //private final HyperlinkListener linkListener = new LinkListener();
 
     public RemoveMetadata() {
         setContentPane(contentPane);
@@ -134,6 +138,25 @@ public class RemoveMetadata extends JDialog {
                     removegeotagDataCheckbox.setEnabled(false);
                     removexmpgeotagDataCheckbox.setEnabled(false);
                 }
+            }
+        });
+
+        lblWarning.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // the user clicks on the label
+                Utils.openBrowser("https://exiftool.org/exiftool_pod.html#DESCRIPTION");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // the mouse has entered the label
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // the mouse has exited the label
             }
         });
     }
@@ -255,6 +278,7 @@ public class RemoveMetadata extends JDialog {
         selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
         files = MyVariables.getLoadedFiles();
         progBar = progressBar;
+        lblWarning.setText(String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("rmd.warning") + "<a href=\"https://exiftool.org/exiftool_pod.html#DESCRIPTION\">https://exiftool.org/exiftool_pod.html#DESCRIPTION</a>"));
 
         pack();
         //setLocationRelativeTo(null);
@@ -313,7 +337,7 @@ public class RemoveMetadata extends JDialog {
         this.$$$loadButtonText$$$(makeBackupOfOriginalsCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "chkbox.makebackup"));
         panel4.add(makeBackupOfOriginalsCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel5 = new JPanel();
-        panel5.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel5.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel5, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         removeAllMetadataCheckBox = new JCheckBox();
@@ -321,7 +345,7 @@ public class RemoveMetadata extends JDialog {
         panel5.add(removeAllMetadataCheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridLayoutManager(7, 1, new Insets(0, 30, 0, 0), -1, -1));
-        panel5.add(panel6, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
+        panel5.add(panel6, new GridConstraints(2, 0, 2, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
         removeExifDataCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(removeExifDataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "rmd.removeexif"));
         panel6.add(removeExifDataCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -346,12 +370,15 @@ public class RemoveMetadata extends JDialog {
         final Spacer spacer2 = new Spacer();
         panel5.add(spacer2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel7 = new JPanel();
-        panel7.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 30), -1, -1));
+        panel7.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 30), -1, -1));
         panel5.add(panel7, new GridConstraints(1, 2, 2, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         remcomboBoxExpByTagName = new JComboBox();
         panel7.add(remcomboBoxExpByTagName, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         panel7.add(spacer3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        lblWarning = new JLabel();
+        lblWarning.setText("");
+        panel7.add(lblWarning, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         remUsedCategeriesRadioButton = new JRadioButton();
         remUsedCategeriesRadioButton.setSelected(true);
         remUsedCategeriesRadioButton.setText("Most used categories");
