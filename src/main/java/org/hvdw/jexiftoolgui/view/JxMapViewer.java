@@ -1,9 +1,6 @@
 package org.hvdw.jexiftoolgui.view;
 
 import ch.qos.logback.classic.Logger;
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonValue;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -58,7 +55,11 @@ public class JxMapViewer extends JDialog {
     private JXMapViewer mapViewer = new JXMapViewer();
     private JXMapKit jXMapKit = new JXMapKit();
     private List<String[]> placesList = null;
+    private List<Map> places = null;
+    private Map<String, String> selectedPlace = null;
     private boolean useXMapKit = false;
+    //private String address = "";
+    private HashMap<String, String> Address = new HashMap<String, String>();
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(JxMapViewer.class);
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
@@ -101,14 +102,13 @@ public class JxMapViewer extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String getResult;
-                //List<String[]> placesList = null;
                 String searchphrase = SearchtextField.getText();
                 if (!("".equals(searchphrase))) {
                     try {
                         getResult = Nominatim.SearchLocation(searchphrase);
-                        placesList = Nominatim.parseLocationJson(getResult);
-                        if (placesList.size() > 0) {
-                            fillsearchResultstable(placesList);
+                        places = Nominatim.parseLocationJson(getResult);
+                        if (places.size() > 0) {
+                            fillsearchResultstable(places);
                         } else {
                             JOptionPane.showMessageDialog(contentPane, ResourceBundle.getBundle("translations/program_strings").getString("mpv.noresults"), ResourceBundle.getBundle("translations/program_strings").getString("mpv.noresults"), JOptionPane.WARNING_MESSAGE);
                         }
@@ -145,7 +145,6 @@ public class JxMapViewer extends JDialog {
 
 
     private void onOK() {
-        // add your code here
         returnPlace = new String[]{lblDisplay_Name.getText().trim(), lblLatitude.getText().trim(), lblLongitude.getText().trim()};
         if (!"".equals(lblLatitude.getText())) {
             try {
@@ -167,16 +166,18 @@ public class JxMapViewer extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
         returnPlace = new String[]{"", "", ""};
+        selectedPlace.put("empty", "empty");
         dispose();
     }
 
     /**
      * This method fills the results table after a search for a location
-     * @param placesList
+     *
+     * @param places
      */
-    void fillsearchResultstable(List<String[]> placesList) {
+    void fillsearchResultstable(List<Map> places) {
+        //void fillsearchResultstable(List<String[]> placesList) {
         DefaultTableModel model = (DefaultTableModel) searchResultstable.getModel();
         // make table uneditable
         searchResultstable.setDefaultEditor(Object.class, null);
@@ -193,13 +194,15 @@ public class JxMapViewer extends JDialog {
         Object[] row = new Object[1];
 
         // Now start filling the table
-        for (String[] place : placesList) {
-            model.addRow(new Object[]{place[0], place[1], place[2]});
+        for (Map place : places) {
+            //model.addRow(new Object[]{place[0], place[1], place[2]});
+            model.addRow(new Object[]{place.get("display_Name"), place.get("geoLatitude"), place.get("geoLongitude")});
         }
     }
 
     /**
      * This method is called when a user select a result place from the table
+     *
      * @param model
      * @param row
      */
@@ -215,24 +218,23 @@ public class JxMapViewer extends JDialog {
         MyVariables.setLatitude(strlat);
         MyVariables.setLongitude(strlon);
 
-        //mapViewer.setZoom(16);
         GeoPosition newPos = new GeoPosition(Double.parseDouble(strlat), Double.parseDouble(strlon));
         addWaypoint(newPos);
         mapViewer.setAddressLocation(newPos);
         mapViewer.setCenterPosition(newPos);
         jXMapKit.setAddressLocation(newPos);
         jXMapKit.setCenterPosition(newPos);
-        for (String[] place : placesList) {
-            if (display_name.equals(place[0])) {
-                String[] tmpbb = place[3].substring(2, place[3].length() - 2).split("\",\"");
-                GeoPosition topleft = new GeoPosition(Double.parseDouble(tmpbb[0]), Double.parseDouble(tmpbb[2]));
-                GeoPosition topright = new GeoPosition(Double.parseDouble(tmpbb[1]), Double.parseDouble(tmpbb[2]));
-                GeoPosition btmleft = new GeoPosition(Double.parseDouble(tmpbb[0]), Double.parseDouble(tmpbb[3]));
-                GeoPosition btmright = new GeoPosition(Double.parseDouble(tmpbb[1]), Double.parseDouble(tmpbb[3]));
+
+        for (Map<String, String> place : places) {
+            if (display_name.equals(place.get("display_Name"))) {
+                selectedPlace = place;
+                GeoPosition topleft = new GeoPosition(Double.parseDouble(place.get("bbX1")), Double.parseDouble(place.get("bbY1")));
+                GeoPosition topright = new GeoPosition(Double.parseDouble(place.get("bbX2")), Double.parseDouble(place.get("bbY1")));
+                GeoPosition btmleft = new GeoPosition(Double.parseDouble(place.get("bbX1")), Double.parseDouble(place.get("bbY2")));
+                GeoPosition btmright = new GeoPosition(Double.parseDouble(place.get("bbX2")), Double.parseDouble(place.get("bbY2")));
                 boundingbox = Arrays.asList(topleft, topright, btmleft, btmright);
                 mapViewer.zoomToBestFit(new HashSet<GeoPosition>(boundingbox), 0.7);
             }
-
         }
     }
 
@@ -258,8 +260,7 @@ public class JxMapViewer extends JDialog {
             MyVariables.setLatitude(String.valueOf(latitude));
             MyVariables.setLongitude(String.valueOf(longitude));
         }
-
-        //mapViewer.setZoom(16);
+        
         GeoPosition newPos = new GeoPosition(latitude, longitude);
         GeoPosition newXPos = new GeoPosition(xLatitude, xLongitude);
         addWaypoint(newPos);
@@ -270,25 +271,24 @@ public class JxMapViewer extends JDialog {
 
         try {
             String getResult = Nominatim.ReverseSearch(latitude, longitude);
-            JsonValue place = Json.parse(getResult);
-            String display_Name = place.asObject().getString("display_name", "");
-            JsonArray bb = place.asObject().get("boundingbox").asArray();
-            logger.debug("display_Name {} boundingbox {}", display_Name, bb.toString());
-            GeoPosition topleft = new GeoPosition(Double.parseDouble(bb.get(0).asString()), Double.parseDouble(bb.get(2).asString()));
-            GeoPosition topright = new GeoPosition(Double.parseDouble(bb.get(1).asString()), Double.parseDouble(bb.get(2).asString()));
-            GeoPosition btmleft = new GeoPosition(Double.parseDouble(bb.get(0).asString()), Double.parseDouble(bb.get(3).asString()));
-            GeoPosition btmright = new GeoPosition(Double.parseDouble(bb.get(1).asString()), Double.parseDouble(bb.get(3).asString()));
+            selectedPlace = Nominatim.parseReverseLocationJson(getResult);
+            lblDisplay_Name.setText(selectedPlace.get("display_Name"));
+            GeoPosition topleft = new GeoPosition(Double.parseDouble(selectedPlace.get("bbX1")), Double.parseDouble(selectedPlace.get("bbY1")));
+            GeoPosition topright = new GeoPosition(Double.parseDouble(selectedPlace.get("bbX2")), Double.parseDouble(selectedPlace.get("bbY1")));
+            GeoPosition btmleft = new GeoPosition(Double.parseDouble(selectedPlace.get("bbX1")), Double.parseDouble(selectedPlace.get("bbY2")));
+            GeoPosition btmright = new GeoPosition(Double.parseDouble(selectedPlace.get("bbX2")), Double.parseDouble(selectedPlace.get("bbY2")));
             boundingbox = Arrays.asList(topleft, topright, btmleft, btmright);
             mapViewer.zoomToBestFit(new HashSet<GeoPosition>(boundingbox), 0.7);
-
         } catch (IOException e) {
             logger.error("Nominatim.ReverseSearch error {}", e);
             e.printStackTrace();
         }
     }
 
-    /** This method puts a waypoint marker on the map for the clicked location from the results table
+    /**
+     * This method puts a waypoint marker on the map for the clicked location from the results table
      * or when a user has right-clicked the map
+     *
      * @param markerposition
      */
     void addWaypoint(GeoPosition markerposition) {
@@ -316,9 +316,6 @@ public class JxMapViewer extends JDialog {
 
         // Setup JXMapViewer
         mapViewer.setTileFactory(tileFactory);
-        //final JLabel labelAttr = new JLabel();
-        //mapViewer.setLayout(new BorderLayout());
-        //mapViewer.add(labelAttr, BorderLayout.SOUTH);
 
         // Set the focus
         mapViewer.setZoom(7);
@@ -460,7 +457,8 @@ public class JxMapViewer extends JDialog {
     }
 
     // The  main" function of this class
-    public String[] showDialog() {
+    public Map<String, String> showDialog() {
+    //public String[] showDialog() {
         //JxMapViewer2 dialog = new JxMapViewer2();
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("mpv.title"));
         pack();
@@ -475,7 +473,8 @@ public class JxMapViewer extends JDialog {
         //buildXMapkitviewer();
         setVisible(true);
 
-        return returnPlace;
+        return selectedPlace;
+        //return returnPlace;
     }
 
     {

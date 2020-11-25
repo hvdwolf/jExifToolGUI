@@ -11,7 +11,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -28,7 +30,7 @@ public class Nominatim {
      */
     public static String SearchLocation(String searchphrase) throws IOException {
         String getResponse = "";
-        final String baseurl = "https://nominatim.openstreetmap.org/search?q=";
+        final String baseurl = "https://nominatim.openstreetmap.org/search?addressdetails=1&q=";
         String geturl = baseurl + searchphrase.replace(" ", "+") + "&format=json";
         logger.debug("geturl {}", geturl);
         URL urlObj = new URL(geturl);
@@ -94,21 +96,62 @@ public class Nominatim {
      * @param input
      * @return
      */
-    public static List<String[]> parseLocationJson(String input) {
-        List<String[]> placesList = new ArrayList<String[]>();
+    public static List<Map> parseLocationJson(String input) {
+        List<NominatimResult> NRList = new ArrayList<>();
 
-        JsonValue placeval = Json.parse(input);
+        List<Map> placesList = new ArrayList<>();
+
         JsonArray places = Json.parse(input).asArray();
         logger.debug("places {}", places.toString());
         for (JsonValue place : places) {
-            String display_Name = place.asObject().getString("display_name", "Unknown display_name");
-            String lat = place.asObject().getString("lat", "Unknown latitude");
-            String lon = place.asObject().getString("lon", "Unknown longitude");
+            Map hmplace = new HashMap();
+            hmplace.put("display_Name", place.asObject().getString("display_name", "Unknown display_name"));
+            hmplace.put("geoLatitude", place.asObject().getString("lat", "Unknown latitude"));
+            hmplace.put("geoLongitude", place.asObject().getString("lon", "Unknown longitude"));
+            //boundingbox
             JsonArray boundingbox = (JsonArray) place.asObject().get("boundingbox");
-            logger.debug("display_Name {} lat {} lon {} boundingbox {}", display_Name, lat, lon, boundingbox.toString());
-            placesList.add(new String[]{display_Name, lat, lon, boundingbox.toString()});
+            hmplace.put("bbX1", boundingbox.get(0).asString());
+            hmplace.put("bbX2", boundingbox.get(1).asString());
+            hmplace.put("bbY1", boundingbox.get(2).asString());
+            hmplace.put("bbY2", boundingbox.get(3).asString());
+            //Address
+            JsonValue value = place.asObject().get("address");
+            String addressstring = value.toString().replace("\"", "").replace("{", "").replace("}","");
+            logger.debug("addresstring {}", addressstring);
+            String[] addressArray = addressstring.split(",");
+            for (String addresspart : addressArray) {
+                String[] splitaddresspart = addresspart.split(":");
+                hmplace.put(splitaddresspart[0].trim(), splitaddresspart[1].trim());
+            }
+            placesList.add(hmplace);
         }
         return placesList;
     }
+
+    public static Map<String, String> parseReverseLocationJson(String input) {
+
+        JsonValue place = Json.parse(input);
+            Map hmplace = new HashMap();
+            hmplace.put("display_Name", place.asObject().getString("display_name", "Unknown display_name"));
+            hmplace.put("geoLatitude", place.asObject().getString("lat", "Unknown latitude"));
+            hmplace.put("geoLongitude", place.asObject().getString("lon", "Unknown longitude"));
+            //boundingbox
+            JsonArray boundingbox = (JsonArray) place.asObject().get("boundingbox");
+            hmplace.put("bbX1", boundingbox.get(0).asString());
+            hmplace.put("bbX2", boundingbox.get(1).asString());
+            hmplace.put("bbY1", boundingbox.get(2).asString());
+            hmplace.put("bbY2", boundingbox.get(3).asString());
+            //Address
+            JsonValue value = place.asObject().get("address");
+            String addressstring = value.toString().replace("\"", "").replace("{", "").replace("}","");
+            logger.debug("addresstring {}", addressstring);
+            String[] addressArray = addressstring.split(",");
+            for (String addresspart : addressArray) {
+                String[] splitaddresspart = addresspart.split(":");
+                hmplace.put(splitaddresspart[0].trim(), splitaddresspart[1].trim());
+            }
+        return hmplace;
+    }
+
 
 }

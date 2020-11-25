@@ -33,10 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 
@@ -2895,18 +2893,30 @@ public class mainScreen {
         });
         gpsMapcoordinatesbutton.setActionCommand("gpsMcb");
         gpsMapcoordinatesbutton.addActionListener(gal);
-        /*gpssearchLocationButton.setActionCommand("gpsSearchLocation");
-        gpssearchLocationButton.addActionListener(gal); */
+
         gpssearchLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button gpsSearchLocationbutton pressed");
                 JxMapViewer JMV = new JxMapViewer();
-                String[] returnPlace = JMV.showDialog();
-                logger.info("place {}", returnPlace.toString());
-                if ( !"".equals(returnPlace[1]) && !"".equals(returnPlace[2]) ) {
-                    gpsLatDecimaltextField.setText(returnPlace[1]);
-                    gpsLonDecimaltextField.setText(returnPlace[2]);
+                Map<String, String> place = JMV.showDialog();
+                if (!"empty".equals(place.get("empty"))) {
+                    gpsLatDecimaltextField.setText(place.get("geoLatitude"));
+                    gpsLonDecimaltextField.setText(place.get("geoLongitude"));
+                    gpsStateProvincetextField.setText(place.get("state"));
+                    gpsCountrytextField.setText(place.get("country"));
+                    gpsLocationtextField.setText(place.get("display_Name"));
+                    if (!(place.get("city") == null)) {
+                        gpsCitytextField.setText(place.get("city"));
+                    } else if (!(place.get("town") == null)) {
+                        gpsCitytextField.setText(place.get("town"));
+                    } else if (!(place.get("village") == null)) {
+                        gpsCitytextField.setText(place.get("village"));
+                    } else if (!(place.get("hamlet") == null)) {
+                        gpsCitytextField.setText(place.get("hamlet"));
+                    } else if (!(place.get("isolated_dwelling") == null)) {
+                        gpsCitytextField.setText(place.get("isolated_dwelling"));
+                    }
                 }
             }
         });
