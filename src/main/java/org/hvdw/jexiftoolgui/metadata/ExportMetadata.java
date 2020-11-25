@@ -7,6 +7,7 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.hvdw.jexiftoolgui.view.SimpleWebView;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -155,6 +156,7 @@ public class ExportMetadata {
                     params.add("-csv");
                 }
 
+                int counter = 1;
                 for (int index : selectedIndices) {
                     //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     if (isWindows) {
@@ -168,10 +170,15 @@ public class ExportMetadata {
                     } else {
                         params.add(files[index].getPath());
                         //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
-                        createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
+                        //createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
+                        String file = files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension;
+                        String link = "file://" + file;
+                        String complete = "<a href=\"" + link + "\">" + file + "</a><br>";
+                        createdExportFiles += complete;
                     }
                     // Again necessary for csv
                     filepath = files[index].getParent();
+                    counter++;
                 }
 
                 // Originally for csv we needed the > character to redirect output to a csv file, which we need to treat specially and differently on unixes and windows.
@@ -194,7 +201,9 @@ public class ExportMetadata {
                     //CommandRunner.runCommandWithProgressBar(params, progressBar);
                     try {
                         CommandRunner.runCommand(params);
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
+                        SimpleWebView WV = new SimpleWebView();
+                        WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles)), 700, (int)(100 + (counter*15)));
+                        //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
                     } catch (InterruptedException e) {
                         logger.error("Error creating your export files {}", e.toString());
                         e.printStackTrace();

@@ -316,6 +316,9 @@ public class JxMapViewer extends JDialog {
 
         // Setup JXMapViewer
         mapViewer.setTileFactory(tileFactory);
+        //final JLabel labelAttr = new JLabel();
+        //mapViewer.setLayout(new BorderLayout());
+        //mapViewer.add(labelAttr, BorderLayout.SOUTH);
 
         // Set the focus
         mapViewer.setZoom(7);
@@ -341,6 +344,8 @@ public class JxMapViewer extends JDialog {
         mapViewer.addMouseListener(ls);
         //Add stuff to mapviewer pane
         MapViewerPane.add(new JLabel(mapUsageHints), BorderLayout.PAGE_START);
+        String attributes = tileFactory.getInfo().getAttribution() + " - " + tileFactory.getInfo().getLicense();
+        MapViewerPane.add(new JLabel(attributes), BorderLayout.PAGE_END);
         MapViewerPane.add(mapViewer);
     }
 
@@ -408,6 +413,8 @@ public class JxMapViewer extends JDialog {
         //Add stuff to mapviewer pane
         //MapViewerPane.setPreferredSize(1150, 600);
         MapViewerPane.add(new JLabel(mapUsageHints), BorderLayout.PAGE_START);
+        String attributes = tileFactory.getInfo().getAttribution() + " - " + tileFactory.getInfo().getLicense();
+        MapViewerPane.add(new JLabel(attributes), BorderLayout.PAGE_END);
         MapViewerPane.add(jXMapKit);
     }
 

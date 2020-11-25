@@ -47,7 +47,7 @@ dependencies {
     //implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = "2.11.3")
     //implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.11.3")
 
-    // Add minimal json (35Kb), to be used for Nominatim queries (not yet)
+    // Add minimal json (35Kb), to be used for Nominatim queries and other json activities
     implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
 
     // Add dependencies of forms
@@ -95,8 +95,6 @@ dependencies {
     //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
     implementation(files("$projectDir/libs/sqlite-jdbc-3.32.3.2.jar"))
 
-    // Jeremie Hutchets's Nominatim Java API (5MB)
-    //implementation(group = "fr.dudie", name = "nominatim-api", version = "3.4")
 
     // The opencsv library jar
     implementation(files("$projectDir/libs/opencsv-5.3.jar"))
