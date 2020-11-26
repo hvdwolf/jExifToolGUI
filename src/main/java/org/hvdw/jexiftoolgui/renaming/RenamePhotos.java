@@ -480,7 +480,7 @@ public class RenamePhotos extends JDialog {
                         }
                     } else {
                         for (int index : selectedFilenamesIndices) {
-                            exifcommands.append(" " + files[index].getPath());
+                            exifcommands.append(" " + files[index].getPath().replace(" ", "\\ "));
                         }
                         cmdparams.add(exifcommands.toString());
                     }
