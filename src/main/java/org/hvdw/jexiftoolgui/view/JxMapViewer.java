@@ -145,7 +145,7 @@ public class JxMapViewer extends JDialog {
 
 
     private void onOK() {
-        returnPlace = new String[]{lblDisplay_Name.getText().trim(), lblLatitude.getText().trim(), lblLongitude.getText().trim()};
+        //returnPlace = new String[]{lblDisplay_Name.getText().trim(), lblLatitude.getText().trim(), lblLongitude.getText().trim()};
         if (!"".equals(lblLatitude.getText())) {
             try {
                 Double doub = Double.parseDouble(lblLatitude.getText().trim());
@@ -162,11 +162,17 @@ public class JxMapViewer extends JDialog {
                 prefs.storeByKey(LONGITUDE, "6.098");
             }
         }
+        if ("".equals(lblLatitude.getText()) && "".equals(lblLongitude.getText())) {
+            // We have nothing but user still wants to copy data back
+            selectedPlace = new HashMap<>();
+            selectedPlace.put("empty", "empty");
+        }
         dispose();
     }
 
     private void onCancel() {
-        returnPlace = new String[]{"", "", ""};
+        //returnPlace = new String[]{"", "", ""};
+        selectedPlace = new HashMap<>();
         selectedPlace.put("empty", "empty");
         dispose();
     }
