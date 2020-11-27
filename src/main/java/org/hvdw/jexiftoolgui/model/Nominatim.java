@@ -37,6 +37,7 @@ public class Nominatim {
         HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
         int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -72,6 +73,7 @@ public class Nominatim {
         HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
         int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
