@@ -43,5 +43,21 @@
 
         <key>LSMinimumSystemVersion</key>
         <string>10.9</string>
+
+        <key>NSDocumentsFolderUsageDescription</key>
+        <string>To be able to read and write images in your Documents folder</string>
+
+        <key>NSDesktopFolderUsageDescription</key>
+        <string>To be able to read and write images from your Desktop</string>
+
+        <key>NSDownloadsFolderUsageDescription</key>
+        <string>To be able to read and write images in your Downloads folder</string>
+
+        <key>NSNetworkVolumesUsageDescription</key>
+        <string>To be able to read and write images on Network Volumes</string>
+
+        <key>NSRemovableVolumesUsageDescription</key>
+        <string>To be able to read and write images on removable meida like USB-sticks and memeory cards</string>
+
     </dict>
 </plist>

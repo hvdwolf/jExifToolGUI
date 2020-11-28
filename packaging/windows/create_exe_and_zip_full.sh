@@ -21,7 +21,7 @@ Version="$1.0"
 
 launch4jPATH="../../../launch4j/launch4j"
 exe_zip_path="jExifToolGUI-$Version-win-x86_64_with-jre"
-JRE="../../../java/JREs/windows-jdk-11.0.8+10-jre"
+JRE="/media/harryvanderwolf/64GB/software/java/JREs/windows-jdk-11.0.9.1+1-jre"
 
 cp ../../jExifToolGUI.jar .
 
@@ -35,7 +35,7 @@ rm -rf ${exe_zip_path}
 mkdir ${exe_zip_path}
 mv *.exe ${exe_zip_path}
 cp ../../LICENSE ${exe_zip_path}
-cp -a "${JRE}" ${exe_zip_path}/jre
+cp -a --preserve=links "${JRE}" ${exe_zip_path}/jre
 
 rm "${exe_zip_path}.zip"
 zip -r9 "${exe_zip_path}.zip" "${exe_zip_path}"

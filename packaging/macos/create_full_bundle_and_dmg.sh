@@ -4,6 +4,8 @@
 BaseApp="jExifToolGUI.app.base"
 AppName="jExifToolGUI"
 App="jExifToolGUI.app"
+# Now specify where your (unpacked) JRE is located
+JRE="/media/harryvanderwolf/64GB/software/java/JREs/macos-jdk-11.0.9.1+1-jre"
 
 if [ "$1" = "" ]
 then
@@ -24,8 +26,10 @@ printf "Update the VersionString to $Version\n\n"
 sed -i "s+VersionString+$Version+" $App/Contents/Info.plist
 
 printf "Now copy the jre and the jar into the app\n\n" 
-cp -a jre $App/Contents/MacOS/jre
-cp ../../jExifToolGUI.jar $App/Contents/MacOS/
+#cp -a jre $App/Contents/MacOS/jre
+#cp ../../jExifToolGUI.jar $App/Contents/MacOS/
+mkdir -p $App/Contents/MacOS/jre
+cp -a --preserve=links ${JRE}/* $App/Contents/MacOS/jre
 
 printf "Create the 140MB (full) dmg\n\n"
 mkdir -p tmp/dmg

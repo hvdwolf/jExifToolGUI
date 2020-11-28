@@ -6,8 +6,8 @@
 # Requirements:
 # appimagetool: Download from https://github.com/AppImage/AppImageKit/releases
 # jre V11: download from https://adoptopenjdk.net/releases.html. Untar it and rename resulting folder to jre (to keepit simple over the versions)
-
-JRE="../../../java/JREs/linux-jdk-11.0.8+10-jre"
+# Specify where we have installed our (unpacked) jre
+JRE="/media/harryvanderwolf/64GB/software/java/JREs/linux-jdk-11.0.9.1+1-jre"
 
 if [ "$1" = "" ]
 then
@@ -58,7 +58,7 @@ cp ../jexiftoolgui.appdata.xml usr/share/metainfo
 #
 printf "Now copy the unpacked jre folder into our folder structure\n\n"
 mkdir jre
-cp -a ../$JRE/* ./jre
+cp -a --preserve=links $JRE/* ./jre
 
 #
 printf "Create the AppRun script\n\n"

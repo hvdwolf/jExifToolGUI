@@ -20,7 +20,7 @@ plugins {
     application
 
     //Shadow plugin for fatJar
-    id("com.github.johnrengelman.shadow") version ("5.0.0")
+    id("com.github.johnrengelman.shadow") version ("6.1.0")
 }
 
 project.ext {
@@ -54,7 +54,7 @@ dependencies {
     implementation(group = "com.intellij", name = "forms_rt", version = "7.0.3")
 
     // Missing helpers and common utils in java
-    implementation(group="org.apache.commons", name="commons-lang3", version="3.9")
+    implementation(group="org.apache.commons", name="commons-lang3", version="3.11")
 
     // At some time maybe when I feel like adding charts to display ISOs, focal length, aperture and the like
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
