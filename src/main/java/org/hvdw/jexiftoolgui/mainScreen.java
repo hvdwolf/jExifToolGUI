@@ -2924,6 +2924,26 @@ public class mainScreen {
                         gpsCitytextField.setText(place.get("isolated_dwelling"));
                     }
                 }
+                // Now do the dec-min-sec fields
+                String[] dmsLat = EGPSd.decDegToDegMinSec(place.get("geoLatitude"));
+                CalcLatDegtextField.setText(dmsLat[0]);
+                CalcLatMintextField.setText(dmsLat[1]);
+                CalcLatSectextField.setText(dmsLat[2]);
+                if (place.get("geoLatitude").startsWith("-")) {
+                    // Negative means South
+                    CalcSouthRadioButton.setSelected(true);
+                } else {
+                    CalcNorthRadioButton.setSelected(true);
+                }
+                String[] dmsLon = EGPSd.decDegToDegMinSec(place.get("geoLongitude"));
+                CalcLonDegtextField.setText(dmsLon[0]);
+                CalcLonMintextField.setText(dmsLon[1]);
+                CalcLonSectextField.setText(dmsLon[2]);
+                if (place.get("geoLongitude").startsWith("-")) {
+                    CalcWestRadioButton.setSelected(true);
+                } else {
+                    CalcEastradioButton.setSelected(true);
+                }
             }
         });
 

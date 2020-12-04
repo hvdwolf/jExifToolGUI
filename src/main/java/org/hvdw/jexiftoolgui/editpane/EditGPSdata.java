@@ -13,7 +13,10 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.*;
 
 import static org.hvdw.jexiftoolgui.Utils.in_Range;
@@ -296,4 +299,31 @@ public class EditGPSdata {
         return checked_value;
     }
 
+    /**
+     * Convert a decimal coordiante back to deg-min-sec for the deg-min-sec textfields
+     * @param coordinate
+     * @return
+     */
+    public static String[] decDegToDegMinSec(String coordinate) {
+        String deg;
+        double decdegrees = 0.0;
+        double decminutes = 0.0;
+        double decseconds = 0.0;
+
+        //int intDeg = Integer.parseInt(coordinate);
+        decdegrees = Double.parseDouble(coordinate);
+        int intDeg = (int) decdegrees;
+        decminutes = (decdegrees - intDeg) * 60;
+        int intMin = (int) decminutes;
+        decseconds = (decminutes - intMin) * 60;
+        //logger.info("decdegrees {} intDeg {} decminutes {} intMin {} decseconds {}", String.valueOf(decdegrees), String.valueOf(intDeg), String.valueOf(decminutes), String.valueOf(intMin), String.valueOf(decseconds));
+
+        NumberFormat numsecs = NumberFormat.getInstance(new Locale("en", "US" ));
+        numsecs.setMaximumFractionDigits(2);
+        String strSeconds = numsecs.format(decseconds);
+        //logger.info("strSeconds {}", strSeconds);
+        String[] dmscoordinate = { String.valueOf(intDeg), String.valueOf(intMin), strSeconds};
+
+        return dmscoordinate;
+    }
 }
