@@ -45,6 +45,7 @@ public class MyVariables {
     private ArrayList<String> category_tag;
     private String Latitude;
     private String Longitude;
+    private HashMap <String, HashMap<String, String> > imagesData;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -174,4 +175,7 @@ public class MyVariables {
 
     public static String getLongitude() { return staticInstance.Longitude; }
     public static void setLongitude(String lng) { staticInstance.Longitude = lng; }
+
+    public static HashMap<String, HashMap<String, String>> getimagesData() { return staticInstance.imagesData; }
+    public static void setimagesData(HashMap<String, HashMap<String, String>> imgsData) {staticInstance.imagesData = imgsData; }
 }

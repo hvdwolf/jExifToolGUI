@@ -15,7 +15,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -34,6 +36,7 @@ public class ImageFunctions {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ImageFunctions.class);
 
     public static int[] getbasicImageData (File file) {
+        // BASIC_IMG_DATA = {"-n", "-S", "-imagewidth", "-imageheight", "-orientation", "-iso", "-fnumber", "-exposuretime", "-focallength", "-focallengthin35mmformat"}
         int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
         long tmpvalue;
         String tmpValue;
@@ -41,84 +44,13 @@ public class ImageFunctions {
         //Directory metadata = null;
         String filename = file.getName().replace("\\", "/");
 
-        /*String[] readerFormatNames = ImageIO.getReaderFormatNames();
-        for (String reader : readerFormatNames) {
-            logger.info("reader {}", reader);
-        }*/
-        //logger.info("Now working on image: " +filename);
-       /*String filenameExt = Utils.getFileExtension(filename);
-        try {
-            ImageInputStream input = ImageIO.createImageInputStream(file);
-
-            try {
-                // Get the reader
-                Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
-
-                if (!readers.hasNext()) {
-                    logger.info("No reader for: {}", file.toString());
-                    throw new IllegalArgumentException("No reader for: " + file);
-                }
-
-                ImageReader reader = readers.next();
-
-                try {
-                    reader.setInput(input);
-
-                    ImageReadParam param = reader.getDefaultReadParam();
-                    basicdata[0] = (int) reader.getWidth(0);
-                    basicdata[1] = (int) reader.getHeight(0);
-                    logger.info("Width {} Height {} AspectRatio {}", reader.getWidth(0), reader.getHeight(0), reader.getAspectRatio(0));
-                    logger.info("metadata {}", reader.getStreamMetadata());
-
-                } finally {
-                    // Dispose reader in finally block to avoid memory leaks
-                    reader.dispose();
-                }
-            } finally {
-                // Close stream in finally block to avoid resource leaks
-                input.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        // metadata extractor
-        /*try {
-            Metadata metadata = ImageMetadataReader.readMetadata(file);
-            for (Directory directory : metadata.getDirectories()) {
-                for (Tag tag : directory.getTags()) {
-                    System.out.println(tag);
-                }
-            }
-            /ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-            for (Tag tag : directory.getTags()) {
-                System.out.println(tag);
-            }
-            ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
-            for (Tag tag : directory.getTags()) {
-                System.out.println(tag);
-            }
-
-        } catch (IOException | ImageProcessingException e) {
-            e.printStackTrace();
-        }*/
-
-        /*try {
-            BufferedImage bimg = ImageIO.read(file);
-            int width = bimg.getWidth();
-            int height = bimg.getHeight();
-            basicdata[0] = bimg.getWidth();
-            basicdata[1] = bimg.getHeight();
-            logger.trace("bimg width {} height {}", bimg.getWidth(), bimg.getHeight());
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.trace("bimg reading error {}", e);
-        } */
-        // I can't solve it yet with TwelveMonkeys, so do it with exiftool
         String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<String>();
         cmdparams.add(exiftool.trim());
-        //cmdparams.addAll(Arrays.asList(MyConstants.WIDTH_HEIGHT_ORIENTATION));
-        cmdparams.addAll(Arrays.asList(MyConstants.BASIC_IMG_DATA));
+        //cmdparams.addAll(Arrays.asList(MyConstants.BASIC_IMG_DATA));
+        cmdparams.add("-n");
+        cmdparams.add("-S");
+        cmdparams.add("-a");
         cmdparams.add(file.getPath());
         int counter = 0;
         String who ="";
@@ -135,11 +67,6 @@ public class ImageFunctions {
             for (String line : lines) {
                 String[] parts = line.split(":", 2);
                 imgBasicData.put(parts[0].trim(), parts[1].trim());
-                //if (parts[1].trim().matches("[0-9]+")) {
-                    /*if ( (basicdata[0] == 0 && parts[0].contains("Width")) || (basicdata[1]  == 0 && parts[0].contains("Height")) ) {
-                        logger.info("getbasicdata parts0 {} parts1 *{}*", parts[0], parts[1].trim());
-                        basicdata[counter] = Integer.parseInt(parts[1].trim());
-                    }*/
                     try {
                         if (parts[0].contains("ImageWidth")) {
                             basicdata[0] = Integer.parseInt(parts[1].trim());
@@ -156,9 +83,16 @@ public class ImageFunctions {
                 counter++;
             }
             MyVariables.setimgBasicData(imgBasicData);
+            logger.trace("imgBasicData {}", imgBasicData);
+            HashMap<String, HashMap<String, String> > imagesData = MyVariables.getimagesData();
+            imagesData.put(filename, imgBasicData);
+            MyVariables.setimagesData(imagesData);
+            // Note: 100 images will create 300~600 Kb in the total imagesData hashmap.
         }
-            return basicdata;
+
+        return basicdata;
     }
+    
 
     /*
     / This method is used to mass extract thumbnails from JPG images, either by load folder, load images or "dropped" images.
@@ -394,7 +328,7 @@ public class ImageFunctions {
                                 icon = ImageFunctions.createIcon(thumbfile);
                                 // Simply do getbasicdata again, otherwise we have to make the createicon much more complicated
                                 // and we only need it in case of non-recognised images/files
-                                ImageFunctions.getbasicImageData(file);
+                                getbasicImageData(file);
                                 if (icon != null) {
                                     // display our created icon from the preview
                                     return icon;
@@ -412,7 +346,7 @@ public class ImageFunctions {
                     icon = ImageFunctions.createIcon(thumbfile);
                     // Simply do getbasicdata again, otherwise we have to make the createicon much more complicated
                     // and we only need it in case of non-recognised images/files
-                    ImageFunctions.getbasicImageData(file);
+                    getbasicImageData(file);
                     //icon = ImageFunctions.createIcon(file);
                     if (icon != null) {
                         // display our created icon from the preview
@@ -447,7 +381,7 @@ public class ImageFunctions {
             try {
                 // We use exiftool to get width, height and orientation from the ORIGINAL image
                 // (as it is not always available in the thumbnail or preview)
-                basicdata = ImageFunctions.getbasicImageData(file);
+                basicdata = getbasicImageData(file);
                 logger.debug("Width {} Height {} Orientation {}", String.valueOf(basicdata[0]), String.valueOf(basicdata[1]), String.valueOf(basicdata[2]));
             } catch (NullPointerException npe) {
                 npe.printStackTrace();

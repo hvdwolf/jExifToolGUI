@@ -23,6 +23,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.ImageIcon;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
@@ -398,6 +400,7 @@ public class mainScreen {
     private int SelectedRow;
     public int SelectedCell;
     private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
+    public List<HashMap> imagesData = new ArrayList<HashMap>();
 
     public String exiftool_path = "";
     private ListSelectionModel listSelectionModel;
@@ -412,7 +415,7 @@ public class mainScreen {
     private EditXmpdata EXd = new EditXmpdata();
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
     private EditGPSdata EGPSd = new EditGPSdata();
-    private YourCommands YourCmnds = new YourCommands();
+    private ExifToolCommands YourCmnds = new ExifToolCommands();
     private EditGpanodata EGpanod = new EditGpanodata();
     private EditLensdata ELd = new EditLensdata();
     //private DatabasePanel DBP = new DatabasePanel();
@@ -2452,7 +2455,10 @@ public class mainScreen {
                 resultName = currentFont.getName();
             }
         }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
     private static Method $$$cachedGetBundleMethod$$$ = null;
@@ -2541,7 +2547,7 @@ public class mainScreen {
 
     // region Action Listeners and radio button groups
     /*
-    / The SpecialMenuActionListener is a menu linstener for the special function loadImages that is so tightly integrated
+    / The SpecialMenuActionListener is a menu listener for the special function loadImages that is so tightly integrated
     / with the Gui that we can't take it out.
      */
     public class SpecialMenuActionListener implements ActionListener {

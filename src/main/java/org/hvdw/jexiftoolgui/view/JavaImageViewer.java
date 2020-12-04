@@ -23,7 +23,7 @@ import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
  * And one singel view is eaiser for the eyes than a window constantly resizing.
  */
 public class JavaImageViewer {
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(DatabasePanel.class);
+    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(JavaImageViewer.class);
     public BufferedImage resizedImg = null;
     public int panelWidth = 0;
     public int panelHeight = 0;

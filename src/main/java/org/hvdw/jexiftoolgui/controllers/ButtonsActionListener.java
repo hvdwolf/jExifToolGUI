@@ -21,7 +21,7 @@ public class ButtonsActionListener implements ActionListener {
     private DatabasePanel DBP = new DatabasePanel();
     private SimpleWebView WV = new SimpleWebView();
     private AddFavorite AddFav = new AddFavorite();
-    private YourCommands YourCmnds = new YourCommands();
+    private ExifToolCommands YourCmnds = new ExifToolCommands();
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
     private MetadataUserCombinations MD = new MetadataUserCombinations();
 

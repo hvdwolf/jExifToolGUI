@@ -17,7 +17,6 @@ import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
 
 import javax.imageio.ImageIO;
-import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -66,7 +64,7 @@ public class Utils {
         Utils.SetLoggingLevel(CommandRunner.class);
         Utils.SetLoggingLevel(ExifTool.class);
         Utils.SetLoggingLevel(UpdateActions.class);
-        Utils.SetLoggingLevel(YourCommands.class);
+        Utils.SetLoggingLevel(ExifToolCommands.class);
         Utils.SetLoggingLevel(CommandLineArguments.class);
         Utils.SetLoggingLevel(ImageFunctions.class);
         Utils.SetLoggingLevel(MouseListeners.class);
@@ -653,6 +651,10 @@ public class Utils {
             files = MyVariables.getLoadedFiles();
         }
         if (files != null) {
+            // First initialize our data Hashmap
+            HashMap <String, HashMap<String, String> > imagesData = new HashMap<String, HashMap<String, String>>();
+            MyVariables.setimagesData(imagesData);
+
             lblLoadedFiles.setText(String.valueOf(files.length));
             logger.debug("After loading images, loading files or dropping files: no. of files > 0");
             Executor executor = Executors.newSingleThreadExecutor();
@@ -687,8 +689,8 @@ public class Utils {
                     tableListfiles.repaint(); */
                     ///////
 
-                    String res = Utils.getImageInfoFromSelectedFile(params);
-                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    String res = getImageInfoFromSelectedFile(params);
+                    displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     buttonShowImage.setEnabled(true);
                     buttonCompare.setEnabled(true);
                     buttonSlideshow.setEnabled(true);
