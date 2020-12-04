@@ -39,7 +39,7 @@ public class ExifToolCommands {
         }
         Commands = Commands.trim();
         String orgCommands = Commands;
-        logger.info(" Commands \"{}\"", Commands);
+        logger.debug(" Commands \"{}\"", Commands);
         String exiftool = Utils.platformExiftool();
 
         if (Commands.contains("-t ") || Commands.contains("-tab ")) {
@@ -82,13 +82,11 @@ public class ExifToolCommands {
         // for Windows, linux and MacOS
         cmdparams.add(tmpcmpstring.toString());
 
-        logger.info("cmdparams {}", cmdparams.toString());
+        logger.debug("cmdparams {}", cmdparams.toString());
 
         Executor executor = Executors.newSingleThreadExecutor();
         boolean finalHtmlOutput = htmlOutput;
         boolean finalHtmlDump = htmlDump;
-        int threadCounter = counter;
-        logger.debug("threadCounter {}", threadCounter);
         executor.execute(() -> {
             try {
                 String res = CommandRunner.runCommand(cmdparams);

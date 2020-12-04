@@ -1,5 +1,16 @@
 # Changelog
 
+## 2020-12-04 1.8.0
+* GPS: Add internal OpenStreetMap Nominatim "Find location" with map viewer with "copy coordinates" option back to main GPS tab. (External web search still available)
+    * Search method for address/POI/place etc. Reverse search via coordinates when right-clicked on map.
+* GPS: make "mini-"tab on GPS tab to enable input of decimal degrees (primary tab) or Deg-Min-Sec coordinates. (Coordinates are copied back as decimal degrees and dec-min-sec)
+* Fix part 1 of [issue #95](https://github.com/hvdwolf/jExifToolGUI/issues/95): Some commands resulted in errors.
+* Fix part 2 of [issue #95](https://github.com/hvdwolf/jExifToolGUI/issues/95): Fix (again) issue with spaces in paths/names in "Renaming images".
+* "User defined Metadata Combis" always started with alphabetically first retrieved set from the database. Now starts with 10 empty rows.
+* Add "Preferences -> system ->Sort Categories/Tags in View tab alphabetically". Exiftool reads the tags in the order they are stored in the image. This option will allow you to sort them first before display.
+* Show popup to users which files have been created upon exporting the several options.
+* Fix lens functionality in case users use spaces (by accident) before or after a name. And "fix the fix" (from 1.6.3.1) in the "no description" field.
+
 ## 2020-11-14 1.7.1
 * Add "Remove metadata by category". Use the same drop-down as in the main screen to be able to select any possible category and delete the metadata in that category.
 * Add Spanish online manual (Thanks to mrtngrsbch martingggg)
