@@ -1,0 +1,9 @@
+#!/bin/bash
+
+./gradlew assemble buildDependents shadowJar shadowDistZip
+
+cp build/libs/jExifToolGUI-all.jar ./jExifToolGUI.jar
+
+cd TwelveMonkeys
+zip ../jExifToolGUI.jar META-INF/services/*
+cd ..
