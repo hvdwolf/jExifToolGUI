@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -838,7 +840,7 @@ public class Utils {
             // Check if user wants to see decimal degrees
             if (UseDecimalDegrees()) {
                 cmdparams.add("-c");
-                cmdparams.add("%.6f");
+                cmdparams.add("%+.6f");
             }
             cmdparams.addAll(Arrays.asList(whichInfo));
             logger.trace("image file path: {}", MyVariables.getSelectedImagePath());
@@ -905,7 +907,7 @@ public class Utils {
             // Check if user wants to see decimal degrees
             if (UseDecimalDegrees()) {
                 cmdparams.add("-c");
-                cmdparams.add("%.6f");
+                cmdparams.add("%+.6f");
             }
             cmdparams.addAll(Arrays.asList(whichInfo));
             logger.trace("image file path: {}", fpath);
@@ -973,7 +975,7 @@ public class Utils {
         // Check if user wants to see decimal degrees
         if (UseDecimalDegrees()) {
             cmdparams.add("-c");
-            cmdparams.add("%.6f");
+            cmdparams.add("%+.6f");
         }
         cmdparams.addAll(Arrays.asList(whichInfo));
         logger.trace("image file path: {}", fpath);
@@ -1415,7 +1417,7 @@ public class Utils {
         }
     }
 
-    public static String[] gpsCalculator(JPanel rootPanel, String[] input_lat_lon) {
+    public static String[] gpsCalculator(JPanel rootPanel, String[] input_lat_lon) throws ParseException {
         // Here is where we calculate the degrees-minutes-seconds to decimal values
         float coordinate;
         //float coordinate;
@@ -1425,7 +1427,21 @@ public class Utils {
         // first latitude
         // Note that "South" latitudes and "West" longitudes convert to negative decimal numbers.
         // In decs-mins-secs, degrees lat < 90 degrees lon < 180, minutes < 60, seconds <60. NOT <=
-        if ( in_Range(Integer.parseInt(input_lat_lon[2]), 0, 60)) { //secs
+        String[] splitCoordinate = null;
+        Integer intCoordinate = 0;
+        if (input_lat_lon[2].contains(",")) {
+            splitCoordinate = input_lat_lon[2].split(",");
+            //logger.info("input_lat_lon[2] {} splitCoordinate {}", input_lat_lon[2], Arrays.toString(splitCoordinate));
+            intCoordinate = Integer.valueOf((splitCoordinate[0].trim()));
+        } else if (input_lat_lon[2].contains(".")) {
+            splitCoordinate = input_lat_lon[2].split("[.]");
+            //logger.info("input_lat_lon[2] {} splitCoordinate {}", input_lat_lon[2], Arrays.toString(splitCoordinate));
+            intCoordinate = Integer.valueOf((splitCoordinate[0].trim()));
+        } else {
+            intCoordinate = Integer.valueOf((input_lat_lon[2]));
+        }
+        //intCoordinate = Integer.valueOf(input_lat_lon[2]);
+        if ( in_Range(intCoordinate, 0, 60)) { //secs
             coordinate = Float.parseFloat(input_lat_lon[2]) / (float) 60;
             logger.debug("converted latitude seconds: " + coordinate);
         } else {
@@ -1455,7 +1471,20 @@ public class Utils {
         }
         
         // Now do the same for longitude
-        if ( in_Range(Integer.parseInt(input_lat_lon[6]), 0, 60)) { //secs
+
+        if (input_lat_lon[2].contains(",")) {
+            splitCoordinate = input_lat_lon[6].split(",");
+            //logger.info("input_lat_lon[2] {} splitCoordinate {}", input_lat_lon[2], Arrays.toString(splitCoordinate));
+            intCoordinate = Integer.valueOf((splitCoordinate[0].trim()));
+        } else if (input_lat_lon[6].contains(".")) {
+            splitCoordinate = input_lat_lon[6].split("[.]");
+            //logger.info("input_lat_lon[2] {} splitCoordinate {}", input_lat_lon[2], Arrays.toString(splitCoordinate));
+            intCoordinate = Integer.valueOf((splitCoordinate[0].trim()));
+        } else {
+            intCoordinate = Integer.valueOf((input_lat_lon[6]));
+        }
+
+        if ( in_Range(intCoordinate, 0, 60)) { //secs
             coordinate = Float.parseFloat(input_lat_lon[6]) / (float) 60;
             logger.debug("converted longitude seconds: " + coordinate);
         } else {

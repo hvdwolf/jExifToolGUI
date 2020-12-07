@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 
@@ -2874,7 +2875,7 @@ public class mainScreen {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    EGPSd.copyGPSFromSelected(getNumGPSdecFields(), getGPSLocationFields(), getGpsBoxes());
+                    EGPSd.copyGPSFromSelected(getNumGPSdecFields(), getGPSLocationFields(), getGpsBoxes(),getGPSdmsFields(), getGPSdmsradiobuttons());
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
@@ -2894,7 +2895,7 @@ public class mainScreen {
         gpsResetFieldsbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                EGPSd.resetFields(getNumGPSdecFields(), getGPSLocationFields());
+                EGPSd.resetFields(getNumGPSdecFields(), getGPSLocationFields(), getGPSdmsFields());
             }
         });
         gpsMapcoordinatesbutton.setActionCommand("gpsMcb");
@@ -2986,7 +2987,12 @@ public class mainScreen {
                     input_lat_lon[7] = "W";
                 }
 
-                calc_lat_lon = Utils.gpsCalculator(rootPanel, input_lat_lon);
+                try {
+                    calc_lat_lon = Utils.gpsCalculator(rootPanel, input_lat_lon);
+                } catch (ParseException e) {
+                    logger.error("Error converting deg-min-sec to decimal degrees {}", e.toString());
+                    e.printStackTrace();
+                }
                 //Utils.gpsCalculator(CalcLatDegtextField.getText(), CalcLatMintextField.getText(), CalcLatSectextField.getText(), CalcLonDegtextField.getText(), CalcLonDegtextField.getText(), CalcLonMintextField.getText(), CalcLonSectextField.getText());
                 if (!"error".equals(calc_lat_lon[0])) {
                     CalcLatDecimaltextLabel.setText(calc_lat_lon[0]);
