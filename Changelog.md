@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 2020-12-09 1.8.1
+* [issue #99](https://github.com/hvdwolf/jExifToolGUI/issues/99): 3 issues > GPS edition.
+* [issue #98](https://github.com/hvdwolf/jExifToolGUI/issues/98): Focal length in 35 mm shown as null. Fixed for cameras that do not provide the "FocalLengthIn35mmFormat". All cameras provide the "ScaleFactor35efl". Combined with the "FocalLength" one can calculate the "FocalLengthIn35mmFormat".
+
 ## 2020-12-04 1.8.0
 * GPS: Add internal OpenStreetMap Nominatim "Find location" with map viewer with "copy coordinates" option back to main GPS tab. (External web search still available)
     * Search method for address/POI/place etc. Reverse search via coordinates when right-clicked on map.

@@ -57,7 +57,7 @@
         <string>To be able to read and write images on Network Volumes</string>
 
         <key>NSRemovableVolumesUsageDescription</key>
-        <string>To be able to read and write images on removable meida like USB-sticks and memeory cards</string>
+        <string>To be able to read and write images on removable media like USB-sticks and memeory cards</string>
 
     </dict>
 </plist>
