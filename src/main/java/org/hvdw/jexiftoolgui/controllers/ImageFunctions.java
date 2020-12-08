@@ -366,7 +366,7 @@ public class ImageFunctions {
      */
     public static ImageIcon createIcon(File file) {
         ImageIcon icon = null;
-        int[] basicdata = {0, 0, 0};
+        int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};;
         boolean bde = false;
         String thumbfilename = "";
         File thumbfile = null;

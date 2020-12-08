@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -536,52 +538,106 @@ public class Utils {
 
     static public String returnBasicImageDataString(String filename, String stringType) {
         String strImgData = "";
+        Double calcFLin35mmFormat = 0.0;
         // hashmap basicImgData: ImageWidth, ImageHeight, Orientation, ISO, FNumber, ExposureTime, focallength, focallengthin35mmformat
         HashMap<String, String> imgBasicData = MyVariables.getimgBasicData();
         StringBuilder imginfo = new StringBuilder();
+        NumberFormat df = DecimalFormat.getInstance(Locale.US);
+        df.setMaximumFractionDigits(1);
 
         if ("html".equals(stringType)) {
             //imginfo.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
             imginfo.append("<html>" + filename);
             imginfo.append("<br><br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
             //imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + imgBasicData.get("ISO"));
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + imgBasicData.get("FNumber"));
-            if (!(imgBasicData.get("ExposureTime") == null)) {
+            if (imgBasicData.containsKey("ISO")) {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + imgBasicData.get("ISO"));
+            } else {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + ResourceBundle.getBundle("translations/program_strings").getString("lp.notavailable"));
+            }
+            if (imgBasicData.containsKey("FNumber")) {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + imgBasicData.get("FNumber"));
+            } else {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + ResourceBundle.getBundle("translations/program_strings").getString("lp.notavailable"));
+            }
+            if (imgBasicData.containsKey("ExposureTime")) {
                 imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
             } else {
-                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + imgBasicData.get("ExposureTime"));
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + ResourceBundle.getBundle("translations/program_strings").getString("lp.notavailable"));
             }
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
-            imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            if (imgBasicData.containsKey("FocalLength")) {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
+            } else {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + ResourceBundle.getBundle("translations/program_strings").getString("lp.notavailable"));
+            }
+            if (imgBasicData.containsKey("FocalLengthIn35mmFormat") ) {
+                imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            } else if (imgBasicData.containsKey("ScaleFactor35efl") ) {
+                try {
+                    calcFLin35mmFormat = Double.parseDouble(imgBasicData.get("FocalLength").trim()) * Double.parseDouble(imgBasicData.get("ScaleFactor35efl").trim());
+                    //logger.info("String.valueOf(calcFLin35mmFormat) {} df.format(calcFLin35mmFormat) {}", String.valueOf(calcFLin35mmFormat), df.format(calcFLin35mmFormat));
+                    imginfo.append("<br>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + df.format(calcFLin35mmFormat) + " mm");
+                } catch (NumberFormatException e) {
+                    logger.error("calcFLin35mmFormat failed {}", String.valueOf(calcFLin35mmFormat));
+                    e.printStackTrace();
+                }
+            }
             strImgData = imginfo.toString();
         } else if ("OneLine".equals(stringType)) {
             imginfo.append(ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + ": " + filename);
             imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ": " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
             //imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
-            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + imgBasicData.get("ISO"));
-            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + imgBasicData.get("FNumber"));
-            if (!(imgBasicData.get("ExposureTime") == null)) {
-                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
-            } else {
-                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": " + imgBasicData.get("ExposureTime"));
+            if (imgBasicData.containsKey("ISO")) {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ": " + imgBasicData.get("ISO"));
             }
-            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
-            imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            if (imgBasicData.containsKey("FNumber")) {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ": " + imgBasicData.get("FNumber"));
+            }
+            if (imgBasicData.containsKey("ExposureTime")) {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ": 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
+            }
+            if (imgBasicData.containsKey("FocalLength")) {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ": " + imgBasicData.get("FocalLength") + " mm");
+            }
+            if (imgBasicData.containsKey("FocalLengthIn35mmFormat") ) {
+                imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            } else if (imgBasicData.containsKey("ScaleFactor35efl") ) {
+                try {
+                    calcFLin35mmFormat = Double.parseDouble(imgBasicData.get("FocalLength")) * Double.parseDouble(imgBasicData.get("ScaleFactor35efl"));
+                    imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ": " + df.format(calcFLin35mmFormat) + " mm");
+                } catch (NumberFormatException e) {
+                    logger.error("calcFLin35mmFormat failed {}", String.valueOf(calcFLin35mmFormat));
+                    e.printStackTrace();
+                }
+            }
             strImgData = imginfo.toString();
         } else if ("OneLineHtml".equals(stringType)) {
             imginfo.append("<html><b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.filename") + "</b>: " + filename);
             imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.imagesize") + ":</b> " + imgBasicData.get("ImageWidth") + " x " + imgBasicData.get("ImageHeight"));
             //imginfo.append("; " + ResourceBundle.getBundle("translations/program_strings").getString("lp.orientation") + imgBasicData.get("Orientation"));
-            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ":</b> " + imgBasicData.get("ISO"));
-            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ":</b> " + imgBasicData.get("FNumber"));
-            if (!(imgBasicData.get("ExposureTime") == null)) {
-                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ":</b> 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
-            } else {
-                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ":</b> " + imgBasicData.get("ExposureTime"));
+            if (imgBasicData.containsKey("ISO")) {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.iso") + ":</b> " + imgBasicData.get("ISO"));
             }
-            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ":</b> " + imgBasicData.get("FocalLength") + " mm");
-            imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ":</b> " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            if (imgBasicData.containsKey("FNumber")) {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.fnumber") + ":</b> " + imgBasicData.get("FNumber"));
+            }
+            if (imgBasicData.containsKey("ExposureTime")) {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.exposuretime") + ":</b> 1/" + String.valueOf(Math.round(1 / Float.parseFloat(imgBasicData.get("ExposureTime")))));
+            }
+            if (imgBasicData.containsKey("FocalLength")) {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength") + ":</b> " + imgBasicData.get("FocalLength") + " mm");
+            }
+            if (imgBasicData.containsKey("FocalLengthIn35mmFormat") ) {
+                imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ":</b> " + imgBasicData.get("FocalLengthIn35mmFormat") + " mm");
+            } else if (imgBasicData.containsKey("ScaleFactor35efl") ) {
+                try {
+                    calcFLin35mmFormat = Double.parseDouble(imgBasicData.get("FocalLength")) * Double.parseDouble(imgBasicData.get("ScaleFactor35efl"));
+                    imginfo.append("; <b>" + ResourceBundle.getBundle("translations/program_strings").getString("lp.focallength35mm") + ":</b> " + df.format(calcFLin35mmFormat) + " mm");
+                } catch (NumberFormatException e) {
+                    logger.error("calcFLin35mmFormat failed {}", String.valueOf(calcFLin35mmFormat));
+                    e.printStackTrace();
+                }
+            }
             strImgData = imginfo.toString();
 
         }
