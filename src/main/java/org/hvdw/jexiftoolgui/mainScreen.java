@@ -392,6 +392,7 @@ public class mainScreen {
     private JButton gpssearchLocationButton;
     private JLabel lblMapcoordinates;
     private JLabel lblNominatimSearch;
+    private JCheckBox gpsMinErrorcheckBox;
     private ImageIcon icon;
 
 
@@ -482,7 +483,7 @@ public class mainScreen {
         return new JTextField[] {gpsLocationtextField, gpsCountrytextField, gpsStateProvincetextField, gpsCitytextField};
     }
     private JCheckBox[] getGpsBoxes() {
-        return new JCheckBox[] {SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox};
+        return new JCheckBox[] {SaveLatLonAltcheckBox, gpsAboveSealevelcheckBox, gpsLocationcheckBox, gpsCountrycheckBox, gpsStateProvincecheckBox, gpsCitycheckBox, gpsBackupOriginalscheckBox, gpsMinErrorcheckBox};
     }
 
     private JFormattedTextField[] getGPSdmsFields() {
@@ -751,7 +752,7 @@ public class mainScreen {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("per Camera");
+        radioButtonCameraMakes.setLabel("By Camera");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1072,7 +1073,7 @@ public class mainScreen {
         panel9.setPreferredSize(new Dimension(800, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.gpstab"), panel9);
         gpsLocationPanel = new JPanel();
-        gpsLocationPanel.setLayout(new GridLayoutManager(5, 3, new Insets(5, 5, 5, 5), -1, -1));
+        gpsLocationPanel.setLayout(new GridLayoutManager(6, 3, new Insets(5, 5, 5, 5), -1, -1));
         panel9.add(gpsLocationPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         gpsLocationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label26 = new JLabel();
@@ -1127,6 +1128,9 @@ public class mainScreen {
         gpsCitycheckBox.setSelected(true);
         gpsCitycheckBox.setText("");
         gpsLocationPanel.add(gpsCitycheckBox, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gpsMinErrorcheckBox = new JCheckBox();
+        this.$$$loadButtonText$$$(gpsMinErrorcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.minorerror"));
+        gpsLocationPanel.add(gpsMinErrorcheckBox, new GridConstraints(5, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         panel9.add(spacer1, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel10 = new JPanel();
@@ -1255,7 +1259,7 @@ public class mainScreen {
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
         minutesSecondsToDecimalButton.setEnabled(false);
-        minutesSecondsToDecimalButton.setLabel("Converteer naar decimale graden");
+        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         minutesSecondsToDecimalButton.setVisible(false);
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
