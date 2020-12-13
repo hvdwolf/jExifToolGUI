@@ -202,7 +202,7 @@ public class EditGPSdata {
         if (!gpsBoxes[6].isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
-        if (gpsBoxes[7].isSelected()) { // Use "-m" parameter to allow for longer IPTC fields
+        if (gpsBoxes[7].isSelected()) { // Use "-m" parameter to allow for longer than 32 char IPTC fields
             cmdparams.add("-m");
         }
         cmdparams.addAll(Utils.AlwaysAdd());
