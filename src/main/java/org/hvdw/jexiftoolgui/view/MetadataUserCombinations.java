@@ -153,7 +153,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             public void actionPerformed(ActionEvent actionEvent) {
                 String setName = customSetcomboBox.getSelectedItem().toString();
                 String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue")};
-                int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("mduc.deltext") + "<br><br><b>" + setName + "</b>"), ResourceBundle.getBundle("translations/program_strings").getString("mduc.deltitle"),
+                int choice = JOptionPane.showOptionDialog(metadatapanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("mduc.deltext") + "<br><br><b>" + setName + "</b>"), ResourceBundle.getBundle("translations/program_strings").getString("mduc.deltitle"),
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (choice == 1) { //Yes, Continue
                     String sql = "delete from CustomMetadatasetLines where customset_name=\"" + setName.trim() + "\"";
