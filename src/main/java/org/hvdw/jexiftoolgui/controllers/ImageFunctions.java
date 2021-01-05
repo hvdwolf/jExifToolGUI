@@ -2,10 +2,7 @@ package org.hvdw.jexiftoolgui.controllers;
 
 import com.twelvemonkeys.image.AffineTransformOp;
 
-import org.hvdw.jexiftoolgui.Application;
-import org.hvdw.jexiftoolgui.MyConstants;
-import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.LoggerFactory;
 
@@ -320,6 +317,7 @@ public class ImageFunctions {
                                 return icon;
                             }
                         } else {
+                            /*
                             // Use the cantdisplay.png for this preview. Should actually not be necessary here
                             thumbfile = new File(MyVariables.getcantdisplaypng());
                             if (thumbfile.exists()) {
@@ -333,6 +331,20 @@ public class ImageFunctions {
                                     // display our created icon from the preview
                                     return icon;
                                 }
+                            } */
+                            //icon = null;
+
+                            try {
+                                BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
+                                icon = new ImageIcon(img);
+                            } catch (IOException e){
+                                logger.error("Error loading image", e);
+                                icon = null;
+                            }
+                            ImageFunctions.getbasicImageData(file);
+                            if (icon != null) {
+                                // display our created icon from the preview
+                                return icon;
                             }
                         } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
                     } // end of 2nd option creation ("else if") and 3rd option creation (else)
@@ -340,7 +352,7 @@ public class ImageFunctions {
 
             } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
                 // Use the cantdisplay.png for this preview
-                thumbfile = new File(MyVariables.getcantdisplaypng());
+                /*thumbfile = new File(MyVariables.getcantdisplaypng());
                 if (thumbfile.exists()) {
                     // Create icon of this Preview
                     icon = ImageFunctions.createIcon(thumbfile);
@@ -352,7 +364,22 @@ public class ImageFunctions {
                         // display our created icon from the preview
                         return icon;
                     }
+                }*/
+                //icon = null;
+
+                try {
+                    BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
+                    icon = new ImageIcon(img);
+                } catch (IOException e){
+                    logger.error("Error loading image", e);
+                    icon = null;
                 }
+                ImageFunctions.getbasicImageData(file);
+                if (icon != null) {
+                    // display our created icon from the preview
+                    return icon;
+                }
+
             }
 
         }

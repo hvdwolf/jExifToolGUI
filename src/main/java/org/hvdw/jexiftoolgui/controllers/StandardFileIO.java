@@ -423,7 +423,7 @@ public class StandardFileIO {
             MyVariables.setjexiftoolguiDBPath(fileToBecopied);
         }
         // Now check if our "cantdisplay.png" already exists which is the placeholder for non-displayable RAW formats
-        fileToBecopied = strjexiftoolguifolder + File.separator + "cantdisplay.png";
+        /*fileToBecopied = strjexiftoolguifolder + File.separator + "cantdisplay.png";
         copyFile = new File(fileToBecopied);
         if (!copyFile.exists()) {
             logger.debug("no cantdisplay.png yet; trying to create it");
@@ -436,7 +436,7 @@ public class StandardFileIO {
             method_result = "exists";
             logger.debug("the cantdisplay.png already exists.");
             MyVariables.setcantdisplaypng(fileToBecopied);
-        }
+        } */
         // Now check if our "cantconvert.png" already exists which is the placeholder for non-displayable formats in our exportpdf
         fileToBecopied = strjexiftoolguifolder + File.separator + "cantconvert.png";
         copyFile = new File(fileToBecopied);
