@@ -317,23 +317,7 @@ public class ImageFunctions {
                                 return icon;
                             }
                         } else {
-                            /*
-                            // Use the cantdisplay.png for this preview. Should actually not be necessary here
-                            thumbfile = new File(MyVariables.getcantdisplaypng());
-                            if (thumbfile.exists()) {
-                                // Create icon of this Preview
-                                //icon = ImageFunctions.createIcon(file);
-                                icon = ImageFunctions.createIcon(thumbfile);
-                                // Simply do getbasicdata again, otherwise we have to make the createicon much more complicated
-                                // and we only need it in case of non-recognised images/files
-                                getbasicImageData(file);
-                                if (icon != null) {
-                                    // display our created icon from the preview
-                                    return icon;
-                                }
-                            } */
-                            //icon = null;
-
+                            // Load he cantdisplay.png from our resources
                             try {
                                 BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
                                 icon = new ImageIcon(img);
@@ -351,22 +335,7 @@ public class ImageFunctions {
                 } // end of 1st option creation ("else if") and 2nd option creation (else)
 
             } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
-                // Use the cantdisplay.png for this preview
-                /*thumbfile = new File(MyVariables.getcantdisplaypng());
-                if (thumbfile.exists()) {
-                    // Create icon of this Preview
-                    icon = ImageFunctions.createIcon(thumbfile);
-                    // Simply do getbasicdata again, otherwise we have to make the createicon much more complicated
-                    // and we only need it in case of non-recognised images/files
-                    getbasicImageData(file);
-                    //icon = ImageFunctions.createIcon(file);
-                    if (icon != null) {
-                        // display our created icon from the preview
-                        return icon;
-                    }
-                }*/
-                //icon = null;
-
+                // Load he cantdisplay.png from our resources
                 try {
                     BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
                     icon = new ImageIcon(img);

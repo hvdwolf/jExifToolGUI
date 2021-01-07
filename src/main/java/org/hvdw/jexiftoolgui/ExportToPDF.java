@@ -11,9 +11,12 @@ import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +38,7 @@ public class ExportToPDF {
     // comboboxes {pdfcomboBoxExpCommonTags, pdfcomboBoxExpByTagName}
 
     //new page document.add(new AreaBreak());
+
 
     private static String[] GetDesiredParams(JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes) {
         String[] params = MyConstants.ALL_PARAMS;
@@ -93,14 +97,12 @@ public class ExportToPDF {
                         if (tmpfile.exists()) {
                             imageFile = tmpfile.getPath();
                         } else {
-                            tmpfile = new File(MyVariables.getcantconvertpng());
-                            logger.debug("getconvertimage RAW cantconvert {}", tmpfile.toString());
+                            logger.debug("getconvertimage RAW cantconvert");
+                            imageFile = "/cantconvert.png";
                         }
-                        imageFile = tmpfile.getPath();
                     }
                 } else {
-                    tmpfile = new File(MyVariables.getcantconvertpng());
-                    imageFile = tmpfile.getPath();
+                    imageFile = "/cantconvert.png";
                 }
 
             } else if ( (filenameExt.toLowerCase().equals("heic")) || (filenameExt.toLowerCase().equals("heif")) ) {
@@ -110,15 +112,15 @@ public class ExportToPDF {
                     if ("Success".equals(exportResult)) {
                         tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + ".jpg";
                         tmpfile = new File(MyVariables.gettmpWorkFolder() + File.separator + tmpfilename);
+                        imageFile = tmpfile.getPath();
                         logger.debug("getconvertimage HEIC convert {}", tmpfile.toString());
                     } else { // we have some error
-                        tmpfile = new File(MyVariables.getcantconvertpng());
-                        logger.debug("getconvertimage HEIC cantconvert{}", tmpfile.toString());
+                        logger.debug("getconvertimage HEIC cantconvert");
+                        imageFile = "/cantconvert.png";
                     }
                 } else { //we are not on Apple
-                    tmpfile = new File(MyVariables.getcantconvertpng());
+                    imageFile = "/cantconvert.png";
                 }
-                imageFile = tmpfile.getPath();
 
             } else if ( (filenameExt.toLowerCase().equals("mp4")) || (filenameExt.toLowerCase().equals("m4v")) ) {
                 String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(tmpfile);
@@ -136,20 +138,17 @@ public class ExportToPDF {
                             imageFile = tmpfile.getPath();
                             logger.debug("getconvertimage MP4 convert {}", tmpfile.toString());
                         } else {
-                            tmpfile = new File(MyVariables.getcantconvertpng());
-                            logger.debug("getconvertimage MP4 cant convert {}", tmpfile.toString());
+                            logger.debug("getconvertimage MP4 cant convert");
+                            imageFile = "/cantconvert.png";
                         }
-                        imageFile = tmpfile.getPath();
                     }
                 } else {
-                    tmpfile = new File(MyVariables.getcantconvertpng());
-                    imageFile = tmpfile.getPath();
+                    imageFile = "/cantconvert.png";
                 }
 
             } else { // if all fails .....
-                tmpfile = new File(MyVariables.getcantconvertpng());
-                imageFile = tmpfile.getPath();
-                logger.debug("getconvertimage ..if all fails .. cant convert {}", tmpfile.toString());
+                logger.debug("getconvertimage ..if all fails .. cant convert");
+                imageFile = "/cantconvert.png";
             }
         }
 
@@ -173,13 +172,27 @@ public class ExportToPDF {
         table.addCell(new Cell().add(new Paragraph(ResourceBundle.getBundle("translations/program_strings").getString("exppdf.image"))));
 
         String imageFile = GetConvertImage(tmpfile);
-        try {
-            ImageData data = ImageDataFactory.create(imageFile);
-            Image img = new Image(data);
-            table.addCell(new Cell().add(img.setAutoScale(true)));
-        } catch (MalformedURLException e) {
-            logger.error("Can't create image object for PDF {}", e);
-            e.printStackTrace();
+        if ("/cantconvert.png".equals(imageFile)) {
+            ImageIcon icon = null;
+            try {
+                java.awt.Image img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
+                ImageData data = ImageDataFactory.create(img, null);
+                Image newImg = new Image(data);
+                //icon = new ImageIcon(img);
+                table.addCell(new Cell().add(newImg.setAutoScale(true)));
+            } catch (IOException e){
+                logger.error("Error loading image", e);
+                icon = null;
+            }
+        } else {
+            try {
+                ImageData data = ImageDataFactory.create(imageFile);
+                Image img = new Image(data);
+                table.addCell(new Cell().add(img.setAutoScale(true)));
+            } catch (MalformedURLException e) {
+                logger.error("Can't create image object for PDF {}", e);
+                e.printStackTrace();
+            }
         }
 
         return table;
