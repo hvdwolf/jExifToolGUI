@@ -25,7 +25,6 @@ public class ButtonsActionListener implements ActionListener {
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
     private MetadataUserCombinations MD = new MetadataUserCombinations();
 
-
     public JLabel OutputLabel;
     public JPanel rootPanel;
     public JTextField CommandsParameterstextField;
@@ -167,6 +166,9 @@ public class ButtonsActionListener implements ActionListener {
             case "sidecarhelp":
                 Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
                 break;
+            /*case "SearchMetadata":
+                SMD.displayDialog(rootPanel);
+                break;*/
         }
 
 

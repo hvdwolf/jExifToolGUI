@@ -11,6 +11,7 @@ import org.hvdw.jexiftoolgui.editpane.*;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.metadata.ExportMetadata;
 import org.hvdw.jexiftoolgui.metadata.MetaData;
+import org.hvdw.jexiftoolgui.metadata.SearchMetaData;
 import org.hvdw.jexiftoolgui.model.CompareImages;
 import org.hvdw.jexiftoolgui.model.GuiConfig;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
@@ -393,6 +394,7 @@ public class mainScreen {
     private JLabel lblMapcoordinates;
     private JLabel lblNominatimSearch;
     private JCheckBox gpsMinErrorcheckBox;
+    private JButton buttonSearchMetadata;
     private ImageIcon icon;
 
 
@@ -439,7 +441,7 @@ public class mainScreen {
     public JSplitPane getsplitPanel() { return splitPanel; }
 
     private JButton[] commandButtons() {
-        return new JButton[] {buttonLoadDirectory, buttonLoadImages, buttonShowImage, buttonCompare, buttonSlideshow};
+        return new JButton[] {buttonLoadDirectory, buttonLoadImages, buttonShowImage, buttonCompare, buttonSearchMetadata, buttonSlideshow};
     }
 
     private JLabel[] mainScreenLabels() { return new JLabel[] {OutputLabel, lblLoadedFiles}; }
@@ -658,7 +660,7 @@ public class mainScreen {
         progressBar.setStringPainted(false);
         panel2.add(progressBar);
         splitPanel = new JSplitPane();
-        splitPanel.setDividerLocation(181);
+        splitPanel.setDividerLocation(224);
         rootPanel.add(splitPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         LeftPanel = new JPanel();
         LeftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -718,6 +720,14 @@ public class mainScreen {
         buttonSlideshow.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "btn.slideshow"));
         buttonSlideshow.setVisible(false);
         LeftbuttonBar.add(buttonSlideshow);
+        buttonSearchMetadata = new JButton();
+        buttonSearchMetadata.setEnabled(false);
+        buttonSearchMetadata.setIcon(new ImageIcon(getClass().getResource("/icons/outline_search_black_36dp.png")));
+        buttonSearchMetadata.setMaximumSize(new Dimension(38, 38));
+        buttonSearchMetadata.setMinimumSize(new Dimension(38, 38));
+        buttonSearchMetadata.setPreferredSize(new Dimension(38, 38));
+        buttonSearchMetadata.setText("");
+        LeftbuttonBar.add(buttonSearchMetadata);
         Leftscrollpane = new JScrollPane();
         LeftPanel.add(Leftscrollpane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tableListfiles = new JTable();
@@ -752,7 +762,7 @@ public class mainScreen {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("By Camera");
+        radioButtonCameraMakes.setLabel("[vdtab.bycamera / translations/program_strings]");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1259,7 +1269,7 @@ public class mainScreen {
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
         minutesSecondsToDecimalButton.setEnabled(false);
-        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
+        minutesSecondsToDecimalButton.setLabel("[gps.btnconvert / translations/program_strings]");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         minutesSecondsToDecimalButton.setVisible(false);
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1556,7 +1566,7 @@ public class mainScreen {
         this.$$$loadButtonText$$$(gpanoResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel24.add(gpanoResetFieldsbutton);
         gpanoHelpbutton = new JButton();
-        gpanoHelpbutton.setLabel("Help");
+        gpanoHelpbutton.setLabel("[button.help / translations/program_strings]");
         this.$$$loadButtonText$$$(gpanoHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel24.add(gpanoHelpbutton);
         gpanoOverwriteOriginalscheckBox = new JCheckBox();
@@ -1589,7 +1599,7 @@ public class mainScreen {
         this.$$$loadButtonText$$$(lensResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel26.add(lensResetFieldsbutton);
         lensHelpbutton = new JButton();
-        lensHelpbutton.setLabel("Help");
+        lensHelpbutton.setLabel("[button.help / translations/program_strings]");
         this.$$$loadButtonText$$$(lensHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel26.add(lensHelpbutton);
         final JLabel label73 = new JLabel();
@@ -1897,7 +1907,7 @@ public class mainScreen {
         udcResetFieldsbutton.setVisible(false);
         panel38.add(udcResetFieldsbutton);
         udcHelpbutton = new JButton();
-        udcHelpbutton.setLabel("Help");
+        udcHelpbutton.setLabel("[button.help / translations/program_strings]");
         this.$$$loadButtonText$$$(udcHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel38.add(udcHelpbutton);
         UserCombiTopText = new JLabel();
@@ -2730,6 +2740,20 @@ public class mainScreen {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
 
+            }
+        });
+
+        //buttonSearchMetadata.setActionCommand("SearchMetadata");
+        //buttonSearchMetadata.addActionListener(gal);
+        buttonSearchMetadata.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("buttonSearchMetadata pressed");
+                // Works on loaded images, not on selected images
+                SearchMetadataDialog SMD = new SearchMetadataDialog();
+                String searchPhrase = SMD.displayDialog(rootPanel);
+                logger.info("searchPhrase: {}", searchPhrase);
+                SearchMetaData.searchMetaData(rootPanel, searchPhrase);
             }
         });
 
@@ -3697,7 +3721,6 @@ public class mainScreen {
         Utils.checkForNewVersion("startup");
         //JLabelDropReady.addPropertyChangeListener(new PropertyChangeListener() {
         //});
-
 
     }
 

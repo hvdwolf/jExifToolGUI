@@ -78,7 +78,7 @@
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <dividerLocation value="181"/>
+          <dividerLocation value="224"/>
         </properties>
         <border type="none"/>
         <children>
@@ -166,6 +166,17 @@
                       <visible value="false"/>
                     </properties>
                   </component>
+                  <component id="7e6ab" class="javax.swing.JButton" binding="buttonSearchMetadata">
+                    <constraints/>
+                    <properties>
+                      <enabled value="false"/>
+                      <icon value="icons/outline_search_black_36dp.png"/>
+                      <maximumSize width="38" height="38"/>
+                      <minimumSize width="38" height="38"/>
+                      <preferredSize width="38" height="38"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
               <scrollpane id="f7ced" binding="Leftscrollpane">
@@ -244,7 +255,7 @@
                       <component id="fdf93" class="javax.swing.JRadioButton" binding="radioButtonCameraMakes">
                         <constraints/>
                         <properties>
-                          <label value="By Camera"/>
+                          <label value="[vdtab.bycamera / translations/program_strings]"/>
                           <text resource-bundle="translations/program_strings" key="vdtab.bycamera"/>
                         </properties>
                       </component>
@@ -1518,7 +1529,7 @@
                                         </constraints>
                                         <properties>
                                           <enabled value="false"/>
-                                          <label value="Convert to decimal degrees"/>
+                                          <label value="[gps.btnconvert / translations/program_strings]"/>
                                           <text resource-bundle="translations/program_strings" key="gps.btnconvert"/>
                                           <visible value="false"/>
                                         </properties>
@@ -2279,7 +2290,7 @@
                               <component id="dd9eb" class="javax.swing.JButton" binding="gpanoHelpbutton">
                                 <constraints/>
                                 <properties>
-                                  <label value="Help"/>
+                                  <label value="[button.help / translations/program_strings]"/>
                                   <text resource-bundle="translations/program_strings" key="button.help"/>
                                 </properties>
                               </component>
@@ -2359,7 +2370,7 @@
                               <component id="add49" class="javax.swing.JButton" binding="lensHelpbutton">
                                 <constraints/>
                                 <properties>
-                                  <label value="Help"/>
+                                  <label value="[button.help / translations/program_strings]"/>
                                   <text resource-bundle="translations/program_strings" key="button.help"/>
                                 </properties>
                               </component>
@@ -3135,7 +3146,7 @@
                                   <component id="ed833" class="javax.swing.JButton" binding="udcHelpbutton">
                                     <constraints/>
                                     <properties>
-                                      <label value="Help"/>
+                                      <label value="[button.help / translations/program_strings]"/>
                                       <text resource-bundle="translations/program_strings" key="button.help"/>
                                     </properties>
                                   </component>

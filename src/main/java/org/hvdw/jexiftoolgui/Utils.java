@@ -673,7 +673,8 @@ public class Utils {
         JLabel lblLoadedFiles = mainScreenLabels[1];
         JButton buttonShowImage = commandButtons[2];
         JButton buttonCompare = commandButtons[3];
-        JButton buttonSlideshow = commandButtons[4];
+        JButton buttonSearchMetadata = commandButtons[4];
+        JButton buttonSlideshow = commandButtons[5];
 
 
         String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
@@ -751,7 +752,8 @@ public class Utils {
                     displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     buttonShowImage.setEnabled(true);
                     buttonCompare.setEnabled(true);
-                    buttonSlideshow.setEnabled(true);
+                    //buttonSlideshow.setEnabled(true);
+                    buttonSearchMetadata.setEnabled(true);
                     //OutputLabel.setText(" Images loaded ...");
                     OutputLabel.setText("");
                     // progressbar enabled immedately after this void run starts in the InvokeLater, so I disable it here at the end of this void run
