@@ -115,12 +115,12 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    //sourceCompatibility = JavaVersion.VERSION_1_8
+    //targetCompatibility = JavaVersion.VERSION_1_8
     // Undo version 11 again. 95% or more of OSes and distributions still use java 8
     // Redo java_11. We will deliver a jre11 if neccessary. Simple as that
-    //sourceCompatibility = JavaVersion.VERSION_11
-    //targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
 }
 
