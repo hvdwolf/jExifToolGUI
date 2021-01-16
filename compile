@@ -4,6 +4,6 @@
 
 cp build/libs/jExifToolGUI-all.jar ./jExifToolGUI.jar
 
-cd TwelveMonkeys
-zip ../jExifToolGUI.jar META-INF/services/*
-cd ..
+#cd TwelveMonkeys
+#zip ../jExifToolGUI.jar META-INF/services/*
+#cd ..

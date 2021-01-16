@@ -1,6 +1,6 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import com.twelvemonkeys.image.AffineTransformOp;
+//import com.twelvemonkeys.image.AffineTransformOp;
 
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -148,6 +149,7 @@ public class ImageFunctions {
         cmdparams.add("-W");
         cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
         cmdparams.add("-preview:ThumbnailImage");
+        cmdparams.add("-preview:PhotoshopThumbnail");
         cmdparams.add("-preview:PreviewImage");
 
         if (isWindows) {
@@ -213,7 +215,9 @@ public class ImageFunctions {
 
         boolean bSimpleExtension = false;
         String thumbfilename = "";
+        String photoshopThumbfilename = "";
         File thumbfile = null;
+        File psthumbfile = null;
         ImageIcon icon = null;
         ImageIcon finalIcon = null;
 
@@ -254,8 +258,10 @@ public class ImageFunctions {
             heicextension = false;
         } else if (bSimpleExtension) {
             thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+            photoshopThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
             thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-            if (!thumbfile.exists() && (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+            psthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + photoshopThumbfilename);
+            if ((!thumbfile.exists() || !psthumbfile.exists()) && (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg") || filenameExt.toLowerCase().equals("tif")) || (filenameExt.toLowerCase().equals("tiff")) ) {
                 String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
                 /*if (thumbfile.exists()) {
                     icon = ImageFunctions.createIcon(thumbfile);
@@ -314,21 +320,33 @@ public class ImageFunctions {
                                 // display our created icon from the preview
                                 return icon;
                             }
+                        } else { // So thumbnail and previewImage don't exist. Try 4th option for photoshop thumbnail
+                            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
+                            thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                            if (thumbfile.exists()) {
+                                // Create icon of this Preview
+                                        icon = ImageFunctions.createIcon(file);
+                                //icon = ImageFunctions.createIcon(thumbfile);
+                                if (icon != null) {
+                                    // display our created icon from the preview
+                                    return icon;
+                                }
                         } else {
-                            // Load he cantdisplay.png from our resources
-                            try {
-                                BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
-                                icon = new ImageIcon(img);
-                            } catch (IOException e){
-                                logger.error("Error loading image", e);
-                                icon = null;
-                            }
-                            ImageFunctions.getbasicImageData(file);
-                            if (icon != null) {
-                                // display our created icon from the preview
-                                return icon;
-                            }
-                        } // end of 3rd option creation ("else if") and cantdisplaypng option (else)
+                                // Load he cantdisplay.png from our resources
+                                try {
+                                    BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
+                                    icon = new ImageIcon(img);
+                                } catch (IOException e) {
+                                    logger.error("Error loading image", e);
+                                    icon = null;
+                                }
+                                ImageFunctions.getbasicImageData(file);
+                                if (icon != null) {
+                                    // display our created icon from the preview
+                                    return icon;
+                                }
+                            } // end of 3nd option creation ("else if") and 4rd option creation (else)
+                        } // end of 4th option creation ("else if") and cantdisplaypng option (else)
                     } // end of 2nd option creation ("else if") and 3rd option creation (else)
                 } // end of 1st option creation ("else if") and 2nd option creation (else)
 
@@ -363,7 +381,9 @@ public class ImageFunctions {
         int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};;
         boolean bde = false;
         String thumbfilename = "";
+        String photoshopThumbfilename = "";
         File thumbfile = null;
+        File psthumbfile = null;
         String filename = "";
         BufferedImage img = null;
         BufferedImage resizedImg = null;
@@ -389,10 +409,15 @@ public class ImageFunctions {
             }
             // Check whether we have a thumbnail
             thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+            photoshopThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
             thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+            psthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + photoshopThumbfilename);
             if (thumbfile.exists()) {
                 logger.debug("precreated thumbnail found: {}", thumbfile.toString());
                 img = ImageIO.read(new File(thumbfile.getPath().replace("\\", "/")));
+            } else if (psthumbfile.exists()) {
+                logger.debug("precreated photoshop thumbnail found: {}", psthumbfile.toString());
+                img = ImageIO.read(new File(psthumbfile.getPath().replace("\\", "/")));
             } else {
                 logger.debug("precreated thumbnail NOT found: {}", thumbfile.toString());
                 img = ImageIO.read(new File(file.getPath().replace("\\", "/")));
@@ -524,10 +549,12 @@ public class ImageFunctions {
             scaledHeight = 1;
         }
 
+        Image newScaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_FAST);
         // Buffered image for drawing scaled image:
         int type = (img.getTransparency() == Transparency.OPAQUE) ?
                 BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        BufferedImage scaledImg = new BufferedImage(scaledWidth, scaledHeight, type);
+        // OLD BufferedImage scaledImg = new BufferedImage(scaledWidth, scaledHeight, type);
+        BufferedImage scaledImg = new BufferedImage(newScaledImg.getWidth(null), newScaledImg.getHeight(null), type);
         Graphics2D g2 = scaledImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
