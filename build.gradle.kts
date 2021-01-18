@@ -144,6 +144,10 @@ val fatJar = task("fatJar", type = Jar::class) {
 //    }
 }
 
+//tasks.wrapper {
+//    distributionType = Wrapper.DistributionType.BIN
+//}
+
 tasks {
     "build" {
         dependsOn(fatJar)
