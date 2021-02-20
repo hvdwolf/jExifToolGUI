@@ -47,13 +47,16 @@ cp ../jexiftoolgui.desktop usr/share/applications
 cp ../jexiftoolgui.desktop .
 cp ../jexiftoolgui.appdata.xml usr/share/metainfo
 
-# We will not install exiftool
-#
-# Install libimage-exiftool-perl deb
-# latest current version: libimage-exiftool-perl_10.80-1_all.deb
-#latest_exif="libimage-exiftool-perl_10.80-1_all.deb"
-#wget -c --trust-server-names http://nl.archive.ubuntu.com/ubuntu/pool/universe/libi/libimage-exiftool-perl/${latest_exif}
-#dpkg -x ${latest_exif} .
+
+# As an Appimage need to be a completely portable entity, we will as of 1.8.2 (unreleased) also include exiftool
+# This requires you to download the latest exiftool from https://exiftool.org and untar it
+# We simply use the "uninstalled" version. Below line specifies the version and optional path
+IET="Image-ExifTool-12.19"
+mkdir -p usr/local/bin
+# copy everything, then clean up things not needed
+cp -a ../${IET}/* usr/local/bin
+rm -rf usr/local/bin/t usr/local/bin/html usr/local/bin/Changes usr/local/bin/Makefile.PL
+
 
 #
 printf "Now copy the unpacked jre folder into our folder structure\n\n"
@@ -67,9 +70,9 @@ printf "Create the AppRun script\n\n"
 cat > ./AppRun <<\EOF
 #!/bin/sh
 HERE=$(dirname $(readlink -f "${0}"))
-export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+export LD_LIBRARY_PATH="${HERE}"/usr/local/lib:"${HERE}"/usr/lib:$PATH
 export JAVA_HOME="${HERE}"/jre
-export PATH="${HERE}"/usr/bin:$PATH
+export PATH="${HERE}"/usr/local/bin:"${HERE}"/usr/bin:$PATH
 "${HERE}"/jre/bin/java -jar "${HERE}"/usr/share/jexiftoolgui/jExifToolGUI.jar ${1+"$@"} &
 EOF
 
