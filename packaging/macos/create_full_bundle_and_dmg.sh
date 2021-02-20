@@ -27,14 +27,25 @@ sed -i "s+VersionString+$Version+" $App/Contents/Info.plist
 
 printf "Now copy the jre and the jar into the app\n\n" 
 #cp -a jre $App/Contents/MacOS/jre
-#cp ../../jExifToolGUI.jar $App/Contents/MacOS/
+cp ../../jExifToolGUI.jar $App/Contents/MacOS/
 mkdir -p $App/Contents/MacOS/jre
 cp -a --preserve=links ${JRE}/* $App/Contents/MacOS/jre
 
-printf "Create the 140MB (full) dmg\n\n"
+printf "Now copy exiftool into the app\n\n"
+# This requires you to download the latest exiftool from https://exiftool.org and untar it
+# We simply use the "uninstalled" version. Below line specifies the version and optional path
+IET="Image-ExifTool-12.19"
+mkdir -p $App/Contents/MacOS/ExifTool
+# copy everything, then clean up things not needed
+cp -a ${IET}/* $App/Contents/MacOS/ExifTool
+rm -rf $App/Contents/MacOS/ExifTool/t $App/Contents/MacOS/ExifTool/html $App/Contents/MacOS/ExifTool/Changes $App/Contents/MacOS/ExifTool/Makefile.PL
+
+
+
+printf "Create the 145MB (full) dmg\n\n"
 mkdir -p tmp/dmg
 # 125MB dmg
-dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=140
+dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=145
 
 mkfs.hfsplus -v "jExifToolGUI-x86_64 $Version" tmp/jExifToolGUI.dmg
 

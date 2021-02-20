@@ -3,5 +3,7 @@
 CurDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 export JAVA_HOME="${CurDir}"/jre
+export PATH="${CurDir}"/ExifTool:$PATH
+
 "${CurDir}"/jre/Contents/Home/bin/java -Xmx2048M -Dlogback.configurationFile="${CurDir}"/logback.xml -jar "${CurDir}"/jExifToolGUI.jar $@ &
 
