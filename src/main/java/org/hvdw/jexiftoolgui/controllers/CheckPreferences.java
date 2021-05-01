@@ -46,8 +46,12 @@ public class CheckPreferences {
                 logger.trace("result from getExiftoolPath(): {}", res);
             } else {
                 res = exiftool_path;
-                //String[] cmdparams = {res, "-ver"};
-                cmdparams.add(res);
+                boolean isWindows = Utils.isOsFromMicrosoft();
+                if (isWindows) {
+                    cmdparams.add("\"" + res + "\"");
+                } else {
+                    cmdparams.add(res);
+                }
                 cmdparams.add("-ver");
                 try {
                     String exv = CommandRunner.runCommand(cmdparams).replace("\n", "").replace("\r", "");
