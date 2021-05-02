@@ -46,6 +46,7 @@ public class MyVariables {
     private String Latitude;
     private String Longitude;
     private HashMap <String, HashMap<String, String> > imagesData;
+    private String SearchPhrase;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -178,4 +179,7 @@ public class MyVariables {
 
     public static HashMap<String, HashMap<String, String>> getimagesData() { return staticInstance.imagesData; }
     public static void setimagesData(HashMap<String, HashMap<String, String>> imgsData) {staticInstance.imagesData = imgsData; }
+
+    public static String getSearchPhrase() { return staticInstance.SearchPhrase; }
+    public static void setSearchPhrase(String srchphrs) { staticInstance.SearchPhrase = srchphrs; }
 }

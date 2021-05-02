@@ -688,7 +688,7 @@ public class mainScreen {
         LeftbuttonBar.add(buttonLoadImages);
         buttonShowImage = new JButton();
         buttonShowImage.setEnabled(false);
-        buttonShowImage.setIcon(new ImageIcon(getClass().getResource("/icons/outline_open_in_full_black_36dp.png")));
+        buttonShowImage.setIcon(new ImageIcon(getClass().getResource("/icons/outline_image_black_36dp.png")));
         buttonShowImage.setIconTextGap(2);
         buttonShowImage.setMaximumSize(new Dimension(38, 38));
         buttonShowImage.setMinimumSize(new Dimension(38, 38));
@@ -762,7 +762,7 @@ public class mainScreen {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("[vdtab.bycamera / translations/program_strings]");
+        radioButtonCameraMakes.setLabel("per Camera");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1269,7 +1269,7 @@ public class mainScreen {
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
         minutesSecondsToDecimalButton.setEnabled(false);
-        minutesSecondsToDecimalButton.setLabel("[gps.btnconvert / translations/program_strings]");
+        minutesSecondsToDecimalButton.setLabel("Converteer naar decimale graden");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         minutesSecondsToDecimalButton.setVisible(false);
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1566,7 +1566,7 @@ public class mainScreen {
         this.$$$loadButtonText$$$(gpanoResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel24.add(gpanoResetFieldsbutton);
         gpanoHelpbutton = new JButton();
-        gpanoHelpbutton.setLabel("[button.help / translations/program_strings]");
+        gpanoHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(gpanoHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel24.add(gpanoHelpbutton);
         gpanoOverwriteOriginalscheckBox = new JCheckBox();
@@ -1599,7 +1599,7 @@ public class mainScreen {
         this.$$$loadButtonText$$$(lensResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel26.add(lensResetFieldsbutton);
         lensHelpbutton = new JButton();
-        lensHelpbutton.setLabel("[button.help / translations/program_strings]");
+        lensHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(lensHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel26.add(lensHelpbutton);
         final JLabel label73 = new JLabel();
@@ -1907,7 +1907,7 @@ public class mainScreen {
         udcResetFieldsbutton.setVisible(false);
         panel38.add(udcResetFieldsbutton);
         udcHelpbutton = new JButton();
-        udcHelpbutton.setLabel("[button.help / translations/program_strings]");
+        udcHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(udcHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel38.add(udcHelpbutton);
         UserCombiTopText = new JLabel();
@@ -2752,8 +2752,20 @@ public class mainScreen {
                 // Works on loaded images, not on selected images
                 SearchMetadataDialog SMD = new SearchMetadataDialog();
                 String searchPhrase = SMD.displayDialog(rootPanel);
-                logger.info("searchPhrase: {}", searchPhrase);
-                SearchMetaData.searchMetaData(rootPanel, searchPhrase);
+                if ( !(searchPhrase.isEmpty()) && !(searchPhrase == null) ) {
+                    MyVariables.setSearchPhrase(searchPhrase);
+                    logger.info("searchPhrase: {}", searchPhrase);
+                    List<String> result = SearchMetaData.searchMetaData(rootPanel, searchPhrase);
+                    if (!(result.isEmpty()) && !(result == null)) {
+                        for (String line : result) {
+                            logger.debug(line);
+                        }
+                        FoundMetaData FMD = new FoundMetaData();
+                        FMD.showDialog(rootPanel, result);
+                    } else {
+                        JOptionPane.showMessageDialog(rootPanel, (ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtxt") + " \"" + searchPhrase) + "\".", ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtitle"), JOptionPane.WARNING_MESSAGE);
+                    }
+                }
             }
         });
 

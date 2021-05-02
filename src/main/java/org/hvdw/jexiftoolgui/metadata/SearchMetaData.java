@@ -7,6 +7,8 @@ import org.hvdw.jexiftoolgui.Utils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -18,10 +20,9 @@ public class SearchMetaData {
 
     HashMap<String, HashMap<String, String>> imagesData = MyVariables.getimagesData();
 
-    public static String searchMetaData(JPanel rootPanel, String searchPhrase) {
-        String result = "";
+    public static List<String> searchMetaData(JPanel rootPanel, String searchPhrase) {
+        List<String> result = new ArrayList<>();
         HashMap <String, HashMap<String, String> > imagesData = MyVariables.getimagesData();
-
 
         for (Map.Entry<String, HashMap<String, String>> outerEntry: imagesData.entrySet()) {
             String imageName = outerEntry.getKey();
@@ -29,17 +30,23 @@ public class SearchMetaData {
 
             //now loop through the single image hashmap with the tag & value
             Set<Map.Entry<String, String>> entrySet = singleImageMetaData.entrySet();
+            searchPhrase = searchPhrase.toLowerCase();
             for (Map.Entry<String, String> entry: entrySet) {
-                if (entry.getKey().contains(searchPhrase)) {
+                //logger.info("imageName {}", imageName);
+                if (entry.getKey().toLowerCase().contains(searchPhrase)) {
+                    result.add(imageName + "\tkey-value\t" + entry.getKey() + "\t" + entry.getValue());
                     logger.debug("imageName {}: found key {} with value {}", imageName, entry.getKey(), entry.getValue());
                 }
-                if (entry.getValue().contains(searchPhrase)) {
+                if (entry.getValue().toLowerCase().contains(searchPhrase)) {
+                    result.add(imageName + "\tvalue-key\t" + entry.getValue() + "\t" + entry.getKey());
                     logger.debug("imageName {}: found value {} with corresponding key {}", imageName, entry.getValue(), entry.getKey());
                 }
             }
-
+            // Now sort the list of results, if not empty
+            if (!(result.isEmpty()) && !(result == null)) {
+                result = result.stream().sorted().collect(Collectors.toList());
+            }
         }
-
 
         return result;
     }
