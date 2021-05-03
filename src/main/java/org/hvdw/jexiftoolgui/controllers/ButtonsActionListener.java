@@ -24,6 +24,7 @@ public class ButtonsActionListener implements ActionListener {
     private ExifToolCommands YourCmnds = new ExifToolCommands();
     private EditGeotaggingdata EGd = new EditGeotaggingdata();
     private MetadataUserCombinations MD = new MetadataUserCombinations();
+    private StandardFileIO SFIO = new StandardFileIO();
 
     public JLabel OutputLabel;
     public JPanel rootPanel;
@@ -32,9 +33,11 @@ public class ButtonsActionListener implements ActionListener {
     public JTextField geotaggingGPSLogtextField;
     public JTextField sqlQuerytextField;
     public JComboBox UserCombiscomboBox;
+    public JTextField ExpImgFoldertextField;
+    public JTextField expToPdfFolderTextfield;
     private String[] params;
 
-    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox) {
+    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox, JTextField ExpImgFoldertextField, JTextField expToPdfFolderTextfield) {
 
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
@@ -43,6 +46,8 @@ public class ButtonsActionListener implements ActionListener {
         this.geotaggingGPSLogtextField = geotaggingGPSLogtextField;
         this.sqlQuerytextField = sqlQuerytextField;
         this.UserCombiscomboBox = UserCombiscomboBox;
+        this.ExpImgFoldertextField = ExpImgFoldertextField;
+        this.expToPdfFolderTextfield = expToPdfFolderTextfield;
     }
 
     @Override
@@ -126,7 +131,8 @@ public class ButtonsActionListener implements ActionListener {
                 break;
             case "geoIFb":
                 logger.debug("button geotaggingImgFolderbutton pressed");
-                String ImgPath = EGd.getImagePath(rootPanel);
+                //String ImgPath = EGd.getImagePath(rootPanel);
+                String ImgPath = SFIO.getImagePath(rootPanel);
                 if (!"".equals(ImgPath)) {
                     geotaggingImgFoldertextField.setText(ImgPath);
                 }
@@ -169,6 +175,21 @@ public class ButtonsActionListener implements ActionListener {
             /*case "SearchMetadata":
                 SMD.displayDialog(rootPanel);
                 break;*/
+            case "expIFb":
+                logger.debug("button ExpBrowseButton pressed");
+                //String ImgPath = EGd.getImagePath(rootPanel);
+                ImgPath = SFIO.getImagePath(rootPanel);
+                if (!"".equals(ImgPath)) {
+                    ExpImgFoldertextField.setText(ImgPath);
+                }
+                break;
+            case "expTpdf":
+                logger.debug("button expToPdfBrowseButton pressed");
+                ImgPath = SFIO.getImagePath(rootPanel);
+                if (!"".equals(ImgPath)) {
+                    expToPdfFolderTextfield.setText(ImgPath);
+                }
+
         }
 
 

@@ -26,37 +26,6 @@ public class EditGeotaggingdata {
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditGeotaggingdata.class);
 
-    public String getImagePath(JPanel myComponent) {
-        String SelectedFolder;
-        String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
-
-        String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
-        if ("jfilechooser".equals(prefFileDialog)) {
-            final JFileChooser chooser = new JFileChooser(startFolder);
-            chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"));
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int status = chooser.showOpenDialog(myComponent);
-            if (status == JFileChooser.APPROVE_OPTION) {
-                SelectedFolder = chooser.getSelectedFile().getAbsolutePath();
-                return SelectedFolder;
-            } else {
-                return "";
-            }
-        } else {
-            JFrame dialogframe = new JFrame("");
-            FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
-            chooser.setDirectory(startFolder);
-            chooser.setMultipleMode(false);
-            chooser.setVisible(true);
-
-            SelectedFolder = chooser.getDirectory();
-            if (SelectedFolder == null) {
-                return "";
-            } else {
-                return SelectedFolder;
-            }
-        }
-    }
 
     public String gpsLogFile(JPanel myComponent) {
 
