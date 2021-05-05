@@ -35,9 +35,10 @@ public class ButtonsActionListener implements ActionListener {
     public JComboBox UserCombiscomboBox;
     public JTextField ExpImgFoldertextField;
     public JTextField expToPdfFolderTextfield;
+    public JTextField ExpSidecarTextField;
     private String[] params;
 
-    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox, JTextField ExpImgFoldertextField, JTextField expToPdfFolderTextfield) {
+    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox, JTextField ExpImgFoldertextField, JTextField expToPdfFolderTextfield, JTextField ExpSidecarTextField) {
 
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
@@ -48,6 +49,7 @@ public class ButtonsActionListener implements ActionListener {
         this.UserCombiscomboBox = UserCombiscomboBox;
         this.ExpImgFoldertextField = ExpImgFoldertextField;
         this.expToPdfFolderTextfield = expToPdfFolderTextfield;
+        this.ExpSidecarTextField = ExpSidecarTextField;
     }
 
     @Override
@@ -188,6 +190,12 @@ public class ButtonsActionListener implements ActionListener {
                 ImgPath = SFIO.getImagePath(rootPanel);
                 if (!"".equals(ImgPath)) {
                     expToPdfFolderTextfield.setText(ImgPath);
+                }
+            case "expSidecar":
+                logger.debug("button expSidecarBrowseButton pressed");
+                ImgPath = SFIO.getImagePath(rootPanel);
+                if (!"".equals(ImgPath)) {
+                    ExpSidecarTextField.setText(ImgPath);
                 }
 
         }

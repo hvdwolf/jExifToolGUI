@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui.editpane;
 
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
@@ -25,7 +26,6 @@ public class EditGeotaggingdata {
     private String ImageFolder;
     private IPreferencesFacade prefs = PreferencesFacade.defaultInstance;
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditGeotaggingdata.class);
-
 
     public String gpsLogFile(JPanel myComponent) {
 
@@ -54,68 +54,70 @@ public class EditGeotaggingdata {
             selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
             files = MyVariables.getLoadedFiles();
         }
-        String fpath = "";
-        List<String> cmdparams = new ArrayList<String>();
-        String onFolder = geotaggingFields[0].getText().trim();
-        String gpslogfile = geotaggingFields[1].getText().trim();
-        String geosync = geotaggingFields[2].getText().trim();
-        logger.info("onFolder: " + onFolder);
 
-        boolean isWindows = Utils.isOsFromMicrosoft();
+            String fpath = "";
+            List<String> cmdparams = new ArrayList<String>();
+            String onFolder = geotaggingFields[0].getText().trim();
+            String gpslogfile = geotaggingFields[1].getText().trim();
+            String geosync = geotaggingFields[2].getText().trim();
+            logger.info("onFolder: " + onFolder);
 
-        cmdparams.add(Utils.platformExiftool());
-        boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
-        if (preserveModifyDate) {
-            cmdparams.add("-preserve");
-        }
-        if (!OverwiteOriginals) {
-            cmdparams.add("-overwrite_original");
-        }
-        cmdparams.add("-geotag");
-        cmdparams.add(gpslogfile);
+            boolean isWindows = Utils.isOsFromMicrosoft();
 
-        if (!"".equals(geosync)) {
-            cmdparams.add("-geosync=" + geosync);
-        }
-        // Check if also the location is to be added
-        if (geotaggingBoxes[0].isSelected()) {
-            cmdparams.add("-xmp:Location=" + geotaggingFields[3].getText().trim());
-            cmdparams.add("-iptc:Sub-location=" + geotaggingFields[3].getText().trim());
-        }
-        if (geotaggingBoxes[1].isSelected()) {
-            cmdparams.add("-xmp:Country=" + geotaggingFields[4].getText().trim());
-            cmdparams.add("-iptc:Country-PrimaryLocationName=" + geotaggingFields[4].getText().trim());
+            cmdparams.add(Utils.platformExiftool());
+            boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
+            if (preserveModifyDate) {
+                cmdparams.add("-preserve");
+            }
+            if (!OverwiteOriginals) {
+                cmdparams.add("-overwrite_original");
+            }
+            cmdparams.add("-geotag");
+            cmdparams.add(gpslogfile);
 
-        }
-        if (geotaggingBoxes[2].isSelected()) {
-            cmdparams.add("-xmp:State=" + geotaggingFields[5].getText().trim());
-            cmdparams.add("-iptc:Province-State=" + geotaggingFields[5].getText().trim());
-        }
-        if (geotaggingBoxes[3].isSelected()) {
-            cmdparams.add("-xmp:City=" + geotaggingFields[6].getText().trim());
-            cmdparams.add("-iptc:City=" + geotaggingFields[6].getText().trim());
-        }
+            if (!"".equals(geosync)) {
+                cmdparams.add("-geosync=" + geosync);
+            }
+            // Check if also the location is to be added
+            if (geotaggingBoxes[0].isSelected()) {
+                cmdparams.add("-xmp:Location=" + geotaggingFields[3].getText().trim());
+                cmdparams.add("-iptc:Sub-location=" + geotaggingFields[3].getText().trim());
+            }
+            if (geotaggingBoxes[1].isSelected()) {
+                cmdparams.add("-xmp:Country=" + geotaggingFields[4].getText().trim());
+                cmdparams.add("-iptc:Country-PrimaryLocationName=" + geotaggingFields[4].getText().trim());
 
-        if ("".equals(onFolder)) { // Empty folder string which means we use selected files
-            for (int index: selectedFilenamesIndices) {
-                //logger.info("index: {}  image path: {}", index, files[index].getPath());
+            }
+            if (geotaggingBoxes[2].isSelected()) {
+                cmdparams.add("-xmp:State=" + geotaggingFields[5].getText().trim());
+                cmdparams.add("-iptc:Province-State=" + geotaggingFields[5].getText().trim());
+            }
+            if (geotaggingBoxes[3].isSelected()) {
+                cmdparams.add("-xmp:City=" + geotaggingFields[6].getText().trim());
+                cmdparams.add("-iptc:City=" + geotaggingFields[6].getText().trim());
+            }
+
+            if ("".equals(onFolder)) { // Empty folder string which means we use selected files
+                for (int index : selectedFilenamesIndices) {
+                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                    if (isWindows) {
+                        cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    } else {
+                        cmdparams.add(files[index].getPath());
+                    }
+                }
+            } else { // We do have a non-empty folder string
+                //cmdparams.addAll( Arrays.asList(params) );
+
                 if (isWindows) {
-                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add(onFolder.replace("\\", "/"));
                 } else {
-                    cmdparams.add(files[index].getPath());
+                    cmdparams.add(onFolder);
                 }
             }
-        } else { // We do have a non-empty folder string
-            //cmdparams.addAll( Arrays.asList(params) );
 
-            if (isWindows) {
-                cmdparams.add(onFolder.replace("\\", "/"));
-            } else {
-                cmdparams.add(onFolder);
-            }
-        }
+            CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
 
-        CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
     }
 
     public void ResetFields(JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes) {

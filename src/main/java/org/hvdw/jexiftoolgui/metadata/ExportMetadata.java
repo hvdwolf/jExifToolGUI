@@ -23,16 +23,27 @@ public class ExportMetadata {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(ExportMetadata.class);
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
-    public static void writeExport(JPanel rootPanel, JRadioButton[] GeneralExportRadiobuttons, JCheckBox[] GeneralExportCheckButtons, JComboBox exportUserCombicomboBox, JProgressBar progressBar) {
+    /*
+    if (("".equals(geotaggingImgFoldertextField.getText())) && (!images_selected)) { // Empty folder string and no files selected
+        JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 350, ResourceBundle.getBundle("translations/program_strings").getString("rph.noimgsnopathtext")), ResourceBundle.getBundle("translations/program_strings").getString("rph.noimgsnopathtitle"), JOptionPane.WARNING_MESSAGE);
+    } else {
+
+    } */
+    public static void writeExport(JPanel rootPanel, JRadioButton[] GeneralExportRadiobuttons, JCheckBox[] GeneralExportCheckButtons, JComboBox exportUserCombicomboBox, JProgressBar progressBar, JTextField ExpImgFoldertextField) {
         boolean atLeastOneSelected = false;
         BufferedWriter writer;
         List<String> params = new ArrayList<String>();
         List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option
         String filepath = ""; // Again: we need this for the csv option
-        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getLoadedFiles();
+        int[] selectedIndices = null;
+        File[] files = null;
+        if (("".equals(ExpImgFoldertextField.getText()))) {
+            selectedIndices = MyVariables.getSelectedFilenamesIndices();
+            files = MyVariables.getLoadedFiles();
+        }
         String createdExportFiles = "";
         String createdExportFileExtension = "";
+        int counter = 1;
 
         // checkboxes: exportAllMetadataCheckBox, exportExifDataCheckBox, exportXmpDataCheckBox, exportGpsDataCheckBox, exportIptcDataCheckBox, exportICCDataCheckBox, GenExpuseMetadataTagLanguageCheckBoxport
         // translate to clarify
@@ -156,34 +167,48 @@ public class ExportMetadata {
                     params.add("-csv");
                 }
 
-                int counter = 1;
-                for (int index : selectedIndices) {
-                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                // Use files from previews or a folder
+                if (!("".equals(ExpImgFoldertextField.getText()))) { // folder takes precedence over preview files
+                    logger.info("exporting from folder {}", ExpImgFoldertextField.getText() );
+                    createdExportFiles = "<a href=\"file://" + ExpImgFoldertextField.getText() + "\">" +  ExpImgFoldertextField.getText() + "</a><br>";
                     if (isWindows) {
                         if (csvRadioButton.isSelected()) {
-                            params.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
+                            params.add("\"" + ExpImgFoldertextField.getText().replace("\\", "/") + "\"");
                         } else {
-                            params.add(files[index].getPath().replace("\\", "/"));
-                            //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
-                            createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
+                            params.add(ExpImgFoldertextField.getText().replace("\\", "/"));
                         }
                     } else {
-                        params.add(files[index].getPath());
-                        //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
-                        //createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
-                        String file = files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension;
-                        String link = "file://" + file;
-                        String complete = "<a href=\"" + link + "\">" + file + "</a><br>";
-                        createdExportFiles += complete;
+                        params.add(ExpImgFoldertextField.getText());
                     }
-                    // Again necessary for csv
-                    filepath = files[index].getParent();
-                    counter++;
+                } else { // use the selected previews
+                    for (int index : selectedIndices) {
+                        //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                        if (isWindows) {
+                            if (csvRadioButton.isSelected()) {
+                                params.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
+                            } else {
+                                params.add(files[index].getPath().replace("\\", "/"));
+                                //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
+                                createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
+                            }
+                        } else {
+                            params.add(files[index].getPath());
+                            //createdExportFiles += files[index].getParent() + File.separator + files[index].getName() + "<br>";
+                            //createdExportFiles += files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension + "<br>";
+                            String file = files[index].getParent() + File.separator + Utils.getFileNameWithoutExtension(files[index].getName()) + createdExportFileExtension;
+                            String link = "file://" + file;
+                            String complete = "<a href=\"" + link + "\">" + file + "</a><br>";
+                            createdExportFiles += complete;
+                        }
+                        // Again necessary for csv
+                        filepath = files[index].getParent();
+                        counter++;
+                    }
                 }
 
                 // Originally for csv we needed the > character to redirect output to a csv file, which we need to treat specially and differently on unixes and windows.
                 // We also really needed the shell for it otherwise the > is seen as a file
-                // We now read the output into a string and write tht string to file with a bufferedwriter
+                // We now read the output into a string and write that string to file with a bufferedwriter
                 if (csvRadioButton.isSelected()) {
                     if (isWindows) {
                         cmdparams.add(params.toString().substring(1, params.toString().length() - 1).replaceAll(", ", " "));
@@ -193,7 +218,7 @@ public class ExportMetadata {
                 } else {
                     cmdparams = params;
                 }
-                logger.debug("cmdparams : {}", cmdparams.toString());
+                logger.info("cmdparams : {}", cmdparams.toString());
 
 
                 // Export metadata
@@ -202,7 +227,11 @@ public class ExportMetadata {
                     try {
                         CommandRunner.runCommand(params);
                         SimpleWebView WV = new SimpleWebView();
-                        WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles)), 700, (int)(100 + (counter*15)));
+                        if (!("".equals(ExpImgFoldertextField.getText()))) { //folder specified
+                            WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder") + ":<br><br>" + createdExportFiles)), 700, (int) (100 + (counter * 15)));
+                        } else {
+                            WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles)), 700, (int) (100 + (counter * 15)));
+                        }
                         //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
                     } catch (InterruptedException e) {
                         logger.error("Error creating your export files {}", e.toString());

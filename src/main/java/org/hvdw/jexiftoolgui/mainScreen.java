@@ -367,7 +367,7 @@ public class mainScreen {
     private JButton GenExportbuttonOK;
     private JButton GenExportbuttonCancel;
     private JPanel bottomPanel;
-    private JLabel pdftextLabel;
+    private JLabel expPdftextLabel;
     private JRadioButton A4radioButton;
     private JRadioButton LetterradioButton;
     private JRadioButton ImgSizeLargeradioButton;
@@ -399,6 +399,15 @@ public class mainScreen {
     private JButton ExpBrowseButton;
     private JButton expToPdfBrowseButton;
     private JTextField expToPdfFolderTextfield;
+    private JLabel ExpLeaveFolderEmptyLabel;
+    private JLabel ExpPdfLeaveFolderEmptyLabel;
+    private JLabel ExpSidecarLeaveFolderEmptyLabel;
+    private JButton expSidecarBrowseButton;
+    private JTextField ExpSidecarTextField;
+    private JLabel GeoTfolderBrowseLabel;
+    private JLabel genExpfolderBrowseLabel;
+    private JLabel expPdffolderBrowseLabel;
+    private JLabel expSDEfolderBrowseLabel;
     private ImageIcon icon;
 
 
@@ -766,7 +775,7 @@ public class mainScreen {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("[vdtab.bycamera / translations/program_strings]");
+        radioButtonCameraMakes.setLabel("By Camera");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1273,7 +1282,7 @@ public class mainScreen {
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
         minutesSecondsToDecimalButton.setEnabled(false);
-        minutesSecondsToDecimalButton.setLabel("[gps.btnconvert / translations/program_strings]");
+        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         minutesSecondsToDecimalButton.setVisible(false);
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1298,25 +1307,28 @@ public class mainScreen {
         GeotaggingEditpanel.setPreferredSize(new Dimension(800, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.geotaggingtab"), GeotaggingEditpanel);
         final JPanel panel13 = new JPanel();
-        panel13.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 20, 0), -1, -1));
+        panel13.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 20, 0), -1, -1));
         GeotaggingEditpanel.add(panel13, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label46 = new JLabel();
         Font label46Font = this.$$$getFont$$$(null, Font.BOLD, -1, label46.getFont());
         if (label46Font != null) label46.setFont(label46Font);
-        this.$$$loadLabelText$$$(label46, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.imagefolder"));
-        panel13.add(label46, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        this.$$$loadLabelText$$$(label46, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.imagefolder"));
+        panel13.add(label46, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel14 = new JPanel();
         panel14.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel13.add(panel14, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel13.add(panel14, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         geotaggingImgFoldertextField = new JTextField();
         geotaggingImgFoldertextField.setPreferredSize(new Dimension(500, 25));
         panel14.add(geotaggingImgFoldertextField);
         geotaggingImgFolderbutton = new JButton();
-        this.$$$loadButtonText$$$(geotaggingImgFolderbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.browsebutton"));
+        this.$$$loadButtonText$$$(geotaggingImgFolderbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
         panel14.add(geotaggingImgFolderbutton);
         GeotaggingLeaveFolderEmptyLabel = new JLabel();
-        this.$$$loadLabelText$$$(GeotaggingLeaveFolderEmptyLabel, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.folderexplanation"));
-        panel13.add(GeotaggingLeaveFolderEmptyLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 0, false));
+        GeotaggingLeaveFolderEmptyLabel.setText("");
+        panel13.add(GeotaggingLeaveFolderEmptyLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 0, false));
+        GeoTfolderBrowseLabel = new JLabel();
+        GeoTfolderBrowseLabel.setText("GeoTfolderBrowseLabel");
+        panel13.add(GeoTfolderBrowseLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel15 = new JPanel();
         panel15.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         GeotaggingEditpanel.add(panel15, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -1332,7 +1344,7 @@ public class mainScreen {
         geotaggingGPSLogtextField.setPreferredSize(new Dimension(500, 25));
         panel16.add(geotaggingGPSLogtextField);
         geotaggingGPSLogbutton = new JButton();
-        this.$$$loadButtonText$$$(geotaggingGPSLogbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.browsebutton"));
+        this.$$$loadButtonText$$$(geotaggingGPSLogbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
         panel16.add(geotaggingGPSLogbutton);
         final JPanel panel17 = new JPanel();
         panel17.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -1570,7 +1582,7 @@ public class mainScreen {
         this.$$$loadButtonText$$$(gpanoResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel24.add(gpanoResetFieldsbutton);
         gpanoHelpbutton = new JButton();
-        gpanoHelpbutton.setLabel("[button.help / translations/program_strings]");
+        gpanoHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(gpanoHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel24.add(gpanoHelpbutton);
         gpanoOverwriteOriginalscheckBox = new JCheckBox();
@@ -1603,7 +1615,7 @@ public class mainScreen {
         this.$$$loadButtonText$$$(lensResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel26.add(lensResetFieldsbutton);
         lensHelpbutton = new JButton();
-        lensHelpbutton.setLabel("[button.help / translations/program_strings]");
+        lensHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(lensHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel26.add(lensHelpbutton);
         final JLabel label73 = new JLabel();
@@ -1911,7 +1923,7 @@ public class mainScreen {
         udcResetFieldsbutton.setVisible(false);
         panel38.add(udcResetFieldsbutton);
         udcHelpbutton = new JButton();
-        udcHelpbutton.setLabel("[button.help / translations/program_strings]");
+        udcHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(udcHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel38.add(udcHelpbutton);
         UserCombiTopText = new JLabel();
@@ -2215,36 +2227,39 @@ public class mainScreen {
         exportMetaDataUiText = new JLabel();
         exportMetaDataUiText.setEnabled(true);
         exportMetaDataUiText.setRequestFocusEnabled(false);
-        exportMetaDataUiText.setText("");
+        exportMetaDataUiText.setText("exportMetaDataUiText");
         exportMetaDataUiText.setVerifyInputWhenFocusTarget(false);
         panel55.add(exportMetaDataUiText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel65 = new JPanel();
-        panel65.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 20, 0), -1, -1));
+        panel65.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 20, 0), -1, 5));
         panel55.add(panel65, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel65.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label96 = new JLabel();
         Font label96Font = this.$$$getFont$$$(null, Font.BOLD, -1, label96.getFont());
         if (label96Font != null) label96.setFont(label96Font);
-        this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.imagefolder"));
-        panel65.add(label96, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        this.$$$loadLabelText$$$(label96, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.imagefolder"));
+        panel65.add(label96, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel66 = new JPanel();
         panel66.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        panel65.add(panel66, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel65.add(panel66, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         ExpImgFoldertextField = new JTextField();
         ExpImgFoldertextField.setPreferredSize(new Dimension(500, 25));
         panel66.add(ExpImgFoldertextField);
         ExpBrowseButton = new JButton();
-        this.$$$loadButtonText$$$(ExpBrowseButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.browsebutton"));
+        this.$$$loadButtonText$$$(ExpBrowseButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
         panel66.add(ExpBrowseButton);
-        final JLabel label97 = new JLabel();
-        this.$$$loadLabelText$$$(label97, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.folderexplanation"));
-        panel65.add(label97, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 1, false));
+        ExpLeaveFolderEmptyLabel = new JLabel();
+        ExpLeaveFolderEmptyLabel.setText("");
+        panel65.add(ExpLeaveFolderEmptyLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 1, false));
+        genExpfolderBrowseLabel = new JLabel();
+        genExpfolderBrowseLabel.setText("genExpfolderBrowseLabel");
+        panel65.add(genExpfolderBrowseLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel67 = new JPanel();
         panel67.setLayout(new GridLayoutManager(8, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPaneExportImport.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "expimp.exptopdf"), panel67);
-        pdftextLabel = new JLabel();
-        pdftextLabel.setText("Label");
-        panel67.add(pdftextLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        expPdftextLabel = new JLabel();
+        expPdftextLabel.setText("expPdftextLabell");
+        panel67.add(expPdftextLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final Spacer spacer20 = new Spacer();
         panel67.add(spacer20, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel68 = new JPanel();
@@ -2257,10 +2272,10 @@ public class mainScreen {
         panel69.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
         panel67.add(panel69, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         panel69.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label98 = new JLabel();
-        this.$$$loadLabelText$$$(label98, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.paper"));
-        label98.setVisible(false);
-        panel69.add(label98, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label97 = new JLabel();
+        this.$$$loadLabelText$$$(label97, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.paper"));
+        label97.setVisible(false);
+        panel69.add(label97, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         LetterradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(LetterradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.letter"));
         LetterradioButton.setVisible(false);
@@ -2270,9 +2285,9 @@ public class mainScreen {
         this.$$$loadButtonText$$$(A4radioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.a4"));
         A4radioButton.setVisible(false);
         panel69.add(A4radioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JLabel label99 = new JLabel();
-        this.$$$loadLabelText$$$(label99, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.output"));
-        panel69.add(label99, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label98 = new JLabel();
+        this.$$$loadLabelText$$$(label98, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.output"));
+        panel69.add(label98, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         pdfPerImgradioButton = new JRadioButton();
         pdfPerImgradioButton.setSelected(true);
         this.$$$loadButtonText$$$(pdfPerImgradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.single"));
@@ -2310,32 +2325,35 @@ public class mainScreen {
         pdfLabelSupported.setText("Label");
         panel67.add(pdfLabelSupported, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel72 = new JPanel();
-        panel72.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 20, 0), -1, -1));
+        panel72.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 20, 0), -1, 5));
         panel67.add(panel72, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel72.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label100 = new JLabel();
-        Font label100Font = this.$$$getFont$$$(null, Font.BOLD, -1, label100.getFont());
-        if (label100Font != null) label100.setFont(label100Font);
-        this.$$$loadLabelText$$$(label100, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.imagefolder"));
-        panel72.add(label100, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        final JLabel label99 = new JLabel();
+        Font label99Font = this.$$$getFont$$$(null, Font.BOLD, -1, label99.getFont());
+        if (label99Font != null) label99.setFont(label99Font);
+        this.$$$loadLabelText$$$(label99, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.imagefolder"));
+        panel72.add(label99, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel73 = new JPanel();
         panel73.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        panel72.add(panel73, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel72.add(panel73, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         expToPdfFolderTextfield = new JTextField();
         expToPdfFolderTextfield.setPreferredSize(new Dimension(500, 25));
         panel73.add(expToPdfFolderTextfield);
         expToPdfBrowseButton = new JButton();
-        this.$$$loadButtonText$$$(expToPdfBrowseButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.browsebutton"));
+        this.$$$loadButtonText$$$(expToPdfBrowseButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
         panel73.add(expToPdfBrowseButton);
-        final JLabel label101 = new JLabel();
-        this.$$$loadLabelText$$$(label101, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.folderexplanation"));
-        panel72.add(label101, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 1, false));
+        ExpPdfLeaveFolderEmptyLabel = new JLabel();
+        ExpPdfLeaveFolderEmptyLabel.setText("");
+        panel72.add(ExpPdfLeaveFolderEmptyLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(550, -1), null, 1, false));
+        expPdffolderBrowseLabel = new JLabel();
+        expPdffolderBrowseLabel.setText("expPdffolderBrowseLabel");
+        panel72.add(expPdffolderBrowseLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel74 = new JPanel();
-        panel74.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel74.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPaneExportImport.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "mmenu.exportsidecar"), panel74);
         final JPanel panel75 = new JPanel();
         panel75.setLayout(new GridLayoutManager(4, 2, new Insets(10, 10, 10, 10), -1, -1));
-        panel74.add(panel75, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel74.add(panel75, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         exifSCradioButton = new JRadioButton();
         exifSCradioButton.setSelected(true);
         this.$$$loadButtonText$$$(exifSCradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "esc.exiftitle"));
@@ -2353,7 +2371,7 @@ public class mainScreen {
         panel75.add(exvSCradioButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel76 = new JPanel();
         panel76.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel74.add(panel76, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel74.add(panel76, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         SidecarExportButton = new JButton();
         this.$$$loadButtonText$$$(SidecarExportButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.Export"));
         panel76.add(SidecarExportButton);
@@ -2361,74 +2379,98 @@ public class mainScreen {
         this.$$$loadButtonText$$$(SideCarHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel76.add(SideCarHelpbutton);
         final Spacer spacer23 = new Spacer();
-        panel74.add(spacer23, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel74.add(spacer23, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel77 = new JPanel();
-        panel77.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        panel77.setPreferredSize(new Dimension(800, -1));
-        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exiftoolcommands"), panel77);
+        panel77.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 20, 0), -1, 5));
+        panel74.add(panel77, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel77.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JLabel label100 = new JLabel();
+        Font label100Font = this.$$$getFont$$$(null, Font.BOLD, -1, label100.getFont());
+        if (label100Font != null) label100.setFont(label100Font);
+        this.$$$loadLabelText$$$(label100, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.imagefolder"));
+        panel77.add(label100, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel78 = new JPanel();
-        panel78.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel77.add(panel78, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        CommandsParameterstextField = new JTextField();
-        panel78.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label102 = new JLabel();
-        Font label102Font = this.$$$getFont$$$(null, Font.BOLD, -1, label102.getFont());
-        if (label102Font != null) label102.setFont(label102Font);
-        this.$$$loadLabelText$$$(label102, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.parameters"));
-        panel78.add(label102, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel78.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        panel77.add(panel78, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        ExpSidecarTextField = new JTextField();
+        ExpSidecarTextField.setPreferredSize(new Dimension(500, 25));
+        panel78.add(ExpSidecarTextField);
+        expSidecarBrowseButton = new JButton();
+        this.$$$loadButtonText$$$(expSidecarBrowseButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
+        panel78.add(expSidecarBrowseButton);
+        ExpSidecarLeaveFolderEmptyLabel = new JLabel();
+        ExpSidecarLeaveFolderEmptyLabel.setText("");
+        panel77.add(ExpSidecarLeaveFolderEmptyLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 1, false));
+        expSDEfolderBrowseLabel = new JLabel();
+        expSDEfolderBrowseLabel.setText("expSDEfolderBrowseLabel");
+        panel77.add(expSDEfolderBrowseLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel79 = new JPanel();
-        panel79.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panel78.add(panel79, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel79.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        panel79.setPreferredSize(new Dimension(800, -1));
+        tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exiftoolcommands"), panel79);
+        final JPanel panel80 = new JPanel();
+        panel80.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel79.add(panel80, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        CommandsParameterstextField = new JTextField();
+        panel80.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label101 = new JLabel();
+        Font label101Font = this.$$$getFont$$$(null, Font.BOLD, -1, label101.getFont());
+        if (label101Font != null) label101.setFont(label101Font);
+        this.$$$loadLabelText$$$(label101, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.parameters"));
+        panel80.add(label101, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel81 = new JPanel();
+        panel81.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel80.add(panel81, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         CommandsclearParameterSFieldButton = new JButton();
         this.$$$loadButtonText$$$(CommandsclearParameterSFieldButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnclrparamfield"));
-        panel79.add(CommandsclearParameterSFieldButton);
+        panel81.add(CommandsclearParameterSFieldButton);
         CommandsclearOutputFieldButton = new JButton();
         this.$$$loadButtonText$$$(CommandsclearOutputFieldButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnclroutput"));
-        panel79.add(CommandsclearOutputFieldButton);
+        panel81.add(CommandsclearOutputFieldButton);
         CommandsgoButton = new JButton();
         this.$$$loadButtonText$$$(CommandsgoButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btngo"));
-        panel79.add(CommandsgoButton);
+        panel81.add(CommandsgoButton);
         CommandshelpButton = new JButton();
         this.$$$loadButtonText$$$(CommandshelpButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
-        panel79.add(CommandshelpButton);
+        panel81.add(CommandshelpButton);
         final Spacer spacer24 = new Spacer();
-        panel79.add(spacer24);
-        final JPanel panel80 = new JPanel();
-        panel80.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        panel79.add(panel80);
+        panel81.add(spacer24);
+        final JPanel panel82 = new JPanel();
+        panel82.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        panel81.add(panel82);
         final Spacer spacer25 = new Spacer();
-        panel80.add(spacer25);
+        panel82.add(spacer25);
         AddCommandFavoritebutton = new JButton();
         this.$$$loadButtonText$$$(AddCommandFavoritebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnaddfav"));
-        panel80.add(AddCommandFavoritebutton);
+        panel82.add(AddCommandFavoritebutton);
         LoadCommandFavoritebutton = new JButton();
         this.$$$loadButtonText$$$(LoadCommandFavoritebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnloadfav"));
-        panel80.add(LoadCommandFavoritebutton);
-        final JPanel panel81 = new JPanel();
-        panel81.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel78.add(panel81, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JLabel label103 = new JLabel();
-        this.$$$loadLabelText$$$(label103, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.labeloutput"));
-        label103.setVerticalTextPosition(1);
-        panel81.add(label103, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel82.add(LoadCommandFavoritebutton);
+        final JPanel panel83 = new JPanel();
+        panel83.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel80.add(panel83, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JLabel label102 = new JLabel();
+        this.$$$loadLabelText$$$(label102, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.labeloutput"));
+        label102.setVerticalTextPosition(1);
+        panel83.add(label102, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel81.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel83.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         YourCommandsOutputText = new JEditorPane();
         YourCommandsOutputText.setText("");
         scrollPane1.setViewportView(YourCommandsOutputText);
-        final JPanel panel82 = new JPanel();
-        panel82.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
-        panel81.add(panel82, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel84 = new JPanel();
+        panel84.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        panel83.add(panel84, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         UseNonPropFontradioButton = new JRadioButton();
         UseNonPropFontradioButton.setSelected(true);
         this.$$$loadButtonText$$$(UseNonPropFontradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.radbtnmonospace"));
-        panel82.add(UseNonPropFontradioButton);
+        panel84.add(UseNonPropFontradioButton);
         UsePropFontradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(UsePropFontradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.radbtnproportional"));
-        panel82.add(UsePropFontradioButton);
+        panel84.add(UsePropFontradioButton);
         MyCommandsText = new JLabel();
         MyCommandsText.setText("MyCommandsText");
-        panel77.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
+        panel79.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(CalcNorthRadioButton);
@@ -2745,7 +2787,7 @@ public class mainScreen {
      */
     private void programButtonListeners() {
 
-        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, UserCombiscomboBox, ExpImgFoldertextField, expToPdfFolderTextfield);
+        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, UserCombiscomboBox, ExpImgFoldertextField, expToPdfFolderTextfield, ExpSidecarTextField);
         selectedIndicesList = MyVariables.getselectedIndicesList();
 
         // Main screen left panel
@@ -3313,6 +3355,9 @@ public class mainScreen {
         ExpBrowseButton.addActionListener(gal);
         expToPdfBrowseButton.setActionCommand("expTpdf");
         expToPdfBrowseButton.addActionListener(gal);
+        expSidecarBrowseButton.setActionCommand("expSidecar");
+        expSidecarBrowseButton.setActionCommand("expSidecar");
+        expSidecarBrowseButton.addActionListener(gal);
 
         exportAllMetadataCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -3381,8 +3426,8 @@ public class mainScreen {
         });
         GenExportbuttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    ExportMetadata.writeExport(rootPanel, getGeneralExportRadiobuttons(), getGeneralExportCheckButtons(), exportUserCombicomboBox, progressBar);
+                if ( ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) || (!("".equals(ExpImgFoldertextField.getText()))) ) {
+                    ExportMetadata.writeExport(rootPanel, getGeneralExportRadiobuttons(), getGeneralExportCheckButtons(), exportUserCombicomboBox, progressBar, ExpImgFoldertextField);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
@@ -3391,7 +3436,7 @@ public class mainScreen {
         ExpPDFOKbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                if ( (!(selectedIndicesList == null) && (selectedIndicesList.size() > 0)) || (!("".equals(expToPdfFolderTextfield.getText()))) ) {
                     MyVariables.setpdfDocs("");
                     ExportToPDF.CreatePDFs(rootPanel, getPDFradiobuttons(), getPDFcomboboxes(), progressBar, OutputLabel);
                  } else {
@@ -3402,7 +3447,7 @@ public class mainScreen {
         SidecarExportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                if ( (!(selectedIndicesList == null) && (selectedIndicesList.size() > 0)) || (("".equals(ExpSidecarTextField.getText()))) ) {
                     ExportMetadata.SidecarChoices(getSCradiobuttons(), rootPanel, progressBar, OutputLabel);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -3600,7 +3645,14 @@ public class mainScreen {
         String version = "";
         MyCommandsText.setText(String.format(ProgramTexts.HTML, 600,ResourceBundle.getBundle("translations/program_strings").getString("yc.toptext")));
         xmpTopText.setText(String.format(ProgramTexts.HTML, 600,ResourceBundle.getBundle("translations/program_strings").getString("xmp.toptext")));
-        GeotaggingLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("geo.folderexplanation")));
+        GeotaggingLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
+        ExpLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
+        ExpPdfLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
+        ExpSidecarLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
+        GeoTfolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
+        genExpfolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
+        expPdffolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
+        expSDEfolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
         GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("geo.geotagexpl")));
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("geo.geosyncexpl")));
         //gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("gps.calculatortext")));
@@ -3613,7 +3665,7 @@ public class mainScreen {
         StringsTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("xis.toptext")));
         UserCombiTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("udc.toptext")));
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("emd.toptext")));
-        pdftextLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.toptext")));
+        expPdftextLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.toptext")));
         pdfLabelSupported.setText(String.format(ProgramTexts.HTML, 600, "<br>" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.supp")));
         lblNominatimSearch.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.searchtxt")));
         lblMapcoordinates.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.extsearch")));
