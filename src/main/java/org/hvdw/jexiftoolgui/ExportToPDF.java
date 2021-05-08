@@ -14,15 +14,20 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
@@ -261,7 +266,7 @@ public class ExportToPDF {
      * @param progressBar
      * @return
      */
-    public static void CreatePDFs(JPanel rootPanel, JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes, JProgressBar progressBar, JLabel outputLabel) {
+    public static void CreatePDFs(JPanel rootPanel, JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes, JProgressBar progressBar, JLabel outputLabel, String ExpImgFoldertextField, boolean includeSubFolders) {
         String pdfdocs = "";
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
@@ -269,7 +274,7 @@ public class ExportToPDF {
             public void run() {
                 try {
                     try {
-                        WriteToPDF(PDFradiobuttons, PDFcomboboxes, progressBar);
+                        WriteToPDF(PDFradiobuttons, PDFcomboboxes, progressBar, ExpImgFoldertextField, includeSubFolders);
                         progressBar.setVisible(false);
                         outputLabel.setText("");
                         JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated") + ":<br><br>" + MyVariables.getpdfDocs()), ResourceBundle.getBundle("translations/program_strings").getString("exppdf.pdfscreated"), JOptionPane.INFORMATION_MESSAGE));
@@ -302,10 +307,60 @@ public class ExportToPDF {
      * @param progressBar
      * @return
      */
-    public static void WriteToPDF(JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes, JProgressBar progressBar) {
+    public static void WriteToPDF(JRadioButton[] PDFradiobuttons, JComboBox[] PDFcomboboxes, JProgressBar progressBar, String ExpImgFoldertextField, boolean includeSubFolders) {
         List<String> cmdparams = new ArrayList<String>();
-        File[] files = MyVariables.getLoadedFiles();
-        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        File[] files = null;
+
+        int[] selectedIndices = null;
+        if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+            //the pdf export is not an exiftool function. We can't simply specify a folder
+            // We need to read the files in the folder
+            File directoryPath = new File(ExpImgFoldertextField);
+            //List of all files and directories
+            if (includeSubFolders) {
+                // recurse into subfolders
+                List<String> tmpfiles = null;
+                try {
+                    /*Files.walk(Paths.get(ExpImgFoldertextField))
+                            .filter(Files::isRegularFile)
+                            .forEach(System.out::println);*/
+                    Stream<Path> pathStream = Files.walk(Paths.get(ExpImgFoldertextField)).filter(Files::isRegularFile);
+                    Path[] pathArray= pathStream.toArray(Path[]::new);
+                    int Length = pathArray.length;
+                    files = new File[Length];
+                    selectedIndices = new int[Length];
+                    for (int i = 0; i < Length; ++i) {
+                        files[i] = pathArray[i].toFile();
+                        selectedIndices[i] = i;
+                    }
+                    MyVariables.setLoadedFiles(files);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                FileFilter filterOnFiles = new FileFilter() {
+                    public boolean accept(File file) {
+                        boolean isFile = file.isFile();
+                        if (isFile) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                };
+                files = directoryPath.listFiles(filterOnFiles);
+                MyVariables.setLoadedFiles(files);
+                int Length = files.length;
+                selectedIndices = new int[Length];
+                for (int i = 0; i < Length; i++) {
+                    selectedIndices[i] = i;
+                }
+            }
+        } else { // Normal selection via previews
+            files = MyVariables.getLoadedFiles();
+            selectedIndices = MyVariables.getSelectedFilenamesIndices();
+        }
         File tmpfile;
         String filename;
         String pdfnamepath = "";
@@ -329,6 +384,8 @@ public class ExportToPDF {
                 doc.close();
             }
         }
+
+
         for (int index : selectedIndices) {
             String res = Utils.getImageInfoFromSelectedFile(params, index);
             filename = files[index].getName();

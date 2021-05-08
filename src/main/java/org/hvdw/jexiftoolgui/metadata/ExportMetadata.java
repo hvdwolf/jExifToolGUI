@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 
@@ -29,15 +31,15 @@ public class ExportMetadata {
     } else {
 
     } */
-    public static void writeExport(JPanel rootPanel, JRadioButton[] GeneralExportRadiobuttons, JCheckBox[] GeneralExportCheckButtons, JComboBox exportUserCombicomboBox, JProgressBar progressBar, JTextField ExpImgFoldertextField) {
+    public static void writeExport(JPanel rootPanel, JRadioButton[] GeneralExportRadiobuttons, JCheckBox[] GeneralExportCheckButtons, JComboBox exportUserCombicomboBox, JProgressBar progressBar, String ExpImgFoldertextField, boolean includeSubFolders) {
         boolean atLeastOneSelected = false;
-        BufferedWriter writer;
+        final BufferedWriter[] writer = new BufferedWriter[1];
         List<String> params = new ArrayList<String>();
         List<String> cmdparams = new ArrayList<String>(); // We need this for the csv option
         String filepath = ""; // Again: we need this for the csv option
         int[] selectedIndices = null;
         File[] files = null;
-        if (("".equals(ExpImgFoldertextField.getText()))) {
+        if ("".equals(ExpImgFoldertextField)) {
             selectedIndices = MyVariables.getSelectedFilenamesIndices();
             files = MyVariables.getLoadedFiles();
         }
@@ -168,17 +170,21 @@ public class ExportMetadata {
                 }
 
                 // Use files from previews or a folder
-                if (!("".equals(ExpImgFoldertextField.getText()))) { // folder takes precedence over preview files
-                    logger.info("exporting from folder {}", ExpImgFoldertextField.getText() );
-                    createdExportFiles = "<a href=\"file://" + ExpImgFoldertextField.getText() + "\">" +  ExpImgFoldertextField.getText() + "</a><br>";
+                if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+                    logger.debug("exporting from folder {}", ExpImgFoldertextField );
+                    createdExportFiles = "<a href=\"file://" + ExpImgFoldertextField + "\">" +  ExpImgFoldertextField + "</a><br>";
+                    logger.debug("includesubfolder {}", includeSubFolders);
+                    if (includeSubFolders) {
+                        params.add("-r");
+                    }
                     if (isWindows) {
                         if (csvRadioButton.isSelected()) {
-                            params.add("\"" + ExpImgFoldertextField.getText().replace("\\", "/") + "\"");
+                            params.add("\"" + ExpImgFoldertextField.replace("\\", "/") + "\"");
                         } else {
-                            params.add(ExpImgFoldertextField.getText().replace("\\", "/"));
+                            params.add(ExpImgFoldertextField.replace("\\", "/"));
                         }
                     } else {
-                        params.add(ExpImgFoldertextField.getText());
+                        params.add(ExpImgFoldertextField);
                     }
                 } else { // use the selected previews
                     for (int index : selectedIndices) {
@@ -224,42 +230,93 @@ public class ExportMetadata {
                 // Export metadata
                 if (!csvRadioButton.isSelected()) {
                     //CommandRunner.runCommandWithProgressBar(params, progressBar);
-                    try {
-                        CommandRunner.runCommand(params);
-                        SimpleWebView WV = new SimpleWebView();
-                        if (!("".equals(ExpImgFoldertextField.getText()))) { //folder specified
-                            WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder") + ":<br><br>" + createdExportFiles)), 700, (int) (100 + (counter * 15)));
-                        } else {
-                            WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles)), 700, (int) (100 + (counter * 15)));
+                    Executor executor = Executors.newSingleThreadExecutor();
+                    String finalCreatedExportFiles = createdExportFiles;
+                    int finalCounter = counter;
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                try {
+                                    CommandRunner.runCommand(params);
+                                    progressBar.setVisible(false);
+                                    SimpleWebView WV = new SimpleWebView();
+                                    if (!("".equals(ExpImgFoldertextField))) { //folder specified
+                                        WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder") + ":<br><br>" + finalCreatedExportFiles)), 700, (int) (100 + (finalCounter * 15)));
+                                    } else {
+                                        WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + finalCreatedExportFiles)), 700, (int) (100 + (finalCounter * 15)));
+                                    }
+                                    //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
+                                } catch (InterruptedException | IOException e) {
+                                    logger.error("Error creating your export files {}", e.toString());
+                                    e.printStackTrace();
+                                }
+                            } catch (Exception ex) {
+                                logger.debug("Error executing command");
+                            }
                         }
-                        //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + createdExportFiles), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
-                    } catch (InterruptedException e) {
-                        logger.error("Error creating your export files {}", e.toString());
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        logger.error("Error creating your export files {}", e.toString());
-                        e.printStackTrace();
-                    }
+                    });
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            progressBar.setVisible(true);
+                            //outputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exppdf"));
+                        }
+                    });
                 } else {
                     logger.debug("CSV export requested");
-                    String outcsv;
-                    try {
-                        String result = CommandRunner.runCommand(params);
-                        logger.trace("\n\n\nresult {}", result);
-                        if (isWindows) {
-                            writer = new BufferedWriter(new FileWriter(filepath.replace("\\", "/") + File.separator + "out.csv"));
-                            outcsv = filepath.replace("\\", "/") + File.separator + "out.csv";
-                        } else {
-                            writer = new BufferedWriter(new FileWriter(filepath + File.separator + "out.csv"));
-                            outcsv = filepath + File.separator + "out.csv";
+                    final String[] outcsv = new String[1];
+
+                    Executor executor = Executors.newSingleThreadExecutor();
+                    String finalCreatedExportFiles = createdExportFiles;
+                    int finalCounter = counter;
+                    String finalFilepath = filepath;
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                try {
+                                    String result = CommandRunner.runCommand(params);
+                                    progressBar.setVisible(false);
+                                    logger.trace("\n\n\nresult {}", result);
+                                    if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+                                        // do something
+                                        if (isWindows) {
+                                            writer[0] = new BufferedWriter(new FileWriter(ExpImgFoldertextField.replace("\\", "/") + File.separator + "out.csv"));
+                                            outcsv[0] = ExpImgFoldertextField.replace("\\", "/") + File.separator + "out.csv";
+                                        } else {
+                                            writer[0] = new BufferedWriter(new FileWriter(ExpImgFoldertextField + File.separator + "out.csv"));
+                                            outcsv[0] = ExpImgFoldertextField + File.separator + "out.csv";
+                                        }
+                                        writer[0].write(result);
+                                        writer[0].close();
+                                    } else {
+                                        if (isWindows) {
+                                            writer[0] = new BufferedWriter(new FileWriter(finalFilepath.replace("\\", "/") + File.separator + "out.csv"));
+                                            outcsv[0] = finalFilepath.replace("\\", "/") + File.separator + "out.csv";
+                                        } else {
+                                            writer[0] = new BufferedWriter(new FileWriter(finalFilepath + File.separator + "out.csv"));
+                                            outcsv[0] = finalFilepath + File.separator + "out.csv";
+                                        }
+                                        writer[0].write(result);
+                                        writer[0].close();
+                                    }
+                                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + outcsv[0]), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
+                                } catch (InterruptedException | IOException e) {
+                                    e.printStackTrace();
+                                    logger.error("metadata export failed with error {}", e);
+                                }
+                            } catch (Exception ex) {
+                                logger.debug("Error executing command");
+                            }
                         }
-                        writer.write(result);
-                        writer.close();
-                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + outcsv), ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), JOptionPane.INFORMATION_MESSAGE));
-                    } catch (InterruptedException | IOException e) {
-                        e.printStackTrace();
-                        logger.error("metadata export failed with error {}", e);
-                    }
+                    });
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            progressBar.setVisible(true);
+                            //outputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exppdf"));
+                        }
+                    });
+
                 }
             }
         } else {
@@ -358,41 +415,40 @@ public class ExportMetadata {
 
 
     /////////////////////// Below the Sidecar exports
-    public static void SidecarChoices(JRadioButton[] SCradiobuttons, JPanel rootPanel, JProgressBar progressBar, JLabel OutputLabel) {
+    public static void SidecarChoices(JRadioButton[] SCradiobuttons, JPanel rootPanel, JProgressBar progressBar, JLabel OutputLabel, String ExpImgFoldertextField, boolean includeSubFolders) {
+        logger.debug("include subfolders {}", includeSubFolders);
         if (SCradiobuttons[0].isSelected()) {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
-            exportExifMieExvSidecar(rootPanel, progressBar, "exif");
+            exportExifMieExvSidecar(rootPanel, progressBar, "exif", ExpImgFoldertextField, includeSubFolders);
             OutputLabel.setText("");
         } else if (SCradiobuttons[1].isSelected()) {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
-            exportXMPSidecar(rootPanel, progressBar);
+            exportXMPSidecar(rootPanel, progressBar, ExpImgFoldertextField, includeSubFolders);
             OutputLabel.setText("");
         } else if (SCradiobuttons[2].isSelected()) {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.miesidecar"));
-            exportExifMieExvSidecar(rootPanel, progressBar, "mie");
+            exportExifMieExvSidecar(rootPanel, progressBar, "mie", ExpImgFoldertextField, includeSubFolders);
             OutputLabel.setText("");
         } else {
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exvsidecar"));
-            exportExifMieExvSidecar(rootPanel, progressBar, "exv");
+            exportExifMieExvSidecar(rootPanel, progressBar, "exv", ExpImgFoldertextField, includeSubFolders);
             OutputLabel.setText("");
         }
-
-
-        /*case "sidecarhelp":
-        Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
-        break;*/
-
 
     }
 
 
-    public static void exportExifMieExvSidecar(JPanel rootpanel, JProgressBar progressBar, String exportoption) {
+    public static void exportExifMieExvSidecar(JPanel rootpanel, JProgressBar progressBar, String exportoption, String ExpImgFoldertextField, boolean includeSubFolders) {
         String commandstring = "";
         String pathwithoutextension = "";
         List<String> cmdparams = new ArrayList<String>();
+        int[] selectedIndices = null;
+        File[] files = null;
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
-        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getLoadedFiles();
+        if (("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+            selectedIndices = MyVariables.getSelectedFilenamesIndices();
+            files = MyVariables.getLoadedFiles();
+        }
         int choice = 999;
         String logstring = "";
         String export_extension = exportoption.toLowerCase().trim();
@@ -424,50 +480,79 @@ public class ExportMetadata {
             // choice 1: Cancel
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            for (int index : selectedIndices) {
-                cmdparams = new ArrayList<String>();; // initialize on every file
+            if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+                // exiftool -o %d%f.exif -all -unsafe DIR   ; exiftool -o %d%f.exif -all -unsafe -r DIR
+                cmdparams = new ArrayList<String>();
                 cmdparams.add(Utils.platformExiftool());
-                cmdparams.add("-tagsfromfile");
-
+                cmdparams.add("-o");
+                cmdparams.add("%d%f." + exportoption.toLowerCase());
+                cmdparams.add("-all:all");
+                if ("exif".equals(exportoption.toLowerCase())) {
+                    cmdparams.add("-unsafe");
+                }
+                if (includeSubFolders) {
+                    cmdparams.add("-r");
+                }
                 if (isWindows) {
-                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
-                    cmdparams.add(files[index].getPath().replace("\\", "/"));
-                    cmdparams.add("-all:all");
-                    if (!"exif".equals(export_extension)) {
-                        cmdparams.add("-icc_profile");
-                    }
-                    cmdparams.add(pathwithoutextension + "." + export_extension);
+                    cmdparams.add(ExpImgFoldertextField.replace("\\", "/"));
                 } else {
-                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
-                    //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
-                    //cmdparams.add("\"" + files[index].getPath() + "\"");
-                    cmdparams.add(files[index].getPath());
-                    commandstring += files[index].getPath().replace(" ", "\\ ");
-                    cmdparams.add("-all:all");
-                    if (!"exif".equals(export_extension)) {
-                        cmdparams.add("-icc_profile");
-                    }
-                    //cmdparams.add((pathwithoutextension + "." + export_extension).replace(" ", "\\ "));
-                    //cmdparams.add("\"" + (pathwithoutextension + "." + export_extension) + "\"");
-                    cmdparams.add((pathwithoutextension + "." + export_extension));
+                    cmdparams.add(ExpImgFoldertextField.replace(" ", "\\ "));
                 }
                 // export metadata
                 logger.info(logstring, cmdparams);
-                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,"off");
-                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar, "off");
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
+            } else {   // Work on the selected previews
+                for (int index : selectedIndices) {
+                    cmdparams = new ArrayList<String>();
+                    ; // initialize on every file
+                    cmdparams.add(Utils.platformExiftool());
+                    cmdparams.add("-tagsfromfile");
+
+                    if (isWindows) {
+                        pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                        cmdparams.add(files[index].getPath().replace("\\", "/"));
+                        cmdparams.add("-all:all");
+                        if (!"exif".equals(export_extension)) {
+                            cmdparams.add("-icc_profile");
+                        }
+                        cmdparams.add(pathwithoutextension + "." + export_extension);
+                    } else {
+                        pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                        //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                        //cmdparams.add("\"" + files[index].getPath() + "\"");
+                        cmdparams.add(files[index].getPath());
+                        commandstring += files[index].getPath().replace(" ", "\\ ");
+                        cmdparams.add("-all:all");
+                        if (!"exif".equals(export_extension)) {
+                            cmdparams.add("-icc_profile");
+                        }
+                        //cmdparams.add((pathwithoutextension + "." + export_extension).replace(" ", "\\ "));
+                        //cmdparams.add("\"" + (pathwithoutextension + "." + export_extension) + "\"");
+                        cmdparams.add((pathwithoutextension + "." + export_extension));
+                    }
+                    // export metadata
+                    logger.info(logstring, cmdparams);
+                    CommandRunner.runCommandWithProgressBar(cmdparams, progressBar, "off");
+                    //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+                }
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
             }
-            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    public static void exportXMPSidecar(JPanel rootpanel, JProgressBar progressBar) {
+    public static void exportXMPSidecar(JPanel rootpanel, JProgressBar progressBar, String ExpImgFoldertextField, boolean includeSubFolders) {
         String commandstring = "";
         String pathwithoutextension = "";
         List<String> cmdparams = new ArrayList<String>();
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmp"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
         //String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
-        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getLoadedFiles();
+        int[] selectedIndices = null;
+        File[] files = null;
+        if (("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+            selectedIndices = MyVariables.getSelectedFilenamesIndices();
+            files = MyVariables.getLoadedFiles();
+        }
 
         logger.info("Create xmp sidecar");
         int choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
@@ -479,49 +564,74 @@ public class ExportMetadata {
             // choice 2: Cancel
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            for (int index : selectedIndices) {
-                commandstring = "";
-                //logger.info("index: {}  image path: {}", index, files[index].getPath());
-                cmdparams = new ArrayList<String>();; // initialize on every file
+            if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+                cmdparams = new ArrayList<String>();
                 cmdparams.add(Utils.platformExiftool());
-                commandstring += Utils.platformExiftool();
-                boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
-                if (preserveModifyDate) {
-                    cmdparams.add("-preserve");
-                }
-                //cmdparams.add("-overwrite_original");
-                cmdparams.add("-tagsfromfile");
-                commandstring += " -tagsfromfile ";
-
-                if (isWindows) {
-                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
-                    cmdparams.add(files[index].getPath().replace("\\", "/"));
-                    commandstring += files[index].getPath().replace("\\", "/");
-                    if (choice == 1) {
-                        cmdparams.add("-xmp");
-                        commandstring += " -xmp ";
-                    }
-                    cmdparams.add(pathwithoutextension + ".xmp");
-                    commandstring += pathwithoutextension + ".xmp";
+                cmdparams.add("-o");
+                cmdparams.add("%d%f.xmp");
+                if (choice == 0) {
+                    cmdparams.add("-all:all");
                 } else {
-                    pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
-                    //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
-                    cmdparams.add(files[index].getPath());
-                    commandstring += files[index].getPath().replace(" ", "\\ ");
-                    if (choice == 1) {
-                        cmdparams.add("-xmp");
-                        commandstring += " -xmp ";
-                    }
-                    //cmdparams.add((pathwithoutextension + ".xmp").replace(" ", "\\ "));
-                    cmdparams.add(pathwithoutextension + ".xmp");
-                    commandstring += (pathwithoutextension + ".xmp").replace(" ", "\\ ");
+                    cmdparams.add("-xmp:all");
+                }
+                if (includeSubFolders) {
+                    cmdparams.add("-r");
+                }
+                if (isWindows) {
+                    cmdparams.add(ExpImgFoldertextField.replace("\\", "/"));
+                } else {
+                    cmdparams.add(ExpImgFoldertextField.replace(" ", "\\ "));
                 }
                 // export metadata
-                logger.info("exportxmpsidecar cmdparams: {}", cmdparams);
-                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar,"off");
-                //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+                logger.info("exportxmpsidecar cmdparams {}", cmdparams);
+                CommandRunner.runCommandWithProgressBar(cmdparams, progressBar, "off");
+                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                for (int index : selectedIndices) {
+                    commandstring = "";
+                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
+                    cmdparams = new ArrayList<String>();
+                    ; // initialize on every file
+                    cmdparams.add(Utils.platformExiftool());
+                    commandstring += Utils.platformExiftool();
+                    boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
+                    if (preserveModifyDate) {
+                        cmdparams.add("-preserve");
+                    }
+                    //cmdparams.add("-overwrite_original");
+                    cmdparams.add("-tagsfromfile");
+                    commandstring += " -tagsfromfile ";
+
+                    if (isWindows) {
+                        pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath().replace("\\", "/"));
+                        cmdparams.add(files[index].getPath().replace("\\", "/"));
+                        commandstring += files[index].getPath().replace("\\", "/");
+                        if (choice == 1) {
+                            cmdparams.add("-xmp");
+                            commandstring += " -xmp ";
+                        }
+                        cmdparams.add(pathwithoutextension + ".xmp");
+                        commandstring += pathwithoutextension + ".xmp";
+                    } else {
+                        pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
+                        //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                        cmdparams.add(files[index].getPath());
+                        commandstring += files[index].getPath().replace(" ", "\\ ");
+                        if (choice == 1) {
+                            cmdparams.add("-xmp");
+                            commandstring += " -xmp ";
+                        }
+                        //cmdparams.add((pathwithoutextension + ".xmp").replace(" ", "\\ "));
+                        cmdparams.add(pathwithoutextension + ".xmp");
+                        commandstring += (pathwithoutextension + ".xmp").replace(" ", "\\ ");
+                    }
+                    // export metadata
+                    logger.info("exportxmpsidecar cmdparams: {}", cmdparams);
+                    CommandRunner.runCommandWithProgressBar(cmdparams, progressBar, "off");
+                    //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
+                    JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
+                }
             }
-            JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
