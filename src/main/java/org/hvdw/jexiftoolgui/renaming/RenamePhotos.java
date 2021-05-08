@@ -401,7 +401,7 @@ public class RenamePhotos extends JDialog {
                 if ((suffixDonNotUseradioButton.isSelected()) && (prefixStringradioButton.isSelected())) {
                     // string as prefix and no suffix
                     if (isWindows) {
-                        cmdparams.add(Utils.platformExiftool());
+                        cmdparams.add(Utils.platformExiftool().replace("\\", "/"));
                         if (preserveModifyDate) {
                             cmdparams.add("-preserve");
                         }
@@ -411,20 +411,20 @@ public class RenamePhotos extends JDialog {
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
                         if (preserveModifyDate) {
-                            exifcommands = new StringBuilder(Utils.platformExiftool() + " -preserve '-FileName=" + prefix);
+                            exifcommands = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -preserve '-FileName=" + prefix);
                         } else {
-                            exifcommands = new StringBuilder(Utils.platformExiftool() + " '-FileName=" + prefix);
+                            exifcommands = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " '-FileName=" + prefix);
                         }
                     }
                 } else { // Or a suffix or date(time), or both
                     if (isWindows) {
-                        cmdparams.add(Utils.platformExiftool());
+                        cmdparams.add(Utils.platformExiftool().replace("\\", "/"));
                         exifcommands = new StringBuilder("\"-FileName<" + prefix);
                     } else {
                         // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
-                        exifcommands = new StringBuilder(Utils.platformExiftool() + " '-FileName<" + prefix);
+                        exifcommands = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " '-FileName<" + prefix);
                     }
                 }
                 if (!suffixDonNotUseradioButton.isSelected()) {
@@ -593,7 +593,7 @@ public class RenamePhotos extends JDialog {
         panel6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         panel5.add(panel6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         RenamingSourceFolderbutton = new JButton();
-        this.$$$loadButtonText$$$(RenamingSourceFolderbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "geo.browsebutton"));
+        this.$$$loadButtonText$$$(RenamingSourceFolderbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
         panel6.add(RenamingSourceFolderbutton);
         RenamingSourceFoldertextField = new JTextField();
         RenamingSourceFoldertextField.setPreferredSize(new Dimension(600, 30));
