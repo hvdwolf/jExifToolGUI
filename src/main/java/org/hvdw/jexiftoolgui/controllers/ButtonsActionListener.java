@@ -34,9 +34,10 @@ public class ButtonsActionListener implements ActionListener {
     public JTextField sqlQuerytextField;
     public JComboBox UserCombiscomboBox;
     public JTextField ExpImgFoldertextField;
+    public JTextField ETCommandsFoldertextField;
     private String[] params;
 
-    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox, JTextField ExpImgFoldertextField) {
+    public ButtonsActionListener(JPanel rootPanel, JLabel OutputLabel, JTextField CommandsParameterstextField, JTextField geotaggingImgFoldertextField, JTextField geotaggingGPSLogtextField, JComboBox UserCombiscomboBox, JTextField ExpImgFoldertextField, JTextField ETCommandsFoldertextField) {
 
         this.rootPanel = rootPanel;
         this.OutputLabel = OutputLabel;
@@ -46,6 +47,7 @@ public class ButtonsActionListener implements ActionListener {
         this.sqlQuerytextField = sqlQuerytextField;
         this.UserCombiscomboBox = UserCombiscomboBox;
         this.ExpImgFoldertextField = ExpImgFoldertextField;
+        this.ETCommandsFoldertextField = ETCommandsFoldertextField;
     }
 
     @Override
@@ -175,10 +177,16 @@ public class ButtonsActionListener implements ActionListener {
                 break;*/
             case "expIFb":
                 logger.debug("button ExpBrowseButton pressed");
-                //String ImgPath = EGd.getImagePath(rootPanel);
                 ImgPath = SFIO.getImagePath(rootPanel);
                 if (!"".equals(ImgPath)) {
                     ExpImgFoldertextField.setText(ImgPath);
+                }
+                break;
+            case "etCmdBtn":
+                logger.debug("button ETCBrowseButton pressed");
+                ImgPath = SFIO.getImagePath(rootPanel);
+                if (!"".equals(ImgPath)) {
+                    ETCommandsFoldertextField.setText(ImgPath);
                 }
                 break;
         }

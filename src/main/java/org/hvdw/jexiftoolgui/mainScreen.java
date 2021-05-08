@@ -405,6 +405,11 @@ public class mainScreen {
     private JLabel GeoTfolderBrowseLabel;
     private JLabel genExpfolderBrowseLabel;
     private JCheckBox includeSubFoldersCheckBox;
+    private JTextField ETCommandsFoldertextField;
+    private JButton ETCBrowseButton;
+    private JLabel etcFolderBrowseLabel;
+    private JLabel etcLeaveFolderEmptyLabel;
+    private JCheckBox etcIncludeSubFoldersCheckBox;
     private JLabel expPdffolderBrowseLabel;
     private JLabel expSDEfolderBrowseLabel;
     private ImageIcon icon;
@@ -2358,12 +2363,12 @@ public class mainScreen {
         this.$$$loadButtonText$$$(includeSubFoldersCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.inclsubfolders"));
         panel73.add(includeSubFoldersCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel75 = new JPanel();
-        panel75.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        panel75.setLayout(new GridLayoutManager(3, 1, new Insets(10, 10, 10, 10), -1, -1));
         panel75.setPreferredSize(new Dimension(800, -1));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exiftoolcommands"), panel75);
         final JPanel panel76 = new JPanel();
         panel76.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panel75.add(panel76, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel75.add(panel76, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         CommandsParameterstextField = new JTextField();
         panel76.add(CommandsParameterstextField, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label99 = new JLabel();
@@ -2424,6 +2429,33 @@ public class mainScreen {
         MyCommandsText = new JLabel();
         MyCommandsText.setText("MyCommandsText");
         panel75.add(MyCommandsText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(150, -1), null, 0, false));
+        final JPanel panel81 = new JPanel();
+        panel81.setLayout(new GridLayoutManager(5, 2, new Insets(10, 0, 10, 0), -1, -1));
+        panel75.add(panel81, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        panel81.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JLabel label101 = new JLabel();
+        Font label101Font = this.$$$getFont$$$(null, Font.BOLD, -1, label101.getFont());
+        if (label101Font != null) label101.setFont(label101Font);
+        this.$$$loadLabelText$$$(label101, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.imagefolder"));
+        panel81.add(label101, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        final JPanel panel82 = new JPanel();
+        panel82.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        panel81.add(panel82, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
+        ETCommandsFoldertextField = new JTextField();
+        ETCommandsFoldertextField.setPreferredSize(new Dimension(500, 25));
+        panel82.add(ETCommandsFoldertextField);
+        ETCBrowseButton = new JButton();
+        this.$$$loadButtonText$$$(ETCBrowseButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.browse"));
+        panel82.add(ETCBrowseButton);
+        etcLeaveFolderEmptyLabel = new JLabel();
+        etcLeaveFolderEmptyLabel.setText("etcLeaveFolderEmptyLabel");
+        panel81.add(etcLeaveFolderEmptyLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(650, -1), null, 1, false));
+        etcFolderBrowseLabel = new JLabel();
+        etcFolderBrowseLabel.setText("etcExpfolderBrowseLabel");
+        panel81.add(etcFolderBrowseLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        etcIncludeSubFoldersCheckBox = new JCheckBox();
+        this.$$$loadButtonText$$$(etcIncludeSubFoldersCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "fld.inclsubfolders"));
+        panel81.add(etcIncludeSubFoldersCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(CalcNorthRadioButton);
@@ -2740,7 +2772,7 @@ public class mainScreen {
      */
     private void programButtonListeners() {
 
-        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, UserCombiscomboBox, ExpImgFoldertextField);
+        ButtonsActionListener gal = new ButtonsActionListener(rootPanel, OutputLabel, CommandsParameterstextField, geotaggingImgFoldertextField, geotaggingGPSLogtextField, UserCombiscomboBox, ExpImgFoldertextField, ETCommandsFoldertextField);
         selectedIndicesList = MyVariables.getselectedIndicesList();
 
         // Main screen left panel
@@ -2819,13 +2851,15 @@ public class mainScreen {
                 YourCommandsOutputText.setText("");
             }
         });
+        ETCBrowseButton.setActionCommand("etCmdBtn");
+        ETCBrowseButton.addActionListener(gal);
         CommandsgoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                if ( ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) || (!("".equals(ETCommandsFoldertextField.getText()))) ) {
                     if (CommandsParameterstextField.getText().length() > 0) {
                         OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.yourcommands"));
-                        YourCmnds.executeCommands(CommandsParameterstextField.getText(), YourCommandsOutputText, UseNonPropFontradioButton, progressBar);
+                        YourCmnds.executeCommands(CommandsParameterstextField.getText(), YourCommandsOutputText, UseNonPropFontradioButton, progressBar, ETCommandsFoldertextField.getText(), etcIncludeSubFoldersCheckBox.isSelected());
                         OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.yourcommandsoutput"));
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), ResourceBundle.getBundle("translations/program_strings").getString("msd.nocommandparams"), JOptionPane.WARNING_MESSAGE);
@@ -3595,8 +3629,10 @@ public class mainScreen {
         xmpTopText.setText(String.format(ProgramTexts.HTML, 600,ResourceBundle.getBundle("translations/program_strings").getString("xmp.toptext")));
         GeotaggingLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
         ExpLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
+        etcLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
         GeoTfolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
         genExpfolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
+        etcFolderBrowseLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.explanation")));
         GeotaggingLocationLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("geo.geotagexpl")));
         GeotaggingGeosyncExplainLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("geo.geosyncexpl")));
         //gpsCalculatorLabelText.setText(String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("gps.calculatortext")));

@@ -20,9 +20,14 @@ public class ExifToolCommands {
 
     private SelectFavorite SelFav = new SelectFavorite();
 
-    public void executeCommands(String Commands, JEditorPane Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar) {
-        int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
-        File[] files = MyVariables.getLoadedFiles();
+    public void executeCommands(String Commands, JEditorPane Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar, String ETCommandsFoldertextField, boolean IncludeSubFolders) {
+        int[] selectedIndices = null;
+        File[] files = null;
+        int counter = 0;
+        if ("".equals(ETCommandsFoldertextField)) {
+            selectedIndices = MyVariables.getSelectedFilenamesIndices();
+            files = MyVariables.getLoadedFiles();
+        }
         String fpath ="";
         String Result = "";
         int firstIndexOf = 0;
@@ -59,25 +64,37 @@ public class ExifToolCommands {
         if (Utils.isOsFromMicrosoft()) {
             cmdparams.add("cmd");
             cmdparams.add("/c");
-            tmpcmpstring = new StringBuilder( " " + Utils.platformExiftool() + " " + orgCommands + " ");
+            tmpcmpstring = new StringBuilder( " " + Utils.platformExiftool().replace("\\", "/") + " " + orgCommands + " ");
         } else { //Linux & MacOS
             cmdparams.add("/bin/sh");
             cmdparams.add("-c");
-            tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " " + orgCommands + " ");
+            tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " " + orgCommands + " ");
         }
 
-        int counter = 1;
-        for (int index: selectedIndices) {
-            int finalIMG = selectedIndices.length;
-            logger.debug("finalIMG {}", finalIMG);
-
-            if (Utils.isOsFromMicrosoft()) {
-                tmpcmpstring.append(" ").append("\"" + files[index].getPath().replace("\\", "/") + "\"");
-            } else {
-                tmpcmpstring.append(" ").append(files[index].getPath().replace(" ", "\\ "));
+        if ( !("".equals(ETCommandsFoldertextField)) ) {
+            if (IncludeSubFolders) {
+                tmpcmpstring.append(" ").append("-r");
             }
-            //try
+            if (Utils.isOsFromMicrosoft()) {
+                tmpcmpstring.append(" ").append("\"" + ETCommandsFoldertextField.replace("\\", "/") + "\"");
+            } else {
+                tmpcmpstring.append(" ").append(ETCommandsFoldertextField.replace(" ", "\\ "));
+            }
 
+        } else {
+            counter = 1;
+            for (int index : selectedIndices) {
+                int finalIMG = selectedIndices.length;
+                logger.debug("finalIMG {}", finalIMG);
+
+                if (Utils.isOsFromMicrosoft()) {
+                    tmpcmpstring.append(" ").append("\"" + files[index].getPath().replace("\\", "/") + "\"");
+                } else {
+                    tmpcmpstring.append(" ").append(files[index].getPath().replace(" ", "\\ "));
+                }
+                //try
+
+            }
         }
         // for Windows, linux and MacOS
         cmdparams.add(tmpcmpstring.toString());
