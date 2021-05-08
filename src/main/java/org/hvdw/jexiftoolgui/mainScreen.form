@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="1571" height="720"/>
+      <xy x="20" y="20" width="1571" height="837"/>
     </constraints>
     <properties>
       <minimumSize width="1100" height="720"/>
@@ -27,16 +27,31 @@
             <properties/>
             <border type="none"/>
             <children>
+              <component id="8c4" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="pt.filesloaded"/>
+                </properties>
+              </component>
               <component id="77658" class="javax.swing.JLabel" binding="lblLoadedFiles">
                 <constraints/>
                 <properties>
                   <text value=""/>
                 </properties>
               </component>
-              <component id="8c4" class="javax.swing.JLabel">
+              <hspacer id="c5e37">
+                <constraints/>
+              </hspacer>
+              <component id="ae471" class="javax.swing.JLabel">
                 <constraints/>
                 <properties>
-                  <text resource-bundle="translations/program_strings" key="pt.filesloaded"/>
+                  <text resource-bundle="translations/program_strings" key="pt.folder"/>
+                </properties>
+              </component>
+              <component id="3b352" class="javax.swing.JLabel" binding="lblImgSourceFolder">
+                <constraints/>
+                <properties>
+                  <text value=""/>
                 </properties>
               </component>
             </children>

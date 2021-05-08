@@ -671,6 +671,7 @@ public class Utils {
         // "Translate" for clarity, instead of using the array index;
         JLabel OutputLabel = mainScreenLabels[0];
         JLabel lblLoadedFiles = mainScreenLabels[1];
+        JLabel lblimgSourceFolder = mainScreenLabels[2];
         JButton buttonShowImage = commandButtons[2];
         JButton buttonCompare = commandButtons[3];
         JButton buttonSearchMetadata = commandButtons[4];
@@ -721,8 +722,14 @@ public class Utils {
                 @Override
                 public void run() {
                     int jpegcounter = 0;
+                    int loopcounter = 0;
                     String filename;
                     for (File file : files) {
+                        // Simple way to get image folder from first loaded image
+                        if (loopcounter == 0) {
+                            lblimgSourceFolder.setText(file.getParent());
+                            loopcounter++;
+                        }
                         filename = file.getName().replace("\\", "/");
                         logger.debug("Checking on extension for JPG extraction on image: " +filename);
                         String filenameExt = Utils.getFileExtension(filename);
