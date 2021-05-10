@@ -48,8 +48,10 @@ public class EditGeotaggingdata {
 
     public void writeInfo(boolean images_selected, JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
 
-        int[] selectedFilenamesIndices = new int[]{};
-        File[] files = new File[]{};
+        //int[] selectedFilenamesIndices = new int[]{};
+        //File[] files = new File[]{};
+        int[] selectedFilenamesIndices = null;
+        File[] files = null;
         if (images_selected) {
             selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
             files = MyVariables.getLoadedFiles();
@@ -60,11 +62,15 @@ public class EditGeotaggingdata {
             String onFolder = geotaggingFields[0].getText().trim();
             String gpslogfile = geotaggingFields[1].getText().trim();
             String geosync = geotaggingFields[2].getText().trim();
-            logger.info("onFolder: " + onFolder);
+            logger.info("onFolder: {} gpslogfile: {} geosync {}", onFolder, gpslogfile, geosync);
 
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            cmdparams.add(Utils.platformExiftool());
+            if (isWindows) {
+                cmdparams.add(" " + Utils.platformExiftool() + " ");
+            } else {
+                cmdparams.add(Utils.platformExiftool());
+            }
             boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
             if (preserveModifyDate) {
                 cmdparams.add("-preserve");
@@ -97,6 +103,7 @@ public class EditGeotaggingdata {
                 cmdparams.add("-iptc:City=" + geotaggingFields[6].getText().trim());
             }
 
+            logger.info("onfolder {}", onFolder);
             if ("".equals(onFolder)) { // Empty folder string which means we use selected files
                 for (int index : selectedFilenamesIndices) {
                     //logger.info("index: {}  image path: {}", index, files[index].getPath());
@@ -108,14 +115,14 @@ public class EditGeotaggingdata {
                 }
             } else { // We do have a non-empty folder string
                 //cmdparams.addAll( Arrays.asList(params) );
-
                 if (isWindows) {
                     cmdparams.add(onFolder.replace("\\", "/"));
                 } else {
-                    cmdparams.add(onFolder);
+                    cmdparams.add(onFolder.replace(" ", "\\ "));
                 }
             }
 
+            logger.info("cmdparams {}", cmdparams.toString());
             CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
 
     }
