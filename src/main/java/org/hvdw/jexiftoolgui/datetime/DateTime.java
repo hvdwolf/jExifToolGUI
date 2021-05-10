@@ -23,6 +23,7 @@ public class DateTime {
 
 
     public static void setFileDateTimeToDateTimeOriginal( JProgressBar progressBar) {
+        int counter = 0;  //Used in loop for first time initialization; can't do that outside the loop
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
         List<String> cmdparams = new ArrayList<>();
@@ -36,7 +37,7 @@ public class DateTime {
             boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
             boolean isWindows = Utils.isOsFromMicrosoft();
             if (isWindows) {
-                cmdparams.add(Utils.platformExiftool());
+                cmdparams.add("\"" + Utils.platformExiftool().replace("\\", "/") + "\"" );
                 if (preserveModifyDate) {
                     cmdparams.add("-preserve");
                 }
@@ -47,12 +48,16 @@ public class DateTime {
                 cmdparams.add("/bin/sh");
                 cmdparams.add("-c");
                 if (preserveModifyDate) {
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " -overwrite_original -preserve '-FileModifyDate<DateTimeOriginal' ");
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original -preserve '-FileModifyDate<DateTimeOriginal' ");
                 } else {
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool() + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ");
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ");
                 }
             }
             for (int index: selectedIndices) {
+                /*if (counter == 0) {
+                    counter++;
+
+                }*/
                 logger.trace("index: {} image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
