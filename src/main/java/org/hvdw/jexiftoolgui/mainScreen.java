@@ -411,6 +411,10 @@ public class mainScreen {
     private JLabel etcLeaveFolderEmptyLabel;
     private JCheckBox etcIncludeSubFoldersCheckBox;
     private JLabel lblImgSourceFolder;
+    private JPanel LeftCheckboxBar;
+    private JCheckBox createPreviewsCheckBox;
+    private JCheckBox loadMetadataCheckBox;
+    private JButton leftCheckBoxBarHelpButton;
     private JLabel expPdffolderBrowseLabel;
     private JLabel expSDEfolderBrowseLabel;
     private ImageIcon icon;
@@ -460,6 +464,10 @@ public class mainScreen {
 
     private JButton[] commandButtons() {
         return new JButton[] {buttonLoadDirectory, buttonLoadImages, buttonShowImage, buttonCompare, buttonSearchMetadata, buttonSlideshow};
+    }
+
+    private JCheckBox[] getLoadOptions() {
+        return new JCheckBox[] {createPreviewsCheckBox, loadMetadataCheckBox};
     }
 
     private JLabel[] mainScreenLabels() { return new JLabel[] {OutputLabel, lblLoadedFiles, lblImgSourceFolder}; }
@@ -686,10 +694,11 @@ public class mainScreen {
         progressBar.setStringPainted(false);
         panel2.add(progressBar);
         splitPanel = new JSplitPane();
-        splitPanel.setDividerLocation(224);
+        splitPanel.setDividerLocation(303);
         rootPanel.add(splitPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         LeftPanel = new JPanel();
-        LeftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        LeftPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        LeftPanel.setPreferredSize(new Dimension(500, -1));
         splitPanel.setLeftComponent(LeftPanel);
         LeftbuttonBar = new JPanel();
         LeftbuttonBar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -755,14 +764,33 @@ public class mainScreen {
         buttonSearchMetadata.setText("");
         LeftbuttonBar.add(buttonSearchMetadata);
         Leftscrollpane = new JScrollPane();
-        LeftPanel.add(Leftscrollpane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        LeftPanel.add(Leftscrollpane, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tableListfiles = new JTable();
-        tableListfiles.setAutoResizeMode(0);
+        tableListfiles.setAutoResizeMode(4);
         tableListfiles.setPreferredScrollableViewportSize(new Dimension(-1, -1));
         tableListfiles.setShowHorizontalLines(true);
         tableListfiles.setShowVerticalLines(false);
         tableListfiles.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.tooltip"));
         Leftscrollpane.setViewportView(tableListfiles);
+        LeftCheckboxBar = new JPanel();
+        LeftCheckboxBar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        LeftPanel.add(LeftCheckboxBar, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        createPreviewsCheckBox = new JCheckBox();
+        createPreviewsCheckBox.setSelected(true);
+        this.$$$loadButtonText$$$(createPreviewsCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.crpreview"));
+        LeftCheckboxBar.add(createPreviewsCheckBox);
+        loadMetadataCheckBox = new JCheckBox();
+        loadMetadataCheckBox.setSelected(true);
+        this.$$$loadButtonText$$$(loadMetadataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.loadmetadata"));
+        LeftCheckboxBar.add(loadMetadataCheckBox);
+        leftCheckBoxBarHelpButton = new JButton();
+        leftCheckBoxBarHelpButton.setIcon(new ImageIcon(getClass().getResource("/icons/outline_info_black_24dp.png")));
+        leftCheckBoxBarHelpButton.setLabel("");
+        leftCheckBoxBarHelpButton.setMaximumSize(new Dimension(26, 26));
+        leftCheckBoxBarHelpButton.setMinimumSize(new Dimension(26, 26));
+        leftCheckBoxBarHelpButton.setPreferredSize(new Dimension(26, 26));
+        leftCheckBoxBarHelpButton.setText("");
+        LeftCheckboxBar.add(leftCheckBoxBarHelpButton);
         tabbedPaneRight = new JTabbedPane();
         splitPanel.setRightComponent(tabbedPaneRight);
         ViewDatapanel = new JPanel();
@@ -2657,14 +2685,12 @@ public class mainScreen {
                 case "Load Images":
                     logger.debug("menu File -> Load Images pressed");
                     // identical to button "Load Images"
-                    //loadImages("images");
-                    files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+                    files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                     break;
                 case "Load Directory":
                     logger.debug("menu File -> Load Folder pressed");
                     // identical to button "Load Directory"
-                    //loadImages("folder");
-                    files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+                    files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                     break;
                 default:
                     break;
@@ -2790,8 +2816,7 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadImages pressed");
                 //File opener: Load the images; identical to Menu option Load Images.
-                //loadImages("images");
-                files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+                files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
             }
         });
         buttonLoadDirectory.addActionListener(new ActionListener() {
@@ -2799,8 +2824,7 @@ public class mainScreen {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadFolder pressed");
                 //File opener: Load folder with images; identical to Menu option Load Directory.
-                //loadImages("folder");
-                files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+                files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
             }
         });
         buttonShowImage.setActionCommand("bSI");
@@ -2850,6 +2874,8 @@ public class mainScreen {
                 }
             }
         });
+        leftCheckBoxBarHelpButton.setActionCommand("lCBBHB");
+        leftCheckBoxBarHelpButton.addActionListener(gal);
 
         // Your Commands pane buttons
         CommandsclearParameterSFieldButton.setActionCommand("CommandsclearPSFB");
@@ -3587,8 +3613,7 @@ public class mainScreen {
                     }
                     File[] droppedFilesArray = (File[]) droppedFiles.toArray(new File[droppedFiles.size()]);
                     MyVariables.setLoadedFiles(droppedFilesArray);
-                    //loadImages("dropped files");
-                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     logger.error("Drag drop on rootpanel error {}", ex);
@@ -3819,7 +3844,7 @@ public class mainScreen {
             List<File> filesList = new ArrayList<File>();
             File[] files = CommandLineArguments.ProcessArguments(filesList);
             MyVariables.setLoadedFiles(files);
-            files = Utils.loadImages("commandline", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected());
+            files = Utils.loadImages("commandline", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
         }
 
         Utils.checkForNewVersion("startup");

@@ -340,7 +340,7 @@ public class ImageFunctions {
                                     logger.error("Error loading image", e);
                                     icon = null;
                                 }
-                                ImageFunctions.getbasicImageData(file);
+                                //ImageFunctions.getbasicImageData(file);
                                 if (icon != null) {
                                     // display our created icon from the preview
                                     return icon;
@@ -359,7 +359,7 @@ public class ImageFunctions {
                     logger.error("Error loading image", e);
                     icon = null;
                 }
-                ImageFunctions.getbasicImageData(file);
+                //ImageFunctions.getbasicImageData(file);
                 if (icon != null) {
                     // display our created icon from the preview
                     return icon;

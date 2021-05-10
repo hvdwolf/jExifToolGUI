@@ -78,6 +78,10 @@ public class ButtonsActionListener implements ActionListener {
                 logger.debug("button Exifhelp or xmpHelp pressed");
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exifandxmphelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("exifhelptitle"), JOptionPane.INFORMATION_MESSAGE);
                 break;
+            case "lCBBHB":
+                logger.debug("button leftCheckBoxBarHelpButton pressed");
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("leftcheckboxbarhelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("leftcheckboxbartitle"), JOptionPane.INFORMATION_MESSAGE);
+                break;
             case "geotHb":
                 logger.debug("button geotagginghelpButton pressed");
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelp")), ResourceBundle.getBundle("translations/program_help_texts").getString("geotagginghelptitle"), JOptionPane.INFORMATION_MESSAGE);
