@@ -415,6 +415,7 @@ public class mainScreen {
     private JCheckBox createPreviewsCheckBox;
     private JCheckBox loadMetadataCheckBox;
     private JButton leftCheckBoxBarHelpButton;
+    private JLabel lblFileNamePath;
     private JLabel expPdffolderBrowseLabel;
     private JLabel expSDEfolderBrowseLabel;
     private ImageIcon icon;
@@ -470,7 +471,7 @@ public class mainScreen {
         return new JCheckBox[] {createPreviewsCheckBox, loadMetadataCheckBox};
     }
 
-    private JLabel[] mainScreenLabels() { return new JLabel[] {OutputLabel, lblLoadedFiles, lblImgSourceFolder}; }
+    private JLabel[] mainScreenLabels() { return new JLabel[] {OutputLabel, lblLoadedFiles, lblImgSourceFolder, lblFileNamePath}; }
 
     private JTextField[] getExifFields() {
         return new JTextField[]{ExifMaketextField, ExifModeltextField, ExifModifyDatetextField, ExifDateTimeOriginaltextField, ExifCreateDatetextField,
@@ -660,7 +661,7 @@ public class mainScreen {
         rootPanel.setRequestFocusEnabled(true);
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, 0));
-        rootPanel.add(bottomPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(-1, 25), null, 1, false));
+        rootPanel.add(bottomPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, new Dimension(-1, 32), null, 1, false));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
         bottomPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 2, false));
@@ -794,7 +795,7 @@ public class mainScreen {
         tabbedPaneRight = new JTabbedPane();
         splitPanel.setRightComponent(tabbedPaneRight);
         ViewDatapanel = new JPanel();
-        ViewDatapanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        ViewDatapanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         ViewDatapanel.setMinimumSize(new Dimension(-1, -1));
         ViewDatapanel.setPreferredSize(new Dimension(-1, -1));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.viewdata"), ViewDatapanel);
@@ -822,10 +823,15 @@ public class mainScreen {
         comboBoxViewCameraMake = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewCameraMake);
         ViewDatascrollpanel = new JScrollPane();
-        ViewDatapanel.add(ViewDatascrollpanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        ViewDatapanel.add(ViewDatascrollpanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         ListexiftoolInfotable = new JTable();
         ListexiftoolInfotable.setAutoResizeMode(0);
         ViewDatascrollpanel.setViewportView(ListexiftoolInfotable);
+        lblFileNamePath = new JLabel();
+        Font lblFileNamePathFont = this.$$$getFont$$$(null, Font.ITALIC, -1, lblFileNamePath.getFont());
+        if (lblFileNamePathFont != null) lblFileNamePath.setFont(lblFileNamePathFont);
+        lblFileNamePath.setText("");
+        ViewDatapanel.add(lblFileNamePath, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.editdata"), panel3);
@@ -3484,6 +3490,9 @@ public class mainScreen {
                 logger.trace("radiobutton selected: {}", radioButtonViewAll.getText());
                 String res  = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRow = MyVariables.getSelectedRow();
+                File[] files = MyVariables.getLoadedFiles();
+                lblFileNamePath.setText(files[selectedRow].getPath());
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
@@ -3493,6 +3502,9 @@ public class mainScreen {
                 //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
                 String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRow = MyVariables.getSelectedRow();
+                File[] files = MyVariables.getLoadedFiles();
+                lblFileNamePath.setText(files[selectedRow].getPath());
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
@@ -3503,6 +3515,9 @@ public class mainScreen {
                     //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
                     String res = Utils.getImageInfoFromSelectedFile(params);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    int selectedRow = MyVariables.getSelectedRow();
+                    File[] files = MyVariables.getLoadedFiles();
+                    lblFileNamePath.setText(files[selectedRow].getPath());
                 }
             }
         });
@@ -3587,6 +3602,9 @@ public class mainScreen {
                 String[] params = whichRBselected();
                 String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRow = MyVariables.getSelectedRow();
+                File[] files = MyVariables.getLoadedFiles();
+                lblFileNamePath.setText(files[selectedRow].getPath());
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 logger.debug("Selected indices: {}", tmpselectedIndices);

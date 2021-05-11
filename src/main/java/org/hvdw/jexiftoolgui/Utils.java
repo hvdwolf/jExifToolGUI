@@ -672,6 +672,7 @@ public class Utils {
         JLabel OutputLabel = mainScreenLabels[0];
         JLabel lblLoadedFiles = mainScreenLabels[1];
         JLabel lblimgSourceFolder = mainScreenLabels[2];
+        JLabel lblFileNamePath = mainScreenLabels[3];
         JButton buttonShowImage = commandButtons[2];
         JButton buttonCompare = commandButtons[3];
         JButton buttonSearchMetadata = commandButtons[4];
@@ -726,12 +727,14 @@ public class Utils {
                     int jpegcounter = 0;
                     int loopcounter = 0;
                     String filename;
+                    File firstFile = null;
                     boolean showCreatePreview = loadOptions[0].isSelected();
                     boolean loadMetadata = loadOptions[1].isSelected();
                     for (File file : files) {
                         // Simple way to get image folder from first loaded image
                         if (loopcounter == 0) {
                             lblimgSourceFolder.setText(file.getParent());
+                            firstFile = file;
                             loopcounter++;
                         }
                         filename = file.getName().replace("\\", "/");
@@ -752,6 +755,7 @@ public class Utils {
                     MyVariables.setSelectedRow(0);
                     String res = getImageInfoFromSelectedFile(params);
                     displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    lblFileNamePath.setText(firstFile.getPath());
                     if (loadMetadata) {
                         buttonSearchMetadata.setEnabled(true);
                     } else {
@@ -1422,6 +1426,7 @@ public class Utils {
                     logger.debug("default image is true");
                     break;
                 } else if ( filenameExt.toLowerCase().equals("heic") && (currentOsName == APPLE) ) { // We first need to use sips to convert
+                    logger.debug("heic image(s)");
                     File file = new File (MyVariables.getSelectedImagePath());
                     String filename = file.getName();
                     String exportResult = ImageFunctions.sipsConvertToJPG(file, "full");
