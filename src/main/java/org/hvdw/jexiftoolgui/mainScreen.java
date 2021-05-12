@@ -3492,7 +3492,11 @@ public class mainScreen {
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 int selectedRow = MyVariables.getSelectedRow();
                 File[] files = MyVariables.getLoadedFiles();
-                lblFileNamePath.setText(files[selectedRow].getPath());
+                if (res.startsWith("jExifToolGUI")) {
+                    lblFileNamePath.setText(" ");
+                } else {
+                    lblFileNamePath.setText(files[selectedRow].getPath());
+                }
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
@@ -3504,7 +3508,11 @@ public class mainScreen {
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 int selectedRow = MyVariables.getSelectedRow();
                 File[] files = MyVariables.getLoadedFiles();
-                lblFileNamePath.setText(files[selectedRow].getPath());
+                if (res.startsWith("jExifToolGUI")) {
+                    lblFileNamePath.setText(" ");
+                } else {
+                    lblFileNamePath.setText(files[selectedRow].getPath());
+                }
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
@@ -3517,7 +3525,11 @@ public class mainScreen {
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     int selectedRow = MyVariables.getSelectedRow();
                     File[] files = MyVariables.getLoadedFiles();
-                    lblFileNamePath.setText(files[selectedRow].getPath());
+                    if (res.startsWith("jExifToolGUI")) {
+                        lblFileNamePath.setText(" ");
+                    } else {
+                        lblFileNamePath.setText(files[selectedRow].getPath());
+                    }
                 }
             }
         });
@@ -3604,7 +3616,11 @@ public class mainScreen {
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 int selectedRow = MyVariables.getSelectedRow();
                 File[] files = MyVariables.getLoadedFiles();
-                lblFileNamePath.setText(files[selectedRow].getPath());
+                if (res.startsWith("jExifToolGUI")) {
+                    lblFileNamePath.setText(" ");
+                } else {
+                    lblFileNamePath.setText(files[selectedRow].getPath());
+                }
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 logger.debug("Selected indices: {}", tmpselectedIndices);
