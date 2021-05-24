@@ -93,14 +93,14 @@ public class UpdateActions {
         if (!"26".equals(queryresult.trim())) {
             fill_UserMetadataCustomSet_Tables("sql/fill_isadg.sql");
         }
-            // our data folder
-            String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
-            // Check if isadg-struct.cfg exists
-            File isadg = new File(strjexiftoolguifolder + File.separator + "isadg-struct.cfg");
-            if (isadg.exists()) {
-                isadg.delete();
-            }
-            String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder, "");
+        // our data folder
+        String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
+        // Check if isadg-struct.cfg exists
+        File isadg = new File(strjexiftoolguifolder + File.separator + "isadg-struct.cfg");
+        if (isadg.exists()) {
+            isadg.delete();
+        }
+        String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder, "");
 
         // pre-fill both tables if necessary with gps_location data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'", "disk");
@@ -137,6 +137,27 @@ public class UpdateActions {
         }
     }
 
+    static void update_1_9() {
+        String queryresult = "";
+
+        // our data folder
+        String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
+        // Check if vrae.config exists
+        File vrae = new File(strjexiftoolguifolder + File.separator + "vrae.config");
+        if (vrae.exists()) {
+            vrae.delete();
+        }
+        String method_result = extract_resource_to_jexiftoolguiFolder("vrae.config", strjexiftoolguifolder, "");
+
+        // add vrae data to both tables if necessary
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae'", "disk");
+        logger.debug("VRAE data test {}", queryresult.trim());
+        if (!"38".equals(queryresult.trim())) {
+            fill_UserMetadataCustomSet_Tables("sql/add_vrae.sql");
+        }
+
+    }
+
     // ################## Start of the update stuff ####################
     // This is where we add extra tables or table data after an update that added extra functionality
     // This can also be alter table commands
@@ -148,5 +169,6 @@ public class UpdateActions {
         update_1_4();
         update_1_6();
         update_1_7();
+        update_1_9();
     }
 }
