@@ -69,6 +69,10 @@ public class CreateMenu {
         menuItem.setActionCommand("Set file date to DateTimeOriginal");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.setmoviedatetocreatedate"));
+        menuItem.setActionCommand("Set movie date to CreateDate");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
         //myMenu.addSeparator();
 
         // Other

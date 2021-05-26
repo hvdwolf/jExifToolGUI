@@ -183,7 +183,14 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Set file date to DateTimeOriginal":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    dateTime.setFileDateTimeToDateTimeOriginal(progressBar);
+                    dateTime.setFileDateTimeToDateTimeOriginal(progressBar, "image");
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "Set movie date to CreateDate":
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                    dateTime.setFileDateTimeToDateTimeOriginal(progressBar, "movie");
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }

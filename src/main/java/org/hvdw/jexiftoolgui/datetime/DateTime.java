@@ -22,8 +22,9 @@ public class DateTime {
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
 
-    public static void setFileDateTimeToDateTimeOriginal( JProgressBar progressBar) {
+    public static void setFileDateTimeToDateTimeOriginal( JProgressBar progressBar, String fileType) {
         int counter = 0;  //Used in loop for first time initialization; can't do that outside the loop
+        String action = "";
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
         List<String> cmdparams = new ArrayList<>();
@@ -42,15 +43,24 @@ public class DateTime {
                     cmdparams.add("-preserve");
                 }
                 cmdparams.add("-overwrite_original");
-                cmdparams.add("\"-FileModifyDate<DateTimeOriginal\"");
+                if ("image".equals(fileType)) {
+                    cmdparams.add("\"-FileModifyDate<DateTimeOriginal\"");
+                } else {
+                    cmdparams.add("\"-CreateDate<DateTimeOriginal\"");
+                }
             } else {
                 // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                 cmdparams.add("/bin/sh");
                 cmdparams.add("-c");
-                if (preserveModifyDate) {
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original -preserve '-FileModifyDate<DateTimeOriginal' ");
+                if ("image".equals(fileType)) {
+                    action = "-FileModifyDate<DateTimeOriginal";
                 } else {
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original '-FileModifyDate<DateTimeOriginal' ");
+                    action = "-CreateDate<DateTimeOriginal";
+                }
+                if (preserveModifyDate) {
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original -preserve '" + action + "' ");
+                } else {
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original '\" + action + \"' ");
                 }
             }
             for (int index: selectedIndices) {
