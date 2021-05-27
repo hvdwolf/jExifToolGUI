@@ -338,7 +338,7 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font style="2"/>
+                      <font style="3"/>
                       <text value=""/>
                     </properties>
                   </component>
@@ -3931,7 +3931,7 @@
                                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
-                                  <text resource-bundle="translations/program_strings" key="dlg.Export"/>
+                                  <text resource-bundle="translations/program_strings" key="dlg.export"/>
                                 </properties>
                               </component>
                               <component id="890c9" class="javax.swing.JButton" binding="GenExportbuttonCancel">
@@ -4002,7 +4002,7 @@
                               <component id="88b4a" class="javax.swing.JButton" binding="ExpPDFOKbutton">
                                 <constraints/>
                                 <properties>
-                                  <text resource-bundle="translations/program_strings" key="dlg.Export"/>
+                                  <text resource-bundle="translations/program_strings" key="dlg.export"/>
                                 </properties>
                               </component>
                             </children>
@@ -4205,7 +4205,7 @@
                               <component id="7035f" class="javax.swing.JButton" binding="SidecarExportButton">
                                 <constraints/>
                                 <properties>
-                                  <text resource-bundle="translations/program_strings" key="dlg.Export"/>
+                                  <text resource-bundle="translations/program_strings" key="dlg.export"/>
                                 </properties>
                               </component>
                               <component id="ba6ef" class="javax.swing.JButton" binding="SideCarHelpbutton">

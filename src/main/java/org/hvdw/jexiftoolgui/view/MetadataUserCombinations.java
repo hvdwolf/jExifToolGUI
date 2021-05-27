@@ -20,6 +20,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 /**
  * Original @author Dennis Damico
@@ -56,6 +60,8 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
     private JLabel lblCurDispUsercombi;
     private JLabel lblConfigFile;
     private JButton deleteButton;
+    private JButton exportButton;
+    private JButton importButton;
 
     private JPanel rootpanel;
     JPanel myPanel = new JPanel(); // we need this for our dialog
@@ -168,6 +174,69 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     lblCurDispUsercombi.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.curdispcombi"));
                     lblConfigFile.setText(ResourceBundle.getBundle("translations/program_strings").getString("mduc.lblconffile"));
                 }
+            }
+        });
+        exportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                boolean configFile = false;
+                String configFileName = "";
+                String setName = customSetcomboBox.getSelectedItem().toString();
+                if ((setName == null) || ("".equals(setName))) {
+
+                } else {
+                    logger.debug("setName selected for export: {}", setName);
+                    String sql = "select customset_name, rowcount, screen_label, tag, default_value from CustomMetadatasetLines where customset_name=\"" + setName.trim() + "\" order by rowcount";
+                    logger.debug(sql);
+                    String queryResult = SQLiteJDBC.generalQuery(sql, "disk");
+                    if (queryResult.length() > 0) {
+                        String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+                        logger.debug("rows selected for export:");
+
+                        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+                        //File myObj = new File(userHome + File.separator + setName.trim() + ".csv");
+                        try {
+                            FileWriter csvWriter = new FileWriter(userHome + File.separator + setName.trim() + ".csv");
+                            csvWriter.write("customset_name\trowcount\tscreen_label\ttag\tdefault_value\n");
+
+                            for (String line : lines) {
+                                logger.debug(line);
+                                //String[] cells = line.split("\\t", 5);
+                                csvWriter.write(line + "\n");
+                            }
+                            csvWriter.close();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            logger.error(e.toString());
+                        }
+                    }
+                    // Now check if we have a config file
+                    sql = "select customset_name, custom_config from custommetadataset where customset_name=\"" + setName.trim() + "\"";
+                    logger.debug(sql);
+                    queryResult = SQLiteJDBC.generalQuery(sql, "disk");
+                    if (queryResult.length() > 0) {
+                        String[] lines = queryResult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+                        String[] fields = lines[0].split("\\t", 3);
+                        if (!("".equals(fields[1]))) {
+                            configFile = true;
+                            configFileName = fields[1].trim();
+                            String copyresult = StandardFileIO.ExportCustomConfigFile(configFileName);
+                        }
+                    }
+                    String expTxt = ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptext") + ": " + setName.trim();
+                    if (configFile) {
+                        expTxt += "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptextconfig") + ": " + configFileName;
+                    }
+                    JOptionPane.showMessageDialog(null, expTxt, ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptitle"), JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+        importButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //String setName = customSetcomboBox.getSelectedItem().toString();
+
             }
         });
     }
@@ -479,10 +548,10 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
     private void $$$setupUI$$$() {
         metadatapanel = new JPanel();
         metadatapanel.setLayout(new GridLayoutManager(3, 2, new Insets(10, 10, 10, 10), -1, -1));
-        metadatapanel.setMinimumSize(new Dimension(600, 300));
-        metadatapanel.setPreferredSize(new Dimension(800, 500));
+        metadatapanel.setMinimumSize(new Dimension(800, 300));
+        metadatapanel.setPreferredSize(new Dimension(1000, 500));
         buttonpanel = new JPanel();
-        buttonpanel.setLayout(new GridLayoutManager(1, 6, new Insets(5, 5, 5, 5), -1, -1));
+        buttonpanel.setLayout(new GridLayoutManager(1, 8, new Insets(5, 5, 5, 5), -1, -1));
         metadatapanel.add(buttonpanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         saveasButton = new JButton();
         this.$$$loadButtonText$$$(saveasButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonsaveas"));
@@ -492,15 +561,21 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         buttonpanel.add(saveButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         helpButton = new JButton();
         this.$$$loadButtonText$$$(helpButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonhelp"));
-        buttonpanel.add(helpButton, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        buttonpanel.add(helpButton, new GridConstraints(0, 7, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         customSetcomboBox = new JComboBox();
         buttonpanel.add(customSetcomboBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        closeButton = new JButton();
-        this.$$$loadButtonText$$$(closeButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonclose"));
-        buttonpanel.add(closeButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deleteButton = new JButton();
         this.$$$loadButtonText$$$(deleteButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.delete"));
         buttonpanel.add(deleteButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exportButton = new JButton();
+        this.$$$loadButtonText$$$(exportButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.export"));
+        buttonpanel.add(exportButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        importButton = new JButton();
+        this.$$$loadButtonText$$$(importButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.import"));
+        buttonpanel.add(importButton, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        closeButton = new JButton();
+        this.$$$loadButtonText$$$(closeButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "mduc.buttonclose"));
+        buttonpanel.add(closeButton, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         aScrollPanel = new JScrollPane();
         metadatapanel.add(aScrollPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         metadataTable = new JTable();

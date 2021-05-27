@@ -45,6 +45,8 @@ public class ExifTool {
                     exiftool = selectedBinary;
                 } else if (tmpstr.contains("exiftool(-k).exe")) {
                     exiftool = "-k version";
+                } else {
+                    exiftool = "no exiftool binary";
                 }
             } else if (tmpstr.contains("exiftool")) {
                 exiftool = selectedBinary;

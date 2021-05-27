@@ -828,7 +828,7 @@ public class mainScreen {
         ListexiftoolInfotable.setAutoResizeMode(0);
         ViewDatascrollpanel.setViewportView(ListexiftoolInfotable);
         lblFileNamePath = new JLabel();
-        Font lblFileNamePathFont = this.$$$getFont$$$(null, Font.ITALIC, -1, lblFileNamePath.getFont());
+        Font lblFileNamePathFont = this.$$$getFont$$$(null, Font.BOLD | Font.ITALIC, -1, lblFileNamePath.getFont());
         if (lblFileNamePathFont != null) lblFileNamePath.setFont(lblFileNamePathFont);
         lblFileNamePath.setText("");
         ViewDatapanel.add(lblFileNamePath, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
@@ -2260,7 +2260,7 @@ public class mainScreen {
         panel64.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         panel55.add(panel64, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         GenExportbuttonOK = new JButton();
-        this.$$$loadButtonText$$$(GenExportbuttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.Export"));
+        this.$$$loadButtonText$$$(GenExportbuttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.export"));
         panel64.add(GenExportbuttonOK, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         GenExportbuttonCancel = new JButton();
         this.$$$loadButtonText$$$(GenExportbuttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
@@ -2289,7 +2289,7 @@ public class mainScreen {
         panel66.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
         panel65.add(panel66, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         ExpPDFOKbutton = new JButton();
-        this.$$$loadButtonText$$$(ExpPDFOKbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.Export"));
+        this.$$$loadButtonText$$$(ExpPDFOKbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.export"));
         panel66.add(ExpPDFOKbutton);
         final JPanel panel67 = new JPanel();
         panel67.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
@@ -2372,7 +2372,7 @@ public class mainScreen {
         panel72.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel70.add(panel72, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         SidecarExportButton = new JButton();
-        this.$$$loadButtonText$$$(SidecarExportButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.Export"));
+        this.$$$loadButtonText$$$(SidecarExportButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.export"));
         panel72.add(SidecarExportButton);
         SideCarHelpbutton = new JButton();
         this.$$$loadButtonText$$$(SideCarHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
@@ -3728,7 +3728,12 @@ public class mainScreen {
         Application.OS_NAMES currentOsName = Utils.getCurrentOsName();
         logger.info("OS name {}", currentOsName);
 
-        cmdparams.add(exiftool.trim());
+        boolean isWindows = Utils.isOsFromMicrosoft();
+        if (isWindows) {
+            cmdparams.add("\"" + exiftool.replace("\\", "/") + "\"");
+        } else {
+            cmdparams.add(exiftool.trim());
+        }
         cmdparams.add("-ver");
 
         try {

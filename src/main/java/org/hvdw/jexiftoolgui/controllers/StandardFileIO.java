@@ -376,6 +376,34 @@ public class StandardFileIO {
         return copyResult;
     }
 
+    /*
+    / This method is called from the MetDataViewPanel and exports, when relevant, the custom config file to the "user home"
+    */
+    public static String ExportCustomConfigFile(String fileName) {
+        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+        //String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
+        String strCopyTo = userHome + File.separator + fileName;
+        String strCopyFrom = userHome + File.separator + MyConstants.MY_DATA_FOLDER + File.separator + fileName;
+        String copyResult = "";
+        //NIO copy with replace existing
+        Path copyTo = Paths.get(strCopyTo);
+        Path copyFrom = Paths.get(strCopyFrom);
+        //logger.info("copyFrom {} copyTo {}", configFilePath, strfileToBe);
+        File testFile = new File(userHome + File.separator + fileName);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
+        try {
+            Path path = Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
+            copyResult = "successfully copied config file";
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("copy of \"{}\" to \"{}\" failed with {}", strCopyFrom , strCopyTo, e.toString());
+            copyResult = e.toString();
+        }
+        return copyResult;
+    }
+
 
     // Check if we have a jexiftoolgui_custom folder in $HOME with defaults
     public static String checkforjexiftoolguiFolder() {
