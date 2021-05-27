@@ -224,7 +224,7 @@ public class ImageFunctions {
         Application.OS_NAMES currentOsName = getCurrentOsName();
         String filename = file.getName().replace("\\", "/");
         String filenameExt = getFileExtension(filename);
-        if (filenameExt.toLowerCase().equals("heic")) {
+        if ( (filenameExt.toLowerCase().equals("heic")) || ((filenameExt.toLowerCase().equals("heif"))) ) {
             heicextension = true;
         }
         for (String ext : SimpleExtensions) {
