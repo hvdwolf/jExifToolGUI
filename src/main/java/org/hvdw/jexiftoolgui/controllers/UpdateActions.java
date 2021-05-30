@@ -150,9 +150,9 @@ public class UpdateActions {
         String method_result = extract_resource_to_jexiftoolguiFolder("vrae.config", strjexiftoolguifolder, "");
 
         // add vrae data to both tables if necessary
-        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae'", "disk");
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae-full'", "disk");
         logger.debug("VRAE data test {}", queryresult.trim());
-        if (!"38".equals(queryresult.trim())) {
+        if (!"56".equals(queryresult.trim())) {
             fill_UserMetadataCustomSet_Tables("sql/add_vrae.sql");
         }
 
