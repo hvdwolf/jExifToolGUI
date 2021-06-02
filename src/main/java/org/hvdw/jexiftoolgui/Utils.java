@@ -387,6 +387,10 @@ public class Utils {
     }
 
     // Get the configured metadata
+    /*
+    / This method checks in which language the user want to see the metadata tags.
+    / This only worksfor the tags that have been treanslated in that language
+     */
     public static String getmetadataLanguage() {
         String metadatalanguage = prefs.getByKey(METADATA_LANGUAGE, "");
         if ( ("".equals(metadatalanguage)) || ("exiftool - default".equals(metadatalanguage)) ) {
@@ -399,9 +403,28 @@ public class Utils {
         }
     }
 
+    /*
+    / This method checks whther the user wants to see GPS coordinates in decimal degrees or in deg-min-sec (exiftool default
+    */
     public static boolean UseDecimalDegrees() {
         Boolean usedecimaldegrees = prefs.getByKey(SHOW_DECIMAL_DEGREES, false);
         return usedecimaldegrees;
+    }
+
+    /*
+    / This method checks whether the user wants tthe tags alphabetically sorted
+    */
+    public static boolean Sorted_Tags() {
+        boolean sorted_tags = prefs.getByKey(SORT_CATEGORIES_TAGS, false);
+        return sorted_tags;
+    }
+
+    /*
+    / This method checks whther the user wants to see GPS coordinates in decimal degrees or in deg-min-sec (exiftool default
+    */
+    public static boolean Display_Structured_Data() {
+        Boolean enable_structs = prefs.getByKey(ENABLE_STRUCTS, false);
+        return enable_structs;
     }
 
     public static String stringBetween(String value, String before, String after) {
@@ -935,6 +958,14 @@ public class Utils {
                 cmdparams.add("-c");
                 cmdparams.add("%+.6f");
             }
+            // Check if users wants to see the tags alphabetically sorted
+            if (Sorted_Tags()) {
+                cmdparams.add("-sort");
+            }
+            // Check if user wants to see the tags using STRUCTS
+            if (Display_Structured_Data()) {
+                cmdparams.add("-struct");
+            }
             cmdparams.addAll(Arrays.asList(whichInfo));
             logger.trace("image file path: {}", MyVariables.getSelectedImagePath());
             cmdparams.add(MyVariables.getSelectedImagePath());
@@ -1002,6 +1033,15 @@ public class Utils {
                 cmdparams.add("-c");
                 cmdparams.add("%+.6f");
             }
+            // Check if users wants to see the tags alphabetically sorted
+            if (Sorted_Tags()) {
+                cmdparams.add("-sort");
+            }
+            // Check if user wants to see the tags using STRUCTS
+            if (Display_Structured_Data()) {
+                cmdparams.add("-struct");
+            }
+
             cmdparams.addAll(Arrays.asList(whichInfo));
             logger.trace("image file path: {}", fpath);
             cmdparams.add(MyVariables.getSelectedImagePath());
@@ -1070,6 +1110,15 @@ public class Utils {
             cmdparams.add("-c");
             cmdparams.add("%+.6f");
         }
+        // Check if users wants to see the tags alphabetically sorted
+        if (Sorted_Tags()) {
+            cmdparams.add("-sort");
+        }
+        // Check if user wants to see the tags using STRUCTS
+        if (Display_Structured_Data()) {
+            cmdparams.add("-struct");
+        }
+
         cmdparams.addAll(Arrays.asList(whichInfo));
         logger.trace("image file path: {}", fpath);
         cmdparams.add(MyVariables.getSelectedImagePath());
@@ -1243,6 +1292,11 @@ public class Utils {
                         model.addRow(new Object[]{cells[0], cells[1], cells[2]});
                     }
                 }
+                /*for (String line : lines) {
+                    //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+                    String[] cells = line.split("\\t", 3);
+                    model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                } */
             }
         }
 
