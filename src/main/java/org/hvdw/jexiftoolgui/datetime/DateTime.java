@@ -58,9 +58,9 @@ public class DateTime {
                     action = "-CreateDate<DateTimeOriginal";
                 }
                 if (preserveModifyDate) {
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original -preserve '" + action + "' ");
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " -overwrite_original -preserve '" + action + "' ");
                 } else {
-                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -overwrite_original '\" + action + \"' ");
+                    tmpcmpstring = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " -overwrite_original '\" + action + \"' ");
                 }
             }
             for (int index: selectedIndices) {
@@ -72,7 +72,7 @@ public class DateTime {
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
-                    tmpcmpstring.append(" ").append(files[index].getPath().replace(" ", "\\ "));
+                    tmpcmpstring.append(" ").append(files[index].getPath().replaceAll(" ", "\\ "));
                 }
             }
             if (!isWindows) {

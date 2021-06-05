@@ -496,7 +496,7 @@ public class ExportMetadata {
                 if (isWindows) {
                     cmdparams.add(ExpImgFoldertextField.replace("\\", "/"));
                 } else {
-                    cmdparams.add(ExpImgFoldertextField.replace(" ", "\\ "));
+                    cmdparams.add(ExpImgFoldertextField.replaceAll(" ", "\\ "));
                 }
                 // export metadata
                 logger.info(logstring, cmdparams);
@@ -519,10 +519,10 @@ public class ExportMetadata {
                         cmdparams.add(pathwithoutextension + "." + export_extension);
                     } else {
                         pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
-                        //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
+                        //cmdparams.add(files[index].getPath().replaceAll(" ", "\\ "));
                         //cmdparams.add("\"" + files[index].getPath() + "\"");
                         cmdparams.add(files[index].getPath());
-                        commandstring += files[index].getPath().replace(" ", "\\ ");
+                        commandstring += files[index].getPath().replaceAll(" ", "\\ ");
                         cmdparams.add("-all:all");
                         if (!"exif".equals(export_extension)) {
                             cmdparams.add("-icc_profile");
@@ -580,7 +580,7 @@ public class ExportMetadata {
                 if (isWindows) {
                     cmdparams.add(ExpImgFoldertextField.replace("\\", "/"));
                 } else {
-                    cmdparams.add(ExpImgFoldertextField.replace(" ", "\\ "));
+                    cmdparams.add(ExpImgFoldertextField.replaceAll(" ", "\\ "));
                 }
                 // export metadata
                 logger.info("exportxmpsidecar cmdparams {}", cmdparams);
@@ -616,14 +616,14 @@ public class ExportMetadata {
                         pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
                         //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
                         cmdparams.add(files[index].getPath());
-                        commandstring += files[index].getPath().replace(" ", "\\ ");
+                        commandstring += files[index].getPath().replaceAll(" ", "\\ ");
                         if (choice == 1) {
                             cmdparams.add("-xmp");
                             commandstring += " -xmp ";
                         }
                         //cmdparams.add((pathwithoutextension + ".xmp").replace(" ", "\\ "));
                         cmdparams.add(pathwithoutextension + ".xmp");
-                        commandstring += (pathwithoutextension + ".xmp").replace(" ", "\\ ");
+                        commandstring += (pathwithoutextension + ".xmp").replaceAll(" ", "\\ ");
                     }
                     // export metadata
                     logger.info("exportxmpsidecar cmdparams: {}", cmdparams);

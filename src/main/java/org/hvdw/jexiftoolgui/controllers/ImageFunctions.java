@@ -469,7 +469,7 @@ public class ImageFunctions {
             cmdparams.add("1600");
         }
         // Get the file
-        cmdparams.add(file.getPath().replace(" ", "\\ "));
+        cmdparams.add(file.getPath().replaceAll(" ", "\\ "));
         //cmdparams.add("\"" + file.getPath() + "\"");
         cmdparams.add("--out");
 

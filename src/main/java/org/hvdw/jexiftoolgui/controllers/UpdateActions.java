@@ -67,7 +67,7 @@ public class UpdateActions {
         do_Update("drop table if exists CustomViewLines","drop table CustomViewLines");
         do_Update("drop table if exists CustomEdit","drop table CustomEdit");
         do_Update("drop table if exists CustomEditLines","drop table CustomEditLines");
-        
+
         // Add the User defined custom metadata set combinations tables
         String sql = "Create table if not exists CustomMetadataset (\n" +
                 "    id integer primary key autoincrement,\n" +
@@ -87,6 +87,10 @@ public class UpdateActions {
                 "    foreign key(customset_name) references CustomMetadataset(customset_name))";
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
 
+        /*
+        / We delivered this in version 1.6 but now as of 1.9 up, we will deliver custom metadata sets
+        // as separate cvs and option config files
+
         // pre-fill both tables if necessary with isadg data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg'", "disk");
         logger.debug("isadg test {}", queryresult.trim());
@@ -101,6 +105,7 @@ public class UpdateActions {
             isadg.delete();
         }
         String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder, "");
+        */
 
         // pre-fill both tables if necessary with gps_location data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'", "disk");
@@ -169,6 +174,6 @@ public class UpdateActions {
         update_1_4();
         update_1_6();
         update_1_7();
-        update_1_9();
+        // update_1_9(); Do not include the custom metadata set inside the build, but deleiver them separately
     }
 }

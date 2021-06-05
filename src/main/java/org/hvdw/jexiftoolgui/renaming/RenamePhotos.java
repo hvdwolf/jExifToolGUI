@@ -355,43 +355,6 @@ public class RenamePhotos extends JDialog {
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             if (choice == 0) { //Continue
-                // Here is where we build the exiftool parameter string
-                /* Examples
-                Below you see "filename"  options: '-filename<CreateDate' -> single quotes for linux/MacOS; double quotes for windows
-
-                exiftool '-filename<CreateDate' -d %Y%m%d%%-.3nc.%%le DIR
-                for 3 images this will deliver for example
-                20190628-001.jpg
-                20190628-002.jpg
-                20190628-003.jpg
-                  -.3nc means: start with first image and use 3 digits; .%%le means: make the extension lowercase
-                  '-filename<CreateDate' -> linux/MacOS need single quotes, windows need double quotes
-
-                exiftool "-filename<CreateDate" -d %Y%m%d-Paris%-.3nc.%%le DIR
-                will give
-                20190628-Paris-001.jpg
-                20190628-Paris-002.jpg
-                20190628-Paris-003.jpg
-
-                exiftool "-filename<CreateDate" -d Paris-%Y%m%d%-.3nc.%%le
-                  will give:
-                Paris-20190628-001.jpg # "some string", YYYYMMDD, 3 digits, lowercase extension
-                Paris-20190628-002.jpg
-                Paris-20190628-003.jpg
-
-                exiftool '-filename<${model;}%-.2c.%e' DIR
-                  will give:
-                DMC-TZ80-00.JPG  # model, 2 digits, leave extension as is
-                DMC-TZ80-01.JPG
-                DMC-TZ80-02.JPG
-
-                exiftool '-filename<London-${model;}%-.3c.%le'
-                  will give:
-                London-DMC-TZ80-000.jpg  # "some string", model, 3-digits, change to lower case extension (see above)
-                London-DMC-TZ80-001.jpg
-                London-DMC-TZ80-002.jpg
-                */
-
                 //cmdparams.add("-overwrite_original_in_place");
                 // We need to first cmdparams here, as sometimes the string does not contains spaces and sometimes it does
                 // When it does have spaces we need to create an addition cdmparams
@@ -411,9 +374,9 @@ public class RenamePhotos extends JDialog {
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
                         if (preserveModifyDate) {
-                            exifcommands = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " -preserve '-FileName=" + prefix);
+                            exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " -preserve '-FileName=" + prefix);
                         } else {
-                            exifcommands = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " '-FileName=" + prefix);
+                            exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " '-FileName=" + prefix);
                         }
                     }
                 } else { // Or a suffix or date(time), or both
@@ -424,7 +387,7 @@ public class RenamePhotos extends JDialog {
                         // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
-                        exifcommands = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " '-FileName<" + prefix);
+                        exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " '-FileName<" + prefix);
                     }
                 }
                 if (!suffixDonNotUseradioButton.isSelected()) {
@@ -479,11 +442,11 @@ public class RenamePhotos extends JDialog {
                     if (isWindows) {
                         cmdparams.add(exifcommands.toString());
                         for (int index : selectedFilenamesIndices) {
-                            cmdparams.add(files[index].getPath().replace("\\", "/"));
+                            cmdparams.add(files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
                         }
                     } else {
                         for (int index : selectedFilenamesIndices) {
-                            exifcommands.append(" " + files[index].getPath().replace(" ", "\\ "));
+                            exifcommands.append(" " + files[index].getPath().replaceAll(" ", "\\ ").replace("(", "\\(").replace(")", "\\)"));
                         }
                         cmdparams.add(exifcommands.toString());
                     }
@@ -546,7 +509,7 @@ public class RenamePhotos extends JDialog {
     private void $$$setupUI$$$() {
         rootRenamingPane = new JPanel();
         rootRenamingPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        rootRenamingPane.setPreferredSize(new Dimension(950, 800));
+        rootRenamingPane.setPreferredSize(new Dimension(1100, 900));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
         rootRenamingPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));

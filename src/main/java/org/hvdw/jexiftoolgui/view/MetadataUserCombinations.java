@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.view;
 import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.opencsv.CSVReader;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.TablePasteAdapter;
@@ -17,13 +18,17 @@ import javax.swing.*;
 import javax.swing.TransferHandler;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -182,9 +187,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                 boolean configFile = false;
                 String configFileName = "";
                 String setName = customSetcomboBox.getSelectedItem().toString();
-                if ((setName == null) || ("".equals(setName))) {
-
-                } else {
+                if (!(setName == null) && !("".equals(setName))) {
                     logger.debug("setName selected for export: {}", setName);
                     String sql = "select customset_name, rowcount, screen_label, tag, default_value from CustomMetadatasetLines where customset_name=\"" + setName.trim() + "\" order by rowcount";
                     logger.debug(sql);
@@ -228,7 +231,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     if (configFile) {
                         expTxt += "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptextconfig") + ": " + configFileName;
                     }
-                    JOptionPane.showMessageDialog(null, expTxt, ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptitle"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(metadatapanel, expTxt, ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptitle"), JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -236,7 +239,32 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //String setName = customSetcomboBox.getSelectedItem().toString();
-
+                List<String[]> csvrecords = null;
+                String csvFile = SelectCSVFile(metadatapanel);
+                Path csvPathFile = Paths.get(csvFile);
+                String csvPath = csvPathFile.getParent().toString();
+                String csvF = csvPathFile.getFileName().toString();
+                logger.info("selected csv file: {}", csvFile);
+                if (!(csvFile == null) || ("".equals(csvFile))) {
+                    try {
+                        csvrecords = ReadCSVFile(csvFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.error("error importing custommetadataset csv file {}", e.toString());
+                    }
+                }
+                // test
+                /*for (String[] record : csvrecords) {
+                    logger.info("record {}", Arrays.toString(record));
+                }*/
+                String strBaseFileName = csvF.substring(0, csvF.lastIndexOf("."));
+                File cfgFile = new File(csvPath + File.separator + strBaseFileName + ".cfg");
+                File configFile = new File(csvPath + File.separator + strBaseFileName + ".config");
+                if (cfgFile.exists()) {
+                    StandardFileIO.ImportCustomConfigFile(cfgFile.toString());
+                } else if (configFile.exists()) {
+                    StandardFileIO.ImportCustomConfigFile(configFile.toString());
+                }
             }
         });
     }
@@ -307,6 +335,54 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         }
     }
 
+    /*
+    / Get the csv file for the import of the custom metadata set
+    */
+    public String SelectCSVFile(JPanel myComponent) {
+
+        String startFolder = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+        final JFileChooser chooser = new JFileChooser(startFolder);
+        FileFilter filter = new FileNameExtensionFilter(ResourceBundle.getBundle("translations/program_strings").getString("mduc.csvfile"), "csv");
+        chooser.setFileFilter(filter);
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("mduc.loccsvfile"));
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int status = chooser.showOpenDialog(myComponent);
+        if (status == JFileChooser.APPROVE_OPTION) {
+            String selectedCSVFile = chooser.getSelectedFile().getPath();
+            return selectedCSVFile;
+        } else {
+            return "";
+        }
+    }
+
+    /*
+    / Read all csv reader
+    */
+    public List<String[]> readAll(Reader reader) throws Exception {
+        CSVReader csvReader = new CSVReader(reader);
+        List<String[]> list = new ArrayList<>();
+        list = csvReader.readAll();
+        reader.close();
+        csvReader.close();
+        return list;
+    }
+
+    /*
+    / Read the selected csv file using above csvreader
+     */
+    public List<String[]> ReadCSVFile(String csvFile) throws Exception {
+        //String readLines = "";
+        Reader reader = Files.newBufferedReader(Paths.get(csvFile));
+        CSVReader csvReader = new CSVReader(reader);
+        List<String[]> records = csvReader.readAll();
+
+        /*Reader reader = Files.newBufferedReader(Paths.get(
+                ClassLoader.getSystemResource(csvFile).toURI()));
+        return readLines.readAll(reader).toString();
+         */
+        return records;
+    }
 
     /*
     / get the name for the custom set. Being asked when nothing was selected or no setname available, or when "Save As" was clicked

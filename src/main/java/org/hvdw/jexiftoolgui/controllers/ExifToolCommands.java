@@ -68,7 +68,7 @@ public class ExifToolCommands {
         } else { //Linux & MacOS
             cmdparams.add("/bin/sh");
             cmdparams.add("-c");
-            tmpcmpstring = new StringBuilder(Utils.platformExiftool().replace(" ", "\\ ") + " " + orgCommands + " ");
+            tmpcmpstring = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " " + orgCommands + " ");
         }
 
         if ( !("".equals(ETCommandsFoldertextField)) ) {
@@ -78,7 +78,7 @@ public class ExifToolCommands {
             if (Utils.isOsFromMicrosoft()) {
                 tmpcmpstring.append(" ").append("\"" + ETCommandsFoldertextField.replace("\\", "/") + "\"");
             } else {
-                tmpcmpstring.append(" ").append(ETCommandsFoldertextField.replace(" ", "\\ "));
+                tmpcmpstring.append(" ").append(ETCommandsFoldertextField.replaceAll(" ", "\\ "));
             }
 
         } else {
@@ -90,7 +90,7 @@ public class ExifToolCommands {
                 if (Utils.isOsFromMicrosoft()) {
                     tmpcmpstring.append(" ").append("\"" + files[index].getPath().replace("\\", "/") + "\"");
                 } else {
-                    tmpcmpstring.append(" ").append(files[index].getPath().replace(" ", "\\ "));
+                    tmpcmpstring.append(" ").append(files[index].getPath().replaceAll(" ", "\\ "));
                 }
                 //try
 

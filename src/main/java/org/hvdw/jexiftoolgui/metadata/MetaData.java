@@ -59,7 +59,7 @@ public class MetaData {
                 } else {
                     cmdparams.add("/bin/sh");
                     cmdparams.add("-c");
-                    cmdparams.add(exiftool + " -TagsFromfile " + files[index].getPath().replace(" ", "\\ ") + " '-all:all>xmp:all' -overwrite_original  " + files[index].getPath().replace(" ", "\\ "));
+                    cmdparams.add(exiftool + " -TagsFromfile " + files[index].getPath().replaceAll(" ", "\\ ") + " '-all:all>xmp:all' -overwrite_original  " + files[index].getPath().replaceAll(" ", "\\ "));
                 }
                 try {
                     String res = CommandRunner.runCommand(cmdparams);
