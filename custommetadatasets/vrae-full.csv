@@ -1,0 +1,57 @@
+customset_name	rowcount	screen_label	tag	default_value
+vrae-full	0	Work Agent	xmp-vrae:WorkAgent	
+vrae-full	1	Work Title	xmp-vrae:WorkTitle	
+vrae-full	2	Work Date	xmp-vrae:WorkDate	
+vrae-full	3	Work Style Period	xmp-vrae:WorkStylePeriod	
+vrae-full	4	Work Cultural Context	xmp-vrae:WorkCulturalContext	
+vrae-full	5	Work Type	xmp-vrae:WorkWorktype	
+vrae-full	6	Work Material	xmp-vrae:WorkMaterial	
+vrae-full	7	Work Technique	xmp-vrae:WorkTechnique	
+vrae-full	8	Work Measurements	xmp-vrae:WorkMeasurements	
+vrae-full	9	Work Location	xmp-vrae:WorkLocation	
+vrae-full	10	Work Description	xmp-vrae:WorkDescription	
+vrae-full	11	Work Subject	xmp-vrae:WorkSubject	
+vrae-full	12	Work Inscription	xmp-vrae:WorkInscription	
+vrae-full	13	Work State Edition	xmp-vrae:WorkStateEdition	
+vrae-full	14	Work Relation	xmp-vrae:WorkRelation	
+vrae-full	15	Work Text Reference	xmp-vrae:WorkTextref	
+vrae-full	16	Work Source	xmp-vrae:WorkSource	
+vrae-full	17	Work ID	xmp-vrae:WorkRefid	
+vrae-full	18	Work Rights	xmp-vrae:WorkRights	
+vrae-full	19	Image Title	xmp-vrae:ImageTitle	
+vrae-full	20	Image Agent	xmp:Creator	
+vrae-full	21	Image Date	IPTC:DateCreated	
+vrae-full	22	Image Description	xmp-vrae:ImageDescription	
+vrae-full	23	Image Inscription	xmp-vrae:ImageInscription	
+vrae-full	24	Image Subject	xmp-vrae:ImageSubject	
+vrae-full	25	Image Relation	xmp-vrae:ImageRelation	
+vrae-full	26	Image Source	xmp-vrae:ImageSource	
+vrae-full	27	Image ID	xmp-vrae:ImageRefid	
+vrae-full	28	Image URL	xmp-vrae:ImageHref	
+vrae-full	29	Image Rights	xmp-dc:Rights	
+vrae-full	30	Work Metadata Date	xmp-vrae:WorkMetadataDate	
+vrae-full	31	Work Metadata Id	xmp-vrae:WorkMetadataId	
+vrae-full	32	Work Metadata Source	xmp-vrae:WorkMetadataSource	
+vrae-full	33	Work Metadata Href	xmp-vrae:WorkMetadataHref	
+vrae-full	34	Work Href	xmp-vrae:WorkHref	
+vrae-full	35	Admin Collection	xmp-dc:Publisher	
+vrae-full	36	Admin Cataloguer	IPTC:Writer-Editor	
+vrae-full	37	Admin Job ID	xmp-photoshop:TransmissionReference	
+vrae-full	38	Work Location Creation	xmp-vrae:WorkLocationCreation	
+vrae-full	39	Work Location Discovery	xmp-vrae:WorkLocationDiscovery	
+vrae-full	40	Work Location Exhibition	xmp-vrae:WorkLocationExhibition	
+vrae-full	42	Work Location Site	xmp-vrae:WorkLocationSite	
+vrae-full	43	Work Location Former Site	xmp-vrae:WorkLocationFormerSite	
+vrae-full	44	Work Location Installation	xmp-vrae:WorkLocationInstallation	
+vrae-full	45	Work Location Intended	xmp-vrae:WorkLocationIntended	
+vrae-full	46	Work Location Other	xmp-vrae:WorkLocationOther	
+vrae-full	47	Work Location Owner	xmp-vrae:WorkLocationOwner	
+vrae-full	48	Work Location Former Owner	xmp-vrae:WorkLocationFormerOwner	
+vrae-full	49	Work Location Performance	xmp-vrae:WorkLocationPerformance	
+vrae-full	50	Work Location Publication	xmp-vrae:WorkLocationPublication	
+vrae-full	51	Work Location Repository	xmp-vrae:WorkLocationRepository	
+vrae-full	52	Work Location Former Repository	xmp-vrae:WorkLocationFormerRepository	
+vrae-full	53	Work Location Notes	xmp-vrae:WorkLocationNotes	
+vrae-full	54	Image Metadata Date	xmp-vrae:ImageMetadataDate	
+vrae-full	55	Image Metadata Source	xmp-vrae:ImageMetadataSource	
+vrae-full	56	Image Location	xmp-vrae:ImageLocation	
