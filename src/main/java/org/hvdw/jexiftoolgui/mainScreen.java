@@ -657,7 +657,7 @@ public class mainScreen {
         rootPanel = new JPanel();
         rootPanel.setLayout(new GridLayoutManager(2, 3, new Insets(10, 10, 10, 10), -1, -1));
         rootPanel.setMinimumSize(new Dimension(1100, 720));
-        rootPanel.setPreferredSize(new Dimension(1350, 830));
+        rootPanel.setPreferredSize(new Dimension(1350, 880));
         rootPanel.setRequestFocusEnabled(true);
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, 0));

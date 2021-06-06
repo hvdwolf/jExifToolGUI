@@ -87,10 +87,6 @@ public class UpdateActions {
                 "    foreign key(customset_name) references CustomMetadataset(customset_name))";
         do_Update(sql, "creating the table CustomMetadatasetLines (1.6)");
 
-        /*
-        / We delivered this in version 1.6 but now as of 1.9 up, we will deliver custom metadata sets
-        // as separate cvs and option config files
-
         // pre-fill both tables if necessary with isadg data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='isadg'", "disk");
         logger.debug("isadg test {}", queryresult.trim());
@@ -105,7 +101,7 @@ public class UpdateActions {
             isadg.delete();
         }
         String method_result = extract_resource_to_jexiftoolguiFolder("isadg-struct.cfg", strjexiftoolguifolder, "");
-        */
+
 
         // pre-fill both tables if necessary with gps_location data
         queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='gps_location'", "disk");
@@ -155,10 +151,10 @@ public class UpdateActions {
         String method_result = extract_resource_to_jexiftoolguiFolder("vrae.config", strjexiftoolguifolder, "");
 
         // add vrae data to both tables if necessary
-        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae-full'", "disk");
+        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae-display'", "disk");
         logger.debug("VRAE data test {}", queryresult.trim());
         if (!"56".equals(queryresult.trim())) {
-            fill_UserMetadataCustomSet_Tables("sql/add_vrae.sql");
+            fill_UserMetadataCustomSet_Tables("sql/fill_vrae-display.sql");
         }
 
     }
@@ -174,6 +170,6 @@ public class UpdateActions {
         update_1_4();
         update_1_6();
         update_1_7();
-        // update_1_9(); Do not include the custom metadata set inside the build, but deleiver them separately
+        update_1_9();
     }
 }
