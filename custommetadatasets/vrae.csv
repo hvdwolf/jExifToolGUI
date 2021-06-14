@@ -1,0 +1,57 @@
+customset_name	rowcount	screen_label	tag	default_value
+vrae-display	0	Work Agent	xmp-vrae:WorkAgent	
+vrae-display	1	Work Title	xmp-vrae:WorkTitle	
+vrae-display	2	Work Date	xmp-vrae:WorkDate	
+vrae-display	3	Work Style Period	xmp-vrae:WorkStylePeriod	
+vrae-display	4	Work Cultural Context	xmp-vrae:WorkCulturalContext	
+vrae-display	5	Work Type	xmp-vrae:WorkWorktype	
+vrae-display	6	Work Material	xmp-vrae:WorkMaterial	
+vrae-display	7	Work Technique	xmp-vrae:WorkTechnique	
+vrae-display	8	Work Measurements	xmp-vrae:WorkMeasurements	
+vrae-display	9	Work Location	xmp-vrae:WorkLocation	
+vrae-display	10	Work Description	xmp-vrae:WorkDescription	
+vrae-display	11	Work Subject	xmp-vrae:WorkSubject	
+vrae-display	12	Work Inscription	xmp-vrae:WorkInscription	
+vrae-display	13	Work State Edition	xmp-vrae:WorkStateEdition	
+vrae-display	14	Work Relation	xmp-vrae:WorkRelation	
+vrae-display	15	Work Text Reference	xmp-vrae:WorkTextref	
+vrae-display	16	Work Source	xmp-vrae:WorkSource	
+vrae-display	17	Work ID	xmp-vrae:WorkRefid	
+vrae-display	18	Work Rights	xmp-vrae:WorkRights	
+vrae-display	19	Image Title	xmp-vrae:ImageTitle	
+vrae-display	20	Image Agent	xmp:Creator	
+vrae-display	21	Image Date	IPTC:DateCreated	
+vrae-display	22	Image Description	xmp-vrae:ImageDescription	
+vrae-display	23	Image Inscription	xmp-vrae:ImageInscription	
+vrae-display	24	Image Subject	xmp-vrae:ImageSubject	
+vrae-display	25	Image Relation	xmp-vrae:ImageRelation	
+vrae-display	26	Image Source	xmp-vrae:ImageSource	
+vrae-display	27	Image ID	xmp-vrae:ImageRefid	
+vrae-display	28	Image URL	xmp-vrae:ImageHref	
+vrae-display	29	Image Rights	xmp-dc:Rights	
+vrae-display	30	Work Metadata Date	xmp-vrae:WorkMetadataDate	
+vrae-display	31	Work Metadata Id	xmp-vrae:WorkMetadataId	
+vrae-display	32	Work Metadata Source	xmp-vrae:WorkMetadataSource	
+vrae-display	33	Work Metadata Href	xmp-vrae:WorkMetadataHref	
+vrae-display	34	Work Href	xmp-vrae:WorkHref	
+vrae-display	35	Admin Collection	xmp-dc:Publisher	
+vrae-display	36	Admin Cataloguer	IPTC:Writer-Editor	
+vrae-display	37	Admin Job ID	xmp-photoshop:TransmissionReference	
+vrae-display	38	Work Location Creation	xmp-vrae:WorkLocationCreation	
+vrae-display	39	Work Location Discovery	xmp-vrae:WorkLocationDiscovery	
+vrae-display	40	Work Location Exhibition	xmp-vrae:WorkLocationExhibition	
+vrae-display	41	Work Location Site	xmp-vrae:WorkLocationSite	
+vrae-display	42	Work Location Former Site	xmp-vrae:WorkLocationFormerSite	
+vrae-display	43	Work Location Installation	xmp-vrae:WorkLocationInstallation	
+vrae-display	44	Work Location Intended	xmp-vrae:WorkLocationIntended	
+vrae-display	45	Work Location Other	xmp-vrae:WorkLocationOther	
+vrae-display	46	Work Location Owner	xmp-vrae:WorkLocationOwner	
+vrae-display	47	Work Location Former Owner	xmp-vrae:WorkLocationFormerOwner	
+vrae-display	48	Work Location Performance	xmp-vrae:WorkLocationPerformance	
+vrae-display	49	Work Location Publication	xmp-vrae:WorkLocationPublication	
+vrae-display	50	Work Location Repository	xmp-vrae:WorkLocationRepository	
+vrae-display	51	Work Location Former Repository	xmp-vrae:WorkLocationFormerRepository	
+vrae-display	52	Work Location Notes	xmp-vrae:WorkLocationNotes	
+vrae-display	53	Image Metadata Date	xmp-vrae:ImageMetadataDate	
+vrae-display	54	Image Metadata Source	xmp-vrae:ImageMetadataSource	
+vrae-display	55	Image Location	xmp-vrae:ImageLocation	

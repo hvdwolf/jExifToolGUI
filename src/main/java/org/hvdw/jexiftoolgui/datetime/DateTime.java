@@ -70,9 +70,10 @@ public class DateTime {
                 }*/
                 logger.trace("index: {} image path: {}", index, files[index].getPath());
                 if (isWindows) {
-                    cmdparams.add(files[index].getPath().replace("\\", "/"));
+                    cmdparams.add("\"" + files[index].getPath().replace("\\", "/") + "\"");
                 } else {
-                    tmpcmpstring.append(" ").append(files[index].getPath().replaceAll(" ", "\\ "));
+                    //tmpcmpstring.append(" ").append(files[index].getPath().replaceAll(" ", "\\ "));
+                    tmpcmpstring.append(" ").append("'" + files[index].getPath() + "'");
                 }
             }
             if (!isWindows) {

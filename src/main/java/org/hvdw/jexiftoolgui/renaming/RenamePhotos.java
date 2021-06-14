@@ -446,7 +446,8 @@ public class RenamePhotos extends JDialog {
                         }
                     } else {
                         for (int index : selectedFilenamesIndices) {
-                            exifcommands.append(" " + files[index].getPath().replaceAll(" ", "\\ ").replace("(", "\\(").replace(")", "\\)"));
+                            //exifcommands.append(" " + files[index].getPath().replaceAll(" ", "\\ ").replace("(", "\\(").replace(")", "\\)"));
+                            exifcommands.append(" '" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "'");
                         }
                         cmdparams.add(exifcommands.toString());
                     }
