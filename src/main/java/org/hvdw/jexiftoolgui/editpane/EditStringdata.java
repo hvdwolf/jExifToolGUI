@@ -23,26 +23,24 @@ public class EditStringdata {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(EditStringdata.class);
 
 
-    public void resetFields(JTextField[] stringPlusFields, JCheckBox[] stringPlusCheckboxes) {
+    public void resetFields(JTextField[] stringPlusFields, JCheckBox stringPlusOverwriteOriginalscheckBox) {
 
         for (JTextField field: stringPlusFields) {
             field.setText("");
         }
-        for (JCheckBox chkbx: stringPlusCheckboxes) {
-            chkbx.setSelected(false);
-        }
+        stringPlusOverwriteOriginalscheckBox.setSelected(false);
     }
 
-    public void copyStringPlusFromSelected(JTextField[] stringPlusFields, JCheckBox[] stringPlusCheckboxes) {
+    public void copyStringPlusFromSelected(JTextField[] stringPlusFields, JCheckBox stringPlusOverwriteOriginalscheckBox) {
         File[] files = MyVariables.getLoadedFiles();
         int SelectedRow = MyVariables.getSelectedRow();
-        String[] xmpcopyparams = {"-e", "-n", "-xmp-acdsee:keywords","-xmp:Subject", "-xmp:PersonInImage"};
+        String[] copyparams = {"-e", "-n", "-iptc:keywords","-xmp:Subject", "-xmp:PersonInImage"};
         String fpath = "";
         String res = "";
         List<String> cmdparams = new ArrayList<String>();
 
         //First clean the fields
-        resetFields(stringPlusFields, stringPlusCheckboxes);
+        resetFields(stringPlusFields, stringPlusOverwriteOriginalscheckBox);
 
         if (Utils.isOsFromMicrosoft()) {
             fpath = files[SelectedRow].getPath().replace("\\", "/");
@@ -51,7 +49,7 @@ public class EditStringdata {
         }
         logger.info(fpath);
         cmdparams.add(Utils.platformExiftool());
-        cmdparams.addAll(Arrays.asList(xmpcopyparams));
+        cmdparams.addAll(Arrays.asList(copyparams));
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
@@ -81,8 +79,9 @@ public class EditStringdata {
 
     }
 
-    public List<String> fillcmdparams (List<String> cmdparams, String textField, String action, String tag) {
-        String[] words = textField.trim().split(",");
+    public List<String> fillcmdparams (List<String> cmdparams, String textField, String action, String tag, String separator) {
+
+        String[] words = textField.trim().split(separator);
 
         for (String word : words) {
             cmdparams.add(tag + action + word.trim());
@@ -90,36 +89,51 @@ public class EditStringdata {
         return cmdparams;
     }
 
-    public void writeStringPlusTags(JTextField[] stringPlusFields, JCheckBox[] stringPlusBoxes, String[] selectedRadioButtons, JProgressBar progressBar) {
+    /*
+    / This method returns the selected separator
+     */
+    private String getStringSeparator() {
+        String separator = ";";
+
+        return separator;
+    }
+
+
+    public void writeStringPlusTags(JTextField[] stringPlusFields, JCheckBox stringPlusOverwriteOriginalscheckBox, String[] selectedRadioButtons, String separator, JProgressBar progressBar) {
         List<String> cmdparams = new ArrayList<String>();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
 
+        logger.debug("separator: {}", separator);
         cmdparams.add(Utils.platformExiftool());
         boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
         if (preserveModifyDate) {
             cmdparams.add("-preserve");
         }
-        if (!stringPlusBoxes[2].isSelected()) { // default overwrite originals, when set do not
+        if (stringPlusOverwriteOriginalscheckBox.isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
         cmdparams.addAll(Utils.AlwaysAdd());
 
         //keywords -> xmp keywords
-        if ( (stringPlusFields[0].getText().length() > 0) && (!"".equals(selectedRadioButtons[0])) && (stringPlusBoxes[0].isSelected()) ) {
-            cmdparams = fillcmdparams(cmdparams, stringPlusFields[0].getText(), selectedRadioButtons[0], "-xmp-acdsee:keywords");
+        /*if ( (stringPlusFields[0].getText().length() > 0) && (!"".equals(selectedRadioButtons[0])) && (stringPlusBoxes[0].isSelected()) ) {
+            cmdparams = fillcmdparams(cmdparams, stringPlusFields[0].getText(), selectedRadioButtons[0], "-xmp-acdsee:keywords", separator);
         }
         // keywords -> IPTC
         if ( (stringPlusFields[0].getText().length() > 0) && (!"".equals(selectedRadioButtons[0])) && (stringPlusBoxes[1].isSelected()) ) {
-            cmdparams = fillcmdparams(cmdparams, stringPlusFields[0].getText(), selectedRadioButtons[0], "-iptc:keywords");
+            cmdparams = fillcmdparams(cmdparams, stringPlusFields[0].getText(), selectedRadioButtons[0], "-iptc:keywords", separator);
+        }*/
+        // keywords -> IPTC
+        if ( (stringPlusFields[0].getText().length() > 0) && (!"".equals(selectedRadioButtons[0])) ) {
+            cmdparams = fillcmdparams(cmdparams, stringPlusFields[0].getText(), selectedRadioButtons[0], "-iptc:keywords", separator);
         }
         // Subject -> only XMP
         if ( (stringPlusFields[1].getText().length() > 0) && (!"".equals(selectedRadioButtons[1])) ) {
-            cmdparams = fillcmdparams(cmdparams, stringPlusFields[1].getText(), selectedRadioButtons[1], "-xmp:subject");
+            cmdparams = fillcmdparams(cmdparams, stringPlusFields[1].getText(), selectedRadioButtons[1], "-xmp:subject", separator);
         }
         // PersonInImage -> only xmp
         if ( (stringPlusFields[2].getText().length() > 0) && (!"".equals(selectedRadioButtons[2])) ) {
-            cmdparams = fillcmdparams(cmdparams, stringPlusFields[2].getText(), selectedRadioButtons[2], "-xmp:personinimage");
+            cmdparams = fillcmdparams(cmdparams, stringPlusFields[2].getText(), selectedRadioButtons[2], "-xmp:personinimage", separator);
         }
 
         boolean isWindows = Utils.isOsFromMicrosoft();
