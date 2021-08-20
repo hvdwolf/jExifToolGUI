@@ -420,7 +420,7 @@ public class Utils {
     }
 
     /*
-    / This method checks whther the user wants to see GPS coordinates in decimal degrees or in deg-min-sec (exiftool default
+    / This method checks whether the user wants to see data from structures as flat tags or as structures
     */
     public static boolean Display_Structured_Data() {
         Boolean enable_structs = prefs.getByKey(ENABLE_STRUCTS, false);
@@ -1325,6 +1325,9 @@ public class Utils {
     }
 
 
+    /*
+    * This method tries to find exiftool in the path on the several OSes
+     */
     public static String getExiftoolPath() {
         String res;
         List<String> cmdparams;
@@ -1345,6 +1348,12 @@ public class Utils {
             res = ex.getMessage();
         }
 
+        if (currentOs == Application.OS_NAMES.MICROSOFT) {
+            // First check whether we have multiple exiftool versions in our path
+            String[] lines = res.split(System.getProperty("line.separator"));
+            logger.info("line 0 is {}", lines[0]);
+            res = lines[0];
+        }
         return res;
     }
 

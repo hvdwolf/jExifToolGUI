@@ -42,6 +42,7 @@ public class CheckPreferences {
             logger.trace("exists is {}", exists);
             logger.info("preference exiftool returned: {}",exiftool_path);
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
+                // Try to find exiftool in the path
                 res = Utils.getExiftoolPath();
                 logger.trace("result from getExiftoolPath(): {}", res);
             } else {
@@ -77,6 +78,7 @@ public class CheckPreferences {
         }
 
         logger.info("exiftool_found mentions: {}", exiftool_found);
+        logger.info("exiftool path {}", res);
         return exiftool_found;
     }
 }
