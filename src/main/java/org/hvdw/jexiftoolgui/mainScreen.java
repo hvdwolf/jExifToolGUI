@@ -360,7 +360,7 @@ public class mainScreen {
     private JRadioButton tabRadioButton;
     private JRadioButton xmlRadioButton;
     private JRadioButton htmlRadioButton;
-    private JRadioButton xmpRadioButton;
+    private JRadioButton XMPRadioButton;
     private JRadioButton csvRadioButton;
     private JCheckBox GenExpuseMetadataTagLanguageCheckBoxport;
     private JButton GenExportbuttonOK;
@@ -2304,10 +2304,10 @@ private String getSeparatorString() {
         htmlRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(htmlRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.html"));
         panel64.add(htmlRadioButton);
-        xmpRadioButton = new JRadioButton();
-        this.$$$loadButtonText$$$(xmpRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.xmp"));
-        xmpRadioButton.setVisible(false);
-        panel64.add(xmpRadioButton);
+        XMPRadioButton = new JRadioButton();
+        this.$$$loadButtonText$$$(XMPRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.xmp"));
+        XMPRadioButton.setVisible(false);
+        panel64.add(XMPRadioButton);
         csvRadioButton = new JRadioButton();
         this.$$$loadButtonText$$$(csvRadioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.csv"));
         panel64.add(csvRadioButton);
@@ -2606,7 +2606,7 @@ private String getSeparatorString() {
         buttonGroup.add(tabRadioButton);
         buttonGroup.add(xmlRadioButton);
         buttonGroup.add(htmlRadioButton);
-        buttonGroup.add(xmpRadioButton);
+        buttonGroup.add(XMPRadioButton);
         buttonGroup.add(csvRadioButton);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(A4radioButton);

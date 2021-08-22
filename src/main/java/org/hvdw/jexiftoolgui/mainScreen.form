@@ -3951,7 +3951,7 @@
                                           <text resource-bundle="translations/program_strings" key="emd.html"/>
                                         </properties>
                                       </component>
-                                      <component id="58538" class="javax.swing.JRadioButton" binding="xmpRadioButton" default-binding="true">
+                                      <component id="58538" class="javax.swing.JRadioButton" binding="XMPRadioButton" default-binding="true">
                                         <constraints/>
                                         <properties>
                                           <text resource-bundle="translations/program_strings" key="emd.xmp"/>
