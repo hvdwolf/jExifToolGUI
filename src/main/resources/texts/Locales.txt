@@ -2,5 +2,7 @@ System default - default
 de_DE - Deutsch
 en_US - English
 es_ES - Español
+nb_NO - Norsk (bokmål)
 nl_NL - Nederlands
+
 
