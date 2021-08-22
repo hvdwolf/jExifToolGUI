@@ -1,6 +1,0 @@
-#!/bin/bash
-
-ToDir="../src/main/resources/translations"
-cp *.properties "${ToDir}"
-
-
