@@ -4,5 +4,5 @@ en_US - English
 es_ES - Español
 nb_NO - Norsk (bokmål)
 nl_NL - Nederlands
-
+ru_RU - Pусский
 
