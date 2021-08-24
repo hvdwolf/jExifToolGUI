@@ -19,7 +19,8 @@ Copylefted libre software. Use, study, change and share; with all, according to 
 [English Online manual](https://hvdwolf.github.io/jExifToolGUI/manual/index.html).<br>
 [Spanish Online manual](https://docs.museosabiertos.org/jexiftoolgui).<br>
 [YouTube Instruction videos](https://www.youtube.com/playlist?list=PLAHD8RNkeuGdyRH7BKFefc7p72Dp6jVjW).<br>
-[Hosted Weblate translation](https://hosted.weblate.org/engage/jexiftoolgui/)<br>
+[Hosted Weblate translation](https://hosted.weblate.org/engage/jexiftoolgui/) <a href="https://hosted.weblate.org/engage/jexiftoolgui/">
+<img src="https://hosted.weblate.org/widgets/jexiftoolgui/-/88x31-white.png" alt="Translation status" /></a><br>
 <hr>
 
 <br><br>jExifToolGUI is a remake of my own [pyExifToolGUI](https://github.com/hvdwolf/pyExifToolGUI) ([website](https://hvdwolf.github.io/pyExifToolGUI/)).<br><br>
