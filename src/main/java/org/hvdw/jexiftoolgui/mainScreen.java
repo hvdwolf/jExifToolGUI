@@ -3758,7 +3758,7 @@ private String getSeparatorString() {
     // without bothering the translators with <html></html> and/or <br> codes or length of total string(s).
     private void setProgramScreenTexts() {
         String version = "";
-        MyCommandsText.setText(String.format(ProgramTexts.HTML, 600,ResourceBundle.getBundle("translations/program_strings").getString("yc.toptext")));
+        MyCommandsText.setText(String.format(ProgramTexts.HTML, 600, ( ResourceBundle.getBundle("translations/program_strings").getString("yc.toptext") + "<br><br>") ));
         xmpTopText.setText(String.format(ProgramTexts.HTML, 600,ResourceBundle.getBundle("translations/program_strings").getString("xmp.toptext")));
         GeotaggingLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
         ExpLeaveFolderEmptyLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("fld.folderexplanation")));
@@ -3775,13 +3775,13 @@ private String getSeparatorString() {
         copySelectiveMetadataradioButton.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("copyd.copybyselection")));
         lensSaveLoadConfigLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("lens.saveloadconfig")));
         //exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
-        StringsTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("xis.toptext")));
+        StringsTopText.setText(String.format(ProgramTexts.HTML, 600, ( ResourceBundle.getBundle("translations/program_strings").getString("xis.toptext") + "<br><br>")));
         SeparatorText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("xis.separatortext")));
         UserCombiTopText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("udc.toptext")));
         exportMetaDataUiText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("emd.toptext")));
         expPdftextLabel.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exppdf.toptext")));
         pdfLabelSupported.setText(String.format(ProgramTexts.HTML, 600, "<br>" + ResourceBundle.getBundle("translations/program_strings").getString("exppdf.supp")));
-        lblNominatimSearch.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.searchtxt")));
+        lblNominatimSearch.setText(String.format(ProgramTexts.HTML, 600, ( ResourceBundle.getBundle("translations/program_strings").getString("gps.searchtxt") + "<br><br>")));
         lblMapcoordinates.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.extsearch")));
 
 

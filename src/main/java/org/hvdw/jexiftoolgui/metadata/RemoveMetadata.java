@@ -163,7 +163,7 @@ public class RemoveMetadata extends JDialog {
 
     private void initDialog() {
         //RemoveMetaDataUiText.setContentType("text/html");
-        RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 620, ResourceBundle.getBundle("translations/program_strings").getString("rmd.toptext")));
+        RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 620, (ResourceBundle.getBundle("translations/program_strings").getString("rmd.toptext") + "<br><br>")));
         String sqlGroups = SQLiteModel.getGroups();
         String[] Tags = sqlGroups.split("\\r?\\n"); // split on new lines
         remcomboBoxExpByTagName.setModel(new DefaultComboBoxModel(Tags));
@@ -192,7 +192,7 @@ public class RemoveMetadata extends JDialog {
         /////////////////////////////////////
         if (remUsedCategeriesRadioButton.isSelected()) {
             if (removeAllMetadataCheckBox.isSelected()) {
-                Message.append(ResourceBundle.getBundle("translations/program_strings").getString("rmd.allmetadata"));
+                Message.append(ResourceBundle.getBundle("translations/program_strings").getString("rmd.allmetadata") + "<br><br>");
                 params.add("-all=");
                 atLeastOneSelected = true;
             } else {

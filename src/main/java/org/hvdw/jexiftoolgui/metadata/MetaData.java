@@ -131,10 +131,10 @@ public class MetaData {
         // which options selected?
         StringBuilder Message = new StringBuilder("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("copyd.dlgyouhaveselected"));
         if (CopyMetaDataRadiobuttons[0].isSelected()) {
-            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltopreferred"));
+            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltopreferred") + "<br><br>");
             atLeastOneSelected = true;
         } else if (CopyMetaDataRadiobuttons[1].isSelected()) {
-            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltoorggroup"));
+            Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltoorggroup") + "<br><br>");
             params.add("-all:all");
             atLeastOneSelected = true;
 /*        } else if (CopyMetaDataRadiobuttons[2].isSelected()) {
