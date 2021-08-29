@@ -320,18 +320,30 @@ public class EditGPSdata {
         if (gpsBoxes[2].isSelected()) {
             cmdparams.add("-xmp:Location=" + gpsLocationFields[0].getText().trim());
             cmdparams.add("-iptc:Sub-location=" + gpsLocationFields[0].getText().trim());
+            if (gpsBoxes[8].isSelected()) { // Add Location to makernotes
+                cmdparams.add("-makernotes:Location=" + gpsLocationFields[0].getText().trim());
+            }
         }
         if (gpsBoxes[3].isSelected()) {
             cmdparams.add("-xmp:Country=" + gpsLocationFields[1].getText().trim());
             cmdparams.add("-iptc:Country-PrimaryLocationName=" + gpsLocationFields[1].getText().trim());
+            if (gpsBoxes[8].isSelected()) { // Add Location to makernotes
+                cmdparams.add("-makernotes:Country=" + gpsLocationFields[1].getText().trim());
+            }
         }
         if (gpsBoxes[4].isSelected()) {
             cmdparams.add("-xmp:State=" + gpsLocationFields[2].getText().trim());
             cmdparams.add("-iptc:Province-State=" + gpsLocationFields[2].getText().trim());
+            if (gpsBoxes[8].isSelected()) { // Add Location to makernotes
+                cmdparams.add("-makernotes:State=" + gpsLocationFields[2].getText().trim());
+            }
         }
         if (gpsBoxes[5].isSelected()) {
             cmdparams.add("-xmp:City=" + gpsLocationFields[3].getText().trim());
             cmdparams.add("-iptc:City=" + gpsLocationFields[3].getText().trim());
+            if (gpsBoxes[8].isSelected()) { // Add Location to makernotes
+                cmdparams.add("-makernotes:City=" + gpsLocationFields[3].getText().trim());
+            }
         }
 
 
