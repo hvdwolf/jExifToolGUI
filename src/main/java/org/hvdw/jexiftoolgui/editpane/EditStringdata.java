@@ -110,7 +110,7 @@ public class EditStringdata {
         if (preserveModifyDate) {
             cmdparams.add("-preserve");
         }
-        if (stringPlusOverwriteOriginalscheckBox.isSelected()) { // default overwrite originals, when set do not
+        if (!stringPlusOverwriteOriginalscheckBox.isSelected()) { // default overwrite originals, when set do not
             cmdparams.add("-overwrite_original");
         }
         cmdparams.addAll(Utils.AlwaysAdd());
