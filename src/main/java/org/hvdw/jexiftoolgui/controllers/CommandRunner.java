@@ -1,11 +1,13 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -20,13 +22,25 @@ public class CommandRunner {
         StringBuilder res = new StringBuilder();
         logger.debug("commandrunner {}", cmdparams.toString());
 
+        // try with apache commons
+        /*for (String subString : cmdparams) {
+            byte[] bytes = StringUtils.getBytesUtf8(subString);
+            //String utf8EncodedString = StringUtils.newStringUtf8(bytes);
+            subString = StringUtils.newStringUtf8(bytes);
+        }*/
+        // end try with apache commons
+
         ProcessBuilder builder = new ProcessBuilder(cmdparams);
         logger.trace("Did ProcessBuilder builder = new ProcessBuilder(cmdparams);");
         try {
             builder.redirectErrorStream(true);
             Process process = builder.start();
             //Use a buffered reader to prevent hangs on Windows
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            //BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            // Get default charset for platform and use that for reading
+            String platformCharset = Charset.defaultCharset().displayName();
+            logger.info("platformCharset: {}", platformCharset);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), platformCharset));
             String line;
             while ((line = reader.readLine()) != null) {
                 res.append(line).append(System.lineSeparator());
@@ -34,7 +48,7 @@ public class CommandRunner {
             }
             process.waitFor();
         } catch (IOException e) {
-            logger.error("IOException error", e);
+            logger.error("IOException error {}", e);
             res.append("IOException error")
                     .append(System.lineSeparator())
                     .append(e.getMessage());

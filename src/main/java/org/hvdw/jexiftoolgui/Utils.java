@@ -281,6 +281,13 @@ public class Utils {
         String exifartist = prefs.getByKey(ARTIST, "");
         String copyright = prefs.getByKey(COPYRIGHTS, "");
         String credits = prefs.getByKey(CREDIT, "");
+        // Write as utf-8
+        //AlwaysAddParams.add("-charset");
+        //AlwaysAddParams.add("utf8");
+        // Use mgw specification -use mwg; sets the default internal EXIF string encoding to UTF‑8 (ie. "-charset exif=utf8")
+        //AlwaysAddParams.add("-use");
+        //AlwaysAddParams.add("mwg");
+
         if (!prefs.getByKey(ARTIST, "").equals("") && !prefs.getByKey(ARTIST, "").equals(" ") ) {
             exifartist = "-exif:Artist=" + (prefs.getByKey(ARTIST, "")).trim();
             AlwaysAddParams.add(exifartist);
@@ -306,6 +313,7 @@ public class Utils {
         AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);
         //AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
         AlwaysAddParams.add("-xmp:Software=jExifToolGUI " + ProgramTexts.Version);
+
 
         return AlwaysAddParams;
     }
