@@ -160,12 +160,8 @@ public class JavaImageViewer {
         frame.setContentPane(imageViewPane);
         frame.setIconImage(Utils.getFrameIcon());
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int scrwidth = screenSize.width;
-        MyVariables.setScreenWidth(screenSize.width);
-        int scrheight = screenSize.height;
-        MyVariables.setScreenHeight(screenSize.height);
-        float scrratio = scrwidth / scrheight;
+        /* Get screen size */
+        int[] resolution = Utils.getResolution();
         int[] basicdata = {0, 0, 9999, 0, 0, 0, 0, 0};
         boolean bde = false;
 
@@ -198,7 +194,7 @@ public class JavaImageViewer {
         JLabel infoLabel = new JLabel();
         infoLabel.setText(imginfo);
         InfoPanel.add(infoLabel);
-        InfoPanel.setPreferredSize(new Dimension(screenSize.width - 100, 25));
+        InfoPanel.setPreferredSize(new Dimension(MyVariables.getScreenWidth() - 100, 25));
         //create the bottom button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton btnClose = new JButton();
@@ -288,7 +284,7 @@ public class JavaImageViewer {
         thePanel.add(ImgLabel, BorderLayout.CENTER);
         thePanel.add(buttonPanel, BorderLayout.PAGE_END);
         //thePanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
-        thePanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height - 30));
+        thePanel.setPreferredSize(new Dimension(MyVariables.getScreenWidth(), MyVariables.getScreenHeight() - 30));
         frame.add(thePanel);
 
         //if (!frameborder) {
