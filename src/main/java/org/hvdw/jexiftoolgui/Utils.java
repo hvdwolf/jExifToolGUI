@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui;
 
 import ch.qos.logback.classic.Level;
+import org.apache.commons.codec.binary.StringUtils;
 import org.hvdw.jexiftoolgui.controllers.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
@@ -20,14 +21,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
-import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -169,6 +166,19 @@ public class Utils {
     }
 
     /*
+    *  Base function to get screen resolution in width and height
+    */
+    public static int[] getResolution() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int scrwidth = screenSize.width;
+        MyVariables.setScreenWidth(screenSize.width);
+        int scrheight = screenSize.height;
+        MyVariables.setScreenHeight(screenSize.height);
+        int[] res = {scrwidth, scrheight};
+        return res;
+    }
+
+    /*
      * Opens the default browser of the Operating System
      * and displays the specified URL
      */
@@ -281,12 +291,6 @@ public class Utils {
         String exifartist = prefs.getByKey(ARTIST, "");
         String copyright = prefs.getByKey(COPYRIGHTS, "");
         String credits = prefs.getByKey(CREDIT, "");
-        // Write as utf-8
-        //AlwaysAddParams.add("-charset");
-        //AlwaysAddParams.add("utf8");
-        // Use mgw specification -use mwg; sets the default internal EXIF string encoding to UTF‑8 (ie. "-charset exif=utf8")
-        //AlwaysAddParams.add("-use");
-        //AlwaysAddParams.add("mwg");
 
         if (!prefs.getByKey(ARTIST, "").equals("") && !prefs.getByKey(ARTIST, "").equals(" ") ) {
             exifartist = "-exif:Artist=" + (prefs.getByKey(ARTIST, "")).trim();
@@ -310,9 +314,9 @@ public class Utils {
             copyright = "-iptc:copyrightnotice=" + prefs.getByKey(COPYRIGHTS, "");
             AlwaysAddParams.add(copyright);
         }
-        AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);
+        AlwaysAddParams.add("-exif:ProcessingSoftware=\"jExifToolGUI " + ProgramTexts.Version + "\"");
         //AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
-        AlwaysAddParams.add("-xmp:Software=jExifToolGUI " + ProgramTexts.Version);
+        AlwaysAddParams.add("-xmp:Software=\"jExifToolGUI " + ProgramTexts.Version + "\"");
 
 
         return AlwaysAddParams;
@@ -956,6 +960,9 @@ public class Utils {
                     }
                 }
             }
+            //Always read exif data as utf8
+            //cmdparams.add("-use");
+            //cmdparams.add("mwg");
             // Check for chosen metadata language
             if (!"".equals(getmetadataLanguage())) {
                 cmdparams.add("-lang");
@@ -1031,6 +1038,9 @@ public class Utils {
                     }
                 }
             }
+            //Always read exif data as utf8
+            //cmdparams.add("-use");
+            //cmdparams.add("mwg");
             // Check for chosen metadata language
             if (!"".equals(getmetadataLanguage())) {
                 cmdparams.add("-lang");
@@ -1108,6 +1118,9 @@ public class Utils {
                 }
             }
         }
+        //Always read exif data as utf8
+        //cmdparams.add("-use");
+        //cmdparams.add("mwg");
         // Check for chosen metadata language
         if (!"".equals(getmetadataLanguage())) {
             cmdparams.add("-lang");
@@ -1255,6 +1268,7 @@ public class Utils {
         return params;
     }
 
+
     /*
      * This method displays the exiftool info in the right 3-column table
      */
@@ -1291,7 +1305,7 @@ public class Utils {
                     String[] sortedLines = strList.stream().toArray(String[]::new);
                     for (String line : sortedLines) {
                         String[] cells = line.split("\\t", 3);
-                        model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                        model.addRow(new Object[]{cells[0], cells[1], cells[2] });
                     }
                 } else {
                     for (String line : lines) {
@@ -1300,11 +1314,6 @@ public class Utils {
                         model.addRow(new Object[]{cells[0], cells[1], cells[2]});
                     }
                 }
-                /*for (String line : lines) {
-                    //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
-                    String[] cells = line.split("\\t", 3);
-                    model.addRow(new Object[]{cells[0], cells[1], cells[2]});
-                } */
             }
         }
 

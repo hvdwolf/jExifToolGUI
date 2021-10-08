@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.editpane;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,6 +107,20 @@ public class EditExifdata {
 
     }
 
+    /*
+    *
+     */
+    public static String fromCPtoUnicode( String value) {
+        byte[] myBytes = null;
+        String newValue = null;
+
+        String platformCharset = Charset.defaultCharset().displayName();
+        logger.debug("Writing exif data, converting from codepage {} text {}", platformCharset, value);
+        myBytes = StringUtils.getBytesUnchecked(value, platformCharset);
+        newValue = StringUtils.newStringUtf8(myBytes);
+        logger.debug("Writing exif data, converted string {}", newValue);
+        return newValue;
+    }
 
     public void writeExifTags(JTextField[] exifFields, JTextArea Description, JCheckBox[] exifBoxes, JProgressBar progressBar) {
 
