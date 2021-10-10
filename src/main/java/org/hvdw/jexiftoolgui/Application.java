@@ -52,14 +52,7 @@ public class Application {
         }
 
         Application.OS_NAMES os = Utils.getCurrentOsName();
-        if (os == OS_NAMES.LINUX) {
-            int[] resolution = Utils.getResolution();
-            if (resolution[0] > 2500) { // width > 2500
-                Utils.setUIFont(new FontUIResource("SansSerif", Font.PLAIN, 20));
-            } else {
-                Utils.setUIFont(new FontUIResource("SansSerif", Font.PLAIN, 12));
-            }
-        } else if (os == OS_NAMES.APPLE) {
+        if (os == OS_NAMES.APPLE) {
             System.setProperty("apple.laf.UseScreenMenuBar", "true");
         }
         // Get user defined font or use default font
