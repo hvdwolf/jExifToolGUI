@@ -213,7 +213,7 @@
             </constraints>
             <properties>
               <selected value="true"/>
-              <text value="Most used categories"/>
+              <text resource-bundle="translations/program_strings" key="rmd.mostused"/>
             </properties>
           </component>
           <component id="29bd7" class="javax.swing.JRadioButton" binding="rempgroupradioButtonExpByTagName">
