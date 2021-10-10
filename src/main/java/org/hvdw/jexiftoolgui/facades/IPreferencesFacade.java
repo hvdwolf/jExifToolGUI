@@ -28,7 +28,9 @@ public interface IPreferencesFacade {
         LATITUDE("latitude"), // latitude for mapviewer screen
         LONGITUDE("longitude"),
         SORT_CATEGORIES_TAGS("sortcategoriestags"),
-        ENABLE_STRUCTS("enable_struct_output")
+        ENABLE_STRUCTS("enable_struct_output"),
+        USER_DEFINED_FONT("userdefinedfont"),
+        USER_DEFINED_FONTSIZE("userdefinedfontsize")
         ;
 
         public final String key;

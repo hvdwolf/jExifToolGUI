@@ -46,5 +46,5 @@ public class MyConstants {
     public static final String[] DATES_STRINGS = {"YYYYMMDD", "YYYY_MM_DD", "YYYY-MM-DD"};
 
     // Default font
-    public static final Font appdefFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    public static final Font appDefFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 }

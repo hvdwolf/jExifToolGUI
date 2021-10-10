@@ -11,11 +11,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -57,6 +60,18 @@ public class PreferencesDialog extends JDialog {
     private JLabel ExampleColumnImage;
     private JCheckBox sortCatsTagscheckBox;
     private JCheckBox enableStructCheckBox;
+    private JList allSystemFonts;
+    private JList fontSizes;
+    private JLabel fontPreview;
+    private JButton buttonDefaultFont;
+    private JScrollPane allFontsScrollPane;
+    private JScrollPane fontSizesScrollPane;
+    private JButton buttonsetThisFont;
+    private JPanel fontJPanel;
+    private JLabel lblFontSelection;
+    Font userSelectedFont = null;
+    private String thisFont = null;
+    private String thisFontSize = null;
 
     // Initialize all the helper classes
     //AppPreferences AppPrefs = new AppPreferences();
@@ -73,8 +88,9 @@ public class PreferencesDialog extends JDialog {
         this.setIconImage(Utils.getFrameIcon());
 
         buttonSave.addActionListener(e -> onSave());
-
         buttonCancel.addActionListener(e -> onCancel());
+        buttonDefaultFont.addActionListener(e -> onSetDefaultFont());
+        buttonsetThisFont.addActionListener(e -> onUseThisFont());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -86,7 +102,6 @@ public class PreferencesDialog extends JDialog {
 
         // call onCancel() on ESCAPE
         generalPanel.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
 
         ExiftoolLocationbutton.addActionListener(actionEvent -> {
             String ETpath = "";
@@ -117,6 +132,94 @@ public class PreferencesDialog extends JDialog {
                 setExampleImage();
             }
         });
+
+
+    }
+
+    private void getListOfSystemFonts() {
+        //String systemFontList[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        //allSystemFonts.setListData(systemFontList);
+
+        allSystemFonts.setModel(new AbstractListModel() {
+            String systemFontList[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+
+            public int getSize() {
+                return systemFontList.length;
+            }
+
+            public Object getElementAt(int i) {
+                return systemFontList[i];
+            }
+        });
+        pack();
+        /*for (int i = 0; i < systemFontList.length; i++) {
+            logger.info(systemFontList[i]);
+        }*/
+    }
+
+
+    /**
+     * Listen for font name or size selection changes.
+     */
+    class FontSelectionListener implements ListSelectionListener {
+        /**
+         * When a font name or size selection changes update the selected font
+         * and font preview in showFont.
+         *
+         * @param e
+         */
+        public void valueChanged(ListSelectionEvent e) {
+            String selectedFontName = String.valueOf(allSystemFonts.getSelectedValue());
+            int selectedFontSize = Integer.parseInt((String) fontSizes.getSelectedValue());
+            userSelectedFont = new Font(selectedFontName, Font.PLAIN, selectedFontSize);
+            showFont();
+        }
+    }
+
+    /**
+     * Select the default font and size.
+     */
+    private void onSetDefaultFont() {
+        allSystemFonts.setSelectedValue(MyConstants.appDefFont.getFamily(), true);
+        fontSizes.setSelectedValue(Integer.toString(MyConstants.appDefFont.getSize()), true);
+        userSelectedFont = MyConstants.appDefFont;
+    }
+
+    /*
+     * Select the current font from preferences. If not available that will automatically be the default font
+     */
+    private void setCurrentFont() {
+        String userFont = prefs.getByKey(USER_DEFINED_FONT, "sans-serif");
+        //logger.info("USER_DEFINED_FONT {}", userFont);
+        int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
+        //logger.info("USER_DEFINED_FONTSIZE {}", String.valueOf(userFontSize));
+        userSelectedFont = new Font(userFont, Font.PLAIN, userFontSize);
+        allSystemFonts.setSelectedValue(userFont, true);
+        fontSizes.setSelectedValue(Integer.toString(userFontSize), true);
+        showFont();
+    }
+
+    private void showFont() {
+        fontPreview.setFont(userSelectedFont);
+        pack();
+    }
+
+    private void onUseThisFont() {
+        Utils.setUIFont(new FontUIResource((String) allSystemFonts.getSelectedValue(), Font.PLAIN, userSelectedFont.getSize()));
+        /*String userFont = prefs.getByKey(USER_DEFINED_FONT, "sans-serif");
+        int userFontSize = Integer.parseInt((String) prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
+        userSelectedFont = new Font(userFont, Font.PLAIN, userFontSize);
+
+        Enumeration enum = UIManager.getDefaults().keys();
+        while ( enum.hasMoreElements() ) {
+            Object key = enum.nextElement();
+            Object value = UIManager.get( key );
+            if ( value instanceof Font ) {
+                UIManager.put( key, font );
+            }
+        }*/
+
+        showFont();
     }
 
     private void onSave() {
@@ -241,6 +344,8 @@ public class PreferencesDialog extends JDialog {
         logger.info("preservemodifydate {}", preserveModDatecheckBox.isSelected());
         logger.info("loglevel {}", loglevelcomboBox.getSelectedItem());
         logger.info("userdefinedfilefilter {}", udFilefiltertextField.getText());
+        logger.info("userdefinedfont {}", String.valueOf(allSystemFonts.getSelectedValue()));
+        logger.info("userdefinedfontsize {}", String.valueOf(fontSizes.getSelectedValue()));
 
 
         if (!(retrievedPreferences.get("Artist").equals(ArtisttextField.getText()))) {
@@ -282,6 +387,14 @@ public class PreferencesDialog extends JDialog {
             //if (!udFilefiltertextField.getText().isEmpty()) {
             logger.trace(" {} {}", USER_DEFINED_FILE_FILTER.key, udFilefiltertextField.getText());
             prefs.storeByKey(USER_DEFINED_FILE_FILTER, udFilefiltertextField.getText());
+        }
+        if ((retrievedPreferences.get("userdefinedfont") == null) || (!(retrievedPreferences.get("userdefinedfont").equals(String.valueOf(allSystemFonts.getSelectedValue()))))) {
+            logger.trace("{}: {}", USER_DEFINED_FONT.key, String.valueOf(allSystemFonts.getSelectedValue()));
+            prefs.storeByKey(USER_DEFINED_FONT, String.valueOf(allSystemFonts.getSelectedValue()));
+        }
+        if ((retrievedPreferences.get("userdefinedfontsize") == null) || (!(retrievedPreferences.get("userdefinedfontsize").equals(String.valueOf(fontSizes.getSelectedValue()))))) {
+            logger.trace("{}: {}", USER_DEFINED_FONTSIZE.key, String.valueOf(fontSizes.getSelectedValue()));
+            prefs.storeByKey(USER_DEFINED_FONTSIZE, String.valueOf(fontSizes.getSelectedValue()));
         }
 
 
@@ -371,13 +484,14 @@ public class PreferencesDialog extends JDialog {
         sortCatsTagscheckBox.setSelected(prefs.getByKey(SORT_CATEGORIES_TAGS, false));
         enableStructCheckBox.setSelected(prefs.getByKey(ENABLE_STRUCTS, false));
         setExampleImage();
+        setCurrentFont();
     }
 
     // The  main" function of this class
     public void showDialog() {
         //setSize(750, 600);
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("preferences.title"));
-        pack();
+        //pack();
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();
         //setLocation((int) x - getWidth() / 2, (int) y - getHeight() / 2);
@@ -391,8 +505,32 @@ public class PreferencesDialog extends JDialog {
         filedialogexplained.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.dialogexplained")));
         logleveltext.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.logleveltext")));
 
+        getListOfSystemFonts();
+        allSystemFonts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        fontSizes.setModel(new AbstractListModel() {
+            String[] strings = {"10", "12", "14", "16", "18", "20", "22", "24"};
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public Object getElementAt(int i) {
+                return strings[i];
+            }
+        });
+        fontSizes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+
         retrievePreferences();
+
+        // Add listeners to the font lists
+        allSystemFonts.getSelectionModel().addListSelectionListener(new FontSelectionListener());
+        fontSizes.getSelectionModel().addListSelectionListener(new FontSelectionListener());
+
+        pack();
         setVisible(true);
+
 
     }
 
@@ -660,13 +798,46 @@ public class PreferencesDialog extends JDialog {
         ExampleColumnImage = new JLabel();
         ExampleColumnImage.setText("");
         panel17.add(ExampleColumnImage, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 300), null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        panel16.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        fontJPanel = new JPanel();
+        fontJPanel.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel16.add(fontJPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 175), null, 0, false));
+        fontJPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        fontSizesScrollPane = new JScrollPane();
+        fontJPanel.add(fontSizesScrollPane, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(70, 175), null, 0, false));
+        fontSizes = new JList();
+        fontSizes.setMinimumSize(new Dimension(0, 0));
+        fontSizes.setPreferredSize(new Dimension(0, 0));
+        fontSizes.setSelectionMode(0);
+        fontSizesScrollPane.setViewportView(fontSizes);
+        fontPreview = new JLabel();
+        fontPreview.setText("Pa's wijze lynx bezag vroom het fikse aquaduct");
+        fontJPanel.add(fontPreview, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        allFontsScrollPane = new JScrollPane();
+        allFontsScrollPane.setVerticalScrollBarPolicy(20);
+        fontJPanel.add(allFontsScrollPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        allSystemFonts = new JList();
+        allSystemFonts.setMaximumSize(new Dimension(-1, -1));
+        allSystemFonts.setMinimumSize(new Dimension(-1, -1));
+        allSystemFonts.setPreferredSize(new Dimension(-1, 1000));
+        allSystemFonts.setSelectionMode(0);
+        allSystemFonts.setVisibleRowCount(80);
+        allFontsScrollPane.setViewportView(allSystemFonts);
+        buttonDefaultFont = new JButton();
+        this.$$$loadButtonText$$$(buttonDefaultFont, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.btndefaultfont"));
+        fontJPanel.add(buttonDefaultFont, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        buttonsetThisFont = new JButton();
+        buttonsetThisFont.setEnabled(false);
+        buttonsetThisFont.setText("Use Font");
+        buttonsetThisFont.setVisible(false);
+        fontJPanel.add(buttonsetThisFont, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        lblFontSelection = new JLabel();
+        this.$$$loadLabelText$$$(lblFontSelection, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.fontpaneltxt"));
+        fontJPanel.add(lblFontSelection, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel18 = new JPanel();
         panel18.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPanel.add(panel18, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 1, false));
-        final Spacer spacer4 = new Spacer();
-        panel18.add(spacer4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        panel18.add(spacer3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel19 = new JPanel();
         panel19.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel18.add(panel19, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

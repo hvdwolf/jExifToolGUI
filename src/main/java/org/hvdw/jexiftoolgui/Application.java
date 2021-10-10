@@ -10,7 +10,7 @@ import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.util.Locale;
 
-import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PREFERRED_APP_LANGUAGE;
+import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
 /**
  * Simple but important application class.
@@ -53,10 +53,20 @@ public class Application {
 
         Application.OS_NAMES os = Utils.getCurrentOsName();
         if (os == OS_NAMES.LINUX) {
-            Utils.setUIFont (new FontUIResource("SansSerif", Font.PLAIN,12));
+            int[] resolution = Utils.getResolution();
+            if (resolution[0] > 2500) { // width > 2500
+                Utils.setUIFont(new FontUIResource("SansSerif", Font.PLAIN, 20));
+            } else {
+                Utils.setUIFont(new FontUIResource("SansSerif", Font.PLAIN, 12));
+            }
         } else if (os == OS_NAMES.APPLE) {
             System.setProperty("apple.laf.UseScreenMenuBar", "true");
         }
+        // Get user defined font or use default font
+        String userFont = prefs.getByKey(USER_DEFINED_FONT, "sans-serif");
+        int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
+        Utils.setUIFont(new FontUIResource(userFont, Font.PLAIN, userFontSize));
+
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         SwingUtilities.invokeLater(mainScreen::createAndShowGUI);
