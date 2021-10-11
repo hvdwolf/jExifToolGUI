@@ -3965,6 +3965,9 @@ private String getSeparatorString() {
 
     static void createAndShowGUI() {
 
+        // Doesn't work but leave in
+        System.out.println(SingletonEnum.INSTANCE);
+
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
 
         // Should work, but doesn't work

@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
+import org.hvdw.jexiftoolgui.controllers.SingletonEnum;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,9 @@ public class Application {
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public static void main(String[] args) {
+
+        // Doesn't work but leave in
+        System.out.println(SingletonEnum.INSTANCE);
 
         Utils.SetApplicationWideLogLevel();
         logger.info("Start application");
