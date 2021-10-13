@@ -1,6 +1,5 @@
 package org.hvdw.jexiftoolgui.editpane;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
@@ -15,6 +14,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.codec.binary.StringUtils;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;

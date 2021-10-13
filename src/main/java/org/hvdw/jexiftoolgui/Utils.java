@@ -1,7 +1,6 @@
 package org.hvdw.jexiftoolgui;
 
 import ch.qos.logback.classic.Level;
-import org.apache.commons.codec.binary.StringUtils;
 import org.hvdw.jexiftoolgui.controllers.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
@@ -36,6 +35,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.apache.commons.codec.binary.StringUtils;
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;

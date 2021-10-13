@@ -1,6 +1,5 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.hvdw.jexiftoolgui.MyConstants;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
@@ -16,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
+import org.apache.commons.codec.binary.StringUtils;
 
 public class CommandRunner {
     public final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CommandRunner.class);
