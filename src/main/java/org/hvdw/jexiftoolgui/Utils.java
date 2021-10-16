@@ -741,8 +741,11 @@ public class Utils {
                 files = StandardFileIO.getFolderFilesAwt(rootPanel);
                 logger.debug("AFTER load folder using AWT file dialog");
             }
-        } else if ("dropped files".equals(loadingType)){ // files dropped onto our app
+        } else if ("dropped files".equals(loadingType)) { // files dropped onto our app
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.droppedfiles"));
+            files = MyVariables.getLoadedFiles();
+        } else if ("reloadfromsearchresult".equals(loadingType)) { // We now reload the images from our metadata search result
+            OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.reloadimages"));
             files = MyVariables.getLoadedFiles();
         } else { // Use files from command line
             OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.commandline"));

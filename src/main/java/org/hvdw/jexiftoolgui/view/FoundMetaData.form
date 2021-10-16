@@ -56,6 +56,12 @@
             <properties/>
             <border type="none"/>
             <children>
+              <component id="bad56" class="javax.swing.JButton" binding="LoadResultImagesbutton">
+                <constraints/>
+                <properties>
+                  <text resource-bundle="translations/program_strings" key="smd.reloadimages"/>
+                </properties>
+              </component>
               <component id="15f0b" class="javax.swing.JButton" binding="OKbutton">
                 <constraints/>
                 <properties>

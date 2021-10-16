@@ -2940,6 +2940,10 @@ private String getSeparatorString() {
                         }
                         FoundMetaData FMD = new FoundMetaData();
                         FMD.showDialog(rootPanel, result);
+                        // Very dirty way of getting results from another class to see if we need to relaod the images from the search result
+                        if (MyVariables.getreloadImagesFromSearchResult()) {
+                            Utils.loadImages("reloadfromsearchresult", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                        }
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, (ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtxt") + " \"" + searchPhrase) + "\".", ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtitle"), JOptionPane.WARNING_MESSAGE);
                     }
@@ -3843,6 +3847,7 @@ private String getSeparatorString() {
         xmpRightstextField.setText(ArtCredCopyPrefs[2]);
     }
 
+
     // This is where it all starts
     // initialisation of the Application
     public mainScreen(JFrame frame) throws IOException, InterruptedException {
@@ -3960,7 +3965,6 @@ private String getSeparatorString() {
         Utils.checkForNewVersion("startup");
         //JLabelDropReady.addPropertyChangeListener(new PropertyChangeListener() {
         //});
-
     }
 
     static void createAndShowGUI() {
@@ -4004,4 +4008,5 @@ private String getSeparatorString() {
         frame.setVisible(true);
 
     }
+
 }

@@ -3,16 +3,23 @@ package org.hvdw.jexiftoolgui.view;
 import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.MyVariables;
+import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.mainScreen;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class FoundMetaData extends JDialog {
     private JPanel contentPane;
@@ -21,9 +28,13 @@ public class FoundMetaData extends JDialog {
     private JButton OKbutton;
     private JButton Cancelbutton;
     private JLabel foundMetadataLabel;
+    private JButton LoadResultImagesbutton;
 
     private JPanel jp = null;
     private String metadata = "";
+    private String folderPath = "";
+    private List<String> imageNames = new ArrayList<>();
+    private File[] imageFileNames = null;
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(FoundMetaData.class);
 
@@ -67,10 +78,34 @@ public class FoundMetaData extends JDialog {
                 String img_name = model.getValueAt(selectedRowIndex, 1).toString();
             }
         });
+
+        LoadResultImagesbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> uniqueImageNames = imageNames.stream().distinct().collect(Collectors.toList());
+                logger.debug("\nunieke bestanden {}", uniqueImageNames.toString());
+                File[] uniqueFileNames = {};
+                ArrayList<File> uniqueFileNamesList = new ArrayList<>();
+                for (String fileName : uniqueImageNames) {
+                    uniqueFileNamesList.add(new File(fileName));
+                }
+                uniqueFileNames = uniqueFileNamesList.toArray(uniqueFileNames);
+                MyVariables.setLoadedFiles(uniqueFileNames);
+                MyVariables.setreloadImagesFromSearchResult(true);
+                setVisible(false);
+                dispose();
+            }
+        });
     }
 
 
     private void displayfoundmetadata(List<String> foundMetadata) {
+        //Get overall folder name
+        File totalpath = new File(MyVariables.getSelectedImagePath());
+        folderPath = (totalpath.getParent()).toString();
+        logger.info("folder path: {}", folderPath);
+
+        // And now the table
         DefaultTableModel model = (DefaultTableModel) foundmetadatatable.getModel();
         model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("smd.imgname"), ResourceBundle.getBundle("translations/program_strings").getString("smd.keyorvalue"), ResourceBundle.getBundle("translations/program_strings").getString("smd.foundstring")});
         foundmetadatatable.getColumnModel().getColumn(0).setPreferredWidth(250);
@@ -97,6 +132,9 @@ public class FoundMetaData extends JDialog {
                 thirdcolumn = cells[2] + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ": " + cells[3] + ")";
             }
             model.addRow(new Object[]{cells[0], secondcolumn, thirdcolumn});
+            imageNames.add(folderPath + File.separatorChar + cells[0]);
+
+
         }
 
 
@@ -158,6 +196,9 @@ public class FoundMetaData extends JDialog {
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         panel1.add(panel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        LoadResultImagesbutton = new JButton();
+        this.$$$loadButtonText$$$(LoadResultImagesbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "smd.reloadimages"));
+        panel3.add(LoadResultImagesbutton);
         OKbutton = new JButton();
         this.$$$loadButtonText$$$(OKbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.ok"));
         panel3.add(OKbutton);

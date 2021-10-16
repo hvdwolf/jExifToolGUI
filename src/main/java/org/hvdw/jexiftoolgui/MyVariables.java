@@ -47,6 +47,7 @@ public class MyVariables {
     private String Longitude;
     private HashMap <String, HashMap<String, String> > imagesData;
     private String SearchPhrase;
+    private boolean reloadImagesFromSearchResult = false;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -182,4 +183,7 @@ public class MyVariables {
 
     public static String getSearchPhrase() { return staticInstance.SearchPhrase; }
     public static void setSearchPhrase(String srchphrs) { staticInstance.SearchPhrase = srchphrs; }
+
+    public static boolean getreloadImagesFromSearchResult() { return staticInstance.reloadImagesFromSearchResult;}
+    public static void setreloadImagesFromSearchResult(boolean rifsr) {staticInstance.reloadImagesFromSearchResult = rifsr; }
 }
