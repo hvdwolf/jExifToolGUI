@@ -50,6 +50,9 @@ dependencies {
     // Add minimal json (35Kb), to be used for Nominatim queries and other json activities
     implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
 
+    // Add Apache Commons Codec
+    implementation(group = "commons-codec", name = "commons-codec", version = "1.15")
+
     // Add dependencies of forms
     implementation(group = "com.intellij", name = "forms_rt", version = "7.0.3")
 
