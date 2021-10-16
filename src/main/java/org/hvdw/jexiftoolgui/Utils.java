@@ -816,15 +816,16 @@ public class Utils {
                     //progressPane(rootPanel, true);
                 }
             });
+            // Set our setters
+            List<Integer> selectedIndicesList = new ArrayList<>();
+            MyVariables.setselectedIndicesList(selectedIndicesList);
+            MyVariables.setLoadedFiles(files);
         } else {
             logger.debug("no files loaded. User pressed cancel.");
             files_null = true;
             lblLoadedFiles.setText("");
             OutputLabel.setText("");
         }
-        List<Integer> selectedIndicesList = new ArrayList<>();
-        MyVariables.setselectedIndicesList(selectedIndicesList);
-        MyVariables.setLoadedFiles(files);
 
         return files;
     }
