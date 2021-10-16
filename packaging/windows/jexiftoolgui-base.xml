@@ -24,6 +24,7 @@
     <runtimeBits>64/32</runtimeBits>
     <initialHeapSize>640</initialHeapSize>
     <maxHeapSize>2048</maxHeapSize>
+    <opt>-Dfile.encoding="UTF-8"</opt>
   </jre>
   <versionInfo>
     <fileVersion>VersionString</fileVersion>
