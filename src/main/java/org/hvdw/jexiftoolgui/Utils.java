@@ -699,7 +699,7 @@ public class Utils {
         pane.setVisible(visible);
     }
 
-    public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JTable tableListfiles, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params, JCheckBox[] loadOptions) {
+    public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JTable tableListfiles, JTable previewTable, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params, JCheckBox[] loadOptions) {
         File[] files;
         boolean files_null = false;
 
@@ -715,6 +715,45 @@ public class Utils {
         boolean showCreatePreviews = loadOptions[0].isSelected();
         boolean loadMetadata = loadOptions[1].isSelected();
 
+
+        // First check if we want to create previews or not. If not we will create the mini preview table at the bottom left
+        if ( (loadOptions[0].isSelected()) ) { //The user wants to see previews
+            previewTable.setVisible(false);
+        } else {
+            previewTable.setVisible(true);
+            DefaultTableModel previewTableModel = (DefaultTableModel) previewTable.getModel();
+
+            previewTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+                protected void setValue(Object value) {
+                    if (loadOptions[1].isSelected()) { //User wants metadata which means we don't have to show it here -> single column table
+                        if (value instanceof LabelIcon) {
+                            setIcon(((LabelIcon) value).icon);
+                            setHorizontalTextPosition(JLabel.CENTER);
+                            setVerticalTextPosition(JLabel.BOTTOM);
+                            setText(((LabelIcon) value).label);
+                        }
+                    } else { // -> dual-column table
+                        if (value instanceof ImageIcon) {
+                            setIcon((ImageIcon) value);
+                            setText("");
+                        } else {
+                            setIcon(null);
+                            super.setValue(value);
+                        }
+                    }
+                }
+            });
+            if (loadOptions[1].isSelected()) { //User wants metadata which means we don't have to show it here
+                previewTable.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
+                previewTableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.filename")});
+            } else {
+                previewTableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
+                previewTable.getColumnModel().getColumn(0).setPreferredWidth(170);
+                previewTable.getColumnModel().getColumn(1).setPreferredWidth(250);
+                previewTable.setRowHeight(160);
+            }
+            previewTableModel.setRowCount(0);
+        }
 
         String prefFileDialog = prefs.getByKey(PREFERRED_FILEDIALOG, "jfilechooser");
         if ("images".equals(loadingType)) {
@@ -773,6 +812,7 @@ public class Utils {
                         if (loopcounter == 0) {
                             lblimgSourceFolder.setText(file.getParent());
                             firstFile = file;
+                            MyVariables.setSinglePreview(file);
                             loopcounter++;
                         }
                         filename = file.getName().replace("\\", "/");
@@ -802,6 +842,12 @@ public class Utils {
                     buttonShowImage.setEnabled(true);
                     buttonCompare.setEnabled(true);
                     //buttonSlideshow.setEnabled(true);
+
+                    // Check whether the users wants to see previews when loading. If not display the preview of the first loaded image
+                    if ( !(loadOptions[0].isSelected()) ) { //No previews, so single preview in bottom-left pane
+                        boolean singlePreview = true;
+                        displaySinglePreview(previewTable, loadMetadata);
+                    }
 
                     //OutputLabel.setText(" Images loaded ...");
                     OutputLabel.setText("");
@@ -942,6 +988,106 @@ public class Utils {
 
         MyVariables.setSelectedRow(0);
         MyVariables.setSelectedColumn(0);
+    }
+
+
+    /*
+    / This method is used to determine which row has been selected so that
+    / we can set the setSinglePreview setter to the correct file object
+    */
+    static void selectedRowForSinglePreview() {
+        String res = "";
+        String fpath = "";
+        List<String> cmdparams = new ArrayList<String>();
+        int selectedRow = MyVariables.getSelectedRow();
+        List<Integer> selectedIndicesList = MyVariables.getselectedIndicesList();
+        File[] files = MyVariables.getLoadedFiles();
+
+        if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
+            logger.debug("selectedRow: {}", String.valueOf(selectedRow));
+            if (isOsFromMicrosoft()) {
+                fpath = files[selectedRow].getPath().replace("\\", "/");
+            } else {
+                fpath = files[selectedRow].getPath();
+            }
+            MyVariables.setSinglePreview(new File(fpath));
+        }
+    }
+
+
+    /*
+    / This one displays the single preview and gets the necessary data.
+    / It checks whether we only need to load the preview or also the basic metadata
+    */
+    static void displaySinglePreview(JTable previewTable, boolean loadMetadata) {
+        int selectedRow, selectedColumn;
+
+        ImageIcon icon = null;
+        File[] files = MyVariables.getLoadedFiles();
+        File file = MyVariables.getSinglePreview();
+
+        DefaultTableModel previewTablemodel = (DefaultTableModel) previewTable.getModel();
+        previewTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            protected void setValue(Object value) {
+                if (loadMetadata) {
+                    if (value instanceof LabelIcon) {
+                        setIcon(((LabelIcon) value).icon);
+                        setHorizontalTextPosition(JLabel.CENTER);
+                        setVerticalTextPosition(JLabel.BOTTOM);
+                        setText(((LabelIcon) value).label);
+                    }
+                } else {
+                    if (value instanceof ImageIcon) {
+                        setIcon((ImageIcon) value);
+                        setText("");
+                    } else {
+                        setIcon(null);
+                        super.setValue(value);
+                    }
+                }
+            }
+        });
+        previewTablemodel.setRowCount(0);
+        previewTable.setRowHeight(160);
+        Object[] ImgFilenameRow = new Object[2];
+        String filename = "";
+        //previewTablemodel.setCellSelectionEnabled(true);
+        if (loadMetadata) { //means we have it in the big table, we don't need it here
+            ImgFilenameRow[0] = new LabelIcon(icon, filename);
+        } else {
+            String imginfo = returnBasicImageDataString(filename, "html");
+            logger.debug("imginfo {}", imginfo);
+            ImgFilenameRow[0] = icon;
+            ImgFilenameRow[1] = imginfo;
+        }
+        previewTablemodel.addRow(ImgFilenameRow);
+
+        previewTablemodel.setRowCount(0);
+        previewTablemodel.fireTableDataChanged();
+        previewTable.clearSelection();
+        previewTable.setCellSelectionEnabled(false);
+
+        Application.OS_NAMES currentOsName = getCurrentOsName();
+        filename = file.getName().replace("\\", "/");
+        logger.debug("Now working on image: " +filename);
+
+        if (!(loadMetadata)) {
+            ImageFunctions.getbasicImageData(file);
+        }
+        icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+
+        if (loadMetadata) { //means we have it in the big table, we don't need it here
+            ImgFilenameRow[0] = new LabelIcon(icon, filename);
+        } else {
+            String imginfo = returnBasicImageDataString(filename, "html");
+            logger.debug("imginfo {}", imginfo);
+            ImgFilenameRow[0] = icon;
+            ImgFilenameRow[1] = imginfo;
+        }
+        previewTablemodel.addRow(ImgFilenameRow);
+
+        //MyVariables.setSelectedRow(0);
+        //MyVariables.setSelectedColumn(0);
     }
 
     private static void getImageInfoFromSelectedTreeFile(String[] whichInfo,JTable ListexiftoolInfotable) {

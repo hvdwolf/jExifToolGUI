@@ -423,6 +423,7 @@ public class mainScreen {
     private JTextField textFieldOtherSeparator;
     private JRadioButton radioButtonOther;
     private JCheckBox gpsmakernotescheckBox;
+    private JTable previewTable;
     private JLabel expPdffolderBrowseLabel;
     private JLabel expSDEfolderBrowseLabel;
     private ImageIcon icon;
@@ -729,7 +730,7 @@ private String getSeparatorString() {
         splitPanel.setDividerLocation(360);
         rootPanel.add(splitPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         LeftPanel = new JPanel();
-        LeftPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        LeftPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         LeftPanel.setPreferredSize(new Dimension(500, -1));
         splitPanel.setLeftComponent(LeftPanel);
         LeftbuttonBar = new JPanel();
@@ -823,6 +824,12 @@ private String getSeparatorString() {
         leftCheckBoxBarHelpButton.setPreferredSize(new Dimension(26, 26));
         leftCheckBoxBarHelpButton.setText("");
         LeftCheckboxBar.add(leftCheckBoxBarHelpButton);
+        previewTable = new JTable();
+        previewTable.setShowHorizontalLines(false);
+        previewTable.setShowVerticalLines(false);
+        previewTable.setUpdateSelectionOnSort(false);
+        previewTable.setVisible(false);
+        LeftPanel.add(previewTable, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 160), null, 0, false));
         tabbedPaneRight = new JTabbedPane();
         splitPanel.setRightComponent(tabbedPaneRight);
         ViewDatapanel = new JPanel();
@@ -2757,12 +2764,12 @@ private String getSeparatorString() {
                 case "Load Images":
                     logger.debug("menu File -> Load Images pressed");
                     // identical to button "Load Images"
-                    files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                    files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                     break;
                 case "Load Directory":
                     logger.debug("menu File -> Load Folder pressed");
                     // identical to button "Load Directory"
-                    files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                    files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                     break;
                 default:
                     break;
@@ -2888,7 +2895,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadImages pressed");
                 //File opener: Load the images; identical to Menu option Load Images.
-                files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
             }
         });
         buttonLoadDirectory.addActionListener(new ActionListener() {
@@ -2896,7 +2903,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadFolder pressed");
                 //File opener: Load folder with images; identical to Menu option Load Directory.
-                files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
             }
         });
         buttonShowImage.setActionCommand("bSI");
@@ -2942,7 +2949,7 @@ private String getSeparatorString() {
                         FMD.showDialog(rootPanel, result);
                         // Very dirty way of getting results from another class to see if we need to relaod the images from the search result
                         if (MyVariables.getreloadImagesFromSearchResult()) {
-                            Utils.loadImages("reloadfromsearchresult", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                            Utils.loadImages("reloadfromsearchresult", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                         }
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, (ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtxt") + " \"" + searchPhrase) + "\".", ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtitle"), JOptionPane.WARNING_MESSAGE);
@@ -3688,6 +3695,10 @@ private String getSeparatorString() {
                 String[] params = whichRBselected();
                 String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                if (!(createPreviewsCheckBox.isSelected())) { //No previews wanted, so only display preview in bottom-left for selected image
+                    Utils.selectedRowForSinglePreview();
+                    Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
+                }
                 int selectedRow = MyVariables.getSelectedRow();
                 File[] files = MyVariables.getLoadedFiles();
                 if (res.startsWith("jExifToolGUI")) {
@@ -3721,7 +3732,7 @@ private String getSeparatorString() {
                     }
                     File[] droppedFilesArray = (File[]) droppedFiles.toArray(new File[droppedFiles.size()]);
                     MyVariables.setLoadedFiles(droppedFilesArray);
-                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     logger.error("Drag drop on rootpanel error {}", ex);
@@ -3959,7 +3970,7 @@ private String getSeparatorString() {
             List<File> filesList = new ArrayList<File>();
             File[] files = CommandLineArguments.ProcessArguments(filesList);
             MyVariables.setLoadedFiles(files);
-            files = Utils.loadImages("commandline", rootPanel, LeftPanel, tableListfiles, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+            files = Utils.loadImages("commandline", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
         }
 
         Utils.checkForNewVersion("startup");
