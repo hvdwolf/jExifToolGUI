@@ -137,12 +137,12 @@ public class PreferencesDialog extends JDialog {
     }
 
     private void getListOfSystemFonts() {
-        //String systemFontList[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        //allSystemFonts.setListData(systemFontList);
-
+        String systemFontList[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        allSystemFonts.setListData(systemFontList);
+        for (int i = 0; i < systemFontList.length; i++) {
+            logger.debug(systemFontList[i]);
+        }
         allSystemFonts.setModel(new AbstractListModel() {
-            String systemFontList[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-
             public int getSize() {
                 return systemFontList.length;
             }
@@ -151,10 +151,8 @@ public class PreferencesDialog extends JDialog {
                 return systemFontList[i];
             }
         });
-        pack();
-        /*for (int i = 0; i < systemFontList.length; i++) {
-            logger.info(systemFontList[i]);
-        }*/
+        allSystemFonts.setVisibleRowCount(-1);
+
     }
 
 
@@ -168,10 +166,17 @@ public class PreferencesDialog extends JDialog {
          *
          * @param e
          */
+
+        @Override
         public void valueChanged(ListSelectionEvent e) {
-            String selectedFontName = String.valueOf(allSystemFonts.getSelectedValue());
-            int selectedFontSize = Integer.parseInt((String) fontSizes.getSelectedValue());
-            userSelectedFont = new Font(selectedFontName, Font.PLAIN, selectedFontSize);
+            if ((String.valueOf(allSystemFonts.getSelectedValue()) == null) || (fontSizes.getSelectedValue() == null)) {
+                setCurrentFont();
+            } else {
+                String selectedFontName = String.valueOf(allSystemFonts.getSelectedValue());
+                int selectedFontSize = Integer.parseInt((String) fontSizes.getSelectedValue());
+                userSelectedFont = new Font(selectedFontName, Font.PLAIN, selectedFontSize);
+            }
+
             showFont();
         }
     }
@@ -190,9 +195,9 @@ public class PreferencesDialog extends JDialog {
      */
     private void setCurrentFont() {
         String userFont = prefs.getByKey(USER_DEFINED_FONT, "sans-serif");
-        //logger.info("USER_DEFINED_FONT {}", userFont);
+        logger.debug("USER_DEFINED_FONT {}", userFont);
         int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
-        //logger.info("USER_DEFINED_FONTSIZE {}", String.valueOf(userFontSize));
+        logger.debug("USER_DEFINED_FONTSIZE {}", String.valueOf(userFontSize));
         userSelectedFont = new Font(userFont, Font.PLAIN, userFontSize);
         allSystemFonts.setSelectedValue(userFont, true);
         fontSizes.setSelectedValue(Integer.toString(userFontSize), true);
@@ -509,7 +514,7 @@ public class PreferencesDialog extends JDialog {
         allSystemFonts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         fontSizes.setModel(new AbstractListModel() {
-            String[] strings = {"10", "12", "14", "16", "18", "20", "22", "24"};
+            String[] strings = {"10", "12", "14", "16", "18", "20", "22", "24", "28", "32", "36"};
 
             public int getSize() {
                 return strings.length;
@@ -521,7 +526,6 @@ public class PreferencesDialog extends JDialog {
         });
         fontSizes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-
         retrievePreferences();
 
         // Add listeners to the font lists
@@ -530,7 +534,6 @@ public class PreferencesDialog extends JDialog {
 
         pack();
         setVisible(true);
-
 
     }
 
@@ -717,13 +720,13 @@ public class PreferencesDialog extends JDialog {
         localecomboBox = new JComboBox();
         panel13.add(localecomboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel14 = new JPanel();
-        panel14.setLayout(new GridLayoutManager(9, 1, new Insets(5, 5, 5, 5), -1, -1));
+        panel14.setLayout(new GridLayoutManager(9, 2, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.system"), panel14);
         final Spacer spacer2 = new Spacer();
-        panel14.add(spacer2, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel14.add(spacer2, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         filechooserpanel = new JPanel();
         filechooserpanel.setLayout(new GridLayoutManager(2, 2, new Insets(5, 5, 5, 5), -1, -1));
-        panel14.add(filechooserpanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel14.add(filechooserpanel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         filechooserpanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label13 = new JLabel();
         this.$$$loadLabelText$$$(label13, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.whichdialog"));
@@ -743,10 +746,10 @@ public class PreferencesDialog extends JDialog {
         filechooserpanel.add(filedialogexplained, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         decimaldegreescheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(decimaldegreescheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.showdecdegrees"));
-        panel14.add(decimaldegreescheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(decimaldegreescheckBox, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loglevelpanel = new JPanel();
         loglevelpanel.setLayout(new GridLayoutManager(2, 3, new Insets(5, 5, 5, 5), -1, -1));
-        panel14.add(loglevelpanel, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel14.add(loglevelpanel, new GridConstraints(6, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         loglevelpanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label14 = new JLabel();
         this.$$$loadLabelText$$$(label14, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.loglevel"));
@@ -770,20 +773,20 @@ public class PreferencesDialog extends JDialog {
         useG1GroupcheckBox = new JCheckBox();
         useG1GroupcheckBox.setSelected(true);
         this.$$$loadButtonText$$$(useG1GroupcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.useg1group"));
-        panel14.add(useG1GroupcheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(useG1GroupcheckBox, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CheckVersioncheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(CheckVersioncheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.checknewversion"));
-        panel14.add(CheckVersioncheckBox, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(CheckVersioncheckBox, new GridConstraints(7, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         preserveModDatecheckBox = new JCheckBox();
         preserveModDatecheckBox.setSelected(true);
         this.$$$loadButtonText$$$(preserveModDatecheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.presmoddate"));
-        panel14.add(preserveModDatecheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(preserveModDatecheckBox, new GridConstraints(5, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sortCatsTagscheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(sortCatsTagscheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.sortcatstags"));
-        panel14.add(sortCatsTagscheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(sortCatsTagscheckBox, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         enableStructCheckBox = new JCheckBox();
         this.$$$loadButtonText$$$(enableStructCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.enablestructs"));
-        panel14.add(enableStructCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel14.add(enableStructCheckBox, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel16 = new JPanel();
         panel16.setLayout(new GridLayoutManager(2, 1, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.lookandfeeltab"), panel16);
@@ -799,28 +802,29 @@ public class PreferencesDialog extends JDialog {
         ExampleColumnImage.setText("");
         panel17.add(ExampleColumnImage, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 300), null, 0, false));
         fontJPanel = new JPanel();
-        fontJPanel.setLayout(new GridLayoutManager(5, 3, new Insets(5, 5, 5, 5), -1, -1));
+        fontJPanel.setLayout(new GridLayoutManager(3, 3, new Insets(5, 5, 5, 5), -1, -1));
         panel16.add(fontJPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 175), null, 0, false));
         fontJPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         fontSizesScrollPane = new JScrollPane();
-        fontJPanel.add(fontSizesScrollPane, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(70, 175), null, 0, false));
+        fontJPanel.add(fontSizesScrollPane, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 125), null, 1, false));
         fontSizes = new JList();
-        fontSizes.setMinimumSize(new Dimension(0, 0));
-        fontSizes.setPreferredSize(new Dimension(0, 0));
+        fontSizes.setMaximumSize(new Dimension(-1, 1000));
+        fontSizes.setMinimumSize(new Dimension(-1, -1));
+        fontSizes.setPreferredSize(new Dimension(40, 200));
         fontSizes.setSelectionMode(0);
         fontSizesScrollPane.setViewportView(fontSizes);
         fontPreview = new JLabel();
-        fontPreview.setText("Pa's wijze lynx bezag vroom het fikse aquaduct");
+        fontPreview.setText("The quick brown fox jumps over the lazy dog");
         fontJPanel.add(fontPreview, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         allFontsScrollPane = new JScrollPane();
         allFontsScrollPane.setVerticalScrollBarPolicy(20);
-        fontJPanel.add(allFontsScrollPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        fontJPanel.add(allFontsScrollPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(400, 125), null, 1, false));
         allSystemFonts = new JList();
-        allSystemFonts.setMaximumSize(new Dimension(-1, -1));
-        allSystemFonts.setMinimumSize(new Dimension(-1, -1));
+        allSystemFonts.setMaximumSize(new Dimension(-1, 100000));
+        allSystemFonts.setMinimumSize(new Dimension(-1, 100));
         allSystemFonts.setPreferredSize(new Dimension(-1, 1000));
         allSystemFonts.setSelectionMode(0);
-        allSystemFonts.setVisibleRowCount(80);
+        allSystemFonts.setVisibleRowCount(8);
         allFontsScrollPane.setViewportView(allSystemFonts);
         buttonDefaultFont = new JButton();
         this.$$$loadButtonText$$$(buttonDefaultFont, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.btndefaultfont"));
