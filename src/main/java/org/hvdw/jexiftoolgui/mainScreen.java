@@ -39,6 +39,8 @@ import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 
@@ -3695,10 +3697,7 @@ private String getSeparatorString() {
                 String[] params = whichRBselected();
                 String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
-                if (!(createPreviewsCheckBox.isSelected())) { //No previews wanted, so only display preview in bottom-left for selected image
-                    Utils.selectedRowForSinglePreview();
-                    Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
-                }
+
                 int selectedRow = MyVariables.getSelectedRow();
                 File[] files = MyVariables.getLoadedFiles();
                 if (res.startsWith("jExifToolGUI")) {
@@ -3712,6 +3711,25 @@ private String getSeparatorString() {
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setselectedIndicesList(selectedIndicesList);
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
+                if (!(createPreviewsCheckBox.isSelected())) { //No previews wanted, so only display preview in bottom-left for selected image
+                    Executor executor = Executors.newSingleThreadExecutor();
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utils.selectedRowForSinglePreview();
+                            Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
+                            Utils.progressStatus(progressBar, false);
+                        }
+                    });
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            progressBar.setVisible(true);
+                            //progressPane(rootPanel, true);
+                        }
+                    });
+                    //Utils.selectedRowForSinglePreview();
+                    //Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
+                }
             }
 
         }

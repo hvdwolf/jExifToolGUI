@@ -30,6 +30,7 @@ public class MyVariables {
     private File CurrentWorkFile;
     private File CurrentFileInViewer;
     private File SinglePreview;
+    private String SinglePreviewFileName;
     private String ExiftoolVersion;
     private List<List> tableRowsCells;
     private List<String> userCombiTableValues;
@@ -118,6 +119,9 @@ public class MyVariables {
 
     public static File getSinglePreview() { return staticInstance.SinglePreview; }
     public static void setSinglePreview(File file) { staticInstance.SinglePreview = file; }
+
+    public static String getSinglePreviewFileName() { return staticInstance.SinglePreviewFileName; }
+    public static void setSinglePreviewFileName( String spfn) { staticInstance.SinglePreviewFileName = spfn; }
 
     public static int[] getSelectedFilenamesIndices() {
         return Arrays.copyOf(staticInstance.selectedFilenamesIndices, staticInstance.selectedFilenamesIndices.length);

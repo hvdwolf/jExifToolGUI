@@ -746,6 +746,7 @@ public class Utils {
             if (loadOptions[1].isSelected()) { //User wants metadata which means we don't have to show it here
                 previewTable.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
                 previewTableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.filename")});
+                previewTable.setRowHeight(160);
             } else {
                 previewTableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
                 previewTable.getColumnModel().getColumn(0).setPreferredWidth(170);
@@ -808,14 +809,15 @@ public class Utils {
                     boolean showCreatePreview = loadOptions[0].isSelected();
                     boolean loadMetadata = loadOptions[1].isSelected();
                     for (File file : files) {
+                        filename = file.getName().replace("\\", "/");
                         // Simple way to get image folder from first loaded image
                         if (loopcounter == 0) {
                             lblimgSourceFolder.setText(file.getParent());
                             firstFile = file;
                             MyVariables.setSinglePreview(file);
+                            MyVariables.setSinglePreviewFileName(filename);
                             loopcounter++;
                         }
-                        filename = file.getName().replace("\\", "/");
                         logger.debug("Checking on extension for JPG extraction on image: " +filename);
                         String filenameExt = Utils.getFileExtension(filename);
                         if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
@@ -829,7 +831,7 @@ public class Utils {
 
                     Utils.displayFiles(tableListfiles, LeftPanel, showCreatePreview, loadMetadata);
 
-                    // After loading all display the data for the first image
+                    // After loading all, display the data for the first image
                     MyVariables.setSelectedRow(0);
                     String res = getImageInfoFromSelectedFile(params);
                     displayInfoForSelectedImage(res, ListexiftoolInfotable);
@@ -845,7 +847,6 @@ public class Utils {
 
                     // Check whether the users wants to see previews when loading. If not display the preview of the first loaded image
                     if ( !(loadOptions[0].isSelected()) ) { //No previews, so single preview in bottom-left pane
-                        boolean singlePreview = true;
                         displaySinglePreview(previewTable, loadMetadata);
                     }
 
@@ -1003,7 +1004,7 @@ public class Utils {
         List<Integer> selectedIndicesList = MyVariables.getselectedIndicesList();
         File[] files = MyVariables.getLoadedFiles();
 
-        if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
+        if ( !(selectedIndicesList == null) && (selectedIndicesList.size() < 2) ) { //Meaning we have only one image selected
             logger.debug("selectedRow: {}", String.valueOf(selectedRow));
             if (isOsFromMicrosoft()) {
                 fpath = files[selectedRow].getPath().replace("\\", "/");
@@ -1025,6 +1026,7 @@ public class Utils {
         ImageIcon icon = null;
         File[] files = MyVariables.getLoadedFiles();
         File file = MyVariables.getSinglePreview();
+        String filename = MyVariables.getSinglePreviewFileName();
 
         DefaultTableModel previewTablemodel = (DefaultTableModel) previewTable.getModel();
         previewTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
@@ -1050,11 +1052,12 @@ public class Utils {
         previewTablemodel.setRowCount(0);
         previewTable.setRowHeight(160);
         Object[] ImgFilenameRow = new Object[2];
-        String filename = "";
-        //previewTablemodel.setCellSelectionEnabled(true);
+
+        icon = ImageFunctions.analyzeImageAndCreateIcon(file);
         if (loadMetadata) { //means we have it in the big table, we don't need it here
             ImgFilenameRow[0] = new LabelIcon(icon, filename);
         } else {
+            //ImageFunctions.getbasicImageData(file);
             String imginfo = returnBasicImageDataString(filename, "html");
             logger.debug("imginfo {}", imginfo);
             ImgFilenameRow[0] = icon;
@@ -1069,16 +1072,15 @@ public class Utils {
 
         Application.OS_NAMES currentOsName = getCurrentOsName();
         filename = file.getName().replace("\\", "/");
-        logger.debug("Now working on image: " +filename);
+        logger.debug("Now working on image: " + filename);
 
         if (!(loadMetadata)) {
             ImageFunctions.getbasicImageData(file);
         }
-        icon = ImageFunctions.analyzeImageAndCreateIcon(file);
 
         if (loadMetadata) { //means we have it in the big table, we don't need it here
             ImgFilenameRow[0] = new LabelIcon(icon, filename);
-        } else {
+        } else { //If not, we will need it in the single preview
             String imginfo = returnBasicImageDataString(filename, "html");
             logger.debug("imginfo {}", imginfo);
             ImgFilenameRow[0] = icon;
