@@ -194,31 +194,31 @@ However, as it is a java Swing cross-platform program it should run fine on MacO
 On Linux you can also use the version belonging to your distribution.
 
 <p>
-<strong>Universal jar</strong>
-<ul><li>jExifToolGUI.jar: Just the bare jExifToolGUI.jar containing all dependencies. You need to have java version 8 (1.8) or newer installed on your system.<br>Start from a terminal with <tt>java -jar jExifToolGUI.jar &</tt>.
+<h3>Universal jar</h3>
+<ul><li><strong>jExifToolGUI.jar</strong>: Just the bare jExifToolGUI.jar containing all dependencies. You need to have java version 8 (1.8) or newer installed on your system.<br>Start from a terminal with <tt>java -jar jExifToolGUI.jar &</tt>.
     This version should run on any system that comes included with java 8 or newer, or where you can install java 8 or newer. (Windows/Linux/MacOS (BSD*unix)/Solaris/AIX/HP*UX etc.)</li></ul>
 
-<p><strong>Windows:</strong>
-<ul><li>jExifToolGUI-&lt;<i>version</i>&gt;-win-x86_64_with-jre.zip: A windows 64-bit executable including java V11. Unzip with paths!</li>
-<li>jExifToolGUI-&lt;<i>version</i>&gt;-win-x86_64.zip: A windows 32/64 bit executable without java. You need java 8 (1.8) or newer installed on your system.<br><br>
+<p><h3>Windows:</h3>
+<ul><li><strong>jExifToolGUI-&lt;<i>version</i>&gt;-win-x86_64_with-jre.zip</strong>: A windows 64-bit executable including java V11. Unzip with paths!</li>
+<li><strong>jExifToolGUI-&lt;<i>version</i>&gt;-win-x86_64.zip</strong>: A windows 32/64 bit executable without java. You need java 8 (1.8) or newer installed on your system.<br><br>
 Both versions do not come with installers. Simply unzip (with paths) to a folder of your liking and optionally create a shortcut on your desktop.<br>Remember to always rename the (unzipped) <tt>exiftool(-k).exe</tt> to <tt>exiftool.exe</tt>.</li></ul>
 
-<p><strong>MacOS:</strong>
-<ul><li>jExifToolGUI-x86_64-macos-&lt;<i>version</i>&gt;-with_jre.dmg.zip: A MacOS bundle including java V11. Note: Apple is very unfriendly to non-Apple stuff like java/perl and other software. This bundle IS a working Apple bundle but not entirely according Apple standards.</li>
-<li>jExifToolGUI-x86_64-macos-&lt;<i>version</i>&gt;.dmg: A MacOS bundle without java. You need java 8 (1.8) or newer installed on your system.<br><br>
+<p><h3>MacOS:</h3>
+<ul><li><strong>jExifToolGUI-x86_64-macos-&lt;<i>version</i>&gt;-with_jre.dmg.zip</strong>: A MacOS bundle including java V11. Note: Apple is very unfriendly to non-Apple stuff like java/perl and other software. This bundle IS a working Apple bundle but not entirely according Apple standards.</li>
+<li><strong>jExifToolGUI-x86_64-macos-&lt;<i>version</i>&gt;.dmg</strong>: A MacOS bundle without java. You need java 8 (1.8) or newer installed on your system.<br><br>
 These are MacOS Application bundles. In case of the full version you first need to unzip it to get the dmg file. Open the dmg (by double-clicking it) and select it from the left navigation panel in your Finder where it will appear as a "virtual disk" (DMG Files are Mac-formatted Disk Image Files). Drag the "jExifToolGUI.app" bundle from the dmg into a folder of your liking where <i>Applications</i> is the most logical one.<br>
 <i><b>Note:</b> MacOS (the Gatekeeper software) does normally not allow applications to be started that do not originate from the AppStore or come from an "unidentified" developer (me). You need to add jExifToolGUI to the "list of exceptions". That is actually very simple. See <a href="https://support.apple.com/guide/mac-help/if-an-app-is-not-from-the-mac-app-store-mh40620/mac" target=_blank>Apple support</a></i></li></ul>
     
-<p><strong>Linux</strong>
-<ul><li>jexiftoolgui-&lt;<i>version</i>&gt;.deb: a Linux .deb package. For all Debian based systems (Debian/Ubuntu/Mint/MX Linux/Raspbian etc. etc.). This is a linux multi-architecture version as the relevant java V11 version for your system/architecture (x64, i32, aarch64, arm32, etc.) will be downloaded as dependency.<br>
-    Use <tt>sudo dpkg -i jexiftoolgui-&lt;<i>version</i>&gt;.deb</tt> to install. As of that moment it will also appear in your menu.</li>
+<p><h3>Linux</h3>
+<ul><li><strong>jexiftoolgui-&lt;<i>version</i>&gt;.deb</strong>: a Linux .deb package. For all Debian based systems (Debian/Ubuntu/Mint/MX Linux/Raspbian etc. etc.). This is a linux multi-architecture version as the relevant java V11 version for your system/architecture (x64, i32, aarch64, arm32, etc.) will be downloaded as dependency.<br>
+    Use <tt>sudo dpkg -i jexiftoolgui-&lt;<i>version</i>&gt;.deb</tt> to install. As of that moment it will also appear in your menu.<br>Note: You might encounter installation errors mentioning something like "unsatisfied dependencies" or "required dependencies". After the "dpkg -i" command, enter the command <tt>sudo apt-get -f install</tt>, which will install the necessary dependencies like sqlite3, java and exiftool</li>
 <li>jExifToolGUI-&lt;<i>version</i>&gt;-x86_64.AppImage: Linux universal Appimage including java V11. Runs on every 64bit intel Linux system (and also inside Chromebook Linux beta).<br>
     Simpy do a <tt>chmod +x jExifToolGUI-&lt;<i>version</i>&gt;-x86_64.AppImage</tt> and start with <tt>./jExifToolGUI-&lt;<i>version</i>&gt;-x86_64.AppImage &</tt>.</li></ul>
 
 <p><a name="UnInstall"></a>
 <h3 class="section">2.1 Uninstall</h3>
 <p>If you use the deb package on any Debian/Ubuntu like Linux OS, you can use apt-get or dpkg to uninstall it.<br>
-All other versions: be it the MacOS bundles, or windows .exes or linux appImage can simply be deleted.<br>
+All other versions: The MacOS bundles, the windows .exes or the inux appImage can simply be deleted.<br>
 <ul><li>User data and program data: In your home/user folder, you will find a folder <tt>jexiftoolgui_data</tt>. Simply remove that folder.</li>
     <li>Logs:</li>jar/Windows exe/appImage: In the same folder where your run the application you will find a folder <tt>logs</tt>. Simply delete that one.<br>
     For the MacOS bundles and the jexiftoolgui.deb, the logs are written to folder <tt>logs</tt> inside your user/home folder. Simply delete the logs folder.</li></ul>
