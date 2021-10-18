@@ -751,7 +751,12 @@ public class Utils {
                 previewTableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
                 previewTable.getColumnModel().getColumn(0).setPreferredWidth(170);
                 previewTable.getColumnModel().getColumn(1).setPreferredWidth(250);
-                previewTable.setRowHeight(160);
+                //previewTable.setRowHeight(160);
+                // Now set rowheight depending on font size
+                int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
+                int rowHeight = (int) Math.round( ( (double) userFontSize / (double) 12 * (double) 150 ) );  // 160 is my original row height based on fontsize 12
+                logger.info("userfontsize {}; rijhoogte {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
+                previewTable.setRowHeight(rowHeight);
             }
             previewTableModel.setRowCount(0);
         }
@@ -941,7 +946,12 @@ public class Utils {
             model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
             jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
             jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(250);
-            jTable_File_Names.setRowHeight(150);
+            //jTable_File_Names.setRowHeight(150);
+            // Now set rowheight depending on font size
+            int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
+            int rowHeight = (int) Math.round( (double) userFontSize / (double) 12 * (double) 150 );  // 150 is my original row height based on fontsize 12
+            logger.info("userfontsize {}; rijhoogte {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
+            jTable_File_Names.setRowHeight(rowHeight);
             LeftPanel.setPreferredSize(new Dimension(440, -1));
         }
 
@@ -1050,7 +1060,7 @@ public class Utils {
             }
         });
         previewTablemodel.setRowCount(0);
-        previewTable.setRowHeight(160);
+        //previewTable.setRowHeight(160);
         Object[] ImgFilenameRow = new Object[2];
 
         icon = ImageFunctions.analyzeImageAndCreateIcon(file);
@@ -1435,6 +1445,11 @@ public class Utils {
         ListexiftoolInfotable.getColumnModel().getColumn(0).setPreferredWidth(100);
         ListexiftoolInfotable.getColumnModel().getColumn(1).setPreferredWidth(260);
         ListexiftoolInfotable.getColumnModel().getColumn(2).setPreferredWidth(440);
+        // Now set rowheight depending on font size
+        int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
+        int rowHeight = (int) Math.round( (double) 1 + ( (double) userFontSize / (double) 12 * (double) 16 ) );  // 16 is my original row height based on fontsize 12
+        logger.info("userfontsize {}; rijhoogte {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
+        ListexiftoolInfotable.setRowHeight(rowHeight);
         model.setRowCount(0);
 
         Object[] row = new Object[1];
