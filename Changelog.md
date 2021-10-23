@@ -13,7 +13,7 @@
 * Add vrae config and vrae custom metadataset
 * Display filename/path above metadata panel
 * Add menu option for "set file date to create date" for mp4/mov movieclips
-* [MacOS] Fix ["issue #118"](https://github.com/hvdwolf/jExifToolGUI/issues/170): "sips conversion of heic images". Only the first occurrence of multiple spaces in path/filename were escaped.
+* [MacOS] Fix ["issue #118"](https://github.com/hvdwolf/jExifToolGUI/issues/118): "sips conversion of heic images". Only the first occurrence of multiple spaces in path/filename were escaped.
 * Updated splash logo to display Exif, GPS and XMP in uppercase instead of Exif, gps and xmp.
 * Fix null pointer assignment in geotagging
 * Fix Set to DateTimeOriginal: spaces in exiftool path caused error
