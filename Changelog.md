@@ -1,6 +1,28 @@
 # Changelog
 
 
+## 2021-10-22 1.9.0
+* DROP SUPPORT FOR JAVA-8. java-8 does not support tiff. I used an external lib (twelvemonkeys) to support tif, but twelvemonkeys also moves on and tiff support using java-8 gets more and more cumbersome. Java-11 and up supports tiff out of the box. Dropping Twelvemonkeys also means that pgm/pict/tga is no longer supported (but who uses that anyway).
+* ["feature request" #156](https://github.com/hvdwolf/jExifToolGUI/issues/156): Create setting where users can define their own font and font size for the application to accomodate higher (hdpi) resolutions.
+* ["feature request" #117](https://github.com/hvdwolf/jExifToolGUI/issues/117): Option to "switch of" thumbnail generation and metadata reading when loading images. This can speed up the image loading 400% to almost instantly. When switching off "Create previews", always one preview is created in the bottom-left. Either the first of the loaded set, or the image selected from the list.
+* Added option in the "Export/Import" pane and the "Exiftool Commands" pane to specify a folder instead of loading previews. Especially when dealing with large amounts of images, this is really fast when comparing it with first loading the images, creating previews. Next to that: some exiftool commands work faster when done on a folder in comparison to "image by image".
+* Display the source folder in the bottom notification bar. It already displayed the number of loaded files. It now displays the folder as well. Note: This will not work correctly when dropping files from multiple folders on the program, or specifying multiple folders/files on the command line.
+* Support fast-scaling when resizing. As java-8 is no longer supported I can use higher level image resizing/rescaling functionality. This should give some 5-15% performance improvement on loading.
+* Support for photoshop thumbnails added. Photoshop tiffs containing these thumbnails now load the preview at least 25~50x faster (because we no longer need to resize the entire sometimes 45+ MB image).
+* Search in metadata of loaded images (added a magnifying glass button). You can search on tag and on value. Images that contain search results can be reloaded.
+* Add vrae config and vrae custom metadataset
+* Display filename/path above metadata panel
+* Add menu option for "set file date to create date" for mp4/mov movieclips
+* [MacOS] Fix ["issue #118"](https://github.com/hvdwolf/jExifToolGUI/issues/170): "sips conversion of heic images". Only the first occurrence of multiple spaces in path/filename were escaped.
+* Updated splash logo to display Exif, GPS and XMP in uppercase instead of Exif, gps and xmp.
+* Fix null pointer assignment in geotagging
+* Fix Set to DateTimeOriginal: spaces in exiftool path caused error
+* Fix ["issue" #110](https://github.com/hvdwolf/jExifToolGUI/issues/110) (windows): If PATH contains multiple exiftool versions, jExifToolGUI crashes. Fixed now.
+* Fix ["issue" #116](https://github.com/hvdwolf/jExifToolGUI/issues/116) (windows): ExifTool command will not run if exiftool.exe directory contains a space.
+* ["issue" #100](https://github.com/hvdwolf/jExifToolGUI/issues/100): Add "-m" parameter to Edit->GPS tab to allow for longer than 32 character strings for IPTC. Make it checked by default.
+* ["feature request" #124](https://github.com/hvdwolf/jExifToolGUI/issues/124): Convenient localization (translation) using Weblate
+* GPS: Add "Add location to makernotes". Many camera's have location,country,state,city as makernotes. Exiftool will automatically put it in the correct Panasonic/Canon/Nikon/etcetera tags.
+
 ## 2020-12-09 1.8.1
 * [issue #99](https://github.com/hvdwolf/jExifToolGUI/issues/99): 3 issues > GPS edition.
 * [issue #98](https://github.com/hvdwolf/jExifToolGUI/issues/98): Focal length in 35 mm shown as null. Fixed for cameras that do not provide the "FocalLengthIn35mmFormat". All cameras provide the "ScaleFactor35efl". Combined with the "FocalLength" one can calculate the "FocalLengthIn35mmFormat".

@@ -3711,20 +3711,17 @@ private String getSeparatorString() {
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setselectedIndicesList(selectedIndicesList);
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
-                if (!(createPreviewsCheckBox.isSelected())) { //No previews wanted, so only display preview in bottom-left for selected image
+                //No previews wanted, so only display preview in bottom-left for selected image
+                // and prevent 2nd event trigger
+                if ( (!(createPreviewsCheckBox.isSelected())) && (!e.getValueIsAdjusting()) ) {
+                    Utils.selectedRowForSinglePreview();
                     Executor executor = Executors.newSingleThreadExecutor();
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            Utils.selectedRowForSinglePreview();
+                            //Utils.selectedRowForSinglePreview();
                             Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
-                            Utils.progressStatus(progressBar, false);
-                        }
-                    });
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            progressBar.setVisible(true);
-                            //progressPane(rootPanel, true);
+                            //Utils.progressStatus(progressBar, false);
                         }
                     });
                     //Utils.selectedRowForSinglePreview();
