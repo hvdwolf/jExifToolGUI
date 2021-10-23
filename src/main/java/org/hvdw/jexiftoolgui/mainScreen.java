@@ -3714,18 +3714,14 @@ private String getSeparatorString() {
                 //No previews wanted, so only display preview in bottom-left for selected image
                 // and prevent 2nd event trigger
                 if ( (!(createPreviewsCheckBox.isSelected())) && (!e.getValueIsAdjusting()) ) {
-                    Utils.selectedRowForSinglePreview();
                     Executor executor = Executors.newSingleThreadExecutor();
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            //Utils.selectedRowForSinglePreview();
+                            Utils.selectedRowForSinglePreview();
                             Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
-                            //Utils.progressStatus(progressBar, false);
                         }
                     });
-                    //Utils.selectedRowForSinglePreview();
-                    //Utils.displaySinglePreview(previewTable, loadMetadataCheckBox.isSelected());
                 }
             }
 
