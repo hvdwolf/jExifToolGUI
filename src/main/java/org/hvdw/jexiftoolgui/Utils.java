@@ -755,7 +755,7 @@ public class Utils {
                 // Now set rowheight depending on font size
                 int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
                 int rowHeight = (int) Math.round( ( (double) userFontSize / (double) 12 * (double) 150 ) );  // 160 is my original row height based on fontsize 12
-                logger.info("userfontsize {}; rijhoogte {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
+                //logger.debug("userfontsize {}; rowheight{}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
                 previewTable.setRowHeight(rowHeight);
             }
             previewTableModel.setRowCount(0);
@@ -950,7 +950,7 @@ public class Utils {
             // Now set rowheight depending on font size
             int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
             int rowHeight = (int) Math.round( (double) userFontSize / (double) 12 * (double) 150 );  // 150 is my original row height based on fontsize 12
-            logger.info("userfontsize {}; rijhoogte {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
+            //logger.debug("userfontsize {}; rowheight {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
             jTable_File_Names.setRowHeight(rowHeight);
             LeftPanel.setPreferredSize(new Dimension(440, -1));
         }
@@ -1059,21 +1059,10 @@ public class Utils {
                 }
             }
         });
-        previewTablemodel.setRowCount(0);
-        //previewTable.setRowHeight(160);
+
         Object[] ImgFilenameRow = new Object[2];
 
         icon = ImageFunctions.analyzeImageAndCreateIcon(file);
-        if (loadMetadata) { //means we have it in the big table, we don't need it here
-            ImgFilenameRow[0] = new LabelIcon(icon, filename);
-        } else {
-            //ImageFunctions.getbasicImageData(file);
-            String imginfo = returnBasicImageDataString(filename, "html");
-            logger.debug("imginfo {}", imginfo);
-            ImgFilenameRow[0] = icon;
-            ImgFilenameRow[1] = imginfo;
-        }
-        previewTablemodel.addRow(ImgFilenameRow);
 
         previewTablemodel.setRowCount(0);
         previewTablemodel.fireTableDataChanged();
@@ -1448,7 +1437,7 @@ public class Utils {
         // Now set rowheight depending on font size
         int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
         int rowHeight = (int) Math.round( (double) 1 + ( (double) userFontSize / (double) 12 * (double) 16 ) );  // 16 is my original row height based on fontsize 12
-        logger.info("userfontsize {}; rijhoogte {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
+        //logger.debug("userfontsize {}; rowheight {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
         ListexiftoolInfotable.setRowHeight(rowHeight);
         model.setRowCount(0);
 

@@ -53,7 +53,7 @@ public class ImageFunctions {
 
         try {
             who = CommandRunner.runCommand(cmdparams);
-            logger.trace("res is {}", who);
+            logger.debug("res is {}", who);
         } catch (IOException | InterruptedException ex) {
             logger.error("Error executing command", ex);
         }
