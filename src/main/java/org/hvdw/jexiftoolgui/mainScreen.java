@@ -426,6 +426,8 @@ public class mainScreen {
     private JRadioButton radioButtonOther;
     private JCheckBox gpsmakernotescheckBox;
     private JTable previewTable;
+    private JPanel gpsButtonPanel3;
+    private JButton gpssearchLocationButtonCoordinates;
     private JLabel expPdffolderBrowseLabel;
     private JLabel expSDEfolderBrowseLabel;
     private ImageIcon icon;
@@ -1248,10 +1250,10 @@ private String getSeparatorString() {
         final Spacer spacer2 = new Spacer();
         panel9.add(spacer2, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel10 = new JPanel();
-        panel10.setLayout(new GridLayoutManager(2, 1, new Insets(5, 5, 5, 5), -1, -1));
+        panel10.setLayout(new GridLayoutManager(3, 1, new Insets(5, 5, 5, 5), -1, -1));
         panel9.add(panel10, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         gpsButtonPanel = new JPanel();
-        gpsButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        gpsButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         panel10.add(gpsButtonPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         gpsCopyFrombutton = new JButton();
         this.$$$loadButtonText$$$(gpsCopyFrombutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.copyfrom"));
@@ -1263,20 +1265,26 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(gpsBackupOriginalscheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "chkbox.makebackup"));
         gpsButtonPanel.add(gpsBackupOriginalscheckBox);
         gpsButtonPanel2 = new JPanel();
-        gpsButtonPanel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel10.add(gpsButtonPanel2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        gpsButtonPanel2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel10.add(gpsButtonPanel2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         gpsResetFieldsbutton = new JButton();
         this.$$$loadButtonText$$$(gpsResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         gpsButtonPanel2.add(gpsResetFieldsbutton);
-        gpssearchLocationButton = new JButton();
-        this.$$$loadButtonText$$$(gpssearchLocationButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.searchbtn"));
-        gpsButtonPanel2.add(gpssearchLocationButton);
         gpsMapcoordinatesbutton = new JButton();
         this.$$$loadButtonText$$$(gpsMapcoordinatesbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnopenmapcoords"));
         gpsButtonPanel2.add(gpsMapcoordinatesbutton);
         gpsHelpbutton = new JButton();
         this.$$$loadButtonText$$$(gpsHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         gpsButtonPanel2.add(gpsHelpbutton);
+        gpsButtonPanel3 = new JPanel();
+        gpsButtonPanel3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panel10.add(gpsButtonPanel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        gpssearchLocationButton = new JButton();
+        this.$$$loadButtonText$$$(gpssearchLocationButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.searchbtn"));
+        gpsButtonPanel3.add(gpssearchLocationButton);
+        gpssearchLocationButtonCoordinates = new JButton();
+        this.$$$loadButtonText$$$(gpssearchLocationButtonCoordinates, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.searchbycoordsbtn"));
+        gpsButtonPanel3.add(gpssearchLocationButtonCoordinates);
         geoformattabbedPane = new JTabbedPane();
         panel9.add(geoformattabbedPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(600, 200), new Dimension(600, -1), 0, false));
         final JPanel panel11 = new JPanel();
@@ -1387,10 +1395,10 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(SaveLatLonAltcheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.savella"));
         panel9.add(SaveLatLonAltcheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblNominatimSearch = new JLabel();
-        this.$$$loadLabelText$$$(lblNominatimSearch, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.searchtxt"));
+        lblNominatimSearch.setText("gps.searchtxt text string");
         panel9.add(lblNominatimSearch, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblMapcoordinates = new JLabel();
-        this.$$$loadLabelText$$$(lblMapcoordinates, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.extsearch"));
+        lblMapcoordinates.setText("gps.extsearch translated strings");
         panel9.add(lblMapcoordinates, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         GeotaggingEditpanel = new JPanel();
         GeotaggingEditpanel.setLayout(new GridLayoutManager(8, 1, new Insets(10, 20, 10, 20), -1, -1));
@@ -3141,7 +3149,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button gpsSearchLocationbutton pressed");
                 JxMapViewer JMV = new JxMapViewer();
-                Map<String, String> place = JMV.showDialog();
+                Map<String, String> place = JMV.showDialog( ""); // Search using empty fields
                 if (!"empty".equals(place.get("empty"))) {
                     gpsLatDecimaltextField.setText(place.get("geoLatitude"));
                     gpsLonDecimaltextField.setText(place.get("geoLongitude"));
@@ -3182,6 +3190,61 @@ private String getSeparatorString() {
                 }
             }
         });
+
+        gpssearchLocationButtonCoordinates.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String coordinates = "";
+                logger.debug("button gpsSearchLocationbutton pressed");
+                if ( (gpsLatDecimaltextField.getText()==null) || ("".equals(gpsLatDecimaltextField.getText())) ||
+                     (gpsLonDecimaltextField.getText()==null) || ("".equals(gpsLonDecimaltextField.getText())) ) {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("gps.nocoordinatestxt")), ResourceBundle.getBundle("translations/program_strings").getString("gps.nocoordinates"), JOptionPane.WARNING_MESSAGE);
+                } else {
+                    coordinates = gpsLatDecimaltextField.getText() + ", " + gpsLonDecimaltextField.getText();
+                }
+                JxMapViewer JMV = new JxMapViewer();
+                Map<String, String> place = JMV.showDialog(coordinates); // Search using empty fields
+                if (!"empty".equals(place.get("empty"))) {
+                    gpsLatDecimaltextField.setText(place.get("geoLatitude"));
+                    gpsLonDecimaltextField.setText(place.get("geoLongitude"));
+                    gpsStateProvincetextField.setText(place.get("state"));
+                    gpsCountrytextField.setText(place.get("country"));
+                    gpsLocationtextField.setText(place.get("display_Name"));
+                    if (!(place.get("city") == null)) {
+                        gpsCitytextField.setText(place.get("city"));
+                    } else if (!(place.get("town") == null)) {
+                        gpsCitytextField.setText(place.get("town"));
+                    } else if (!(place.get("village") == null)) {
+                        gpsCitytextField.setText(place.get("village"));
+                    } else if (!(place.get("hamlet") == null)) {
+                        gpsCitytextField.setText(place.get("hamlet"));
+                    } else if (!(place.get("isolated_dwelling") == null)) {
+                        gpsCitytextField.setText(place.get("isolated_dwelling"));
+                    }
+                }
+                // Now do the dec-min-sec fields
+                String[] dmsLat = EGPSd.decDegToDegMinSec(place.get("geoLatitude"));
+                CalcLatDegtextField.setText(dmsLat[0]);
+                CalcLatMintextField.setText(dmsLat[1]);
+                CalcLatSectextField.setText(dmsLat[2]);
+                if (place.get("geoLatitude").startsWith("-")) {
+                    // Negative means South
+                    CalcSouthRadioButton.setSelected(true);
+                } else {
+                    CalcNorthRadioButton.setSelected(true);
+                }
+                String[] dmsLon = EGPSd.decDegToDegMinSec(place.get("geoLongitude"));
+                CalcLonDegtextField.setText(dmsLon[0]);
+                CalcLonMintextField.setText(dmsLon[1]);
+                CalcLonSectextField.setText(dmsLon[2]);
+                if (place.get("geoLongitude").startsWith("-")) {
+                    CalcWestRadioButton.setSelected(true);
+                } else {
+                    CalcEastradioButton.setSelected(true);
+                }
+            }
+        });
+
 
         gpsHelpbutton.addActionListener(gal);
         gpsHelpbutton.setActionCommand("gpsHb");

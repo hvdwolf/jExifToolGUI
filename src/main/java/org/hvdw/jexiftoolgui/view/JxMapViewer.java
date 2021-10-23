@@ -266,7 +266,7 @@ public class JxMapViewer extends JDialog {
             MyVariables.setLatitude(String.valueOf(latitude));
             MyVariables.setLongitude(String.valueOf(longitude));
         }
-        
+
         GeoPosition newPos = new GeoPosition(latitude, longitude);
         GeoPosition newXPos = new GeoPosition(xLatitude, xLongitude);
         addWaypoint(newPos);
@@ -463,10 +463,11 @@ public class JxMapViewer extends JDialog {
     }
 
     // The  main" function of this class
-    public Map<String, String> showDialog() {
-    //public String[] showDialog() {
+    public Map<String, String> showDialog(String coordinates) {
+        //public String[] showDialog() {
         //JxMapViewer2 dialog = new JxMapViewer2();
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("mpv.title"));
+        SearchtextField.setText(coordinates);
         pack();
         double x = getParent().getBounds().getCenterX();
         double y = getParent().getBounds().getCenterY();
