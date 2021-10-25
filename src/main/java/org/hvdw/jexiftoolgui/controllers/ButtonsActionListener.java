@@ -60,15 +60,6 @@ public class ButtonsActionListener implements ActionListener {
                 logger.debug("button buttonShowImage pressed");
                 Utils.displaySelectedImageInExternalViewer();
                 break;
-            /*case "bCo":
-                logger.info("buttonCompare pressed");
-                selectedIndicesList = MyVariables.getselectedIndicesList();
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    CompareImages.CompareImages(selectedIndicesList);
-                }else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                }
-                break; */
             case "CommandshB":
                 logger.debug("button CommandshelpButton pressed");
                 WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommands"), 700, 550);
@@ -109,14 +100,6 @@ public class ButtonsActionListener implements ActionListener {
             case "sPHb":
                 logger.debug("button stringPlusHelpbutton pressed");
                 break;
-/*            case "edbHb":
-                logger.debug("button edbHelpbutton pressed");
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
-                break; */
-/*            case "bDBb":
-                logger.debug("button buttonDBdiagram pressed");
-                DBP.DisplayDiagram();
-                break; */
             case "CommandsclearPSFB":
                 logger.debug("button CommandsclearParameterSFieldButton pressed");
                 CommandsParameterstextField.setText("");
@@ -148,18 +131,6 @@ public class ButtonsActionListener implements ActionListener {
                     geotaggingGPSLogtextField.setText(TrackFile);
                 }
                 break;
-/*            case "SQb":
-                logger.debug("button SaveQuerybutton pressed");
-                if (sqlQuerytextField.getText().length()>0) {
-                    AddFav.showDialog(rootPanel, "DB_query", sqlQuerytextField.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, "No query given", "No query", JOptionPane.WARNING_MESSAGE);
-                }
-                break; */
-/*            case "lQb":
-                logger.debug("button loadQuerybutton pressed");
-                DBP.LoadQueryFavorite(rootPanel,sqlQuerytextField);
-                break; */
             case "udcCNB":
                 logger.debug("button udcCreateNewButton pressed");
                 MD.showDialog(rootPanel);
@@ -176,9 +147,6 @@ public class ButtonsActionListener implements ActionListener {
             case "sidecarhelp":
                 Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
                 break;
-            /*case "SearchMetadata":
-                SMD.displayDialog(rootPanel);
-                break;*/
             case "expIFb":
                 logger.debug("button ExpBrowseButton pressed");
                 ImgPath = SFIO.getImagePath(rootPanel);

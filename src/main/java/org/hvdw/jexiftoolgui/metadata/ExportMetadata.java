@@ -25,12 +25,6 @@ public class ExportMetadata {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(ExportMetadata.class);
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
-    /*
-    if (("".equals(geotaggingImgFoldertextField.getText())) && (!images_selected)) { // Empty folder string and no files selected
-        JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 350, ResourceBundle.getBundle("translations/program_strings").getString("rph.noimgsnopathtext")), ResourceBundle.getBundle("translations/program_strings").getString("rph.noimgsnopathtitle"), JOptionPane.WARNING_MESSAGE);
-    } else {
-
-    } */
     public static void writeExport(JPanel rootPanel, JRadioButton[] GeneralExportRadiobuttons, JCheckBox[] GeneralExportCheckButtons, JComboBox exportUserCombicomboBox, JProgressBar progressBar, String ExpImgFoldertextField, boolean includeSubFolders) {
         boolean atLeastOneSelected = false;
         final BufferedWriter[] writer = new BufferedWriter[1];
@@ -128,8 +122,7 @@ public class ExportMetadata {
                         params.add("-" + customTag);
                     }
                 }
-                //String[] tmpArray = new String[tmpparams.size()];
-                //params = tmpparams.toArray(tmpArray);
+
                 logger.debug("custom tags for export: {}", params.toString());
             }
             Message.append("<html>" + ResourceBundle.getBundle("translations/program_strings").getString("emd.askusercombi") + "<br>");
@@ -519,22 +512,17 @@ public class ExportMetadata {
                         cmdparams.add(pathwithoutextension + "." + export_extension);
                     } else {
                         pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
-                        //cmdparams.add(files[index].getPath().replaceAll(" ", "\\ "));
-                        //cmdparams.add("\"" + files[index].getPath() + "\"");
                         cmdparams.add(files[index].getPath());
                         commandstring += files[index].getPath().replaceAll(" ", "\\ ");
                         cmdparams.add("-all:all");
                         if (!"exif".equals(export_extension)) {
                             cmdparams.add("-icc_profile");
                         }
-                        //cmdparams.add((pathwithoutextension + "." + export_extension).replace(" ", "\\ "));
-                        //cmdparams.add("\"" + (pathwithoutextension + "." + export_extension) + "\"");
                         cmdparams.add((pathwithoutextension + "." + export_extension));
                     }
                     // export metadata
                     logger.info(logstring, cmdparams);
                     CommandRunner.runCommandWithProgressBar(cmdparams, progressBar, "off");
-                    //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
                 }
                 JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
             }
@@ -589,7 +577,6 @@ public class ExportMetadata {
             } else {
                 for (int index : selectedIndices) {
                     commandstring = "";
-                    //logger.info("index: {}  image path: {}", index, files[index].getPath());
                     cmdparams = new ArrayList<String>();
                     ; // initialize on every file
                     cmdparams.add(Utils.platformExiftool());
@@ -598,7 +585,6 @@ public class ExportMetadata {
                     if (preserveModifyDate) {
                         cmdparams.add("-preserve");
                     }
-                    //cmdparams.add("-overwrite_original");
                     cmdparams.add("-tagsfromfile");
                     commandstring += " -tagsfromfile ";
 
@@ -614,21 +600,18 @@ public class ExportMetadata {
                         commandstring += pathwithoutextension + ".xmp";
                     } else {
                         pathwithoutextension = Utils.getFilePathWithoutExtension(files[index].getPath());
-                        //cmdparams.add(files[index].getPath().replace(" ", "\\ "));
                         cmdparams.add(files[index].getPath());
                         commandstring += files[index].getPath().replaceAll(" ", "\\ ");
                         if (choice == 1) {
                             cmdparams.add("-xmp");
                             commandstring += " -xmp ";
                         }
-                        //cmdparams.add((pathwithoutextension + ".xmp").replace(" ", "\\ "));
                         cmdparams.add(pathwithoutextension + ".xmp");
                         commandstring += (pathwithoutextension + ".xmp").replaceAll(" ", "\\ ");
                     }
                     // export metadata
                     logger.info("exportxmpsidecar cmdparams: {}", cmdparams);
                     CommandRunner.runCommandWithProgressBar(cmdparams, progressBar, "off");
-                    //CommandRunner.runCommandWithProgressBar(commandstring, progressBar,false);
                     JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("esc.fintext"), ResourceBundle.getBundle("translations/program_strings").getString("esc.fintitle"), JOptionPane.INFORMATION_MESSAGE);
                 }
             }

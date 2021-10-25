@@ -94,12 +94,9 @@ public class SQLiteJDBC {
                 for (String dbfield : dbFields) {
                     if ( (noOfFields) > counter) {
                         sbresult.append(rs.getString(dbfield) + "\t");
-                        //logger.debug("counter in tab: " + counter);
                         counter ++;
                     } else {
-                        //sbresult.append(rs.getString(dbfield) + "\n");
                         sbresult.append(rs.getString(dbfield) + SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
-                        //logger.debug("counter in linefeed: " + counter);
                         counter = 1;
                     }
                 }
@@ -108,7 +105,6 @@ public class SQLiteJDBC {
             logger.error("sql error: " + e.getMessage());
             sbresult.append(e.getMessage());
         }
-        //logger.info(sbresult.toString());
         return sbresult.toString();
     }
 
@@ -125,7 +121,6 @@ public class SQLiteJDBC {
             // loop through the result set
             while (rs.next()) {
                 sbresult.append(rs.getString(field) + "\n");
-                //logger.info(rs.getString(field));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -171,7 +166,6 @@ public class SQLiteJDBC {
         try {
             Connection conn = connect(dbType);
             Statement stmt  = conn.createStatement();
-            //stmt.executeUpdate(sql);
             for (String sql : sqls) {
                 stmt.executeUpdate(sql);
             }
