@@ -55,8 +55,6 @@ public class ExifTool {
             }
         } else if (status == JFileChooser.CANCEL_OPTION) {
             exiftool = "cancelled";
-            //JOptionPane.showMessageDialog(myComponent,ProgramTexts.CanETlocation,"Locate ExifTool",JOptionPane.INFORMATION_MESSAGE);
-            //System.exit(0);
         }
         return exiftool;
     }

@@ -10,12 +10,10 @@ import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
-import org.hvdw.jexiftoolgui.view.LinkListener;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -273,8 +271,6 @@ public class RemoveMetadata extends JDialog {
     }
 
     public void showDialog(JProgressBar progressBar) {
-        //ExportMetadata dialog = new ExportMetadata();
-        //setSize(400, 250);
         selectedFilenamesIndices = MyVariables.getSelectedFilenamesIndices();
         files = MyVariables.getLoadedFiles();
         progBar = progressBar;

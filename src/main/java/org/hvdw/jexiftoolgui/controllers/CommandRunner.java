@@ -13,9 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.Executor;
-import org.apache.commons.codec.binary.StringUtils;
 
 public class CommandRunner {
     public final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CommandRunner.class);
@@ -42,13 +40,7 @@ public class CommandRunner {
         logger.debug("platformCharset: {}", platformCharset);
         //Always read/write exif data as utf8
         if (Utils.isOsFromMicrosoft()) {
-            /*
-            The workaround for windows non-utf systems: instead of passing the uncidode strings as a command line arguments, pass them in a UTF-8 encoded argument file like this:
 
-              exiftool -charset utf8 -charset iptc=utf8 -codedcharacterset=utf8 -@ argfile.txt x.jpg
-            and create a UTF-8 encoded textfile argfile.txt: -City=Říčany
-            This works even from a non UTF-8 console. The -codedcharacterset=utf8 argument is not needed for encoding but it marks the file as an UTF-8 encoded file for future processing.
-            */
             for (String subString : cmdparams) {
                 if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI"))) {
                     newParams.add(subString);
