@@ -90,7 +90,6 @@ public class CreateArgsFile extends JDialog {
     }
 
     private void initDialog() {
-        //exportMetaDataUiText.setContentType("text/html");
         CreateArgsMetaDataUiText.setText(String.format(ProgramTexts.HTML, 270, ResourceBundle.getBundle("translations/program_strings").getString("args.toptext")));
 
 
@@ -98,7 +97,6 @@ public class CreateArgsFile extends JDialog {
 
     private void onOK() {
         // add your code here
-        //createfile(selectedFilenamesIndices, files);
         writeFile();
         dispose();
     }
@@ -187,7 +185,6 @@ public class CreateArgsFile extends JDialog {
         selectedFilenamesIndices = selectedIndices;
         files = openedfiles;
         progBar = progressBar;
-        //files = myVars.getSelectedFiles();
 
         //Now do the gui
         pack();

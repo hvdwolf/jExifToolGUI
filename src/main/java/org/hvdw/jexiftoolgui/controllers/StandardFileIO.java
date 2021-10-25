@@ -144,14 +144,14 @@ public class StandardFileIO {
         String defaultStartFolder = prefs.getByKey(DEFAULT_START_FOLDER, "");
 
         //java_11 
-        //String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
+        String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
         // At least for time being use java_1.8
-        String startFolder = !defaultStartFolder.isEmpty() ? defaultStartFolder : userHome;
+        //String startFolder = !defaultStartFolder.isEmpty() ? defaultStartFolder : userHome;
 
         //java_11 
-        //if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
+        if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
         // At least for time being use java_1.8
-        if (useLastOpenedFolder && !lastOpenedFolder.isEmpty()) {
+        //if (useLastOpenedFolder && !lastOpenedFolder.isEmpty()) {
             startFolder = lastOpenedFolder;
         }
         return startFolder;
@@ -171,9 +171,7 @@ public class StandardFileIO {
         logger.debug("startfolder for load images via JFilechooser {}", startFolder);
 
         final JFileChooser jchooser = new JFileChooser(startFolder, fsv);
-        //final JFileChooser chooser = new NativeJFileChooser(startFolder);
 
-        //FileFilter filter = new FileNameExtensionFilter("(images)", "jpg", "jpeg" , "png", "tif", "tiff");
         if (!"".equals(userDefinedFilefilter)) {
             String[] uDefFilefilter = userDefinedFilefilter.split(",");
             for (int i = 0; i < uDefFilefilter.length; i++)
@@ -197,9 +195,7 @@ public class StandardFileIO {
         jchooser.addChoosableFileFilter(audioFormats);
         jchooser.addChoosableFileFilter(videoFormats);
         jchooser.addChoosableFileFilter(supFormats);
-        //chooser.showOpenDialog(mainScreen.this.rootPanel);
         int status = jchooser.showOpenDialog(myComponent);
-        //logger.trace("Status returned from ");
         if (status == JFileChooser.APPROVE_OPTION) {
             files = jchooser.getSelectedFiles();
             MyVariables.setLoadedFiles(files);
@@ -329,7 +325,6 @@ public class StandardFileIO {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
             System.setProperty("apple.awt.use-file-dialog-packages", "false");
         }
-        //logger.info("startfolder {}", startFolder);
         FileDialog fdchooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
         fdchooser.setDirectory(startFolder);
         fdchooser.setMultipleMode(false);
@@ -343,9 +338,7 @@ public class StandardFileIO {
         files = folder.listFiles();
         MyVariables.setLoadedFiles(files);
         prefs.storeByKey(LAST_OPENED_FOLDER, fdchooser.getDirectory());
-        /*if (os == APPLE) {
-            System.setProperty("apple.awt.fileDialogForDirectories", "false");
-        }*/
+
         return files;
     }
 
@@ -455,15 +448,7 @@ public class StandardFileIO {
         } else { //folder exists
             method_result = "exists";
         }
-       /* // Now check if our first custom.csv exists
-        String strcustomcsv = strjexiftoolguifolder + File.separator + "custom.csv";
-        File customcsv = new File(strcustomcsv);
-        if (!customcsv.exists()) {
-            logger.debug("no custom.csv; trying to create it");
-            method_result = extract_resource_to_jexiftoolguiFolder("texts/custom.csv", strjexiftoolguifolder);
-        } else { //custom.csv exists
-            method_result = "exists";
-        } */
+
         // Now check if our database exists
         fileToBecopied = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
         copyFile = new File(fileToBecopied);
@@ -497,8 +482,6 @@ public class StandardFileIO {
     public static String RecreateOurTempFolder () {
         String result = "Success";
         boolean successfully_erased = true;
-        //File tf = null;
-        //String tmpfolder = "";
 
         // Get the temporary directory
         String tempWorkDir = System.getProperty("java.io.tmpdir") + File.separator + "jexiftoolgui";
@@ -549,10 +532,7 @@ public class StandardFileIO {
                     sourceChannel.close();
                     destChannel.close();
                 }
-                /*} catch (IOException e) {
-                    // simply return original path. What else can we do?
-                    return checkPath;
-                }*/
+
                 return targetfile.getPath();
             }
         } else {
@@ -560,7 +540,6 @@ public class StandardFileIO {
             logger.debug("No spaces in {}", checkPath);
             return checkPath;
         }
-        //return checkPath;
     }
 
     /*

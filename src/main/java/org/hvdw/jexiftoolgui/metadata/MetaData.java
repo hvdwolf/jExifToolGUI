@@ -4,7 +4,6 @@ import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -41,10 +40,7 @@ public class MetaData {
 
             for (int index : selectedIndices) {
                 // Unfortunately we need to do this file by file. It also means we need to initialize everything again and again
-                //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 cmdparams.clear();
-                //cmdparams.add(exiftool);
-                //cmdparams.add("-TagsFromfile" );
                 if (isWindows) {
                     cmdparams.add(exiftool);
                     cmdparams.add("-TagsFromfile");
@@ -96,7 +92,6 @@ public class MetaData {
             boolean isWindows = Utils.isOsFromMicrosoft();
 
             for (int index : selectedIndices) {
-                //logger.info("index: {}  image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add(files[index].getPath().replace("\\", "/"));
                 } else {
@@ -109,7 +104,6 @@ public class MetaData {
     }
 
     public void copyMetaData(JPanel rootpanel, JRadioButton[] CopyMetaDataRadiobuttons, JCheckBox[] CopyMetaDataCheckBoxes, int selectedRow, JProgressBar progressBar) {
-        //int selectedRow = MyVariables.getSelectedRow();
         int selectedIndices[] = MyVariables.getSelectedFilenamesIndices();
         File[] files = MyVariables.getLoadedFiles();
 
@@ -137,10 +131,6 @@ public class MetaData {
             Message.append(ResourceBundle.getBundle("translations/program_strings").getString("copyd.alltoorggroup") + "<br><br>");
             params.add("-all:all");
             atLeastOneSelected = true;
-/*        } else if (CopyMetaDataRadiobuttons[2].isSelected()) {
-            copyToXmp();
-            atLeastOneSelected = true;
-            copyAllToXMP= true; */
         } else { // The copySelectiveMetadataradioButton
             Message.append("<ul>");
             if (CopyMetaDataCheckBoxes[0].isSelected()) {
@@ -365,9 +355,4 @@ public class MetaData {
             }
         }
     }
-
-
-
-
-
 }

@@ -82,7 +82,6 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "Rename photos":
                 RenamePhotos renPhotos = new RenamePhotos();
-                //renPhotos.setTitle(ResourceBundle.getBundle("translations/program_strings").getString("renamephotos.title"));
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     renPhotos.showDialog(true);
                 } else {
@@ -106,54 +105,6 @@ public class MenuActionListener implements ActionListener  {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
                 break;
-            /*case "Export metadata":
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    ExportMetadata expMetadata = new ExportMetadata();
-                    expMetadata.showDialog(selectedIndices, MyVariables.getLoadedFiles(), progressBar);
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                }
-                break; */
-            /*case "sidecarhelp":
-                Utils.openBrowser(ProgramTexts.ProjectWebSite + "/manual/index.html#sidecar");
-                break;
-            case "exportexifsidecar":
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exifsidecar"));
-                    ExpMD.exportExifMieExvSidecar(rootPanel, progressBar, "exif");
-                    OutputLabel.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                }
-                break;
-            case "exportxmpsidecar":
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.xmpsidecar"));
-                    ExpMD.exportXMPSidecar(rootPanel, progressBar);
-                    OutputLabel.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                }
-                break;
-            case "exportmiesidecar":
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.miesidecar"));
-                    ExpMD.exportExifMieExvSidecar(rootPanel, progressBar, "mie");
-                    //metaData.exportMIESidecar(progressBar);
-                    OutputLabel.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                }
-                break;
-            case "exportexvsidecar":
-                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exvsidecar"));
-                    ExpMD.exportExifMieExvSidecar(rootPanel, progressBar, "exv");
-                    OutputLabel.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
-                }
-                break; */
             case "Remove metadata":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     RemoveMetadata rmMetadata = new RemoveMetadata();
@@ -230,7 +181,6 @@ public class MenuActionListener implements ActionListener  {
                 ExiftoolDatabase.showDialog();
                 break;
             case "About jExifToolGUI":
-                //JOptionPane.showMessageDialog(mainScreen.this.rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext")), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), JOptionPane.INFORMATION_MESSAGE);
                 WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext"), 500, 450);
                 break;
             case "About ExifTool":
@@ -252,7 +202,6 @@ public class MenuActionListener implements ActionListener  {
                 Utils.openBrowser("https://www.youtube.com/playlist?list=PLAHD8RNkeuGdyRH7BKFefc7p72Dp6jVjW");
                 break;
             case "Credits":
-                //JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 400, ProgramTexts.CreditsText), "Credits", JOptionPane.INFORMATION_MESSAGE);
                 String Credits = StandardFileIO.readTextFileAsStringFromResource("texts/credits.html");
                 WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("hmenu.credits"), String.format(ProgramTexts.HTML, 600, Credits), 700, 600);
                 break;
@@ -305,7 +254,6 @@ public class MenuActionListener implements ActionListener  {
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatext")), ResourceBundle.getBundle("translations/program_help_texts").getString("copymetadatatitle"), JOptionPane.INFORMATION_MESSAGE);
                 break;
             case "exiftoolcommands":
-//                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommands")), ResourceBundle.getBundle("translations/program_help_texts").getString("yourcommandstitle"), JOptionPane.INFORMATION_MESSAGE);
                 WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommandstitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftoolcommands"), 700, 500);
                 break;
             case "exiftooldb":

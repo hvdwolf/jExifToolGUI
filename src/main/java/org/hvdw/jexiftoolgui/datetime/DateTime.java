@@ -5,7 +5,6 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -64,10 +63,7 @@ public class DateTime {
                 }
             }
             for (int index: selectedIndices) {
-                /*if (counter == 0) {
-                    counter++;
 
-                }*/
                 logger.trace("index: {} image path: {}", index, files[index].getPath());
                 if (isWindows) {
                     cmdparams.add("\"" + files[index].getPath().replace("\\", "/") + "\"");

@@ -1,11 +1,8 @@
 package org.hvdw.jexiftoolgui.metadata;
 
 import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.ProgramTexts;
-import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
