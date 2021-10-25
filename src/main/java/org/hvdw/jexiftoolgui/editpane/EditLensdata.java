@@ -219,20 +219,11 @@ public class EditLensdata {
             CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
         }
 
-        // The lens config save/load part
-        /*private void AskLensNameDescription(JPanel parentpanel, String namesinDB) {
-
-            CreateUpdatemyLens CUL = new CreateUpdatemyLens();
-            CUL.showDialog();
-
-            //return fields;
-        } */
 
         public void saveLensconfig(JTextField[] LensFields, JComboBox meteringmodecomboBox, JPanel rootpanel) {
             String sql = "";
             String queryresult = "";
-            //String nameDescfields[] = AskLensNameDescription(rootpanel, SQLiteJDBC.getdefinedlensnames());
-            //logger.info("returned name and description: " + nameDescfields.toString());
+
             String[] chosenValues = CUL.showDialog(rootpanel);
             logger.debug("chosen name/description: " + chosenValues[0] + " + " + chosenValues[1]);
             if (!"".equals(chosenValues[0])) { // So the user provided a name and not an empty string
@@ -306,10 +297,7 @@ public class EditLensdata {
         public void loadLensconfig(JTextField[] lensFields, JComboBox meteringmodecomboBox, JPanel rootpanel) {
             String queryresult = "";
             String lensname = SmL.showDialog(rootpanel, "load lens");
-            //String lensname = MyVariables.getselectedLensConfig();
             logger.debug("returned selected lensname: " + lensname);
-            //String lensname2 = MyVariables.getselectedLensConfig();
-            //logger.debug("lensname2 from getvariables: " + lensname2);
 
             if (!"".equals(lensname)) {
                 String sql = "select exif_lensmake, exif_lensmodel, exif_lensserialnumber, exif_focallength, "
@@ -356,9 +344,6 @@ public class EditLensdata {
                         }
                     }
                 }
-
-
-
             }
         }
 }

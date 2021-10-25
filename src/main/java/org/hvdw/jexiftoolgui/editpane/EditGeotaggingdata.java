@@ -1,7 +1,6 @@
 package org.hvdw.jexiftoolgui.editpane;
 
 import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
@@ -12,11 +11,9 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
@@ -48,8 +45,6 @@ public class EditGeotaggingdata {
 
     public void writeInfo(boolean images_selected, JTextField[] geotaggingFields, JCheckBox[] geotaggingBoxes, boolean OverwiteOriginals, JProgressBar progressBar) {
 
-        //int[] selectedFilenamesIndices = new int[]{};
-        //File[] files = new File[]{};
         int[] selectedFilenamesIndices = null;
         File[] files = null;
         if (images_selected) {

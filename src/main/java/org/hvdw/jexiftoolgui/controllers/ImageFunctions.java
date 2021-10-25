@@ -1,6 +1,5 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-//import com.twelvemonkeys.image.AffineTransformOp;
 
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -263,21 +262,8 @@ public class ImageFunctions {
             psthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + photoshopThumbfilename);
             if ((!thumbfile.exists() || !psthumbfile.exists()) && (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg") || filenameExt.toLowerCase().equals("tif")) || (filenameExt.toLowerCase().equals("tiff")) ) {
                 String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
-                /*if (thumbfile.exists()) {
-                    icon = ImageFunctions.createIcon(thumbfile);
-                } else {
-                    icon = ImageFunctions.createIcon(file);
-                }*/
             }
 
-                /*if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
-                    String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file, "RAW");
-                    thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-                    thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                    icon = ImageFunctions.createIcon(file);
-                } else {
-                    icon = ImageFunctions.createIcon(file);
-                } */
             icon = ImageFunctions.createIcon(file);
             return icon;
         } else { //We have a RAW image extension or something else like audio/video
@@ -292,7 +278,6 @@ public class ImageFunctions {
                     // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
                     logger.trace("create thumb nr1");
                     icon = ImageFunctions.createIcon(file);
-                    //icon = ImageFunctions.createIcon(thumbfile);
                     if (icon != null) {
                         // display our created icon from the thumbnail
                         return icon;

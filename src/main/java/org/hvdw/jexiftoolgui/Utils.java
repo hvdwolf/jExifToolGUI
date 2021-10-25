@@ -35,7 +35,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.apache.commons.codec.binary.StringUtils;
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
@@ -334,30 +333,18 @@ public class Utils {
         String update_url = "https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt";
 
         if (fromWhere.equals("menu") || versioncheck) {
-            /*try {
+
+            try {
                 URL url = new URL(update_url);
-                HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-                con.getResponseCode();
+                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                web_version = in.readLine();
+                in.close();
             } catch (IOException ex) {
                 logger.error("upgrade check gives error {}", ex.toString());
                 ex.printStackTrace();
                 validconnection = false;
                 JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
-            }*/
-
-            //if (validconnection) {
-                try {
-                    URL url = new URL(update_url);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                    web_version = in.readLine();
-                    in.close();
-                } catch (IOException ex) {
-                    logger.error("upgrade check gives error {}", ex.toString());
-                    ex.printStackTrace();
-                    validconnection = false;
-                    JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
-                }
-            //}
+            }
             if (validconnection) {
                 String jv = SystemPropertyFacade.getPropertyByKey(JAVA_VERSION);
                 logger.info("Using java version {}: ", jv);
@@ -380,9 +367,7 @@ public class Utils {
                         JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtglatestversion"), JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-            } /*else {
-                JOptionPane.showMessageDialog(null, String.format(ProgramTexts.HTML, 250, ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.nonetwork"), JOptionPane.INFORMATION_MESSAGE);
-            }*/
+            }
         }
     }
 
@@ -544,10 +529,6 @@ public class Utils {
 
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus, int row, int column) {
-            /*JLabel r = (JLabel) super.getTableCellRendererComponent(
-                    table, value, isSelected, hasFocus, row, column);
-            setIcon(((LabelIcon) value).icon);
-            setText(((LabelIcon) value).label);*/
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
@@ -679,14 +660,7 @@ public class Utils {
         return strImgData;
     }
 
-    /*public static void progressDialog(JFrame rootPanel) {
-        final JDialog dlg = new JDialog((Window) null, "Progress Dialog");
-        JProgressBar dpb = new JProgressBar(0, 500);
-        dlg.add(BorderLayout.CENTER, dpb);
-        dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        dlg.setSize(300, 75);
-        dlg.setLocationRelativeTo(rootPanel);
-    } */
+
     public static void progressPane (JPanel rootPanel, boolean visible) {
         JOptionPane pane = new JOptionPane();
         JProgressBar progressBar = new JProgressBar();
@@ -946,7 +920,6 @@ public class Utils {
             model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
             jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
             jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(250);
-            //jTable_File_Names.setRowHeight(150);
             // Now set rowheight depending on font size
             int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
             int rowHeight = (int) Math.round( (double) userFontSize / (double) 12 * (double) 150 );  // 150 is my original row height based on fontsize 12
@@ -1144,14 +1117,6 @@ public class Utils {
             } catch (IOException | InterruptedException ex) {
                 logger.error("Error executing command", ex);
             }
-        /*} else {
-            // We have multiple images selected. There is no direct link to the images anymore,
-            // apart from the fact that the last image is automatically selected
-            String res = "jExifToolGUI\t" +
-                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfiles") + "\t" +
-                    ResourceBundle.getBundle("translations/program_strings").getString("vdtab.seloption");
-            displayInfoForSelectedImage(res, ListexiftoolInfotable);
-        }*/
 
     }
 
@@ -1189,9 +1154,7 @@ public class Utils {
                     }
                 }
             }
-            //Always read exif data as utf8
-            //cmdparams.add("-use");
-            //cmdparams.add("mwg");
+
             // Check for chosen metadata language
             if (!"".equals(getmetadataLanguage())) {
                 cmdparams.add("-lang");
@@ -1269,9 +1232,7 @@ public class Utils {
                 }
             }
         }
-        //Always read exif data as utf8
-        //cmdparams.add("-use");
-        //cmdparams.add("mwg");
+
         // Check for chosen metadata language
         if (!"".equals(getmetadataLanguage())) {
             cmdparams.add("-lang");
@@ -1322,7 +1283,6 @@ public class Utils {
         }
         params[2] = "-tab";
         String res = getImageInfoFromSelectedFile(params);
-        //displayInfoForSelectedImage(res, ListexiftoolInfotable);
         return res;
     }
 
@@ -1562,12 +1522,13 @@ public class Utils {
          }
          return frameicon;
     }
+
     /*
-/ This method is called from displaySelectedImageInExternalViewer() in case of
-/ - no raw viewer defined
-/ - default image
-/ - whatever other file type we encounter
- */
+    / This method is called from displaySelectedImageInExternalViewer() in case of
+    / - no raw viewer defined
+    / - default image
+    / - whatever other file type we encounter
+    */
     static void viewInRawViewer(String RawViewerPath) {
         String command = ""; // macos/linux
         String[] commands = {}; // windows
@@ -1585,20 +1546,14 @@ public class Utils {
                 case APPLE:
                     String file_ext = getFileExtension(RawViewerPath);
                     if ("app".equals(file_ext)) {
-                        //command = "open " + RawViewerPath + " " + StandardFileIO.noSpacePath();
-                        //command = "open " + RawViewerPath + " " + MyVariables.getSelectedImagePath();
                         builder.command("open", RawViewerPath.trim(), MyVariables.getSelectedImagePath());
                     } else {
-                        //command = RawViewerPath + " " + StandardFileIO.noSpacePath();
                         builder.command(RawViewerPath.trim(), MyVariables.getSelectedImagePath());
                     }
-                    //runtime.exec(command);
                     p = builder.start();
                     return;
                 case MICROSOFT:
                     String convImg = "\"" + StandardFileIO.noSpacePath().replace("/", "\\") + "\"";
-                    //commands = new String[] {RawViewerPath, convImg};
-                    //runtime.exec(commands);
                     builder.command(RawViewerPath.trim(),MyVariables.getSelectedImagePath());
                     p = builder.start();
                     return;
@@ -1635,8 +1590,6 @@ public class Utils {
     / If no raw viewer defined, or we have whatever other extension (can also be normal or raw image), use method viewInDefaultViewer (based on mime type and default app)
      */
     public static void displaySelectedImageInExternalViewer() {
-        //String[] SimpleExtensions = {"bmp","gif,","jpg", "jpeg", "png"};
-        //String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
         String[] SimpleExtensions = MyConstants.SUPPORTED_IMAGES;
 
         String RawViewer = prefs.getByKey(RAW_VIEWER_PATH, "");
@@ -1682,10 +1635,8 @@ public class Utils {
                 viewInDefaultViewer();
             }
         } else { // Whatever other extension, simply try by default mime type
-            //viewInDefaultViewer();
             Runtime runtime = Runtime.getRuntime();
             try {
-                //Application.OS_NAMES currentOsName = getCurrentOsName();
                 switch (currentOsName) {
                     case APPLE:
                         filenameExt = getFileExtension(MyVariables.getSelectedImagePath());
