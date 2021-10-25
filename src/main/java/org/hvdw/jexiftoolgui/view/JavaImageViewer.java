@@ -48,6 +48,9 @@ public class JavaImageViewer {
     }
 
 
+    /*
+    / This method is used from inside the viewer when one of the previous/next buttons are clicked
+     */
     private void LoadShowImage(JLabel ImgLabel, JLabel infoLabel, String whichaction) {
         int newindex;
         boolean bde = false;
@@ -90,6 +93,9 @@ public class JavaImageViewer {
     }
 
 
+    /*
+    / This method deals with next and previous buttons and also Esc(ape)
+     */
     public class ArrowAction extends AbstractAction {
 
         private String cmd;
@@ -125,7 +131,7 @@ public class JavaImageViewer {
 
 
     /**
-     * This is the imageviewer. Currently with close/previous/next buttons.
+     * This is the full screen imageviewer. Currently with close/previous/next buttons.
      * Later we might make it a time based slideshow also with pause play buttons.
      **/
     public void ViewImageInFullscreenFrame (boolean isSlideshow) {

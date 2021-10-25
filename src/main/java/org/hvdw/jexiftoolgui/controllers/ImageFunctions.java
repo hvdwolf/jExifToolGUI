@@ -280,7 +280,7 @@ public class ImageFunctions {
                 } */
             icon = ImageFunctions.createIcon(file);
             return icon;
-        } else { //We have a RAW image extension or tiff or something else like audio/video
+        } else { //We have a RAW image extension or something else like audio/video
             // Export previews for current (RAW) image to tempWorkfolder
             String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
             if ("Success".equals(exportResult)) {
