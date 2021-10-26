@@ -8,8 +8,8 @@ assignees: ''
 ---
 
 **Version (please complete the following information):**
- - OS: [e.g. Linux Fedora/Ubuntu/ArchLinux/Debian , or Windows 7/8/10/11 or MacOS 10.1/11/12, other?]
- - Version
+ - OS: [e.g. Linux Fedora/Ubuntu/ArchLinux/Debian, or Windows, or MacOS, other?]
+ - Version [linux distro version or windows or MacOS version]
  - Package [e.d. jar, deb, appimage, win exe with/without jre, macos bundle with/without jre]
 
 **Describe the bug**
