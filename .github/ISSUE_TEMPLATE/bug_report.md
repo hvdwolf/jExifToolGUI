@@ -10,7 +10,7 @@ assignees: ''
 **Version (please complete the following information):**
  - OS: [e.g. Linux Fedora/Ubuntu/ArchLinux/Debian, or Windows, or MacOS, other?]
  - Version [linux distro version or windows or MacOS version]
- - Package [e.d. jar, deb, appimage, win exe with/without jre, macos bundle with/without jre]
+ - Package [e.g. jar, deb, appimage, win exe with/without jre, macos bundle with/without jre]
 
 **Describe the bug**
 A clear and concise description of what the bug is.
