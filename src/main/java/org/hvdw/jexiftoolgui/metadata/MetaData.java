@@ -257,13 +257,13 @@ public class MetaData {
                 if (InsideCopyMetaDataCheckBoxes[4].isSelected()) {
                     Message.append("<li>iptc2exif</li>");
                     params.add("-@");
-                    params.add("iptc2exif.args");
+                    params.add(strjexiftoolguiARGSfolder + File.separator + "iptc2exif.args");
                     atLeastOneSelected = true;
                 }
                 if (InsideCopyMetaDataCheckBoxes[5].isSelected()) {
                     Message.append("<li>xmp2exif</li>");
                     params.add("-@");
-                    params.add("xmp2exif.args");
+                    params.add(strjexiftoolguiARGSfolder + File.separator + "xmp2exif.args");
                     atLeastOneSelected = true;
                 }
             }
@@ -273,13 +273,13 @@ public class MetaData {
                 if (InsideCopyMetaDataCheckBoxes[6].isSelected()) {
                     Message.append("<li>exif2iptc</li>");
                     params.add("-@");
-                    params.add("exif2iptc.args");
+                    params.add(strjexiftoolguiARGSfolder + File.separator + "exif2iptc.args");
                     atLeastOneSelected = true;
                 }
                 if (InsideCopyMetaDataCheckBoxes[7].isSelected()) {
                     Message.append("<li>xmp2iptc</li>");
                     params.add("-@");
-                    params.add("xmp2iptc.args");
+                    params.add(strjexiftoolguiARGSfolder + File.separator + "xmp2iptc.args");
                     atLeastOneSelected = true;
                 }
             }
@@ -289,7 +289,7 @@ public class MetaData {
                 if (InsideCopyMetaDataCheckBoxes[8].isSelected()) {
                     Message.append("<li>xmp2gps</li>");
                     params.add("-@");
-                    params.add("xmp2gps.args");
+                    params.add(strjexiftoolguiARGSfolder + File.separator + "xmp2gps.args");
                     atLeastOneSelected = true;
                 }
             }
@@ -299,7 +299,7 @@ public class MetaData {
                 if (InsideCopyMetaDataCheckBoxes[9].isSelected()) {
                     Message.append("<li>xmp2pdf</li>");
                     params.add("-@");
-                    params.add("xmp2pdf.args");
+                    params.add(strjexiftoolguiARGSfolder + File.separator + "xmp2pdf.args");
                     atLeastOneSelected = true;
                 }
             }
