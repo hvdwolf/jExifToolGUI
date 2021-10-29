@@ -21,7 +21,7 @@ printf "Create the bundle from the base bundle\n\n"
 cp -a $BaseApp $App
 
 printf "Update the VersionString to $Version\n\n"
-sed -i "s+VersionString+$Version+" $App/Contents/Info.plist
+sed -i "s+Version_String+$Version+" $App/Contents/Info.plist
 
 printf "Now copy the jar and modified script into the app\n\n" 
 cp ../../jExifToolGUI.jar $App/Contents/MacOS/
