@@ -33,10 +33,10 @@
         <string>True</string>
 
         <key>CFBundleShortVersionString</key>
-        <string>VersionString</string>
+        <string>Version_String</string>
 
         <key>CFBundleVersion</key>
-        <string>VersionString</string>
+        <string>Version_String</string>
 
         <key>NSHumanReadableCopyright</key>
         <string>Created by Harry van der Wolf</string>
@@ -57,7 +57,7 @@
         <string>To be able to read and write images on Network Volumes</string>
 
         <key>NSRemovableVolumesUsageDescription</key>
-        <string>To be able to read and write images on removable media like USB-sticks and memeory cards</string>
+        <string>To be able to read and write images on removable media like USB-sticks and memory cards</string>
 
     </dict>
 </plist>
