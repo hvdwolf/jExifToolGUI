@@ -220,7 +220,8 @@ public class MenuActionListener implements ActionListener  {
                 Utils.checkForNewVersion("menu");
                 break;
             case "Translate":
-                Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/translations/Readme.md");
+                //Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/translations/Readme.md");
+                Utils.openBrowser("https://hosted.weblate.org/projects/jexiftoolgui/");
                 break;
             case "Changelog":
                 Utils.openBrowser("https://github.com/hvdwolf/jExifToolGUI/blob/master/Changelog.md");
