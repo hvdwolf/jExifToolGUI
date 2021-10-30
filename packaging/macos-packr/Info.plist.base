@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>CFBundleInfoDictionaryVersion</key>
+        <string>6.0</string>
+
+        <key>CFBundleDevelopmentRegion</key>
+        <string>English</string>
+
+        <key>CFBundleAllowMixedLocalizations</key>
+        <true/>
+
+        <key>CFBundleExecutable</key>
+        <string>jexiftoolgui</string>
+
+        <key>CFBundleGetInfoString</key>
+        <string>jExifToolGUI for MacOS</string>
+
+        <key>CFBundleIconFile</key>
+        <string>appIcon.icns</string>
+
+        <key>CFBundleIdentifier</key>
+        <string>org.hvdw.jExifToolGUI</string>
+
+        <key>CFBundleDisplayName</key>
+        <string>jExifToolGUI</string>
+
+        <key>CFBundleName</key>
+        <string>jExifToolGUI</string>
+
+        <key>NSHighResolutionCapable</key>
+        <string>True</string>
+
+        <key>CFBundleShortVersionString</key>
+        <string>Version_String</string>
+
+        <key>CFBundleVersion</key>
+        <string>Version_String</string>
+
+        <key>NSHumanReadableCopyright</key>
+        <string>Created by Harry van der Wolf</string>
+
+        <key>LSMinimumSystemVersion</key>
+        <string>10.9</string>
+
+        <key>NSDocumentsFolderUsageDescription</key>
+        <string>To be able to read and write images in your Documents folder</string>
+
+        <key>NSDesktopFolderUsageDescription</key>
+        <string>To be able to read and write images from your Desktop</string>
+
+        <key>NSDownloadsFolderUsageDescription</key>
+        <string>To be able to read and write images in your Downloads folder</string>
+
+        <key>NSNetworkVolumesUsageDescription</key>
+        <string>To be able to read and write images on Network Volumes</string>
+
+        <key>NSRemovableVolumesUsageDescription</key>
+        <string>To be able to read and write images on removable media like USB-sticks and memeory cards</string>
+
+    </dict>
+</plist>
