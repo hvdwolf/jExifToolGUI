@@ -67,7 +67,7 @@ public class CheckPreferences {
             res = Utils.getExiftoolPath();
         }
 
-        if (res != null && !res.isEmpty() && !res.toLowerCase().startsWith("info")) {
+        if (res != null && !res.isEmpty() && !res.toLowerCase().startsWith("info") && !"c:\\windows\\exiftool.exe".equals(res.toLowerCase()) )  {
             exiftool_found = true;
             // We already checked that the node did not exist and that it is empty or null
             // remove all possible line breaks
@@ -75,6 +75,9 @@ public class CheckPreferences {
             if (exiftool_found) {
                 prefs.storeByKey(EXIFTOOL_PATH, res);
             }
+        } else if ("c:\\windows\\exiftool.exe".equals(res.toLowerCase())) {
+            exiftool_found = true;
+            MyVariables.setExifToolPath(res);
         }
 
         logger.info("exiftool_found mentions: {}", exiftool_found);

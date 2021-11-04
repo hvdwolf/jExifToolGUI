@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.datetime;
 
+import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -46,7 +47,7 @@ public class ModifyDateTime extends JDialog {
     public File[] files;
     private JProgressBar progBar;
 
-    private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ModifyDateTime.class);
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(ModifyDateTime.class);
     private final static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
     public ModifyDateTime() {

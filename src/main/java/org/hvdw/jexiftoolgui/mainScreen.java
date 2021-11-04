@@ -3981,6 +3981,11 @@ private String getSeparatorString() {
         preferences = CP.checkPreferences(rootPanel, OutputLabel);
         if (!preferences) {
             ExifTool.checkExifTool(mainScreen.this.rootPanel);
+        } else {
+            if ( !(MyVariables.getExifToolPath() == null) && "c:\\windows\\exiftool.exe".equals( (MyVariables.getExifToolPath()).toLowerCase() ) ) {
+                JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtext"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
+                ExifTool.checkExifTool(mainScreen.this.rootPanel);
+            }
         }
 
         // Set the text areas correctly
@@ -4057,7 +4062,7 @@ private String getSeparatorString() {
         // Doesn't work but leave in
         System.out.println(SingletonEnum.INSTANCE);
 
-        JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
+        JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + "  " + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
 
         // Should work, but doesn't work
         Application.OS_NAMES os = Utils.getCurrentOsName();

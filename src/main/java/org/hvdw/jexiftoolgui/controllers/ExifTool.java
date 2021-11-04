@@ -34,7 +34,7 @@ public class ExifTool {
             chooser.setFileFilter(filter);
         }
         chooser.setMultiSelectionEnabled(false);
-        chooser.setDialogTitle("Locate ExifTool ...");
+        chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("exift.dlgtitle"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
         if (status == JFileChooser.APPROVE_OPTION) {
@@ -66,7 +66,7 @@ public class ExifTool {
      */
     static public void checkExifTool(JPanel myComponent) {
         String returnValue = "";
-        String[] options = {"specify location", "Download", "Stop"};
+        String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("exift.optlocation"), ResourceBundle.getBundle("translations/program_strings").getString("exift.optdownload"), ResourceBundle.getBundle("translations/program_strings").getString("exift.optstop")};
         //JOptionPane.showOptionDialog(null,"I can not find exiftool in the preferences or I can not find exiftool at all","exiftool missing",JOptionPane.ERROR_MESSAGE);
         int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_help_texts").getString("noexiftool")), ResourceBundle.getBundle("translations/program_help_texts").getString("noexiftooltitle"),
                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
@@ -75,10 +75,10 @@ public class ExifTool {
             // Do this from the PreferencesDialog class as it atually belongs there
             returnValue = whereIsExiftool(myComponent);
             if (returnValue.equals("cancelled")) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, "Cancelled locate ExifTool", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.lookupcancelled"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else if (returnValue.equals("no exiftool binary")) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, "Wrong executable", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else { // Yes. It looks like we have a correct exiftool selected
                 // remove all possible line breaks
@@ -86,7 +86,7 @@ public class ExifTool {
                 prefs.storeByKey(EXIFTOOL_PATH, returnValue);
             }
         } else if (choice == 1) {
-            JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ProgramTexts.downloadInstallET), "Download ExifTool", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ProgramTexts.downloadInstallET), ResourceBundle.getBundle("translations/program_strings").getString("exift.download"), JOptionPane.INFORMATION_MESSAGE);
             // open exiftool site
             Utils.openBrowser("https://exiftool.org/");
             System.exit(0);

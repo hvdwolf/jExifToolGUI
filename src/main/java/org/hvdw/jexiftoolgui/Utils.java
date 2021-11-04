@@ -1467,7 +1467,9 @@ public class Utils {
         Application.OS_NAMES currentOs = getCurrentOsName();
 
         if (currentOs == Application.OS_NAMES.MICROSOFT) {
-            String[] params = {"where", "exiftool"};
+            //String[] params = {"c:\\Windows\\System32\\where.exe", "exiftool.exe"};
+            String[] params = {"c:\\Windows\\System32\\cmd.exe", "/c", "where", "exiftool"};
+            //String[] params = {"where", "exiftool"};
             cmdparams = Arrays.asList(params);
         } else {
             String[] params = {"which", "exiftool"};
@@ -1484,8 +1486,16 @@ public class Utils {
         if (currentOs == Application.OS_NAMES.MICROSOFT) {
             // First check whether we have multiple exiftool versions in our path
             String[] lines = res.split(System.getProperty("line.separator"));
+            logger.debug("lines is {}", Arrays.toString(lines));
             logger.info("line 0 is {}", lines[0]);
-            res = lines[0];
+            logger.info("number of lines {}", Integer.toString(lines.length));
+            if ( ("c:\\windows\\exiftool.exe".equals(lines[0].toLowerCase())) && (lines.length>1) ) {
+                res = lines[1];
+            } else if ( "c:\\windows\\exiftool.exe".equals(lines[0].toLowerCase()) ) {
+                res = lines[0];
+            } else {
+                res = lines[0];
+            }
         }
         return res;
     }

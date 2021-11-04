@@ -30,6 +30,7 @@ public class CommandRunner {
         List<String> postArgParams = new ArrayList<String>();
         byte[] myBytes = null;
         boolean versionCall = false;
+        boolean winWhere = false;
         String[] supportedImages = MyConstants.SUPPORTED_IMAGES;
         List<String> supImgList = Arrays.asList(supportedImages);
         StringBuilder argsString = new StringBuilder();;
@@ -42,7 +43,8 @@ public class CommandRunner {
         if (Utils.isOsFromMicrosoft()) {
 
             for (String subString : cmdparams) {
-                if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI"))) {
+                // && !(subString.contains("exiftool.exe"))
+                if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI")) ) {
                     newParams.add(subString);
                     newParams.add("-charset");
                     newParams.add("utf8");
@@ -54,6 +56,8 @@ public class CommandRunner {
                     //} else if ( (subString.toLowerCase().contains("jpg")) || (subString.toLowerCase().contains("tif")) || (subString.toLowerCase().contains("png")) )
                 } else if ("-ver".equals(subString.toLowerCase())) {
                     versionCall = true;
+                } else if ("where".equals(subString.toLowerCase())) {
+                    winWhere = true;
                 } else if ( (supImgList.stream().anyMatch(subString.toLowerCase()::contains)) &&  !(subString.toLowerCase().contains("-")) ) {
                     // These are the images
                     imgList.add("\"" + subString + "\"");
@@ -91,7 +95,7 @@ public class CommandRunner {
 
         ProcessBuilder builder = null;
         if ((Utils.isOsFromMicrosoft())) {
-            if (versionCall) {
+            if ( (versionCall) || (winWhere) ) {
                 builder = new ProcessBuilder(cmdparams);
             } else {
                 builder = new ProcessBuilder(newParams);

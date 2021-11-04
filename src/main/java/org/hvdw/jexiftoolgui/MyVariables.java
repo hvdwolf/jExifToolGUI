@@ -50,6 +50,7 @@ public class MyVariables {
     private HashMap <String, HashMap<String, String> > imagesData;
     private String SearchPhrase;
     private boolean reloadImagesFromSearchResult = false;
+    private String ExifToolPath;
 
     // The actual getters and setters
     public static int getSelectedRow() { return staticInstance.SelectedRow;}
@@ -139,6 +140,9 @@ public class MyVariables {
     public static void setExiftoolVersion(String exv) {
         staticInstance.ExiftoolVersion = exv;
     }
+
+    public static String getExifToolPath() { return staticInstance.ExifToolPath; }
+    public static void setExifToolPath(String exp) { staticInstance.ExifToolPath = exp; }
 
     public static List<List> gettableRowsCells() { return staticInstance.tableRowsCells; }
     public static void settableRowsCells (List<List> tblRwsClls) {staticInstance.tableRowsCells = tblRwsClls; }
