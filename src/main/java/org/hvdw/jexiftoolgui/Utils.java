@@ -25,6 +25,7 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
+import static org.hvdw.jexiftoolgui.Application.OS_NAMES.LINUX;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.*;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -184,23 +186,22 @@ public class Utils {
     static public void openBrowser(String webUrl) {
 
         try {
-            if (Desktop.isDesktopSupported()) {
+            /*if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().browse(URI.create(webUrl));
                 return;
-            }
-            Application.OS_NAMES os = Utils.getCurrentOsName();
+            }*/
 
+            Application.OS_NAMES os = Utils.getCurrentOsName();
             Runtime runtime = Runtime.getRuntime();
-            switch (os) {
-                case APPLE:
-                    runtime.exec("open " + webUrl);
+            if ( os == LINUX) {
+                // make an exception for linux, because Ubuntu and Ubuntu derivatives, do not always support the universal "browse" command
+                // So for linux we use the universal xdg-open
+                runtime.exec("xdg-open " + webUrl);
+            } else {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(URI.create(webUrl));
                     return;
-                case LINUX:
-                    runtime.exec("xdg-open " + webUrl);
-                    return;
-                case MICROSOFT:
-                    runtime.exec("explorer " + webUrl);
-                    return;
+                }
             }
         }
         catch (IOException | IllegalArgumentException e) {
@@ -1689,7 +1690,7 @@ public class Utils {
         String OS = SystemPropertyFacade.getPropertyByKey(OS_NAME).toLowerCase();
         if (OS.contains("mac")) return APPLE;
         if (OS.contains("windows")) return Application.OS_NAMES.MICROSOFT;
-        return Application.OS_NAMES.LINUX;
+        return LINUX;
     }
 
     public static boolean isOsFromMicrosoft() {
