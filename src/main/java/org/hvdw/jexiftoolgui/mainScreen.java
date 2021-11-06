@@ -32,10 +32,12 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
@@ -3964,18 +3966,41 @@ private String getSeparatorString() {
         //createPopupMenu(myPopupMenu);
 
 
-        // Check if our custom folder exists and create it
-        String check_result = checkforjexiftoolguiFolder();
-        if (check_result.contains("Error creating")) {
-            JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
-        } else { // Set database to variable
-            logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
-        }
-        // Delete and recreate {tmp dir}/jexiftoolgui
-        check_result = StandardFileIO.RecreateOurTempFolder();
-        if (!"Success".equals(check_result)) {
-            JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
-        }
+        // Run a number of things in the background to speed up loading of the UI
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                // Check if our custom folder exists and create it
+                String check_result = checkforjexiftoolguiFolder();
+                if (check_result.contains("Error creating")) {
+                    JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
+                } else { // Set database to variable
+                    logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
+                }
+                // Delete and recreate {tmp dir}/jexiftoolgui
+                check_result = StandardFileIO.RecreateOurTempFolder();
+                if (!"Success".equals(check_result)) {
+                    JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // Set the text areas correctly
+                ExifDescriptiontextArea.setWrapStyleWord(true);
+                ExifDescriptiontextArea.setLineWrap(true);
+                xmpDescriptiontextArea.setWrapStyleWord(true);
+                xmpDescriptiontextArea.setLineWrap(true);
+
+                // Do necessary updates when moving from older versions to newer versions
+                UpdateActions.Updates();
+
+                ViewRadiobuttonListener();
+                fillAllComboboxes();
+
+                setArtistCreditsCopyrightDefaults();
+                // Some texts
+                setProgramScreenTexts();
+            }
+        });
         // Now check the preferences
         CheckPreferences CP = new CheckPreferences();
         preferences = CP.checkPreferences(rootPanel, OutputLabel);
@@ -3987,19 +4012,6 @@ private String getSeparatorString() {
                 ExifTool.checkExifTool(mainScreen.this.rootPanel);
             }
         }
-
-        // Set the text areas correctly
-        ExifDescriptiontextArea.setWrapStyleWord(true);
-        ExifDescriptiontextArea.setLineWrap(true);
-        xmpDescriptiontextArea.setWrapStyleWord(true);
-        xmpDescriptiontextArea.setLineWrap(true);
-
-        // Do necessary updates when moving from older versions to newer versions
-        UpdateActions.Updates();
-
-        ViewRadiobuttonListener();
-        fillAllComboboxes();
-
 
         //Use the table listener for the selection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
@@ -4032,13 +4044,9 @@ private String getSeparatorString() {
             logger.error("Error executing command");
         }
 
-        setArtistCreditsCopyrightDefaults();
-
-
         programButtonListeners();
         leftPanePopupMenuLister();
-        // Some texts
-        setProgramScreenTexts();
+
         // Set formatting for the JFormatted textFields
         EGpanod.setFormattedFieldFormats(getGpanoFields());
         // Set jFormattedFields
@@ -4057,15 +4065,65 @@ private String getSeparatorString() {
         //});
     }
 
+
+    static void renderSplashFrame(Graphics2D g, int frame) {
+        //final String[] comps = {"loading jExifToolGUI", "Please be patient"};
+        final String[] comps = {"foo", "bar", "baz"};
+        g.setComposite(AlphaComposite.Clear);
+        g.fillRect(120,140,200,40);
+        g.setPaintMode();
+        g.setColor(Color.BLACK);
+        g.drawString("Loading "+comps[(frame/5)%3]+"...", 120, 150);
+    }
+
+    final static void showSplash() {
+        final SplashScreen splash = SplashScreen.getSplashScreen();
+
+        /*try {
+            //URL splashUrl = mainScreen.class.getResource("/icons/new-jexiftoolgui-splashlogo.png");
+            //URL splashUrl = mainScreen.class.getResource("/splash.gif");
+            if (splashUrl == null) {
+                logger.error("Cannot load the splashlogo {}", splashUrl.toString());
+            } else {
+                logger.info("setting the splash logo {}", splashUrl.toString());
+                splash.setImageURL(splashUrl);
+            }
+        } catch (IOException e) {
+            logger.error("loading splash image gives error {}", e.toString());
+            e.printStackTrace();
+        } */
+        if (splash == null) {
+            logger.error("SplashScreen.getSplashScreen() returned null");
+            return;
+        }
+        //Graphics2D g = splashImg.createGraphics();
+        Graphics2D g = splash.createGraphics();
+        if (g == null) {
+            logger.error("g is null");
+            return;
+        }
+        for (int i = 1; i < 100; i++) {
+            renderSplashFrame(g, i);
+            splash.update();
+            try {
+                Thread.sleep(90);
+            } catch (InterruptedException e) {
+            }
+        }
+        //splash.close();
+    }
+
     static void createAndShowGUI() {
 
         // Doesn't work but leave in
         System.out.println(SingletonEnum.INSTANCE);
+        Application.OS_NAMES os = Utils.getCurrentOsName();
+
 
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + "  " + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
 
         // Should work, but doesn't work
-        Application.OS_NAMES os = Utils.getCurrentOsName();
+
         try {
             if (os == Application.OS_NAMES.APPLE) {
                 logger.info("running on Apple. set correct menu");
@@ -4073,6 +4131,16 @@ private String getSeparatorString() {
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
                 // set the name of the application menu item
                 System.setProperty("com.apple.mrj.application.apple.menu.about.name", "jExifToolGUI V" + ProgramTexts.Version + "   (for ExifTool by Phil Harvey)");
+
+                // And the annoying splash screen on MacOS
+                /* Leave for later investigation
+                try {
+                    showSplash();
+                } catch (Exception e) {
+                    logger.error("error displaying splash screen {}", e.toString());
+                    e.printStackTrace();
+                }*/
+
             }
             // Significantly improves the look of the output in
             // terms of the folder/file icons and file names returned by FileSystemView!
@@ -4088,13 +4156,14 @@ private String getSeparatorString() {
             frame.setContentPane(new mainScreen(frame).rootPanel);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
-            logger.error("InterruptedException or IOException: {}", e);
+            logger.error("InterruptedException or IOException: {}", e.toString());
         }
 
         logger.debug("Gui Width x Height: {} x {}", frame.getWidth(), String.valueOf(frame.getHeight()));
         GuiConfig.LoadGuiConfig(frame);
         //frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
+
         frame.setVisible(true);
 
     }
