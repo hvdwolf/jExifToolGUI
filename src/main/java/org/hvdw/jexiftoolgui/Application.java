@@ -4,8 +4,6 @@ import org.hvdw.jexiftoolgui.controllers.SingletonEnum;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.slf4j.LoggerFactory;
 
-
-
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
@@ -25,7 +23,7 @@ public class Application {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Application.class);
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
 
         // Doesn't work but leave in
         System.out.println(SingletonEnum.INSTANCE);
