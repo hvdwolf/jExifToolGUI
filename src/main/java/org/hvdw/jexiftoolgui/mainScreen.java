@@ -3966,41 +3966,34 @@ private String getSeparatorString() {
         //createPopupMenu(myPopupMenu);
 
 
-        // Run a number of things in the background to speed up loading of the UI
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                // Check if our custom folder exists and create it
-                String check_result = checkforjexiftoolguiFolder();
-                if (check_result.contains("Error creating")) {
-                    JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
-                } else { // Set database to variable
-                    logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
-                }
-                // Delete and recreate {tmp dir}/jexiftoolgui
-                check_result = StandardFileIO.RecreateOurTempFolder();
-                if (!"Success".equals(check_result)) {
-                    JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
-                }
+        String check_result = checkforjexiftoolguiFolder();
+        if (check_result.contains("Error creating")) {
+            JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
+        } else { // Set database to variable
+            logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
+        }
+        // Delete and recreate {tmp dir}/jexiftoolgui
+        check_result = StandardFileIO.RecreateOurTempFolder();
+        if (!"Success".equals(check_result)) {
+            JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
+        }
 
-                // Set the text areas correctly
-                ExifDescriptiontextArea.setWrapStyleWord(true);
-                ExifDescriptiontextArea.setLineWrap(true);
-                xmpDescriptiontextArea.setWrapStyleWord(true);
-                xmpDescriptiontextArea.setLineWrap(true);
+        // Set the text areas correctly
+        ExifDescriptiontextArea.setWrapStyleWord(true);
+        ExifDescriptiontextArea.setLineWrap(true);
+        xmpDescriptiontextArea.setWrapStyleWord(true);
+        xmpDescriptiontextArea.setLineWrap(true);
 
-                // Do necessary updates when moving from older versions to newer versions
-                UpdateActions.Updates();
+        // Do necessary updates when moving from older versions to newer versions
+        UpdateActions.Updates();
 
-                ViewRadiobuttonListener();
-                fillAllComboboxes();
+        ViewRadiobuttonListener();
+        fillAllComboboxes();
 
-                setArtistCreditsCopyrightDefaults();
-                // Some texts
-                setProgramScreenTexts();
-            }
-        });
+        setArtistCreditsCopyrightDefaults();
+        // Some texts
+        setProgramScreenTexts();
+        
         // Now check the preferences
         CheckPreferences CP = new CheckPreferences();
         preferences = CP.checkPreferences(rootPanel, OutputLabel);
@@ -4119,10 +4112,7 @@ private String getSeparatorString() {
         System.out.println(SingletonEnum.INSTANCE);
         Application.OS_NAMES os = Utils.getCurrentOsName();
 
-
         JFrame frame = new JFrame("jExifToolGUI V" + ProgramTexts.Version + "  " + ResourceBundle.getBundle("translations/program_strings").getString("application.title"));
-
-        // Should work, but doesn't work
 
         try {
             if (os == Application.OS_NAMES.APPLE) {
