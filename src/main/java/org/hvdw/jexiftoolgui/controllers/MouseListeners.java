@@ -23,11 +23,13 @@ public class MouseListeners {
             public void mousePressed(MouseEvent mouseEvent) {
                 JTable table =(JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
-                int row = table.rowAtPoint(point);
+                int trow = table.rowAtPoint(point);
+                int tcolumn = table.columnAtPoint(point);
                 if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
                     Utils.displaySelectedImageInExternalViewer();
-                    logger.info("double-click registered from thumbstable");
+                    logger.debug("double-click registered from thumbstable from row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
                 }
+                logger.debug("mouselistener: selected cell in row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
             }
         });
         // the mouse listener on the tree

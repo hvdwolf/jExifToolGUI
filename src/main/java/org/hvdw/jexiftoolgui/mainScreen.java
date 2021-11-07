@@ -3758,6 +3758,9 @@ private String getSeparatorString() {
                         SelectedRow = i;
                         MyVariables.setSelectedRow(i);
                     }
+                    int trow = tableListfiles.getSelectedRow();
+                    int tcolumn = tableListfiles.getSelectedColumn();
+                    logger.debug("mainscreenListener: selected cell in row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
                 }
                 String[] params = whichRBselected();
                 String res = Utils.getImageInfoFromSelectedFile(params);
@@ -3966,6 +3969,8 @@ private String getSeparatorString() {
         //createPopupMenu(myPopupMenu);
 
 
+        // Do some things in a swingworker background task
+
         String check_result = checkforjexiftoolguiFolder();
         if (check_result.contains("Error creating")) {
             JOptionPane.showMessageDialog(rootPanel, "Could not create the data folder " + MyConstants.MY_DATA_FOLDER + "  or one of its files", "error creating folder/files", JOptionPane.ERROR_MESSAGE);
@@ -3985,6 +3990,7 @@ private String getSeparatorString() {
         xmpDescriptiontextArea.setLineWrap(true);
 
         // Do necessary updates when moving from older versions to newer versions
+        // This is done in a swingworker background task
         UpdateActions.Updates();
 
         ViewRadiobuttonListener();
@@ -3993,7 +3999,7 @@ private String getSeparatorString() {
         setArtistCreditsCopyrightDefaults();
         // Some texts
         setProgramScreenTexts();
-        
+
         // Now check the preferences
         CheckPreferences CP = new CheckPreferences();
         preferences = CP.checkPreferences(rootPanel, OutputLabel);

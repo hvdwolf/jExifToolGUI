@@ -18,7 +18,6 @@ import java.util.concurrent.Executor;
 public class CommandRunner {
     public final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CommandRunner.class);
 
-
     /*
      * All exiftool commands go through this method
      */
@@ -118,13 +117,12 @@ public class CommandRunner {
             }
             process.waitFor();
         } catch (IOException e) {
-            logger.error("IOException error {}", e);
+            logger.error("IOException error {}", e.toString());
             res.append("IOException error")
                     .append(System.lineSeparator())
                     .append(e.getMessage());
         }
         return res.toString();
-
     }
 
     /*

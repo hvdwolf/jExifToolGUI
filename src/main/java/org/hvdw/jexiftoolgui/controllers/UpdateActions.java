@@ -25,7 +25,7 @@ public class UpdateActions {
             JOptionPane.showMessageDialog(null, "Encountered an error " + Comments);
             logger.error("Encountered an error: {}", Comments);
         } else { // we were successful
-            logger.error("Successfully did: " + Comments);
+            logger.debug("Successfully did: " + Comments);
         }
     }
 
@@ -161,15 +161,27 @@ public class UpdateActions {
 
     // ################## Start of the update stuff ####################
     // This is where we add extra tables or table data after an update that added extra functionality
-    // This can also be alter table commands
+    // This can also be to alter table commands
     //
-    // This can also mean that that we update/alter settings
+    // This can also mean that we update/alter settings
+    // This is run as background task using a swingworker
 
     public static void Updates() {
 
-        update_1_4();
-        update_1_6();
-        update_1_7();
-        update_1_9();
+        SwingWorker sw = new SwingWorker<Void, Void>() {
+            public Void doInBackground() {
+                update_1_4();
+                update_1_6();
+                update_1_7();
+                update_1_9();
+                //logger.debug("Checked and when necessary did the updates");
+                return null;
+            }
+            @Override
+            public void done() {
+                // maybe some time this needs to do something as well
+            }
+        };
+        sw.execute();
     }
 }

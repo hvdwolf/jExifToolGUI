@@ -24,12 +24,16 @@ import static org.hvdw.jexiftoolgui.Utils.getFileExtension;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
 public class ImageFunctions {
-    // Almost 100% copied from Dennis Damico's FastPhotoTagger
+    // A big deal was copied from Dennis Damico's FastPhotoTagger
     // And he copied it almost 100% from Wyat Olsons original ImageTagger Imagefunctions (2005)
-    // And I then extended it with the TwelveMonkeys imageIO libraries
+    // Extended with additional functionality
 
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ImageFunctions.class);
 
+    /*
+    / This gets all image data using exiftool, but only returns the basic image data
+    / The total tag data is put into a hashmap via a getter/setter
+     */
     public static int[] getbasicImageData (File file) {
         // BASIC_IMG_DATA = {"-n", "-S", "-imagewidth", "-imageheight", "-orientation", "-iso", "-fnumber", "-exposuretime", "-focallength", "-focallengthin35mmformat"}
         int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
@@ -54,7 +58,7 @@ public class ImageFunctions {
             who = CommandRunner.runCommand(cmdparams);
             logger.debug("res is {}", who);
         } catch (IOException | InterruptedException ex) {
-            logger.error("Error executing command", ex);
+            logger.error("Error executing command", ex.toString());
         }
 
         if (who.length() > 0) {
@@ -87,7 +91,70 @@ public class ImageFunctions {
 
         return basicdata;
     }
-    
+
+
+    /*
+    / This one is used to get all metadata in the background for further use
+     */
+    public static void getImageData (JLabel[] mainScreenLabels, JProgressBar progressBar, JButton buttonSearchMetadata) {
+
+        HashMap<String, String> imgBasicData = new HashMap<String, String>();
+
+        String exiftool = Utils.platformExiftool();
+        List<String> basiccmdparams = new ArrayList<String>();
+        basiccmdparams.add(exiftool.trim());
+        basiccmdparams.add("-n");
+        basiccmdparams.add("-S");
+        basiccmdparams.add("-a");
+
+        boolean files_null = false;
+        File[] files = MyVariables.getLoadedFiles();
+
+        SwingWorker sw = new SwingWorker<Void, Void>() {
+            public Void doInBackground() {
+                for (File file : files) {
+                    String filename = file.getName().replace("\\", "/");
+                    List<String> cmdparams = new ArrayList<String>();
+                    cmdparams.addAll(basiccmdparams);
+                    cmdparams.add(file.getPath());
+                    String imgTags = "";
+
+                    try {
+                        imgTags = CommandRunner.runCommand(cmdparams);
+                        logger.debug("res is {}", imgTags);
+                    } catch (IOException | InterruptedException ex) {
+                        logger.error("Error executing command", ex.toString());
+                    }
+
+                    if (imgTags.length() > 0) {
+                        String[] lines = imgTags.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+                        for (String line : lines) {
+                            String[] parts = line.split(":", 2);
+                            imgBasicData.put(parts[0].trim(), parts[1].trim());
+                        }
+                        MyVariables.setimgBasicData(imgBasicData);
+                        logger.trace("imgBasicData {}", imgBasicData);
+                        HashMap<String, HashMap<String, String>> imagesData = MyVariables.getimagesData();
+                        imagesData.put(filename, imgBasicData);
+                        MyVariables.setimagesData(imagesData);
+                        // Note: 100 images will create 300~600 Kb in the total imagesData hashmap.
+                    }
+                }
+                return null;
+            }
+            @Override
+            public void done() {
+                logger.debug("Finished reading all the metadata in the background");
+                progressBar.setVisible(false);
+                mainScreenLabels[0].setText("Finished reading all the metadata in the background");
+                buttonSearchMetadata.setEnabled(true);
+            }
+        };
+        sw.execute();
+
+    }
+
+
 
     /*
     / This method is used to mass extract thumbnails from JPG images, either by load folder, load images or "dropped" images.

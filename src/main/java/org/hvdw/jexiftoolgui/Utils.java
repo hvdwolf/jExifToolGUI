@@ -820,6 +820,15 @@ public class Utils {
                         buttonSearchMetadata.setEnabled(true);
                     } else {
                         buttonSearchMetadata.setEnabled(false);
+                        //Still load all metadata but do it in the background
+                        logger.debug("Starting to read all the metadata in the background");
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                progressBar.setVisible(true);
+                                mainScreenLabels[0].setText("Starting to read all the metadata in the background");
+                            }
+                        });
+                        ImageFunctions.getImageData(mainScreenLabels, progressBar, buttonSearchMetadata);
                     }
                     buttonShowImage.setEnabled(true);
                     buttonCompare.setEnabled(true);
