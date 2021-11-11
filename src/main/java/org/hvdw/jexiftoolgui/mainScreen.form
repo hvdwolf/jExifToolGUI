@@ -234,7 +234,7 @@
                   <component id="30262" class="javax.swing.JCheckBox" binding="loadMetadataCheckBox" default-binding="true">
                     <constraints/>
                     <properties>
-                      <selected value="true"/>
+                      <selected value="false"/>
                       <text resource-bundle="translations/program_strings" key="lp.loadmetadata"/>
                     </properties>
                   </component>
@@ -321,7 +321,7 @@
                       <component id="fdf93" class="javax.swing.JRadioButton" binding="radioButtonCameraMakes">
                         <constraints/>
                         <properties>
-                          <label value="By Camera"/>
+                          <label value="[vdtab.bycamera / translations/program_strings]"/>
                           <text resource-bundle="translations/program_strings" key="vdtab.bycamera"/>
                         </properties>
                       </component>
@@ -1628,7 +1628,7 @@
                                         </constraints>
                                         <properties>
                                           <enabled value="false"/>
-                                          <label value="Convert to decimal degrees"/>
+                                          <label value="[gps.btnconvert / translations/program_strings]"/>
                                           <text resource-bundle="translations/program_strings" key="gps.btnconvert"/>
                                           <visible value="false"/>
                                         </properties>
@@ -2397,7 +2397,7 @@
                               <component id="dd9eb" class="javax.swing.JButton" binding="gpanoHelpbutton">
                                 <constraints/>
                                 <properties>
-                                  <label value="Help"/>
+                                  <label value="[button.help / translations/program_strings]"/>
                                   <text resource-bundle="translations/program_strings" key="button.help"/>
                                 </properties>
                               </component>
@@ -2477,7 +2477,7 @@
                               <component id="add49" class="javax.swing.JButton" binding="lensHelpbutton">
                                 <constraints/>
                                 <properties>
-                                  <label value="Help"/>
+                                  <label value="[button.help / translations/program_strings]"/>
                                   <text resource-bundle="translations/program_strings" key="button.help"/>
                                 </properties>
                               </component>
@@ -3305,7 +3305,7 @@
                                   <component id="ed833" class="javax.swing.JButton" binding="udcHelpbutton">
                                     <constraints/>
                                     <properties>
-                                      <label value="Help"/>
+                                      <label value="[button.help / translations/program_strings]"/>
                                       <text resource-bundle="translations/program_strings" key="button.help"/>
                                     </properties>
                                   </component>

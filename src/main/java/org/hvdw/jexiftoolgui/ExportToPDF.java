@@ -127,7 +127,7 @@ public class ExportToPDF {
                 }
 
             } else if ( (filenameExt.toLowerCase().equals("mp4")) || (filenameExt.toLowerCase().equals("m4v")) ) {
-                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(tmpfile);
+                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(tmpfile, false, filenameExt);
                 if ("Success".equals(exportResult)) {
                     logger.debug("getconvertimage MP4 export thumbnails successful");
                     tmpfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";

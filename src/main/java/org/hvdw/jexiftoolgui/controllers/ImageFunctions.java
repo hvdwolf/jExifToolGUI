@@ -19,9 +19,9 @@ import java.util.List;
 
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
-import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
-import static org.hvdw.jexiftoolgui.Utils.getFileExtension;
+import static org.hvdw.jexiftoolgui.Utils.*;
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class ImageFunctions {
     // A big deal was copied from Dennis Damico's FastPhotoTagger
@@ -92,6 +92,52 @@ public class ImageFunctions {
         return basicdata;
     }
 
+    /*
+    / This only gets width, height and rotation for an image. It is slower than java but gives better results for orientation
+     */
+
+    public static int[] getWidthHeightOrientation (File file) {
+        int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
+
+        String exiftool = Utils.platformExiftool();
+        List<String> cmdparams = new ArrayList<String>();
+        cmdparams.add(exiftool.trim());
+        cmdparams.add("-n");
+        cmdparams.add("-S");
+        cmdparams.add("-imagewidth");
+        cmdparams.add("-imageheight");
+        cmdparams.add("-orientation");
+
+        cmdparams.add(file.getPath());
+        String w_h_o ="";
+
+        try {
+            w_h_o = CommandRunner.runCommand(cmdparams);
+            logger.debug("res is {}", w_h_o);
+        } catch (IOException | InterruptedException ex) {
+            logger.error("Error executing command", ex.toString());
+        }
+
+        if (w_h_o.length() > 0) {
+            String[] lines = w_h_o.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+            for (String line : lines) {
+                String[] parts = line.split(":", 2);
+                try {
+                    if (parts[0].contains("ImageWidth")) {
+                        basicdata[0] = Integer.parseInt(parts[1].trim());
+                    } else if (parts[0].contains("ImageHeight")) {
+                        basicdata[1] = Integer.parseInt(parts[1].trim());
+                    } else if (parts[0].contains("Orientation")) {
+                        basicdata[2] = Integer.parseInt(parts[1].trim());
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    logger.info("error Integer.parseInt {}", e);
+                }
+            }
+        }
+        return basicdata;
+    }
 
     /*
     / This one is used to get all metadata in the background for further use
@@ -157,7 +203,7 @@ public class ImageFunctions {
 
 
     /*
-    / This method is used to mass extract thumbnails from JPG images, either by load folder, load images or "dropped" images.
+    / This method is used to mass extract thumbnails from images, either by load folder, load images or "dropped" images.
      */
     public static void extractThumbnails() {
         String exiftool = Utils.platformExiftool();
@@ -166,40 +212,55 @@ public class ImageFunctions {
 
         boolean isWindows = Utils.isOsFromMicrosoft();
         File[] files = MyVariables.getLoadedFiles();
+        List<File> createthumbs = new ArrayList<File>();
 
         // Get the temporary directory
         String tempWorkDir = MyVariables.gettmpWorkFolder();
+        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+        String strjexiftoolguicachefolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER + File.separator + "cache";
 
         cmdparams.add("-a");
         cmdparams.add("-m");
         cmdparams.add("-b");
         cmdparams.add("-W");
         cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
-        cmdparams.add("-preview:ThumbnailImage");
-        //cmdparams.add("-preview:PreviewImage");
+        cmdparams.add("-preview:all");
 
         for (File file : files) {
-            if (isWindows) {
-                cmdparams.add(file.getPath().replace("\\", "/"));
-            } else {
-                cmdparams.add(file.getPath());
+            // First check for existing thumbnails
+            String filename = file.getName().replace("\\", "/");
+            String thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+            String photoshopThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
+            File thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+            File psthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + photoshopThumbfilename);
+            if (!thumbfile.exists()) {  // If the thumbfile doesn't exist
+                if (!psthumbfile.exists()) {  // and the photoshop thumbfile doesn't exist
+                    // then we need to try to create one of them
+                    if (isWindows) {
+                        cmdparams.add(file.getPath().replace("\\", "/"));
+                    } else {
+                        cmdparams.add(file.getPath());
+                    }
+                }
             }
+
         }
         try {
             String cmdResult = CommandRunner.runCommand(cmdparams);
-            //logger.info("cmd result from export previews for single RAW" + cmdResult);
+            logger.debug("cmd result after export previews " + cmdResult);
         } catch (IOException | InterruptedException ex) {
             logger.error("Error executing command to export thumbnails and previews for selected images");
             //exportResult = (" " + ResourceBundle.getBundle("translations/program_strings").getString("ept.exporterror"));
         }
 
+        StandardFileIO.copyThumbsToCache();
     }
 
     /*
      * This method is used to try to get a preview image for those (RAW) images that can't be converted directly to be displayed in the left images column
      * We will try to extract a jpg from the RAW to the tempdir and resize/display that one
      */
-    public static String ExportPreviewsThumbnailsForIconDisplay(File file) {
+    public static String ExportPreviewsThumbnailsForIconDisplay(File file, boolean bSimpleExtension, String filenameExt) {
         List<String> cmdparams = new ArrayList<String>();
         String exportResult = "Success";
 
@@ -214,9 +275,11 @@ public class ImageFunctions {
         cmdparams.add("-b");
         cmdparams.add("-W");
         cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
-        cmdparams.add("-preview:ThumbnailImage");
+        /*cmdparams.add("-preview:ThumbnailImage");
         cmdparams.add("-preview:PhotoshopThumbnail");
-        cmdparams.add("-preview:PreviewImage");
+        cmdparams.add("-preview:JpgFromRaw");
+        cmdparams.add("-preview:PreviewImage");*/
+        cmdparams.add("-preview:all");
 
         if (isWindows) {
             cmdparams.add(file.getPath().replace("\\", "/"));
@@ -254,6 +317,7 @@ public class ImageFunctions {
         cmdparams.add("-b");
         cmdparams.add("-W");
         cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
+
         cmdparams.add("-preview:JpgFromRaw");
         cmdparams.add("-preview:PreviewImage");
 
@@ -280,16 +344,23 @@ public class ImageFunctions {
         String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;
 
         boolean bSimpleExtension = false;
-        String thumbfilename = "";
-        String photoshopThumbfilename = "";
-        File thumbfile = null;
-        File psthumbfile = null;
         ImageIcon icon = null;
         ImageIcon finalIcon = null;
 
         Application.OS_NAMES currentOsName = getCurrentOsName();
         String filename = file.getName().replace("\\", "/");
         String filenameExt = getFileExtension(filename);
+
+        // Define our possible previews
+        String thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+        String photoshopThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
+        String previewThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
+        File thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+        File psthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + photoshopThumbfilename);
+        File prevthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + previewThumbfilename);
+        File cachedthumbfile = new File (MyVariables.getjexiftoolguiCacheFolder() + File.separator + thumbfilename);
+        File cachedpsthumbfile = new File (MyVariables.getjexiftoolguiCacheFolder() + File.separator + photoshopThumbfilename);
+
         if ( (filenameExt.toLowerCase().equals("heic")) || ((filenameExt.toLowerCase().equals("heif"))) ) {
             heicextension = true;
         }
@@ -322,26 +393,66 @@ public class ImageFunctions {
             }
             //reset our heic flag
             heicextension = false;
-        } else if (bSimpleExtension) {
-            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-            photoshopThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
-            thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-            psthumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + photoshopThumbfilename);
-            if ((!thumbfile.exists() || !psthumbfile.exists()) && (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg") || filenameExt.toLowerCase().equals("tif")) || (filenameExt.toLowerCase().equals("tiff")) ) {
-                String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
+        } else if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg") || filenameExt.toLowerCase().equals("tif")) || (filenameExt.toLowerCase().equals("tiff")) ) {
+//        } else if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+            if (cachedthumbfile.exists()) {
+                icon = ImageFunctions.createIcon(file);
+                return icon;
+            } else if (cachedpsthumbfile.exists()) {
+                icon = ImageFunctions.createIcon(cachedpsthumbfile);
+                return icon;
+            } else {
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(file);
+                } catch (IOException e) {
+                    logger.error("error reading buffered image to scale it to icon {}", e.toString());
+                    e.printStackTrace();
+                }
+                BufferedImage resizedImg = ImageFunctions.scaleImageToContainer(img, 160, 160);
+                icon = new ImageIcon(resizedImg);
+                // Save our created icon
+                if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
+                    StandardFileIO.saveIconToCache(filename, resizedImg);
+                } else { //tiff
+                    //BufferedImage thumbImg = new BufferedImage(icon);
+                    BufferedImage thumbImg = new BufferedImage(resizedImg.getWidth(), resizedImg.getHeight(), BufferedImage.OPAQUE);
+                    thumbImg.createGraphics().drawImage(resizedImg, 0, 0, Color.WHITE, null);
+                    StandardFileIO.saveIconToCache(filename, thumbImg);
+                }
+                return icon;
             }
-
-            icon = ImageFunctions.createIcon(file);
+        } else if ( (filenameExt.toLowerCase().equals("bmp")) || (filenameExt.toLowerCase().equals("png")) ) {
+            if (cachedthumbfile.exists()) {
+                icon = ImageFunctions.createIcon(file);
+            } else {
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(file);
+                } catch (IOException e) {
+                    logger.error("error reading buffered image to scale it to icon {}", e.toString());
+                    e.printStackTrace();
+                }
+                BufferedImage resizedImg = ImageFunctions.scaleImageToContainer(img, 160, 160);
+                icon = new ImageIcon(resizedImg);
+                BufferedImage thumbImg = (BufferedImage) icon.getImage();
+                // Save our created icon
+                StandardFileIO.saveIconToCache(filename, thumbImg);
+                //logger.info("Saving file {} to cache", filename);
+            }
             return icon;
         } else { //We have a RAW image extension or something else like audio/video
-            // Export previews for current (RAW) image to tempWorkfolder
-            String exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file);
+            String exportResult = "";
+            // First check if we still have a preview
+            /*if (!thumbfile.exists() || !psthumbfile.exists() || !prevthumbfile.exists()) {
+                // Export previews for current (RAW) image to tempWorkfolder
+                exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file, bSimpleExtension, filenameExt);
+            }*/
+            exportResult = "Success";
             if ("Success".equals(exportResult)) {
                 //Hoping we have a thumbnail
-                thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-                thumbfile = new File (MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                logger.trace("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                if (thumbfile.exists()) {
+                logger.debug("thumb nr1:"  + MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                if (cachedthumbfile.exists()) {
                     // Create icon of this thumbnail (thumbnail is 90% 160x120 already, but resize it anyway
                     logger.trace("create thumb nr1");
                     icon = ImageFunctions.createIcon(file);
@@ -350,40 +461,51 @@ public class ImageFunctions {
                         return icon;
                     }
                 } else { //thumbnail image probably doesn't exist, move to 2nd option
+                    // We do not cache PreviewImage as they are way too big, so check the tmp folder instead of the cache folder
                     thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PreviewImage.jpg";
                     thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                    logger.debug("PreviewImage option {}", MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                     if (thumbfile.exists()) {
                         // Create icon of this Preview
                         logger.trace("create thumb nr2");
-                        icon = ImageFunctions.createIcon(file);
-                        //icon = ImageFunctions.createIcon(thumbfile);
+                        //icon = ImageFunctions.createIcon(file);
+                        icon = ImageFunctions.createIcon(thumbfile);
                         if (icon != null) {
+                            BufferedImage thumbImg = (BufferedImage) icon.getImage();
+                            // Save our created icon
+                            StandardFileIO.saveIconToCache(filename, thumbImg);
                             // display our created icon from the preview
                             return icon;
                         }
                     } else { // So thumbnail and previewImage don't exist. Try 3rd option
+                        // We do not cache JpgFromRaw as they are way too big, so check the tmp folder instead of the cache folder
                         thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_JpgFromRaw.jpg";
                         thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
+                        logger.debug("JpgFromRaw option {}", MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
                         if (thumbfile.exists()) {
                             // Create icon of this Preview
-                            icon = ImageFunctions.createIcon(file);
-                            //icon = ImageFunctions.createIcon(thumbfile);
+                            //icon = ImageFunctions.createIcon(file);
+                            icon = ImageFunctions.createIcon(thumbfile);
                             if (icon != null) {
+                                BufferedImage thumbImg = (BufferedImage) icon.getImage();
+                                // Save our created icon
+                                StandardFileIO.saveIconToCache(filename, thumbImg);
                                 // display our created icon from the preview
                                 return icon;
                             }
                         } else { // So thumbnail and previewImage don't exist. Try 4th option for photoshop thumbnail
-                            thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
-                            thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
-                            if (thumbfile.exists()) {
+                            if (cachedpsthumbfile.exists()) {
                                 // Create icon of this Preview
-                                        icon = ImageFunctions.createIcon(file);
+                                icon = ImageFunctions.createIcon(file);
                                 //icon = ImageFunctions.createIcon(thumbfile);
                                 if (icon != null) {
+                                    BufferedImage thumbImg = (BufferedImage) icon.getImage();
+                                    // Save our created icon
+                                    StandardFileIO.saveIconToCache(filename, thumbImg);
                                     // display our created icon from the preview
                                     return icon;
                                 }
-                        } else {
+                            } else {
                                 // Load he cantdisplay.png from our resources
                                 try {
                                     BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
@@ -402,12 +524,12 @@ public class ImageFunctions {
                     } // end of 2nd option creation ("else if") and 3rd option creation (else)
                 } // end of 1st option creation ("else if") and 2nd option creation (else)
 
-            } else { // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  completely failed due to some weird RAW format
-                // Load he cantdisplay.png from our resources
+            } else {
+                // Our "String exportResult = ExportPreviewsThumbnailsForIconDisplay(file);"  either failed due to some weird RAW format
                 try {
                     BufferedImage img = ImageIO.read(mainScreen.class.getResource("/cantdisplay.png"));
                     icon = new ImageIcon(img);
-                } catch (IOException e){
+                } catch (IOException e) {
                     logger.error("Error loading image", e);
                     icon = null;
                 }
@@ -416,7 +538,6 @@ public class ImageFunctions {
                     // display our created icon from the preview
                     return icon;
                 }
-
             }
 
         }
@@ -447,8 +568,9 @@ public class ImageFunctions {
             try {
                 // We use exiftool to get width, height and orientation from the ORIGINAL image
                 // (as it is not always available in the thumbnail or preview)
-                basicdata = getbasicImageData(file);
+                basicdata = getWidthHeightOrientation(file);
                 logger.debug("Width {} Height {} Orientation {}", String.valueOf(basicdata[0]), String.valueOf(basicdata[1]), String.valueOf(basicdata[2]));
+
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
                 bde = true;
@@ -741,3 +863,4 @@ public class ImageFunctions {
     }
 
 }
+

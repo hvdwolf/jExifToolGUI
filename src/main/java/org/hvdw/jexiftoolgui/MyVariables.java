@@ -23,6 +23,7 @@ public class MyVariables {
     private File[] loadedFiles;
     private int[] selectedFilenamesIndices;
     private String jexiftoolguiDBPath;
+    private String jexiftoolguiCacheFolder;
     private String cantdisplaypng;
     private String cantconvertpng;
     private String selectedLensConfig;
@@ -76,6 +77,9 @@ public class MyVariables {
     public static void setjexiftoolguiDBPath(String selDBPath) {
         staticInstance.jexiftoolguiDBPath = selDBPath;
     }
+
+    public static String getjexiftoolguiCacheFolder() { return staticInstance.jexiftoolguiCacheFolder; }
+    public static void setjexiftoolguiCacheFolder(String jtgCchFldr) { staticInstance.jexiftoolguiCacheFolder = jtgCchFldr;}
 
     public static String getcantdisplaypng() {
         return staticInstance.cantdisplaypng;

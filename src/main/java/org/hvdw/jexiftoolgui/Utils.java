@@ -25,7 +25,6 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -692,22 +691,14 @@ public class Utils {
 
 
         // First check if we want to create previews or not. If not we will create the mini preview table at the bottom left
-        if ( (loadOptions[0].isSelected()) ) { //The user wants to see previews
+        if ( (showCreatePreviews) ) { //The user wants to see previews
             previewTable.setVisible(false);
         } else {
             previewTable.setVisible(true);
             DefaultTableModel previewTableModel = (DefaultTableModel) previewTable.getModel();
-
             previewTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
                 protected void setValue(Object value) {
-                    if (loadOptions[1].isSelected()) { //User wants metadata which means we don't have to show it here -> single column table
-                        if (value instanceof LabelIcon) {
-                            setIcon(((LabelIcon) value).icon);
-                            setHorizontalTextPosition(JLabel.CENTER);
-                            setVerticalTextPosition(JLabel.BOTTOM);
-                            setText(((LabelIcon) value).label);
-                        }
-                    } else { // -> dual-column table
+                    if (loadMetadata) { //Userwants metadata which means we don't have to show it here -> single column preview table
                         if (value instanceof ImageIcon) {
                             setIcon((ImageIcon) value);
                             setText("");
@@ -715,10 +706,17 @@ public class Utils {
                             setIcon(null);
                             super.setValue(value);
                         }
+                    } else { // -> dual-column preview table
+                        if (value instanceof LabelIcon) {
+                            setIcon(((LabelIcon) value).icon);
+                            setHorizontalTextPosition(JLabel.CENTER);
+                            setVerticalTextPosition(JLabel.BOTTOM);
+                            setText(((LabelIcon) value).label);
+                        }
                     }
                 }
             });
-            if (loadOptions[1].isSelected()) { //User wants metadata which means we don't have to show it here
+            if (loadMetadata) { //User wants metadata which means we do not have to show it in the preview table as it is above in the list table
                 previewTable.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
                 previewTableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.filename")});
                 previewTable.setRowHeight(160);
@@ -782,40 +780,54 @@ public class Utils {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    int jpegcounter = 0;
+                    //int jpegcounter = 0;
                     int loopcounter = 0;
                     String filename;
                     File firstFile = null;
                     boolean showCreatePreview = loadOptions[0].isSelected();
-                    boolean loadMetadata = loadOptions[1].isSelected();
-                    for (File file : files) {
-                        filename = file.getName().replace("\\", "/");
-                        // Simple way to get image folder from first loaded image
-                        if (loopcounter == 0) {
-                            lblimgSourceFolder.setText(file.getParent());
-                            firstFile = file;
-                            MyVariables.setSinglePreview(file);
-                            MyVariables.setSinglePreviewFileName(filename);
-                            loopcounter++;
-                        }
-                        logger.debug("Checking on extension for JPG extraction on image: " +filename);
-                        String filenameExt = Utils.getFileExtension(filename);
-                        if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
-                            jpegcounter++;
-                        }
-                    }
-                    if ( (jpegcounter >= 3) && (showCreatePreview) ){
-                        // Always try to extract thumbnails and previews of selected images. This normally only works for JPGs and RAWs
+
+                    filename = files[0].getName().replace("\\", "/");
+                    lblimgSourceFolder.setText(files[0].getParent());
+                    firstFile = files[0];
+                    MyVariables.setSinglePreview(files[0]);
+                    MyVariables.setSinglePreviewFileName(filename);
+
+                    // Always Always try to extract thumbnails and previews of selected images. This normally only works for JPGs, RAWs and (modern) TIFFs
+                    if (showCreatePreview) {
                         ImageFunctions.extractThumbnails();
                     }
 
+                    //logger.info("Before displayfiles: displayprevriew {} loadmetadata {}", showCreatePreview, loadMetadata);
                     Utils.displayFiles(tableListfiles, LeftPanel, showCreatePreview, loadMetadata);
 
+                    /*
                     // After loading all, display the data for the first image
                     MyVariables.setSelectedRow(0);
                     String res = getImageInfoFromSelectedFile(params);
                     displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     lblFileNamePath.setText(firstFile.getPath());
+                    */
+                    // After loading check whether we have multiple files, or only one file
+                    if (files.length > 1) {
+                        // We have multiple images loaded.
+                        // Do not display first one automatically but let user select
+                        String res = "jExifToolGUI\t" +
+                                ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfilesloaded") + "\t" +
+                                ResourceBundle.getBundle("translations/program_strings").getString("vdtab.selectimage");
+                        /*String res = "jExifToolGUI\t" +
+                                "Multiple images loaded\t" +
+                                "Select an image to display its metadata";*/
+                        lblFileNamePath.setText("");
+                        displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    } else {
+                        MyVariables.setSelectedRow(0);
+                        String res = getImageInfoFromSelectedFile(params);
+                        displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                        lblFileNamePath.setText(firstFile.getPath());
+                        displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    }
+                    //displayInfoForSelectedImage(res, ListexiftoolInfotable);
+
                     if (loadMetadata) {
                         buttonSearchMetadata.setEnabled(true);
                     } else {
@@ -878,7 +890,9 @@ public class Utils {
 
         boolean singleColumnTable = true;
         if ( (showCreatePreview)  && (loadMetadata) ) {
-            boolean columns = prefs.getByKey(DUAL_COLUMN, true);
+            // Disable this for the fast loading and the new design
+            //boolean columns = prefs.getByKey(DUAL_COLUMN, true);
+            boolean columns = true;
             if (columns) {
                 singleColumnTable = false;
             } else {
@@ -954,10 +968,21 @@ public class Utils {
                 ImageFunctions.getbasicImageData(file);
             }
             if (showCreatePreview) { //User wants a preview
-                icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+                filename = file.getName().replace("\\", "/");
+                String thumbfilename = MyVariables.getjexiftoolguiCacheFolder() + File.separator + filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+                String photoshopThumbfilename = MyVariables.getjexiftoolguiCacheFolder() + File.separator + filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
+                File thumbfile = new File(thumbfilename);
+                File psthumbfile = new File (photoshopThumbfilename);
+                if (thumbfile.exists()) {
+                    icon = new ImageIcon(thumbfilename);
+                } else if (psthumbfile.exists()) {
+                    icon = new ImageIcon(photoshopThumbfilename);
+                } else {
+                    icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+                }
             }
 
-            logger.debug("Before display: Singlecolumntable {} ShowCreatePreview {} loadMetadata {}", singleColumnTable, showCreatePreview, loadMetadata);
+            //logger.info("Before display: Singlecolumntable {} ShowCreatePreview {} loadMetadata {}", singleColumnTable, showCreatePreview, loadMetadata);
             if (singleColumnTable){
                 if (showCreatePreview) { //User wants a preview
                     ImgFilenameRow[0] = new LabelIcon(icon, filename);

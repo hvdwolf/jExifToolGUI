@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
@@ -819,7 +818,7 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(createPreviewsCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.crpreview"));
         LeftCheckboxBar.add(createPreviewsCheckBox);
         loadMetadataCheckBox = new JCheckBox();
-        loadMetadataCheckBox.setSelected(true);
+        loadMetadataCheckBox.setSelected(false);
         this.$$$loadButtonText$$$(loadMetadataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.loadmetadata"));
         LeftCheckboxBar.add(loadMetadataCheckBox);
         leftCheckBoxBarHelpButton = new JButton();
@@ -861,7 +860,7 @@ private String getSeparatorString() {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("By Camera");
+        radioButtonCameraMakes.setLabel("[vdtab.bycamera / translations/program_strings]");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1383,7 +1382,7 @@ private String getSeparatorString() {
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
         minutesSecondsToDecimalButton.setEnabled(false);
-        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
+        minutesSecondsToDecimalButton.setLabel("[gps.btnconvert / translations/program_strings]");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         minutesSecondsToDecimalButton.setVisible(false);
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1683,7 +1682,7 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(gpanoResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel24.add(gpanoResetFieldsbutton);
         gpanoHelpbutton = new JButton();
-        gpanoHelpbutton.setLabel("Help");
+        gpanoHelpbutton.setLabel("[button.help / translations/program_strings]");
         this.$$$loadButtonText$$$(gpanoHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel24.add(gpanoHelpbutton);
         gpanoOverwriteOriginalscheckBox = new JCheckBox();
@@ -1716,7 +1715,7 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(lensResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel26.add(lensResetFieldsbutton);
         lensHelpbutton = new JButton();
-        lensHelpbutton.setLabel("Help");
+        lensHelpbutton.setLabel("[button.help / translations/program_strings]");
         this.$$$loadButtonText$$$(lensHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel26.add(lensHelpbutton);
         final JLabel label74 = new JLabel();
@@ -2049,7 +2048,7 @@ private String getSeparatorString() {
         udcResetFieldsbutton.setVisible(false);
         panel39.add(udcResetFieldsbutton);
         udcHelpbutton = new JButton();
-        udcHelpbutton.setLabel("Help");
+        udcHelpbutton.setLabel("[button.help / translations/program_strings]");
         this.$$$loadButtonText$$$(udcHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel39.add(udcHelpbutton);
         UserCombiTopText = new JLabel();

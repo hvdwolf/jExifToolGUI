@@ -33,7 +33,6 @@ public class CommandRunner {
         String[] supportedImages = MyConstants.SUPPORTED_IMAGES;
         List<String> supImgList = Arrays.asList(supportedImages);
         StringBuilder argsString = new StringBuilder();;
-        //logger.debug("commandrunner {}", cmdparams.toString());
 
         // try with apache commons
         String platformCharset = Charset.defaultCharset().displayName();

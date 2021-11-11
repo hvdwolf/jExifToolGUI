@@ -792,6 +792,7 @@ public class PreferencesDialog extends JDialog {
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.lookandfeeltab"), panel16);
         final JPanel panel17 = new JPanel();
         panel17.setLayout(new GridLayoutManager(1, 2, new Insets(5, 5, 5, 5), -1, -1));
+        panel17.setVisible(false);
         panel16.add(panel17, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel17.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         DualColumncheckBox = new JCheckBox();

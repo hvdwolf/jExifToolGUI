@@ -5,11 +5,13 @@ import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -18,6 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
@@ -145,13 +148,9 @@ public class StandardFileIO {
 
         //java_11 
         String startFolder = !defaultStartFolder.isBlank() ? defaultStartFolder : userHome;
-        // At least for time being use java_1.8
-        //String startFolder = !defaultStartFolder.isEmpty() ? defaultStartFolder : userHome;
 
         //java_11 
         if (useLastOpenedFolder && !lastOpenedFolder.isBlank()) {
-        // At least for time being use java_1.8
-        //if (useLastOpenedFolder && !lastOpenedFolder.isEmpty()) {
             startFolder = lastOpenedFolder;
         }
         return startFolder;
@@ -374,7 +373,6 @@ public class StandardFileIO {
     */
     public static String ExportCustomConfigFile(String fileName) {
         String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
-        //String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
         String strCopyTo = userHome + File.separator + fileName;
         String strCopyFrom = userHome + File.separator + MyConstants.MY_DATA_FOLDER + File.separator + fileName;
         String copyResult = "";
@@ -448,6 +446,19 @@ public class StandardFileIO {
         } else { //folder exists
             method_result = "exists";
         }
+
+        // Check on our cache directory and if it doesn't exist: create it!
+        String strjexiftoolguicachefolder = strjexiftoolguifolder + File.separator + "cache";
+        File jexiftoolguicachefolder = new File(strjexiftoolguicachefolder);
+        if (!jexiftoolguicachefolder.exists()) { // the cache folder does not exist yet
+            try {
+                Files.createDirectories(Paths.get(strjexiftoolguicachefolder));
+            } catch (IOException e) {
+                logger.error("Error creating cache directory " + strjexiftoolguicachefolder);
+                e.printStackTrace();
+            }
+        }
+        MyVariables.setjexiftoolguiCacheFolder(strjexiftoolguicachefolder);
 
         // Now check if our database exists
         fileToBecopied = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
@@ -575,6 +586,83 @@ public class StandardFileIO {
                 return SelectedFolder;
             }
         }
+    }
+
+    /*
+    / This method copies the thumb files from the tmp folder to the cache folder
+    / It does this in a swingworker background process
+     */
+    public static void copyThumbsToCache() {
+        // use with *ThumbnailImage.jpg and *PhotoshopThumbnail.jpg
+
+        SwingWorker sw = new SwingWorker<Void, Void>() {
+            public Void doInBackground() {
+
+                String tmpWorkDir = MyVariables.gettmpWorkFolder();
+                Path tmpworkDirPath = Paths.get(tmpWorkDir);
+                File tmpWorkDirFile = new File(tmpWorkDir);
+                String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+                File[] allExtractedThumbs = tmpWorkDirFile.listFiles();
+                for (File thumb : allExtractedThumbs) {
+                    String thumbName = thumb.getName();
+                    logger.debug("tmp thumb file {} in listing", thumb.getName());
+                    if ( (thumbName.contains("ThumbnailImage.jpg")) || (thumbName.contains("PhotoshopThumbnail.jpg")) ) {
+                        logger.debug("copy thumb file {}", thumbName);
+                        String strCopyTo = MyVariables.getjexiftoolguiCacheFolder() + File.separator;
+                        String copyResult = "";
+                        //NIO copy with replace existing
+                        Path copyTo = Paths.get(strCopyTo + thumbName);
+                        Path copyFrom = Paths.get(tmpWorkDir + File.separator + thumbName);
+                        logger.debug("thumbs copy to cache: From {} To {}", copyFrom.toString(), copyTo.toString());
+                        File testFile = new File(strCopyTo + thumbName);
+                        if (testFile.exists()) {
+                            testFile.delete();
+                        }
+                        try {
+                            Path path = Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
+                            copyResult = "successfully copied config file";
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            logger.error("copy of \"{}\" to \"{}\" failed with {}", (tmpWorkDir + File.separator + thumbName) , strCopyTo, e.toString());
+                            copyResult = e.toString();
+                        }
+                        // Now delete from our /tmp folder
+                        File delThumb = new File(tmpWorkDir + File.separator + thumbName);
+                        delThumb.delete();
+                    }
+                }
+                return null;
+            }
+        };
+        sw.execute();
+    }
+
+    /*
+/ This method saves.copies a single icon to cache after having created this from an image without preview
+/ It does this in a swingworker background process
+ */
+    public static void saveIconToCache(String fileName, BufferedImage bi) {
+        // use with *ThumbnailImage.jpg and *PhotoshopThumbnail.jpg
+        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+        String thumbFileName = fileName.substring(0, fileName.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+
+        SwingWorker sw = new SwingWorker<Void, Void>() {
+            public Void doInBackground() {
+
+                logger.info("thumb to save {}", thumbFileName);
+                logger.info("outputfile {}", MyVariables.getjexiftoolguiCacheFolder() + File.separator + thumbFileName.replaceAll(" ", "\\ "));
+                File outputfile = new File(MyVariables.getjexiftoolguiCacheFolder() + File.separator + thumbFileName.replaceAll(" ", "\\ "));
+                try {
+                    ImageIO.write(bi, "JPEG", outputfile);
+                } catch (IOException e) {
+                    logger.error("saving icon to cache errors out with {}", e.toString());
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        sw.execute();
+
     }
 
 }
