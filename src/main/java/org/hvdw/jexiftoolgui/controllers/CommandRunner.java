@@ -43,7 +43,7 @@ public class CommandRunner {
 
             for (String subString : cmdparams) {
                 // && !(subString.contains("exiftool.exe"))
-                if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI")) ) {
+                if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI")) && !(subString.contains("-preview")) ) {
                     newParams.add(subString);
                     newParams.add("-charset");
                     newParams.add("utf8");
