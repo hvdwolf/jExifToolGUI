@@ -3966,9 +3966,7 @@ private String getSeparatorString() {
 
         createMenuBar(frame);
         //createPopupMenu(myPopupMenu);
-
-
-        // Do some things in a swingworker background task
+        
 
         String check_result = checkforjexiftoolguiFolder();
         if (check_result.contains("Error creating")) {
@@ -3980,6 +3978,18 @@ private String getSeparatorString() {
         check_result = StandardFileIO.RecreateOurTempFolder();
         if (!"Success".equals(check_result)) {
             JOptionPane.showMessageDialog(rootPanel, "Could not (re)create our temporary working folder", "error (re)creating temp folder", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Now check the preferences
+        CheckPreferences CP = new CheckPreferences();
+        preferences = CP.checkPreferences(rootPanel, OutputLabel);
+        if (!preferences) {
+            ExifTool.checkExifTool(mainScreen.this.rootPanel);
+        } else {
+            if ( !(MyVariables.getExifToolPath() == null) && "c:\\windows\\exiftool.exe".equals( (MyVariables.getExifToolPath()).toLowerCase() ) ) {
+                JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtext"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
+                ExifTool.checkExifTool(mainScreen.this.rootPanel);
+            }
         }
 
         // Set the text areas correctly
@@ -3999,17 +4009,6 @@ private String getSeparatorString() {
         // Some texts
         setProgramScreenTexts();
 
-        // Now check the preferences
-        CheckPreferences CP = new CheckPreferences();
-        preferences = CP.checkPreferences(rootPanel, OutputLabel);
-        if (!preferences) {
-            ExifTool.checkExifTool(mainScreen.this.rootPanel);
-        } else {
-            if ( !(MyVariables.getExifToolPath() == null) && "c:\\windows\\exiftool.exe".equals( (MyVariables.getExifToolPath()).toLowerCase() ) ) {
-                JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtext"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
-                ExifTool.checkExifTool(mainScreen.this.rootPanel);
-            }
-        }
 
         //Use the table listener for the selection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();

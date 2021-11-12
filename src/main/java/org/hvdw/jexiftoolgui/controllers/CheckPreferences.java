@@ -21,14 +21,13 @@ public class CheckPreferences {
 
     //check preferences (a.o. exiftool)
     public boolean checkPreferences(JPanel rootPanel, JLabel OutputLabel) {
-        boolean exiftool_exists;
+        boolean exiftool_exists = false;
         boolean exiftool_found = false;
         String res;
         List<String> cmdparams = new ArrayList<>();
 
-
         exiftool_exists = prefs.keyIsSet(EXIFTOOL_PATH);
-        logger.trace("preference check exiftool_exists reports: {}",exiftool_exists);
+        logger.debug("preference check exiftool_exists reports: {}",exiftool_exists);
 
 
         if (exiftool_exists) {
@@ -36,6 +35,7 @@ public class CheckPreferences {
             File tmpFile = new File(exiftool_path);
             boolean exists = tmpFile.exists();
             if (!exists) {
+                logger.debug("the exiftool path in the preferences being \"{} \" isn't found", exiftool_path);
                 exiftool_path = null;
                 JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 300,ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttitle"), JOptionPane.WARNING_MESSAGE);
             }
@@ -44,6 +44,7 @@ public class CheckPreferences {
             if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
                 // Try to find exiftool in the path
                 res = Utils.getExiftoolPath();
+                //
                 logger.trace("result from getExiftoolPath(): {}", res);
             } else {
                 res = exiftool_path;
@@ -67,7 +68,7 @@ public class CheckPreferences {
             res = Utils.getExiftoolPath();
         }
 
-        if (res != null && !res.isEmpty() && !res.toLowerCase().startsWith("info") && !"c:\\windows\\exiftool.exe".equals(res.toLowerCase()) )  {
+        if (!(res == null) && !res.isEmpty() && !res.toLowerCase().startsWith("info") && !(res.toLowerCase()).equals("c:\\windows\\exiftool.exe") )  {
             exiftool_found = true;
             // We already checked that the node did not exist and that it is empty or null
             // remove all possible line breaks
