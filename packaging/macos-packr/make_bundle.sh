@@ -20,7 +20,7 @@ fi
 Version="$1"
 
 printf "do initial cleanup by removing the $App\n\n"
-rm -rf $App tmp "jExifToolGUI-x86_64-macos-$Version-with_jre.dmg"
+rm -rf $App tmp "jExifToolGUI-$Version-x86_64-macos-with_jre.dmg"
 
 ##      --vmargs XstartOnFirstThread \
 ##      --resources ./jexiftoolgui-splashlogo.png \
@@ -60,12 +60,16 @@ printf "\nCopy $App and LICENSE in\n\n"
 sudo cp -a  $App tmp/dmg/
 #sudo mv  jExifToolGUI.app tmp/dmg/
 sudo cp ../../LICENSE tmp/dmg/
+printf "\nCreate symbolic link to /Applications\n\n"
+cd tmp/dmg
+sudo ln -s /Applications Applications
+cd ../..
 
 sudo umount tmp/dmg
 if [ -f "./dmg" ];
 then 
     printf "\nNow create the compressed dmg from the uncompressed one\n\n"
-    ./dmg tmp/jExifToolGUI.dmg ./"jExifToolGUI-x86_64-macos-$Version-with_jre.dmg"
+    ./dmg tmp/jExifToolGUI.dmg ./"jExifToolGUI-$Version-x86_64-macos-with_jre.dmg"
 else
     printf "\n\nI can't find dmg to compress the dmg file. Please Read the !README.txt first to compile it\n\n"
 fi

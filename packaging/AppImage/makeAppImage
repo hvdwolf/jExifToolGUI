@@ -7,7 +7,9 @@
 # appimagetool: Download from https://github.com/AppImage/AppImageKit/releases
 # jre V11: download from https://adoptopenjdk.net/releases.html. Untar it and rename resulting folder to jre (to keepit simple over the versions)
 # Specify where we have installed our (unpacked) jre
-JRE="/media/harryvanderwolf/64GB/software/java/JREs/linux-jdk-11.0.9.1+1-jre"
+JRE="/var/host/media/removable/128GB/software/java/JREs/linux-jdk-11.0.12+7-jre/"
+IET="/var/host/media/removable/128GB/software/perl/Image-ExifTool-12.30"
+
 
 if [ "$1" = "" ]
 then
@@ -51,11 +53,10 @@ cp ../jexiftoolgui.appdata.xml usr/share/metainfo
 # As an Appimage need to be a completely portable entity, we will as of 1.8.2 (unreleased) also include exiftool
 # This requires you to download the latest exiftool from https://exiftool.org and untar it
 # We simply use the "uninstalled" version. Below line specifies the version and optional path
-IET="Image-ExifTool-12.19"
-mkdir -p usr/local/bin
+#mkdir -p usr/local/bin
 # copy everything, then clean up things not needed
-cp -a ../${IET}/* usr/local/bin
-rm -rf usr/local/bin/t usr/local/bin/html usr/local/bin/Changes usr/local/bin/Makefile.PL
+cp -a ${IET}/* usr/bin
+rm -rf usr/bin/t usr/bin/html usr/bin/Changes usr/bin/Makefile.PL
 
 
 #
@@ -70,9 +71,9 @@ printf "Create the AppRun script\n\n"
 cat > ./AppRun <<\EOF
 #!/bin/sh
 HERE=$(dirname $(readlink -f "${0}"))
-export LD_LIBRARY_PATH="${HERE}"/usr/local/lib:"${HERE}"/usr/lib:$PATH
+export LD_LIBRARY_PATH="$APPDIR/usr/bin/lib:${HERE}/usr/local/lib:${HERE}/usr/lib:$LD_LIBRARY_PATH"
 export JAVA_HOME="${HERE}"/jre
-export PATH="${HERE}"/usr/local/bin:"${HERE}"/usr/bin:$PATH
+export PATH="$APPDIR/usr/bin:${HERE}/usr/local/bin:${HERE}/usr/bin:$PATH"
 "${HERE}"/jre/bin/java -jar "${HERE}"/usr/share/jexiftoolgui/jExifToolGUI.jar ${1+"$@"} &
 EOF
 
