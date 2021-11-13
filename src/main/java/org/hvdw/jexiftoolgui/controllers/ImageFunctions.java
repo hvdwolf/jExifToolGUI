@@ -192,7 +192,7 @@ public class ImageFunctions {
             public void done() {
                 logger.debug("Finished reading all the metadata in the background");
                 progressBar.setVisible(false);
-                mainScreenLabels[0].setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.finishedreadingmetadatabackground"));
+                mainScreenLabels[0].setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.finishedreadingmetadabackground"));
                 buttonSearchMetadata.setEnabled(true);
             }
         };
@@ -413,7 +413,8 @@ public class ImageFunctions {
                 icon = new ImageIcon(resizedImg);
                 // Save our created icon
                 if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
-                    StandardFileIO.saveIconToCache(filename, resizedImg);
+                    BufferedImage thumbImg = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(),BufferedImage.TYPE_INT_RGB);
+                    StandardFileIO.saveIconToCache(filename, thumbImg);
                 } else { //tiff
                     //BufferedImage thumbImg = new BufferedImage(icon);
                     BufferedImage thumbImg = new BufferedImage(resizedImg.getWidth(), resizedImg.getHeight(), BufferedImage.OPAQUE);

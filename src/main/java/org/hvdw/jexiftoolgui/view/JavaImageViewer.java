@@ -32,14 +32,15 @@ public class JavaImageViewer {
     private BufferedImage ResizeImage(File image, int orientation) {
 
         int scrwidth = MyVariables.getScreenWidth();
-        int scrheight = MyVariables.getScreenHeight();
+        int scrheight = MyVariables.getScreenHeight()-50;
+        Rectangle screenBounds = Utils.getScreenBounds();
         try {
             BufferedImage img = ImageIO.read(new File(image.getPath().replace("\\", "/")));
             if (orientation > 1) {
                 resizedImg = ImageFunctions.rotate(img, orientation);
-                resizedImg = ImageFunctions.scaleImageToContainer(resizedImg, scrwidth, scrheight);
+                resizedImg = ImageFunctions.scaleImageToContainer(resizedImg, screenBounds.width, screenBounds.height);
             } else { // No rotation necessary
-                resizedImg = ImageFunctions.scaleImageToContainer(img, scrwidth, scrheight);
+                resizedImg = ImageFunctions.scaleImageToContainer(img, screenBounds.width, screenBounds.height);
             }
         } catch (IOException iex) {
             logger.error("error in resizing the image {}", iex);
@@ -283,6 +284,7 @@ public class JavaImageViewer {
 
 
 
+        Rectangle screenBounds = Utils.getScreenBounds();
 
         thePanel.add(InfoPanel, BorderLayout.PAGE_START);
         ImageIcon icon = new ImageIcon(resizedImg);
@@ -290,14 +292,11 @@ public class JavaImageViewer {
         thePanel.add(ImgLabel, BorderLayout.CENTER);
         thePanel.add(buttonPanel, BorderLayout.PAGE_END);
         //thePanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
-        thePanel.setPreferredSize(new Dimension(MyVariables.getScreenWidth(), MyVariables.getScreenHeight() - 30));
+        thePanel.setPreferredSize(new Dimension(screenBounds.width, screenBounds.height - 30));
         frame.add(thePanel);
 
-        //if (!frameborder) {
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //frame.setUndecorated(true) will create a borderless window. Only use in slideshow where we have buttons anyway.
-        frame.setUndecorated(true);
-        //}
+
+        frame.setLocation(0,0);
         frame.pack();
         frame.setVisible(true);
 

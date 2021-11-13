@@ -179,6 +179,17 @@ public class Utils {
     }
 
     /*
+    / Base function to get screen bounds (resolution minus taskbar and/or menu bar
+     */
+    public static Rectangle getScreenBounds() {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Rectangle bounds = env.getMaximumWindowBounds();
+        logger.debug("MyVariables.getScreenWidth {} MyVariables.getScreenHeight {} Screen Bounds {}", MyVariables.getScreenWidth(), MyVariables.getScreenHeight(), bounds);
+
+        return bounds;
+    }
+
+    /*
      * Opens the default browser of the Operating System
      * and displays the specified URL
      */
