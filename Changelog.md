@@ -1,6 +1,21 @@
 # Changelog
 
 
+## 2021-11-12 1.10.0
+* Complete rewrite of image loading and metadata.
+    * metadata is now by default loaded in the background. This shows your images earlier.
+    * Image loading is for images with previews much faster (camera's after approx. 2010, including jpeg, tiffs and RAWs)
+    * Image loading for images without preview is about 25% faster.
+    * All thumbnails, whether extracted or created, are now saved in an image cache. This means that for big images without previews loading is much faster when accessed them again.
+* [Windows] Fix [issue #183](https://github.com/hvdwolf/jExifToolGUI/issues/183): "where" is used to find exiftool. However, "where" can be the "where.exe" or the "where - Object" cmdlet for powershell users. JTG now specifically uses where.exe
+* [Windows] "Fix" [issue #184](https://github.com/hvdwolf/jExifToolGUI/issues/184): The exiftool.org site advises to install exiftool in c:\windows. This advice is against Windows policies. Next to that: it requires a program to use local admin rights to use a non-system program from c:\windows. jExifToolGUI will find it, but can't use it (without local admin rights) and closes on it with (background) crash (which is a bug). In case JTG only finds exiftool in c:\windows, JTG will now refuse to use it but will try to find another version. If it finds another version elsewhere, it will use that one. If not, it will ask the user for another version/location.
+* [macOS] Completely new bundle based on [Packr](https://github.com/libgdx/packr) version 4.0. This loses the splashscreen though due to an Apple "feature". Also: Packr only builds App bundles including the java JRE.
+* [macOS] macOS bundles are built on Linux. It was not possible to create a compressed dmg, so a dmg was created and that one was zipped. Now a compressed dmg is created and delivered/published.
+* Fix [issue #182](https://github.com/hvdwolf/jExifToolGUI/issues/182): "Help translate" menu link was not pointing yet to Weblate [https://hosted.weblate.org/projects/jexiftoolgui/](https://hosted.weblate.org/projects/jexiftoolgui/).
+* Fix [issue #179](https://github.com/hvdwolf/jExifToolGUI/issues/179): Error opening arg file xmp2exif.args (and a few other arg files)
+* "[feature request #167](https://github.com/hvdwolf/jExifToolGUI/issues/167)": GPS edit tab: Nominatim search based on coordinates copied from an image where the user has the coordinates but can't remember where it was.
+* Several minor improvements and minor bugfixes.
+
 ## 2021-10-23 1.9.0
 * DROP SUPPORT FOR JAVA-8. java-8 does not support tiff. An external lib (twelvemonkeys) was used to support tif, but twelvemonkeys also moves on and tiff support using java-8 gets more and more cumbersome. Java-11 and up supports tiff out of the box. Dropping Twelvemonkeys also means that pgm/pict/tga is no longer supported (but who uses that anyway).
 * ["feature request" #156](https://github.com/hvdwolf/jExifToolGUI/issues/156): Create setting where users can define their own font and font size for the application to accomodate higher (hdpi) resolutions.
