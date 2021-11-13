@@ -28,6 +28,7 @@ public class CommandRunner {
         List<String> imgList = new ArrayList<String>();
         List<String> postArgParams = new ArrayList<String>();
         byte[] myBytes = null;
+        boolean bUTF8 = true;
         boolean versionCall = false;
         boolean winWhere = false;
         String[] supportedImages = MyConstants.SUPPORTED_IMAGES;
@@ -37,34 +38,48 @@ public class CommandRunner {
         // try with apache commons
         String platformCharset = Charset.defaultCharset().displayName();
         logger.debug("platformCharset: {}", platformCharset);
+        logger.debug("cmdparams on entering runCommand: {}", cmdparams.toString().replaceAll(",", " "));
         //Always read/write exif data as utf8
         if (Utils.isOsFromMicrosoft()) {
 
             for (String subString : cmdparams) {
+                if (subString.contains("preview")) {
+                    bUTF8 = false;
+                }
+                if (subString.contains("jExifToolGUI")) {
+                    bUTF8 = false;
+                }
+                if ((subString.toLowerCase()).contains("-ver")) {
+                    bUTF8 = false;
+                }
+                if ((subString.toLowerCase()).contains("where")) {
+                    bUTF8 = false;
+                }
+            }
+            for (String subString : cmdparams) {
                 // && !(subString.contains("exiftool.exe"))
-                if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI")) && !(subString.contains("-preview")) ) {
-                    newParams.add(subString);
-                    newParams.add("-charset");
-                    newParams.add("utf8");
-                    newParams.add("-charset");
-                    newParams.add("iptc=utf8");
-                    newParams.add("-charset");
-                    newParams.add("exif=utf8");
-                    //newParams.add("-@");
-                    //} else if ( (subString.toLowerCase().contains("jpg")) || (subString.toLowerCase().contains("tif")) || (subString.toLowerCase().contains("png")) )
-                } else if ("-ver".equals(subString.toLowerCase())) {
-                    versionCall = true;
-                } else if ("where".equals(subString.toLowerCase())) {
-                    winWhere = true;
-                } else if ( (supImgList.stream().anyMatch(subString.toLowerCase()::contains)) &&  !(subString.toLowerCase().contains("-")) ) {
-                    // These are the images
-                    imgList.add("\"" + subString + "\"");
-                    logger.info("img subString {}", subString);
-                } else if (subString.contains("=")) {
-                    //These are strings that set tag values
-                    argsString.append(subString + " \n");
-                } else {
-                    postArgParams.add(subString);
+                if (bUTF8) {
+                    if ((subString.toLowerCase().contains("exiftool"))) {
+                        //if ( (subString.toLowerCase().contains("exiftool")) && !(subString.contains("jExifToolGUI")) && !(subString.contains("preview")) ) {
+                        newParams.add(subString);
+                        newParams.add("-charset");
+                        newParams.add("utf8");
+                        newParams.add("-charset");
+                        newParams.add("iptc=utf8");
+                        newParams.add("-charset");
+                        newParams.add("exif=utf8");
+                        //newParams.add("-@");
+                        //} else if ( (subString.toLowerCase().contains("jpg")) || (subString.toLowerCase().contains("tif")) || (subString.toLowerCase().contains("png")) )
+                    } else if ((supImgList.stream().anyMatch(subString.toLowerCase()::contains)) && !(subString.toLowerCase().contains("-"))) {
+                        // These are the images
+                        imgList.add("\"" + subString + "\"");
+                        logger.info("img subString {}", subString);
+                    } else if (subString.contains("=") ) {
+                        //These are strings that set tag values
+                        argsString.append(subString + " \n");
+                    } else {
+                        postArgParams.add(subString);
+                    }
                 }
             }
             // Now write our argsString as Args file to tmp folder
@@ -88,12 +103,12 @@ public class CommandRunner {
             newParams.addAll(postArgParams);
             newParams.addAll(imgList);
         }
-        logger.debug("total newParams {}", newParams.toString());
+        logger.debug("total newParams {}\n", newParams.toString());
         // end try with apache commons
 
         ProcessBuilder builder = null;
         if ((Utils.isOsFromMicrosoft())) {
-            if ( (versionCall) || (winWhere) ) {
+            if ( !(bUTF8) ) {
                 builder = new ProcessBuilder(cmdparams);
             } else {
                 builder = new ProcessBuilder(newParams);
