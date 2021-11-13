@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 2021-11-12 1.10.0
+## 2021-11-13 1.10.0
 * Complete rewrite of image loading and metadata.
     * metadata is now by default loaded in the background. This shows your images earlier.
     * Image loading is for images with previews much faster (camera's after approx. 2010, including jpeg, tiffs and RAWs)
