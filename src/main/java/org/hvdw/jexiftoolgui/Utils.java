@@ -330,6 +330,7 @@ public class Utils {
         String web_version = "";
         boolean versioncheck = prefs.getByKey(VERSION_CHECK, true);
         boolean validconnection = true;
+        boolean newer_available = false;
         String update_url = "https://raw.githubusercontent.com/hvdwolf/jExifToolGUI/master/version.txt";
 
         if (fromWhere.equals("menu") || versioncheck) {
@@ -350,8 +351,21 @@ public class Utils {
                 logger.info("Using java version {}: ", jv);
                 logger.info("Version on the web: " + web_version);
                 logger.info("This version: " + ProgramTexts.Version);
-                int version_compare = web_version.compareTo(ProgramTexts.Version);
-                if (version_compare > 0) { // This means the version on the web is newer
+                String[] awebversion = web_version.split("\\.");  // Need to escape on literal dot instead of regex ".", which means any character
+                String[] alocalversion = (ProgramTexts.Version).split("\\.");
+                if (Integer.parseInt(alocalversion[0]) > Integer.parseInt(awebversion[0]) ) {
+                    newer_available = false;
+                    logger.debug("web_digit1 {} local_digit1 {} newer_available {}",awebversion[0], alocalversion[0], newer_available);
+                } else if (Integer.parseInt(alocalversion[1]) > Integer.parseInt(awebversion[1]) ) {
+                    newer_available = false;
+                    logger.debug("web_digit2 {} local_digit2 {} newer_available {}",awebversion[1], alocalversion[1], newer_available);
+                } else if (Integer.parseInt(alocalversion[2]) > Integer.parseInt(awebversion[2]) ) {
+                    newer_available = false;
+                    logger.debug("web_digit2 {} local_digit2 {} newer_available {}",awebversion[2], alocalversion[2], newer_available);
+                }
+                //int version_compare = web_version.compareTo(ProgramTexts.Version);
+                if (newer_available) { // This means the version on the web is newer
+                //if (version_compare > 0) { // This means the version on the web is newer
                     //if (Float.valueOf(web_version) > Float.valueOf(ProgramTexts.Version)) {
                     String[] options = {"No", "Yes"};
                     int choice = JOptionPane.showOptionDialog(null, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversionlong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.jtgnewversion"),
