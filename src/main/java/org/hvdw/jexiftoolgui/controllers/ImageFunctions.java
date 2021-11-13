@@ -192,7 +192,7 @@ public class ImageFunctions {
             public void done() {
                 logger.debug("Finished reading all the metadata in the background");
                 progressBar.setVisible(false);
-                mainScreenLabels[0].setText("Finished reading all the metadata in the background");
+                mainScreenLabels[0].setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.finishedreadingmetadatabackground"));
                 buttonSearchMetadata.setEnabled(true);
             }
         };

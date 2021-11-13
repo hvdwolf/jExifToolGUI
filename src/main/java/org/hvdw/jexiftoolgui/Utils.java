@@ -851,7 +851,7 @@ public class Utils {
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 progressBar.setVisible(true);
-                                mainScreenLabels[0].setText("Starting to read all the metadata in the background");
+                                mainScreenLabels[0].setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.readingmetadatabackground"));
                             }
                         });
                         ImageFunctions.getImageData(mainScreenLabels, progressBar, buttonSearchMetadata);
