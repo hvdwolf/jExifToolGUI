@@ -39,7 +39,7 @@ public class EditXmpdata {
 
     public void copyXmpFromSelected(JTextField[] xmpFields, JTextArea Description) {
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         String[] xmpcopyparams = {"-e", "-n", "-xmp:Creator", "-xmp:Credit", "-xmp:Rights", "-xmp:Label", "-xmp-pdf:Keywords", "-xmp:Subject", "-xmp:Title", "-xmp:Description", "-xmp:Person", "-xmp:PersonInImage"};
         String fpath = "";
         String res = "";

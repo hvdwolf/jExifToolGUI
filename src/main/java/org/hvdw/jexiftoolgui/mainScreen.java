@@ -32,7 +32,6 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,7 +65,7 @@ public class mainScreen {
     private JPanel ViewDatapanel;
     private JScrollPane ViewDatascrollpanel;
     private JTree FileTree;
-    private JScrollPane Leftscrollpane;
+    private JScrollPane LeftTableScrollPanel;
     private JTable tableListfiles;
     private JTable ListexiftoolInfotable;
     private JLabel iconLabel;
@@ -372,8 +371,6 @@ public class mainScreen {
     private JLabel expPdftextLabel;
     private JRadioButton A4radioButton;
     private JRadioButton LetterradioButton;
-    private JRadioButton ImgSizeLargeradioButton;
-    private JRadioButton ImgSizeSmallradioButton;
     private JRadioButton pdfPerImgradioButton;
     private JRadioButton pdfCombinedradioButton;
     private JButton ExpPDFOKbutton;
@@ -419,6 +416,8 @@ public class mainScreen {
     private JButton leftCheckBoxBarHelpButton;
     private JLabel lblFileNamePath;
     private JLabel SeparatorText;
+    private JRadioButton ImgSizeLargeradioButton;
+    private JRadioButton ImgSizeSmallradioButton;
     private JRadioButton radioButtonComma;
     private JRadioButton radioButtonColon;
     private JRadioButton radioButtonSemiColon;
@@ -429,21 +428,22 @@ public class mainScreen {
     private JTable previewTable;
     private JPanel gpsButtonPanel3;
     private JButton gpssearchLocationButtonCoordinates;
-    private JLabel expPdffolderBrowseLabel;
-    private JLabel expSDEfolderBrowseLabel;
+    private JButton button1;
+    private JScrollPane LeftGridScrollPanel;
+    private JList iconViewList;
     private ImageIcon icon;
 
 
     public File[] files;
     public int[] selectedIndices;
     public List<Integer> selectedIndicesList = new ArrayList<Integer>();
-    private int SelectedRow;
-    public int SelectedCell;
+    private int SelectedRowOrIndex;
     private int SelectedCopyFromImageIndex;  // Used for the copy metadata from ..
     public List<HashMap> imagesData = new ArrayList<HashMap>();
 
     public String exiftool_path = "";
     private ListSelectionModel listSelectionModel;
+    private ListSelectionModel icongridListSelectionModel;
 
     private JPopupMenu myPopupMenu;
 
@@ -671,10 +671,6 @@ private String getSeparatorString() {
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         meteringmodecomboBox.setModel(new DefaultComboBoxModel(Tags));
 
-        /*TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
-        Tags = TagNames.split("\\r?\\n"); // split on new lines
-        comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags)); */
-
         //Combobox on Gpano edit tab
         for (String item : MyConstants.GPANO_PROJECTIONS) {
             gpanoPTcomboBox.addItem(item);
@@ -735,7 +731,7 @@ private String getSeparatorString() {
         splitPanel.setDividerLocation(360);
         rootPanel.add(splitPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         LeftPanel = new JPanel();
-        LeftPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        LeftPanel.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
         LeftPanel.setPreferredSize(new Dimension(500, -1));
         splitPanel.setLeftComponent(LeftPanel);
         LeftbuttonBar = new JPanel();
@@ -801,15 +797,19 @@ private String getSeparatorString() {
         buttonSearchMetadata.setPreferredSize(new Dimension(38, 38));
         buttonSearchMetadata.setText("");
         LeftbuttonBar.add(buttonSearchMetadata);
-        Leftscrollpane = new JScrollPane();
-        LeftPanel.add(Leftscrollpane, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        button1 = new JButton();
+        button1.setText("Button");
+        LeftbuttonBar.add(button1);
+        LeftTableScrollPanel = new JScrollPane();
+        LeftTableScrollPanel.setVisible(false);
+        LeftPanel.add(LeftTableScrollPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tableListfiles = new JTable();
         tableListfiles.setAutoResizeMode(4);
         tableListfiles.setPreferredScrollableViewportSize(new Dimension(-1, -1));
         tableListfiles.setShowHorizontalLines(true);
         tableListfiles.setShowVerticalLines(false);
         tableListfiles.setToolTipText(this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.tooltip"));
-        Leftscrollpane.setViewportView(tableListfiles);
+        LeftTableScrollPanel.setViewportView(tableListfiles);
         LeftCheckboxBar = new JPanel();
         LeftCheckboxBar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         LeftPanel.add(LeftCheckboxBar, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -835,6 +835,10 @@ private String getSeparatorString() {
         previewTable.setUpdateSelectionOnSort(false);
         previewTable.setVisible(false);
         LeftPanel.add(previewTable, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 160), null, 0, false));
+        LeftGridScrollPanel = new JScrollPane();
+        LeftPanel.add(LeftGridScrollPanel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        iconViewList = new JList();
+        LeftGridScrollPanel.setViewportView(iconViewList);
         tabbedPaneRight = new JTabbedPane();
         splitPanel.setRightComponent(tabbedPaneRight);
         ViewDatapanel = new JPanel();
@@ -860,7 +864,7 @@ private String getSeparatorString() {
         comboBoxViewByTagName = new JComboBox();
         ViewRadiobuttonpanel.add(comboBoxViewByTagName);
         radioButtonCameraMakes = new JRadioButton();
-        radioButtonCameraMakes.setLabel("[vdtab.bycamera / translations/program_strings]");
+        radioButtonCameraMakes.setLabel("By Camera");
         this.$$$loadButtonText$$$(radioButtonCameraMakes, this.$$$getMessageFromBundle$$$("translations/program_strings", "vdtab.bycamera"));
         ViewRadiobuttonpanel.add(radioButtonCameraMakes);
         comboBoxViewCameraMake = new JComboBox();
@@ -1382,7 +1386,7 @@ private String getSeparatorString() {
         gpsCalculationPanel.add(decimalToMinutesSecondsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         minutesSecondsToDecimalButton = new JButton();
         minutesSecondsToDecimalButton.setEnabled(false);
-        minutesSecondsToDecimalButton.setLabel("[gps.btnconvert / translations/program_strings]");
+        minutesSecondsToDecimalButton.setLabel("Convert to decimal degrees");
         this.$$$loadButtonText$$$(minutesSecondsToDecimalButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "gps.btnconvert"));
         minutesSecondsToDecimalButton.setVisible(false);
         gpsCalculationPanel.add(minutesSecondsToDecimalButton, new GridConstraints(3, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1682,7 +1686,7 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(gpanoResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel24.add(gpanoResetFieldsbutton);
         gpanoHelpbutton = new JButton();
-        gpanoHelpbutton.setLabel("[button.help / translations/program_strings]");
+        gpanoHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(gpanoHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel24.add(gpanoHelpbutton);
         gpanoOverwriteOriginalscheckBox = new JCheckBox();
@@ -1715,7 +1719,7 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(lensResetFieldsbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.resetfields"));
         panel26.add(lensResetFieldsbutton);
         lensHelpbutton = new JButton();
-        lensHelpbutton.setLabel("[button.help / translations/program_strings]");
+        lensHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(lensHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel26.add(lensHelpbutton);
         final JLabel label74 = new JLabel();
@@ -2048,7 +2052,7 @@ private String getSeparatorString() {
         udcResetFieldsbutton.setVisible(false);
         panel39.add(udcResetFieldsbutton);
         udcHelpbutton = new JButton();
-        udcHelpbutton.setLabel("[button.help / translations/program_strings]");
+        udcHelpbutton.setLabel("Help");
         this.$$$loadButtonText$$$(udcHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel39.add(udcHelpbutton);
         UserCombiTopText = new JLabel();
@@ -2242,9 +2246,9 @@ private String getSeparatorString() {
         copyInsideSaveDataTo = new JButton();
         this.$$$loadButtonText$$$(copyInsideSaveDataTo, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.saveto"));
         panel54.add(copyInsideSaveDataTo);
-        final JButton button1 = new JButton();
-        this.$$$loadButtonText$$$(button1, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
-        panel54.add(button1);
+        final JButton button2 = new JButton();
+        this.$$$loadButtonText$$$(button2, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
+        panel54.add(button2);
         final JPanel panel55 = new JPanel();
         panel55.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exportimport"), panel55);
@@ -2775,12 +2779,12 @@ private String getSeparatorString() {
                 case "Load Images":
                     logger.debug("menu File -> Load Images pressed");
                     // identical to button "Load Images"
-                    files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                    files = Utils.loadImages("images", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                     break;
                 case "Load Directory":
                     logger.debug("menu File -> Load Folder pressed");
                     // identical to button "Load Directory"
-                    files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                    files = Utils.loadImages("folder", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                     break;
                 default:
                     break;
@@ -2867,8 +2871,7 @@ private String getSeparatorString() {
         public void actionPerformed(ActionEvent e) {
             JMenuItem item = (JMenuItem) e.getSource();
             if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loaddirectory"))) {
-                //loadDirectory(e);
-                //mainScreen.loadImages("images");
+
             } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("fmenu.loadimages"))) {
                 //loadImages(e);
             } else if (item.getText().equals(ResourceBundle.getBundle("translations/program_strings").getString("btn.displayimages"))) {
@@ -2906,7 +2909,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadImages pressed");
                 //File opener: Load the images; identical to Menu option Load Images.
-                files = Utils.loadImages("images", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                files = Utils.loadImages("images", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
             }
         });
         buttonLoadDirectory.addActionListener(new ActionListener() {
@@ -2914,7 +2917,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.debug("button buttonLoadFolder pressed");
                 //File opener: Load folder with images; identical to Menu option Load Directory.
-                files = Utils.loadImages("folder", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                files = Utils.loadImages("folder", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
             }
         });
         buttonShowImage.setActionCommand("bSI");
@@ -2960,7 +2963,7 @@ private String getSeparatorString() {
                         FMD.showDialog(rootPanel, result);
                         // Very dirty way of getting results from another class to see if we need to relaod the images from the search result
                         if (MyVariables.getreloadImagesFromSearchResult()) {
-                            Utils.loadImages("reloadfromsearchresult", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                            Utils.loadImages("reloadfromsearchresult", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                         }
                     } else {
                         JOptionPane.showMessageDialog(rootPanel, (ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtxt") + " \"" + searchPhrase) + "\".", ResourceBundle.getBundle("translations/program_strings").getString("smd.nothingfoundtitle"), JOptionPane.WARNING_MESSAGE);
@@ -3331,7 +3334,7 @@ private String getSeparatorString() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    SelectedCopyFromImageIndex = SelectedRow;
+                    SelectedCopyFromImageIndex = SelectedRowOrIndex;
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
@@ -3637,12 +3640,12 @@ private String getSeparatorString() {
                 logger.trace("radiobutton selected: {}", radioButtonViewAll.getText());
                 String res  = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
-                int selectedRow = MyVariables.getSelectedRow();
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 File[] files = MyVariables.getLoadedFiles();
                 if (res.startsWith("jExifToolGUI")) {
                     lblFileNamePath.setText(" ");
                 } else {
-                    lblFileNamePath.setText(files[selectedRow].getPath());
+                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
                 }
             }
         });
@@ -3650,15 +3653,15 @@ private String getSeparatorString() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
-                //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRowOrIndex, files, mainScreen.this.ListexiftoolInfotable);
                 String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
-                int selectedRow = MyVariables.getSelectedRow();
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 File[] files = MyVariables.getLoadedFiles();
                 if (res.startsWith("jExifToolGUI")) {
                     lblFileNamePath.setText(" ");
                 } else {
-                    lblFileNamePath.setText(files[selectedRow].getPath());
+                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
                 }
             }
         });
@@ -3667,15 +3670,15 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radioButtoncommonTags.isSelected()) {
                     String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
-                    //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRow, files, mainScreen.this.ListexiftoolInfotable);
+                    //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRowOrIndex, files, mainScreen.this.ListexiftoolInfotable);
                     String res = Utils.getImageInfoFromSelectedFile(params);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
-                    int selectedRow = MyVariables.getSelectedRow();
+                    int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                     File[] files = MyVariables.getLoadedFiles();
                     if (res.startsWith("jExifToolGUI")) {
                         lblFileNamePath.setText(" ");
                     } else {
-                        lblFileNamePath.setText(files[selectedRow].getPath());
+                        lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
                     }
                 }
             }
@@ -3716,7 +3719,7 @@ private String getSeparatorString() {
 
 // radioButtonViewAll, radioButtoncommonTags,
 
-    private String[] whichRBselected() {
+    public String[] whichRBselected() {
         // just to make sure anything is returned we defaultly return all
         String[] params = MyConstants.ALL_PARAMS;
         // Very simple if list
@@ -3742,8 +3745,6 @@ private String getSeparatorString() {
             // Perfectly working row selection method of first program
             List<Integer> tmpselectedIndices = new ArrayList<>();
             ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-            //tableListfiles.setSelectionModel(lsm);
-            //tableListfiles.setRowSelectionAllowed(true);
 
             if (lsm.isSelectionEmpty()) {
                 logger.debug("no index selected");
@@ -3754,27 +3755,27 @@ private String getSeparatorString() {
                 for (int i = minIndex; i <= maxIndex; i++) {
                     if (lsm.isSelectedIndex(i)) {
                         tmpselectedIndices.add(i);
-                        SelectedRow = i;
-                        MyVariables.setSelectedRow(i);
+                        SelectedRowOrIndex = i;
+                        MyVariables.setSelectedRowOrIndex(i);
                     }
                     int trow = tableListfiles.getSelectedRow();
                     int tcolumn = tableListfiles.getSelectedColumn();
-                    logger.debug("mainscreenListener: selected cell in row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
+                    logger.info("mainscreenListener: selected cell in row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
                 }
                 String[] params = whichRBselected();
                 String res = Utils.getImageInfoFromSelectedFile(params);
                 Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
 
-                int selectedRow = MyVariables.getSelectedRow();
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 File[] files = MyVariables.getLoadedFiles();
                 if (res.startsWith("jExifToolGUI")) {
                     lblFileNamePath.setText(" ");
                 } else {
-                    lblFileNamePath.setText(files[selectedRow].getPath());
+                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
                 }
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
-                logger.debug("Selected indices: {}", tmpselectedIndices);
+                logger.info("Selected indices: {}", tmpselectedIndices);
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setselectedIndicesList(selectedIndicesList);
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
@@ -3795,6 +3796,47 @@ private String getSeparatorString() {
         }
     }
 
+    class iconViewListSelectionHandler implements ListSelectionListener {
+
+        public void valueChanged(ListSelectionEvent e) {
+            // Perfectly working row selection method of first program
+            List<Integer> tmpselectedIndices = new ArrayList<>();
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+
+            if (lsm.isSelectionEmpty()) {
+                logger.debug("no grid view index selected");
+            } else {
+                // Find out which indexes are selected.
+                int minIndex = lsm.getMinSelectionIndex();
+                int maxIndex = lsm.getMaxSelectionIndex();
+                for (int i = minIndex; i <= maxIndex; i++) {
+                    if (lsm.isSelectedIndex(i)) {
+                        tmpselectedIndices.add(i);
+                        SelectedRowOrIndex = i;
+                        MyVariables.setSelectedRowOrIndex(i);
+                    }
+                }
+                String[] params = whichRBselected();
+                String res = Utils.getImageInfoFromSelectedFile(params);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                File[] files = MyVariables.getLoadedFiles();
+                if (res.startsWith("jExifToolGUI")) {
+                    lblFileNamePath.setText(" ");
+                } else {
+                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                }
+
+                selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
+                logger.info("Selected grid indices: {}", tmpselectedIndices);
+                selectedIndicesList = tmpselectedIndices;
+                MyVariables.setselectedIndicesList(selectedIndicesList);
+                MyVariables.setSelectedFilenamesIndices(selectedIndices);
+            }
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////
     public void rootPanelDropListener() {
         //Listen to drop events
@@ -3810,7 +3852,7 @@ private String getSeparatorString() {
                     }
                     File[] droppedFilesArray = (File[]) droppedFiles.toArray(new File[droppedFiles.size()]);
                     MyVariables.setLoadedFiles(droppedFilesArray);
-                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+                    files = Utils.loadImages("dropped files", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     logger.error("Drag drop on rootpanel error {}", ex);
@@ -4015,13 +4057,13 @@ private String getSeparatorString() {
         tableListfiles.setRowSelectionAllowed(true);
         tableListfiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(new SharedListSelectionHandler());
-        //cellSelectionModel.addListSelectionListener(new SharedListSelectionListener());
 
+        icongridListSelectionModel = iconViewList.getSelectionModel();
+        iconViewList.setSelectionMode(icongridListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        icongridListSelectionModel.addListSelectionListener(new iconViewListSelectionHandler());
         // Use the mouselistener for the double-click to display the image
-        // on both the filetree and the filenamestable
-        // temporararily disable FileTree
-        //MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, fileTree, whichRBselected());
-        MouseListeners.fileTreeAndFileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
+        // on the filenamestable
+        MouseListeners.FileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
 
         //Listen to drop events
         rootPanelDropListener();
@@ -4054,13 +4096,36 @@ private String getSeparatorString() {
             List<File> filesList = new ArrayList<File>();
             File[] files = CommandLineArguments.ProcessArguments(filesList);
             MyVariables.setLoadedFiles(files);
-            files = Utils.loadImages("commandline", rootPanel, LeftPanel, tableListfiles, previewTable, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
+            files = Utils.loadImages("commandline", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
         }
 
         Utils.checkForNewVersion("startup");
         //JLabelDropReady.addPropertyChangeListener(new PropertyChangeListener() {
         //});
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JlistIconView jlv = new JlistIconView();
+                try {
+                    jlv.IconView();
+                } catch (IOException ex) {
+                    logger.error("jlist iconview error {}", ex.toString());
+                    ex.printStackTrace();
+                }
+            }
+        });
+        createPreviewsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (createPreviewsCheckBox.isSelected()) {
+                    MyVariables.setcreatePreviewsCheckBox(true);
+                } else {
+                    MyVariables.setcreatePreviewsCheckBox(false);
+                }
+            }
+        });
     }
+
 
 
     static void renderSplashFrame(Graphics2D g, int frame) {

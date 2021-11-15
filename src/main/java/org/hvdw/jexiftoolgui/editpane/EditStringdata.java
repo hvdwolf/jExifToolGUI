@@ -33,7 +33,7 @@ public class EditStringdata {
 
     public void copyStringPlusFromSelected(JTextField[] stringPlusFields, JCheckBox stringPlusOverwriteOriginalscheckBox) {
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         String[] copyparams = {"-e", "-n", "-iptc:keywords","-xmp:Subject", "-xmp:PersonInImage"};
         String fpath = "";
         String res = "";

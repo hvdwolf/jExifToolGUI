@@ -698,9 +698,10 @@ public class Utils {
         pane.setVisible(visible);
     }
 
-    public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JTable tableListfiles, JTable previewTable, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params, JCheckBox[] loadOptions) {
+    public static File[] loadImages(String loadingType, JPanel rootPanel, JPanel LeftPanel, JScrollPane LeftTableScrollPanel, JScrollPane LeftGridScrollPanel, JTable tableListfiles, JTable previewTable, JList iconViewList, JTable ListexiftoolInfotable, JButton[] commandButtons, JLabel[] mainScreenLabels, JProgressBar progressBar, String[] params, JCheckBox[] loadOptions) {
         File[] files;
         boolean files_null = false;
+        //JList iconGridView = null;
 
         // "Translate" for clarity, instead of using the array index;
         JLabel OutputLabel = mainScreenLabels[0];
@@ -715,11 +716,22 @@ public class Utils {
         boolean loadMetadata = loadOptions[1].isSelected();
 
 
+        //logger.info("Start loadimages: showCreatePreviews {} loadMetadata {}",showCreatePreviews, loadMetadata);
         // First check if we want to create previews or not. If not we will create the mini preview table at the bottom left
-        if ( (showCreatePreviews) ) { //The user wants to see previews
+        if ( (showCreatePreviews) ) { //The user wants to see previews so show the grid, but not the normal listfile table or the mini preview
+            LeftTableScrollPanel.setVisible(false);
             previewTable.setVisible(false);
-        } else {
+            tableListfiles.setVisible(false);
+            LeftGridScrollPanel.setVisible(true);
+            iconViewList.setVisible(true);
+        } else { //The user doesn't want previews. Show listtable showing file names plus small preview. Hide the grid
+            LeftGridScrollPanel.setVisible(false);
+            iconViewList.setVisible(false);
+            LeftTableScrollPanel.setVisible(true);
             previewTable.setVisible(true);
+            tableListfiles.setVisible(true);
+
+            // Preview table:  the small preview in the bottom left
             DefaultTableModel previewTableModel = (DefaultTableModel) previewTable.getModel();
             previewTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
                 protected void setValue(Object value) {
@@ -802,6 +814,7 @@ public class Utils {
             lblLoadedFiles.setText(String.valueOf(files.length));
             logger.debug("After loading images, loading files or dropping files: no. of files > 0");
             Executor executor = Executors.newSingleThreadExecutor();
+            //JList finalIconGridView = iconGridView;
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -809,7 +822,7 @@ public class Utils {
                     int loopcounter = 0;
                     String filename;
                     File firstFile = null;
-                    boolean showCreatePreview = loadOptions[0].isSelected();
+                    //boolean showCreatePreview = loadOptions[0].isSelected();
 
                     filename = files[0].getName().replace("\\", "/");
                     lblimgSourceFolder.setText(files[0].getParent());
@@ -818,20 +831,13 @@ public class Utils {
                     MyVariables.setSinglePreviewFileName(filename);
 
                     // Always Always try to extract thumbnails and previews of selected images. This normally only works for JPGs, RAWs and (modern) TIFFs
-                    if (showCreatePreview) {
+                    if (showCreatePreviews) {
                         ImageFunctions.extractThumbnails();
                     }
 
-                    //logger.info("Before displayfiles: displayprevriew {} loadmetadata {}", showCreatePreview, loadMetadata);
-                    Utils.displayFiles(tableListfiles, LeftPanel, showCreatePreview, loadMetadata);
+                    //logger.info("Before displayfiles: displayprevriew {} loadmetadata {}", showCreatePreviews, loadMetadata);
+                    Utils.displayFiles(tableListfiles, iconViewList, LeftPanel, LeftGridScrollPanel, showCreatePreviews, loadMetadata, ListexiftoolInfotable, mainScreenLabels, loadOptions);
 
-                    /*
-                    // After loading all, display the data for the first image
-                    MyVariables.setSelectedRow(0);
-                    String res = getImageInfoFromSelectedFile(params);
-                    displayInfoForSelectedImage(res, ListexiftoolInfotable);
-                    lblFileNamePath.setText(firstFile.getPath());
-                    */
                     // After loading check whether we have multiple files, or only one file
                     if (files.length > 1) {
                         // We have multiple images loaded.
@@ -839,19 +845,14 @@ public class Utils {
                         String res = "jExifToolGUI\t" +
                                 ResourceBundle.getBundle("translations/program_strings").getString("vdtab.multfilesloaded") + "\t" +
                                 ResourceBundle.getBundle("translations/program_strings").getString("vdtab.selectimage");
-                        /*String res = "jExifToolGUI\t" +
-                                "Multiple images loaded\t" +
-                                "Select an image to display its metadata";*/
                         lblFileNamePath.setText("");
                         displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     } else {
-                        MyVariables.setSelectedRow(0);
+                        MyVariables.setSelectedRowOrIndex(0);
                         String res = getImageInfoFromSelectedFile(params);
                         displayInfoForSelectedImage(res, ListexiftoolInfotable);
                         lblFileNamePath.setText(firstFile.getPath());
-                        displayInfoForSelectedImage(res, ListexiftoolInfotable);
                     }
-                    //displayInfoForSelectedImage(res, ListexiftoolInfotable);
 
                     if (loadMetadata) {
                         buttonSearchMetadata.setEnabled(true);
@@ -907,131 +908,98 @@ public class Utils {
     /*
      * Display the loaded files with icon and name
      */
-    static void displayFiles(JTable jTable_File_Names, JPanel LeftPanel, boolean showCreatePreview, boolean loadMetadata) {
+    static void displayFiles(JTable jTable_File_Names, JList iconViewList, JPanel LeftPanel, JScrollPane LeftGridScrollPanel, boolean showCreatePreviews, boolean loadMetadata, JTable ListexiftoolInfotable, JLabel[] mainScreenLabels, JCheckBox[] loadOptions) {
+    //static void displayFiles(JTable jTable_File_Names, JList iconGridView, JPanel LeftPanel, JScrollPane LeftGridScrollPanel, boolean showCreatePreviews, boolean loadMetadata) {
         int selectedRow, selectedColumn;
 
         ImageIcon icon = null;
         File[] files = MyVariables.getLoadedFiles();
+        boolean gridView = false;
+        DefaultListModel iconViewListModel = new DefaultListModel();
+        int count = 0;
+        iconViewList = new JList(iconViewListModel);
+        iconViewList.setCellRenderer( new LabelGridIconRenderer());
+        iconViewList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        iconViewList.setFixedCellHeight(180);
+        iconViewList.setFixedCellWidth(180);
+        iconViewList.setVisibleRowCount(-1);
 
         boolean singleColumnTable = true;
-        if ( (showCreatePreview)  && (loadMetadata) ) {
-            // Disable this for the fast loading and the new design
-            //boolean columns = prefs.getByKey(DUAL_COLUMN, true);
-            boolean columns = true;
-            if (columns) {
-                singleColumnTable = false;
-            } else {
-                singleColumnTable = true;
-            }
-        } else {
-            singleColumnTable = true;
-        }
 
-        DefaultTableModel model = (DefaultTableModel) jTable_File_Names.getModel();
-
-        boolean finalSingleColumnTable = singleColumnTable;
-        boolean finalshowCreatePreview = showCreatePreview;
+        DefaultTableModel tableModel = (DefaultTableModel) jTable_File_Names.getModel();
         jTable_File_Names.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             protected void setValue(Object value) {
-                if (finalSingleColumnTable) {
-                    if (value instanceof LabelIcon) {
-                        setIcon(((LabelIcon) value).icon);
-                        setHorizontalTextPosition(JLabel.CENTER);
-                        setVerticalTextPosition(JLabel.BOTTOM);
-                        setText(((LabelIcon) value).label);
-                    }
-                } else {
-                    if (value instanceof ImageIcon) {
-                        setIcon((ImageIcon) value);
-                        setText("");
-                    } else {
-                        setIcon(null);
-                        super.setValue(value);
-                    }
+                if (value instanceof LabelIcon) {
+                    setIcon(((LabelIcon) value).icon);
+                    setHorizontalTextPosition(JLabel.CENTER);
+                    setVerticalTextPosition(JLabel.BOTTOM);
+                    setText(((LabelIcon) value).label);
                 }
             }
         });
 
-        if (singleColumnTable) {
-            jTable_File_Names.setDefaultRenderer(LabelIcon.class, new LabelIconRenderer());
-            model.setColumnIdentifiers(new String[]{"Photo / Filename"});
-            jTable_File_Names.getColumnModel().getColumn(0).setMinWidth(170);
-            jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(210);
-            //jTable_File_Names.setRowHeight(150);
-            if ( (loadMetadata) || (showCreatePreview) ) {
-                jTable_File_Names.setRowHeight(150);
-            } else {
-                model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.filename")});
-                jTable_File_Names.setRowHeight(25);
-            }
-            LeftPanel.setPreferredSize(new Dimension(440, -1));
-        } else {
-            model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtablephotos"), ResourceBundle.getBundle("translations/program_strings").getString("lp.thumbtabledata")});
-            jTable_File_Names.getColumnModel().getColumn(0).setPreferredWidth(170);
-            jTable_File_Names.getColumnModel().getColumn(1).setPreferredWidth(250);
-            // Now set rowheight depending on font size
-            int userFontSize = Integer.parseInt(prefs.getByKey(USER_DEFINED_FONTSIZE, "12"));
-            int rowHeight = (int) Math.round( (double) userFontSize / (double) 12 * (double) 150 );  // 150 is my original row height based on fontsize 12
-            //logger.debug("userfontsize {}; rowheight {}", String.valueOf(userFontSize), String.valueOf(rowHeight) );
-            jTable_File_Names.setRowHeight(rowHeight);
-            LeftPanel.setPreferredSize(new Dimension(440, -1));
-        }
 
-        model.setRowCount(0);
-        model.fireTableDataChanged();
-        jTable_File_Names.clearSelection();
-        jTable_File_Names.setCellSelectionEnabled(true);
+        if (showCreatePreviews) {
+           iconViewListModel.removeAllElements();
+           iconViewList.clearSelection();
+        } else {
+            tableModel.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("lp.filename")});
+            jTable_File_Names.setRowHeight(25);
+            tableModel.setRowCount(0);
+            tableModel.fireTableDataChanged();
+            jTable_File_Names.clearSelection();
+            jTable_File_Names.setCellSelectionEnabled(true);
+            //Object[] ImgFilenameRow = new Object[2];
+        }
         Object[] ImgFilenameRow = new Object[2];
+        //Object[] ImgFileNameListCell = new Object[2];
+
+
         String filename = "";
 
         Application.OS_NAMES currentOsName = getCurrentOsName();
         for (File file : files) {
             filename = file.getName().replace("\\", "/");
-            logger.debug("Now working on image: " +filename);
+            logger.debug("Now working on image: " + filename);
 
             if (loadMetadata) {
                 ImageFunctions.getbasicImageData(file);
             }
-            if (showCreatePreview) { //User wants a preview
-                filename = file.getName().replace("\\", "/");
-                String thumbfilename = MyVariables.getjexiftoolguiCacheFolder() + File.separator + filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
-                String photoshopThumbfilename = MyVariables.getjexiftoolguiCacheFolder() + File.separator + filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
-                File thumbfile = new File(thumbfilename);
-                File psthumbfile = new File (photoshopThumbfilename);
-                if (thumbfile.exists()) {
-                    icon = new ImageIcon(thumbfilename);
-                } else if (psthumbfile.exists()) {
-                    icon = new ImageIcon(photoshopThumbfilename);
-                } else {
-                    icon = ImageFunctions.analyzeImageAndCreateIcon(file);
-                }
+
+            if (showCreatePreviews) { //User wants a preview
+                icon = ImageFunctions.useCachedOrCreateIcon(file);
             }
 
             //logger.info("Before display: Singlecolumntable {} ShowCreatePreview {} loadMetadata {}", singleColumnTable, showCreatePreview, loadMetadata);
-            if (singleColumnTable){
-                if (showCreatePreview) { //User wants a preview
-                    ImgFilenameRow[0] = new LabelIcon(icon, filename);
-                } else {
-                    if (loadMetadata) {
-                        String imginfo = returnBasicImageDataString(filename, "html");
-                        logger.debug("imginfo {}", imginfo);
-                        //ImgFilenameRow[1] = imginfo;
-                        ImgFilenameRow[0] = new LabelIcon(null, imginfo);
-                    } else {
-                        ImgFilenameRow[0] = new LabelIcon(null, filename);
-                    }
+            if (showCreatePreviews) {
+                iconViewListModel.add(count++, new LabelIcon(icon, filename));
+                if (loadMetadata) {
+                    String imginfo = returnBasicImageDataString(filename, "html");
                 }
             } else {
-                String imginfo = returnBasicImageDataString(filename, "html");
-                logger.debug("imginfo {}", imginfo);
-                ImgFilenameRow[0] = icon;
-                ImgFilenameRow[1] = imginfo;
+                if (loadMetadata) {
+                    String imginfo = returnBasicImageDataString(filename, "html");
+                    logger.debug("imginfo {}", imginfo);
+                    //ImgFilenameRow[1] = imginfo;
+                    ImgFilenameRow[0] = new LabelIcon(null, imginfo);
+                } else {
+                    ImgFilenameRow[0] = new LabelIcon(null, filename);
+                }
+                tableModel.addRow(ImgFilenameRow);
             }
-            model.addRow(ImgFilenameRow);
+
         }
 
-        MyVariables.setSelectedRow(0);
-        MyVariables.setSelectedColumn(0);
+        if (showCreatePreviews) {
+            iconViewList.setPreferredSize(new Dimension(800,800));
+            LeftGridScrollPanel.setViewportView(iconViewList);
+            MouseListeners.filesJListListener(iconViewList, ListexiftoolInfotable, mainScreenLabels);
+            MyVariables.setSelectedRowOrIndex(0);
+            MyVariables.setSelectedColumn(0);
+        } else {
+            MyVariables.setSelectedRowOrIndex(0);
+            MyVariables.setSelectedColumn(0);
+        }
     }
 
 
@@ -1043,16 +1011,16 @@ public class Utils {
         String res = "";
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
-        int selectedRow = MyVariables.getSelectedRow();
+        int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
         List<Integer> selectedIndicesList = MyVariables.getselectedIndicesList();
         File[] files = MyVariables.getLoadedFiles();
 
         if ( !(selectedIndicesList == null) && (selectedIndicesList.size() < 2) ) { //Meaning we have only one image selected
-            logger.debug("selectedRow: {}", String.valueOf(selectedRow));
+            logger.debug("selectedRowOrIndex: {}", String.valueOf(selectedRowOrIndex));
             if (isOsFromMicrosoft()) {
-                fpath = files[selectedRow].getPath().replace("\\", "/");
+                fpath = files[selectedRowOrIndex].getPath().replace("\\", "/");
             } else {
-                fpath = files[selectedRow].getPath();
+                fpath = files[selectedRowOrIndex].getPath();
             }
             MyVariables.setSinglePreview(new File(fpath));
         }
@@ -1064,7 +1032,7 @@ public class Utils {
     / It checks whether we only need to load the preview or also the basic metadata
     */
     static void displaySinglePreview(JTable previewTable, boolean loadMetadata) {
-        int selectedRow, selectedColumn;
+        int selectedRowOrIndex, selectedColumn;
 
         ImageIcon icon = null;
         File[] files = MyVariables.getLoadedFiles();
@@ -1095,7 +1063,8 @@ public class Utils {
 
         Object[] ImgFilenameRow = new Object[2];
 
-        icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+        //icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+        icon = ImageFunctions.useCachedOrCreateIcon(file);
 
         previewTablemodel.setRowCount(0);
         previewTablemodel.fireTableDataChanged();
@@ -1120,7 +1089,7 @@ public class Utils {
         }
         previewTablemodel.addRow(ImgFilenameRow);
 
-        //MyVariables.setSelectedRow(0);
+        //MyVariables.setSelectedRowOrIndex(0);
         //MyVariables.setSelectedColumn(0);
     }
 
@@ -1128,7 +1097,7 @@ public class Utils {
 
         //String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
-        //int selectedRow = MyVariables.getSelectedRow();
+        //int selectedRow = MyVariables.getSelectedRowOrIndexOrIndex();
         //List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
 
         //if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
@@ -1188,16 +1157,16 @@ public class Utils {
         String res = "";
         String fpath = "";
         List<String> cmdparams = new ArrayList<String>();
-        int selectedRow = MyVariables.getSelectedRow();
+        int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
         List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
         File[] files = MyVariables.getLoadedFiles();
 
         if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
-            logger.debug("selectedRow: {}", String.valueOf(selectedRow));
+            logger.debug("selectedRowOrIndex: {}", String.valueOf(selectedRowOrIndex));
             if (isOsFromMicrosoft()) {
-                fpath = files[selectedRow].getPath().replace("\\", "/");
+                fpath = files[selectedRowOrIndex].getPath().replace("\\", "/");
             } else {
-                fpath = files[selectedRow].getPath();
+                fpath = files[selectedRowOrIndex].getPath();
             }
 
             // Need to build exiftool prefs check
@@ -1271,7 +1240,7 @@ public class Utils {
         List<String> cmdparams = new ArrayList<String>();
         File[] files = MyVariables.getLoadedFiles();
 
-        logger.debug("selectedRow: {}", String.valueOf(index));
+        logger.debug("selectedRowOrIndex: {}", String.valueOf(index));
         if (isOsFromMicrosoft()) {
             fpath = files[index].getPath().replace("\\", "/");
         } else {
@@ -1498,12 +1467,12 @@ public class Utils {
     /*
      * This method displays the selected image in the default image viewer for the relevant mime-type (the extension mostly)
      */
-    public static void displaySelectedImageInDefaultViewer(int selectedRow, File[] files, JLabel ThumbView) throws IOException {
+    public static void displaySelectedImageInDefaultViewer(int selectedRowOrIndex, File[] files, JLabel ThumbView) throws IOException {
         String fpath = "";
         if (isOsFromMicrosoft()) {
-            fpath = "\"" + files[selectedRow].getPath().replace("\\", "/") + "\"";
+            fpath = "\"" + files[selectedRowOrIndex].getPath().replace("\\", "/") + "\"";
         } else {
-            fpath = "\"" + files[selectedRow].getPath() + "\"";
+            fpath = "\"" + files[selectedRowOrIndex].getPath() + "\"";
         }
         logger.debug("fpath for displaySelectedImageInDefaultViewer is now: {}", fpath);
         BufferedImage img = ImageIO.read(new File(fpath));
@@ -1910,6 +1879,32 @@ public class Utils {
             // export metadata
             CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
         }
+    }
+
+
+    /*
+    / This is the extended TableCellRenderer
+    / Because DefaultTableCellRenderer is JLabel, you can use it's text alignment properties in a custom renderer to label the icon.
+     */
+    private static class LabelGridIconRenderer extends DefaultListCellRenderer {
+
+        public LabelGridIconRenderer() {
+            setHorizontalTextPosition(JLabel.CENTER);
+            setVerticalTextPosition(JLabel.BOTTOM);
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index,
+                                                      boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list,
+                    value, index, isSelected, cellHasFocus);
+            setIcon(((LabelIcon) value).icon);
+            setHorizontalTextPosition(JLabel.CENTER);
+            setVerticalTextPosition(JLabel.BOTTOM);
+            setText(((LabelIcon) value).label);
+            return label;
+        }
+        //return label;
     }
 
 

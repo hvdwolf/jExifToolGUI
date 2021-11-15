@@ -1,6 +1,7 @@
 package org.hvdw.jexiftoolgui;
 
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +18,8 @@ public class MyVariables {
     private MyVariables() {
     }
 
-    private int SelectedRow;
+    private int SelectedRowOrIndex;
+    //private int SelectedRow;
     private int SelectedColumn;
     private String SelectedImagePath;
     private File[] loadedFiles;
@@ -45,17 +47,21 @@ public class MyVariables {
     private int ScreenWidth;
     private int ScreenHeight;
     private String[] mainScreenParams;
+    private String[] whichRadioButtonsSelected;
+    private JLabel[] mainScreenLabels;
     private ArrayList<String> category_tag;
     private String Latitude;
     private String Longitude;
     private HashMap <String, HashMap<String, String> > imagesData;
     private String SearchPhrase;
     private boolean reloadImagesFromSearchResult = false;
+    private boolean createPreviewsCheckBox = true;
     private String ExifToolPath;
 
     // The actual getters and setters
-    public static int getSelectedRow() { return staticInstance.SelectedRow;}
-    public static void setSelectedRow(int index) {staticInstance.SelectedRow = index; }
+
+    public static int getSelectedRowOrIndex() { return staticInstance.SelectedRowOrIndex;}
+    public static void setSelectedRowOrIndex(int index) {staticInstance.SelectedRowOrIndex = index; }
 
     public static int getSelectedColumn() {
         return staticInstance.SelectedColumn;
@@ -185,6 +191,9 @@ public class MyVariables {
     public static String[] getmainScreenParams() { return Arrays.copyOf(staticInstance.mainScreenParams, staticInstance.mainScreenParams.length); }
     public static void setmainScreenParams(String[] setmnscrnprms) { staticInstance.mainScreenParams = Arrays.copyOf(setmnscrnprms, setmnscrnprms.length); }
 
+    //public static String[] getmainScreenLabels() { return Arrays.copyOf(staticInstance.mainScreenLabels, staticInstance.mainScreenLabels.length); }
+    //public static void setmainScreenLabels(JLabel[] setmnscrnlbls) { staticInstance.mainScreenLabels = Arrays.copyOf(setmnscrnlbls, setmnscrnlbls.length); }
+
     public static ArrayList<String> getcategory_tag() { return staticInstance.category_tag; }
     public static void setcategory_tag (ArrayList<String> ctgr_tg) { staticInstance.category_tag = ctgr_tg; }
 
@@ -202,4 +211,8 @@ public class MyVariables {
 
     public static boolean getreloadImagesFromSearchResult() { return staticInstance.reloadImagesFromSearchResult;}
     public static void setreloadImagesFromSearchResult(boolean rifsr) {staticInstance.reloadImagesFromSearchResult = rifsr; }
+
+    public static boolean getcreatePreviewsCheckBox() { return staticInstance.createPreviewsCheckBox;}
+    public static void setcreatePreviewsCheckBox(boolean crprevchkbox) {staticInstance.createPreviewsCheckBox = crprevchkbox; }
+
 }

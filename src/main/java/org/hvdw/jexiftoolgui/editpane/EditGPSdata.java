@@ -85,7 +85,7 @@ public class EditGPSdata {
 
     public void copyGPSFromSelected(JFormattedTextField[] gpsNumdecFields, JTextField[] gpsLocationFields, JCheckBox[] gpsBoxes, JFormattedTextField[] GPSdmsFields, JRadioButton[] GPSdmsradiobuttons) {
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         // Use "-n" for numerical values, like GPSAltitudeRef 0/1, instead of Above Sea Level/Below Sea Level
         String[] gpscopyparams = {"-e","-n","-s","-exif:GPSLatitude","-exif:GPSLatitudeRef","-exif:GPSLongitude","-exif:GPSLongitudeRef","-exif:GPSAltitude","-exif:GPSAltitudeRef","-xmp:Location","-xmp:Country","-xmp:State","-xmp:City"};
         String fpath ="";

@@ -60,7 +60,7 @@ public class EditGpanodata {
 
     public void copyGpanoFromSelected(JFormattedTextField[] gpanoFields, JTextField gpanoStitchingSoftwaretextField, JComboBox gpanoPTCombobox, JCheckBox[] gpanoBoxes) {
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         String[] gpano_params =  {"-xmp:StitchingSoftware","-xmp:CroppedAreaImageHeightPixels","-xmp:CroppedAreaImageWidthPixels","-xmp:CroppedAreaLeftPixels","-xmp:CroppedAreaTopPixels","-xmp:FullPanoHeightPixels","-xmp:FullPanoWidthPixels","-xmp:ProjectionType","-xmp:UsePanoramaViewer","-xmp:PoseHeadingDegrees","-xmp:InitialViewHeadingDegrees","-xmp:InitialViewPitchDegrees","-xmp:InitialViewRollDegrees","-xmp:InitialHorizontalFOVDegrees"};
         String fpath ="";
         String res = "";
