@@ -18,7 +18,7 @@ public class MyVariables {
     private MyVariables() {
     }
 
-    private int SelectedRowOrIndex;
+    private int SelectedRowOrIndex = 2147483645; // Max value integer - 2;
     //private int SelectedRow;
     private int SelectedColumn;
     private String SelectedImagePath;
@@ -57,6 +57,7 @@ public class MyVariables {
     private boolean reloadImagesFromSearchResult = false;
     private boolean createPreviewsCheckBox = true;
     private String ExifToolPath;
+    private JList iconView;
 
     // The actual getters and setters
 
@@ -191,9 +192,6 @@ public class MyVariables {
     public static String[] getmainScreenParams() { return Arrays.copyOf(staticInstance.mainScreenParams, staticInstance.mainScreenParams.length); }
     public static void setmainScreenParams(String[] setmnscrnprms) { staticInstance.mainScreenParams = Arrays.copyOf(setmnscrnprms, setmnscrnprms.length); }
 
-    //public static String[] getmainScreenLabels() { return Arrays.copyOf(staticInstance.mainScreenLabels, staticInstance.mainScreenLabels.length); }
-    //public static void setmainScreenLabels(JLabel[] setmnscrnlbls) { staticInstance.mainScreenLabels = Arrays.copyOf(setmnscrnlbls, setmnscrnlbls.length); }
-
     public static ArrayList<String> getcategory_tag() { return staticInstance.category_tag; }
     public static void setcategory_tag (ArrayList<String> ctgr_tg) { staticInstance.category_tag = ctgr_tg; }
 
@@ -215,4 +213,6 @@ public class MyVariables {
     public static boolean getcreatePreviewsCheckBox() { return staticInstance.createPreviewsCheckBox;}
     public static void setcreatePreviewsCheckBox(boolean crprevchkbox) {staticInstance.createPreviewsCheckBox = crprevchkbox; }
 
+    public static JList geticonView() { return staticInstance.iconView;}
+    public static void seticonView(JList cnVw) {staticInstance.iconView = cnVw; }
 }

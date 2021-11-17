@@ -4,11 +4,14 @@ import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
@@ -70,6 +73,53 @@ public class MouseListeners {
                 }
             }
         });
+    }
+
+
+
+    public static class iconViewListSelectionHandler implements ListSelectionListener {
+
+        public void valueChanged(ListSelectionEvent e) {
+            // Perfectly working row selection method of first program
+            List<Integer> tmpselectedIndices = new ArrayList<>();
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            List<Integer> selectedIndicesList = new ArrayList<>();
+            int[] selectedIndices = null;
+
+            if (lsm.isSelectionEmpty()) {
+                logger.debug("no grid view index selected");
+            } else {
+                // Find out which indexes are selected.
+                int minIndex = lsm.getMinSelectionIndex();
+                int maxIndex = lsm.getMaxSelectionIndex();
+                for (int i = minIndex; i <= maxIndex; i++) {
+                    if (lsm.isSelectedIndex(i)) {
+                        tmpselectedIndices.add(i);
+                        int SelectedRowOrIndex = i;
+                        MyVariables.setSelectedRowOrIndex(i);
+                        logger.info("MyVariables.getSelectedRowOrIndex() {}", MyVariables.getSelectedRowOrIndex());
+                    }
+                }
+                String[] params = MyVariables.getmainScreenParams();
+                String res = Utils.getImageInfoFromSelectedFile(params);
+                //Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                File[] files = MyVariables.getLoadedFiles();
+                /*if (res.startsWith("jExifToolGUI")) {
+                    lblFileNamePath.setText(" ");
+                } else {
+                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                }*/
+
+                selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
+                logger.info("Selected grid indices: {}", tmpselectedIndices);
+                logger.info("Save indices {}", Arrays.toString(selectedIndices));
+                selectedIndicesList = tmpselectedIndices;
+                MyVariables.setselectedIndicesList(selectedIndicesList);
+                MyVariables.setSelectedFilenamesIndices(selectedIndices);
+            }
+        }
     }
 
 

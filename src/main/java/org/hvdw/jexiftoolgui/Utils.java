@@ -991,8 +991,14 @@ public class Utils {
         }
 
         if (showCreatePreviews) {
-            iconViewList.setPreferredSize(new Dimension(800,800));
+            //iconViewList.setPreferredSize(new Dimension(800,1800));
             LeftGridScrollPanel.setViewportView(iconViewList);
+            MyVariables.seticonView(iconViewList);
+            ListSelectionModel icongridListSelectionModel;
+            icongridListSelectionModel = iconViewList.getSelectionModel();
+            iconViewList.setSelectionMode(icongridListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            icongridListSelectionModel.addListSelectionListener(new MouseListeners.iconViewListSelectionHandler());
+
             MouseListeners.filesJListListener(iconViewList, ListexiftoolInfotable, mainScreenLabels);
             MyVariables.setSelectedRowOrIndex(0);
             MyVariables.setSelectedColumn(0);

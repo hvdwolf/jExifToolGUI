@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import static org.hvdw.jexiftoolgui.MyConstants.IMPOSSIBLE_INDEX;
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 
 
@@ -797,9 +798,6 @@ private String getSeparatorString() {
         buttonSearchMetadata.setPreferredSize(new Dimension(38, 38));
         buttonSearchMetadata.setText("");
         LeftbuttonBar.add(buttonSearchMetadata);
-        button1 = new JButton();
-        button1.setText("Button");
-        LeftbuttonBar.add(button1);
         LeftTableScrollPanel = new JScrollPane();
         LeftTableScrollPanel.setVisible(false);
         LeftPanel.add(LeftTableScrollPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -818,8 +816,10 @@ private String getSeparatorString() {
         this.$$$loadButtonText$$$(createPreviewsCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.crpreview"));
         LeftCheckboxBar.add(createPreviewsCheckBox);
         loadMetadataCheckBox = new JCheckBox();
+        loadMetadataCheckBox.setEnabled(true);
         loadMetadataCheckBox.setSelected(false);
         this.$$$loadButtonText$$$(loadMetadataCheckBox, this.$$$getMessageFromBundle$$$("translations/program_strings", "lp.loadmetadata"));
+        loadMetadataCheckBox.setVisible(false);
         LeftCheckboxBar.add(loadMetadataCheckBox);
         leftCheckBoxBarHelpButton = new JButton();
         leftCheckBoxBarHelpButton.setIcon(new ImageIcon(getClass().getResource("/icons/outline_info_black_24dp.png")));
@@ -828,6 +828,7 @@ private String getSeparatorString() {
         leftCheckBoxBarHelpButton.setMinimumSize(new Dimension(26, 26));
         leftCheckBoxBarHelpButton.setPreferredSize(new Dimension(26, 26));
         leftCheckBoxBarHelpButton.setText("");
+        leftCheckBoxBarHelpButton.setVisible(false);
         LeftCheckboxBar.add(leftCheckBoxBarHelpButton);
         previewTable = new JTable();
         previewTable.setShowHorizontalLines(false);
@@ -836,6 +837,7 @@ private String getSeparatorString() {
         previewTable.setVisible(false);
         LeftPanel.add(previewTable, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 160), null, 0, false));
         LeftGridScrollPanel = new JScrollPane();
+        LeftGridScrollPanel.setVerticalScrollBarPolicy(22);
         LeftPanel.add(LeftGridScrollPanel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         iconViewList = new JList();
         LeftGridScrollPanel.setViewportView(iconViewList);
@@ -2988,6 +2990,7 @@ private String getSeparatorString() {
         CommandsgoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) || (!("".equals(ETCommandsFoldertextField.getText()))) ) {
                     if (CommandsParameterstextField.getText().length() > 0) {
                         OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.yourcommands"));
@@ -3013,6 +3016,7 @@ private String getSeparatorString() {
         ExifcopyFromButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EEd.copyExifFromSelected(getExifFields(), ExifDescriptiontextArea);
                 } else {
@@ -3023,6 +3027,7 @@ private String getSeparatorString() {
         ExifsaveToButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EEd.writeExifTags(getExifFields(), ExifDescriptiontextArea, getExifBoxes(), progressBar);
                 } else {
@@ -3050,6 +3055,7 @@ private String getSeparatorString() {
         xmpCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EXd.copyXmpFromSelected(getXmpFields(), xmpDescriptiontextArea);
                 } else {
@@ -3060,6 +3066,7 @@ private String getSeparatorString() {
         xmpSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EXd.writeXmpTags(getXmpFields(), xmpDescriptiontextArea, getXmpBoxes(), progressBar);
                 } else {
@@ -3091,12 +3098,14 @@ private String getSeparatorString() {
         geotaggingWriteInfobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( ("".equals(geotaggingImgFoldertextField.getText())) && ( (selectedIndicesList == null) || (selectedIndicesList.size() == 0) ) ) {
                     JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("msd.geonoimgpathlong"), ResourceBundle.getBundle("translations/program_strings").getString("msd.geonoimgpath"), JOptionPane.WARNING_MESSAGE);
                 } else {
                     if ("".equals(geotaggingGPSLogtextField.getText())) { // We do need a logfile
                         JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("msd.geonolog"), ResourceBundle.getBundle("translations/program_strings").getString("msd.geonolog"), JOptionPane.WARNING_MESSAGE);
                     } else { // We have a log file
+                        selectedIndicesList = MyVariables.getselectedIndicesList();
                         if ( (selectedIndicesList == null) || (selectedIndicesList.size() == 0) ) { //we have no images selected but the folder is selected
                             EGd.writeInfo(false, getGeotaggingFields(), getGeotaggingBoxes(), geotaggingOverwriteOriginalscheckBox.isSelected(), progressBar);
                         } else {
@@ -3121,6 +3130,7 @@ private String getSeparatorString() {
         gpsCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EGPSd.copyGPSFromSelected(getNumGPSdecFields(), getGPSLocationFields(), getGpsBoxes(),getGPSdmsFields(), getGPSdmsradiobuttons());
                 } else {
@@ -3131,6 +3141,7 @@ private String getSeparatorString() {
         gpsSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EGPSd.writeGPSTags(getNumGPSdecFields(), getGPSLocationFields(), getGpsBoxes(), getGPSdmsFields(), getGPSdmsradiobuttons(), progressBar, geoformattabbedPane.getSelectedIndex(), rootPanel);
                 } else {
@@ -3333,6 +3344,7 @@ private String getSeparatorString() {
         UseDataFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     SelectedCopyFromImageIndex = SelectedRowOrIndex;
                 } else {
@@ -3365,6 +3377,7 @@ private String getSeparatorString() {
         copyInsideSaveDataTo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     metaData.copyInsideMetaData(rootPanel, getInsideImageCopyRadiobuttons(), getInsideImageSubCopyRadiobuttons(), getInsideImageCopyCheckboxes(), OutputLabel);
                     OutputLabel.setText("");
@@ -3379,6 +3392,7 @@ private String getSeparatorString() {
         gpanoCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EGpanod.copyGpanoFromSelected(getGpanoFields(), gpanoStitchingSoftwaretextField, gpanoPTcomboBox, getGpanoCheckBoxes());
                     JOptionPane.showMessageDialog(rootPanel, ProgramTexts.GpanoSetSaveCheckboxes, "Set Save checkboxes", JOptionPane.INFORMATION_MESSAGE);
@@ -3390,6 +3404,7 @@ private String getSeparatorString() {
         gpanoCopyTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     // Now we need to check on completeness of mandatory fields
                     boolean allFieldsFilled = EGpanod.checkFieldsOnNotBeingEmpty(getGpanoFields(), gpanoPTcomboBox);
@@ -3416,6 +3431,7 @@ private String getSeparatorString() {
         lensCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ELd.copyLensDataFromSelected(getLensFields(), meteringmodecomboBox, getLensCheckBoxes());
                 } else {
@@ -3427,6 +3443,7 @@ private String getSeparatorString() {
         lensSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ELd.writeLensTags(getLensFields(), getLensCheckBoxes(), meteringmodecomboBox, progressBar);
                 } else {
@@ -3461,6 +3478,7 @@ private String getSeparatorString() {
         stringPlusCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ESd.copyStringPlusFromSelected(getstringPlusFields(), stringPlusOverwriteOriginalscheckBox);
                 } else {
@@ -3471,6 +3489,7 @@ private String getSeparatorString() {
         stringPlusSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     ESd.writeStringPlusTags(getstringPlusFields(), stringPlusOverwriteOriginalscheckBox, getSelectedRadioButtons(), getSeparatorString(), progressBar);
                 } else {
@@ -3637,81 +3656,127 @@ private String getSeparatorString() {
         radioButtonViewAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logger.trace("radiobutton selected: {}", radioButtonViewAll.getText());
-                String res  = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS);
-                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                File[] files = MyVariables.getLoadedFiles();
-                if (res.startsWith("jExifToolGUI")) {
-                    lblFileNamePath.setText(" ");
+                //logger.info("MyVariables.getSelectedRowOrIndex {}", MyVariables.getSelectedRowOrIndex());
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    logger.info("radiobutton selected: {}", radioButtonViewAll.getText());
+                    MyVariables.setmainScreenParams(whichRBselected());
+                    String res = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    //int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                    //File[] files = MyVariables.getLoadedFiles();
+                    if (res.startsWith("jExifToolGUI")) {
+                        lblFileNamePath.setText(" ");
+                    } else {
+                        lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                    }
                 } else {
-                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                    logger.debug("radiobutton/dropdown action but no files loaded");
                 }
             }
         });
         radioButtoncommonTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
-                //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRowOrIndex, files, mainScreen.this.ListexiftoolInfotable);
-                String res = Utils.getImageInfoFromSelectedFile(params);
-                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                File[] files = MyVariables.getLoadedFiles();
-                if (res.startsWith("jExifToolGUI")) {
-                    lblFileNamePath.setText(" ");
+                //logger.info("MyVariables.getSelectedRowOrIndex {}", MyVariables.getSelectedRowOrIndex());
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    logger.info("radiobutton selected: {}", radioButtoncommonTags.getText());
+                    MyVariables.setmainScreenParams(whichRBselected());
+                    String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
+                    //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRowOrIndex, files, mainScreen.this.ListexiftoolInfotable);
+                    String res = Utils.getImageInfoFromSelectedFile(params);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    //int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+
+                    if (res.startsWith("jExifToolGUI")) {
+                        lblFileNamePath.setText(" ");
+                    } else {
+                        lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                    }
                 } else {
-                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                    logger.debug("radiobutton/dropdown action but no files loaded");
                 }
             }
         });
         comboBoxViewCommonTags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (radioButtoncommonTags.isSelected()) {
-                    String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
-                    //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRowOrIndex, files, mainScreen.this.ListexiftoolInfotable);
-                    String res = Utils.getImageInfoFromSelectedFile(params);
-                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
-                    int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                    File[] files = MyVariables.getLoadedFiles();
-                    if (res.startsWith("jExifToolGUI")) {
-                        lblFileNamePath.setText(" ");
-                    } else {
-                        lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                //logger.info("MyVariables.getSelectedRowOrIndex {}", MyVariables.getSelectedRowOrIndex());
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    if (radioButtoncommonTags.isSelected()) {
+                        MyVariables.setmainScreenParams(whichRBselected());
+                        String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
+                        //Utils.selectImageInfoByTagName(comboBoxViewCommonTags, SelectedRowOrIndex, files, mainScreen.this.ListexiftoolInfotable);
+                        String res = Utils.getImageInfoFromSelectedFile(params);
+                        Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                        //int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                        //File[] files = MyVariables.getLoadedFiles();
+                        if (res.startsWith("jExifToolGUI")) {
+                            lblFileNamePath.setText(" ");
+                        } else {
+                            lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                        }
                     }
+                } else {
+                    logger.debug("radiobutton/dropdown action but no files loaded");
                 }
             }
         });
         radioButtonByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
-                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    MyVariables.setmainScreenParams(whichRBselected());
+                    String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                } else {
+                    logger.debug("radiobutton/dropdown action but no files loaded");
+                }
             }
         });
         comboBoxViewByTagName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (radioButtonByTagName.isSelected()) {
-                    String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
-                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    if (radioButtonByTagName.isSelected()) {
+                        MyVariables.setmainScreenParams(whichRBselected());
+                        String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
+                        Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    }
+                } else {
+                    logger.debug("radiobutton/dropdown action but no files loaded");
                 }
             }
         });
         radioButtonCameraMakes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
-                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    MyVariables.setmainScreenParams(whichRBselected());
+                    String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
+                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                } else {
+                    logger.debug("radiobutton/dropdown action but no files loaded");
+                }
             }
         });
         comboBoxViewCameraMake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (radioButtonCameraMakes.isSelected()) {
-                    String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
-                    Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                    if (radioButtonCameraMakes.isSelected()) {
+                        MyVariables.setmainScreenParams(whichRBselected());
+                        String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
+                        Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                    }
+                } else {
+                    logger.debug("radiobutton/dropdown action but no files loaded");
                 }
             }
         });
@@ -3796,12 +3861,14 @@ private String getSeparatorString() {
         }
     }
 
-    class iconViewListSelectionHandler implements ListSelectionListener {
+/*    class iconViewListSelectionHandler implements ListSelectionListener {
 
         public void valueChanged(ListSelectionEvent e) {
             // Perfectly working row selection method of first program
             List<Integer> tmpselectedIndices = new ArrayList<>();
             ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            //List<Integer> selectedIndicesList = new ArrayList<>();
+            //int[] selectedIndices = null;
 
             if (lsm.isSelectionEmpty()) {
                 logger.debug("no grid view index selected");
@@ -3812,30 +3879,28 @@ private String getSeparatorString() {
                 for (int i = minIndex; i <= maxIndex; i++) {
                     if (lsm.isSelectedIndex(i)) {
                         tmpselectedIndices.add(i);
-                        SelectedRowOrIndex = i;
+                        int SelectedRowOrIndex = i;
                         MyVariables.setSelectedRowOrIndex(i);
+                        logger.info("MyVariables.getSelectedRowOrIndex() {}", MyVariables.getSelectedRowOrIndex());
                     }
                 }
-                String[] params = whichRBselected();
+                String[] params = MyVariables.getmainScreenParams();
                 String res = Utils.getImageInfoFromSelectedFile(params);
-                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+                //Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
 
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 File[] files = MyVariables.getLoadedFiles();
-                if (res.startsWith("jExifToolGUI")) {
-                    lblFileNamePath.setText(" ");
-                } else {
-                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
-                }
+
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
                 logger.info("Selected grid indices: {}", tmpselectedIndices);
+                logger.info("Save indices {}", Arrays.toString(selectedIndices));
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setselectedIndicesList(selectedIndicesList);
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
             }
         }
-    }
+    }*/
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     public void rootPanelDropListener() {
@@ -3893,6 +3958,14 @@ private String getSeparatorString() {
         crMenu.CreateMenuBar(frame, rootPanel, splitPanel, menuBar, myMenu, OutputLabel, progressBar, UserCombiscomboBox);
     }
 
+
+    // prevent null-pointer assignments
+    //If we click a radio button in the top right without files loaded we get an NPE
+    //Can't set null object in setter (File files[])
+    // So make the selectedroworindex impossibly high
+    private void preventNullPointerAssignments() {
+        MyVariables.setSelectedRowOrIndex(IMPOSSIBLE_INDEX);
+    }
 
     // Sets the necessary screen texts. We choose this way as we have now more control over width
     // without bothering the translators with <html></html> and/or <br> codes or length of total string(s).
@@ -4052,15 +4125,16 @@ private String getSeparatorString() {
         setProgramScreenTexts();
 
 
+        // prevent null-pointer assignments after statup without any files loaded
+        preventNullPointerAssignments();
+
+
         //Use the table listener for the selection of multiple cells
         listSelectionModel = tableListfiles.getSelectionModel();
         tableListfiles.setRowSelectionAllowed(true);
         tableListfiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(new SharedListSelectionHandler());
 
-        icongridListSelectionModel = iconViewList.getSelectionModel();
-        iconViewList.setSelectionMode(icongridListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        icongridListSelectionModel.addListSelectionListener(new iconViewListSelectionHandler());
         // Use the mouselistener for the double-click to display the image
         // on the filenamestable
         MouseListeners.FileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
@@ -4094,7 +4168,7 @@ private String getSeparatorString() {
         //Check on command line arguments
         if ( MyVariables.getcommandLineArgsgiven()) {
             List<File> filesList = new ArrayList<File>();
-            File[] files = CommandLineArguments.ProcessArguments(filesList);
+            files = CommandLineArguments.ProcessArguments(filesList);
             MyVariables.setLoadedFiles(files);
             files = Utils.loadImages("commandline", rootPanel, LeftPanel, LeftTableScrollPanel, LeftGridScrollPanel, tableListfiles, previewTable, iconViewList, ListexiftoolInfotable, commandButtons(), mainScreenLabels(), progressBar, whichRBselected(), getLoadOptions());
         }
@@ -4102,23 +4176,15 @@ private String getSeparatorString() {
         Utils.checkForNewVersion("startup");
         //JLabelDropReady.addPropertyChangeListener(new PropertyChangeListener() {
         //});
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JlistIconView jlv = new JlistIconView();
-                try {
-                    jlv.IconView();
-                } catch (IOException ex) {
-                    logger.error("jlist iconview error {}", ex.toString());
-                    ex.printStackTrace();
-                }
-            }
-        });
+
         createPreviewsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (createPreviewsCheckBox.isSelected()) {
                     MyVariables.setcreatePreviewsCheckBox(true);
+                    iconViewList.clearSelection();
+                    DefaultListModel lm = (DefaultListModel) iconViewList.getModel();
+                    lm.removeAllElements();
                 } else {
                     MyVariables.setcreatePreviewsCheckBox(false);
                 }

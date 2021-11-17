@@ -196,12 +196,6 @@
                       <text value=""/>
                     </properties>
                   </component>
-                  <component id="13aba" class="javax.swing.JButton" binding="button1" default-binding="true">
-                    <constraints/>
-                    <properties>
-                      <text value="Button"/>
-                    </properties>
-                  </component>
                 </children>
               </grid>
               <scrollpane id="f7ced" binding="LeftTableScrollPanel">
@@ -242,8 +236,10 @@
                   <component id="30262" class="javax.swing.JCheckBox" binding="loadMetadataCheckBox" default-binding="true">
                     <constraints/>
                     <properties>
+                      <enabled value="true"/>
                       <selected value="false"/>
                       <text resource-bundle="translations/program_strings" key="lp.loadmetadata"/>
+                      <visible value="false"/>
                     </properties>
                   </component>
                   <component id="9e692" class="javax.swing.JButton" binding="leftCheckBoxBarHelpButton">
@@ -255,6 +251,7 @@
                       <minimumSize width="26" height="26"/>
                       <preferredSize width="26" height="26"/>
                       <text value=""/>
+                      <visible value="false"/>
                     </properties>
                   </component>
                 </children>
@@ -276,7 +273,9 @@
                 <constraints>
                   <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <verticalScrollBarPolicy value="22"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="81c21" class="javax.swing.JList" binding="iconViewList">
