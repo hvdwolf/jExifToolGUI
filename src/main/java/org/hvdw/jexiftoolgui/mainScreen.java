@@ -2930,6 +2930,7 @@ private String getSeparatorString() {
         buttonCompare.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 logger.info("buttonCompare pressed");
                 if (selectedIndicesList.size() > 25) {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.max25imgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.max25imgs"), JOptionPane.WARNING_MESSAGE);
