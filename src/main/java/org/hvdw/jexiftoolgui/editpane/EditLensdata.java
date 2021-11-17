@@ -45,7 +45,7 @@ public class EditLensdata {
     public void copyLensDataFromSelected(JTextField[] lensFields, JComboBox meteringmodecomboBox, JCheckBox[] lensBoxes) {
         String[] lenscopyparams = {"-exif:lensmake","-exif:lensmodel","-exif:lensserialnumber","-makernotes:lensserialnumber","-exif:focallength","-exif:focallengthin35mmformat","-exif:fnumber","-exif:maxaperturevalue","-exif:meteringmode","-makernotes:focusdistance","-composite:lensid","-composite:lens","-makernotes:focusdistance","-makernotes:conversionlens","-makernotes:lenstype","-makernotes:lensfirmwareversion"};
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         String fpath = "";
         String res = "";
         List<String> cmdparams = new ArrayList<String>();

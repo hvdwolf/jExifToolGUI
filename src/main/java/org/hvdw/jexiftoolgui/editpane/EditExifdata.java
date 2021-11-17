@@ -41,7 +41,7 @@ public class EditExifdata {
     public void copyExifFromSelected(JTextField[] exifFields, JTextArea exiftextArea) {
         String[] exifcopyparams = {"-e","-n","-exif:Make","-exif:Model","-exif:ModifyDate","-exif:DateTimeOriginal","-exif:CreateDate","-exif:Artist","-exif:Copyright","-exif:UserComment","-exif:ImageDescription"};
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         String fpath;
         String res = "";
         List<String> cmdparams = new LinkedList<>();
@@ -59,7 +59,7 @@ public class EditExifdata {
         cmdparams.add(fpath);
         try {
             res = CommandRunner.runCommand(cmdparams);
-            logger.info("res is\n{}", res);
+            logger.debug("res is\n{}", res);
         } catch(IOException | InterruptedException ex) {
             logger.debug("Error executing command");
         }
@@ -75,7 +75,7 @@ public class EditExifdata {
             String[] cells = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
             String SpaceStripped = cells[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
             //Wit ALL spaces removed from the tag we als need to use identiefiers without spaces
-            logger.info(SpaceStripped, " ; value: ", cells[1], "\n");
+            logger.debug(SpaceStripped, " ; value: ", cells[1], "\n");
             if (SpaceStripped.contains("Make")) {
                 exifFields[0].setText(cells[1].trim());
             }

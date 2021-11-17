@@ -153,7 +153,7 @@ public class EditUserDefinedCombis {
 
     public void CopyFromSelectedImage() {
         File[] files = MyVariables.getLoadedFiles();
-        int SelectedRow = MyVariables.getSelectedRow();
+        int SelectedRow = MyVariables.getSelectedRowOrIndex();
         tablerowdata = MyVariables.getuserCombiTableValues();
         int rowcounter = 0;
         String fpath ="";

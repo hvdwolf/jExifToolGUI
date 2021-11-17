@@ -12,13 +12,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -156,6 +159,25 @@ public class StandardFileIO {
         return startFolder;
     }
 
+    /**
+     * When use folder loading we sometimes encounter a folder with images, but also containing one or more folders
+     * We only want the images.
+     * @param files
+     * @return
+     */
+    public static File[] stripFoldersFromFiles (File[] files) {
+        //File[] realFiles = null;
+        List<File> tmpFiles = new ArrayList<File>();
+        for (File file : files) {
+            if (file.isFile()) {
+                tmpFiles.add(file);
+            }
+        }
+        File[] realFiles = tmpFiles.toArray(new File[tmpFiles.size()]);
+        logger.debug("realFiles {}", Arrays.toString(realFiles));
+        return realFiles;
+    }
+
     /*
      * Get the files from the "Load images" command  via JFilechooser
      */
@@ -250,11 +272,9 @@ public class StandardFileIO {
                 }
             }
         });
-
         fdchooser.setVisible(true);
 
         File[] files = fdchooser.getFiles();
-        //File[] files = chooser.getSelectedFiles();
         if ( files.length == 0) {
             // no selection
             return files = null;
@@ -270,6 +290,7 @@ public class StandardFileIO {
      */
     public static File[] getFolderFiles(JPanel myComponent) {
         File[] files = null;
+        File[] realFiles = null;
         String SelectedFolder;
         FileSystemView fsv = FileSystemView.getFileSystemView();
 
@@ -280,8 +301,6 @@ public class StandardFileIO {
             Path tmp = Paths.get(getFolderPathToOpenBasedOnPreferences());
             tmp = tmp.getParent();
             startFolder = tmp.toFile();
-        } else {
-
         }
 
         final JFileChooser jchooser = new JFileChooser(startFolder, fsv);
@@ -295,10 +314,12 @@ public class StandardFileIO {
             File folder = new File(SelectedFolder);
             //files = listFiles(SelectedFolder);
             files = folder.listFiles();
-            MyVariables.setLoadedFiles(files);
+            realFiles = stripFoldersFromFiles(files);
+            MyVariables.setLoadedFiles(realFiles);
             prefs.storeByKey(LAST_OPENED_FOLDER, jchooser.getCurrentDirectory().getAbsolutePath());
             logger.debug("jchooser.getCurrentDirectory().getAbsolutePath() {}", jchooser.getCurrentDirectory().getAbsolutePath());
-            return files;
+
+            return realFiles;
         } else {
             return files = null;
         }
@@ -311,6 +332,7 @@ public class StandardFileIO {
      */
     public static File[] getFolderFilesAwt(JPanel myComponent) {
         File[] files = null;
+        File[] realFiles = null;
         String SelectedFolder;
 
         Frame dialogframe = new Frame();
@@ -335,10 +357,11 @@ public class StandardFileIO {
         }
         File folder = new File(SelectedFolder);
         files = folder.listFiles();
-        MyVariables.setLoadedFiles(files);
+        realFiles = stripFoldersFromFiles(files);
+        MyVariables.setLoadedFiles(realFiles);
         prefs.storeByKey(LAST_OPENED_FOLDER, fdchooser.getDirectory());
 
-        return files;
+        return realFiles;
     }
 
     /*

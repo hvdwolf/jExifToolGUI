@@ -209,6 +209,7 @@ public class ImageFunctions {
         String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<String>();
         cmdparams.add(exiftool.trim());
+        String filename = "";
 
         boolean isWindows = Utils.isOsFromMicrosoft();
         File[] files = MyVariables.getLoadedFiles();
@@ -228,7 +229,7 @@ public class ImageFunctions {
 
         for (File file : files) {
             // First check for existing thumbnails
-            String filename = file.getName().replace("\\", "/");
+            filename = file.getName().replace("\\", "/");
             String thumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
             String photoshopThumbfilename = filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
             File thumbfile = new File(MyVariables.gettmpWorkFolder() + File.separator + thumbfilename);
@@ -337,8 +338,31 @@ public class ImageFunctions {
         return exportResult;
     }
 
+    public static ImageIcon useCachedOrCreateIcon (File file) {
+        ImageIcon icon = null;
 
+        String filename = file.getName().replace("\\", "/");
+        String thumbfilename = MyVariables.getjexiftoolguiCacheFolder() + File.separator + filename.substring(0, filename.lastIndexOf('.')) + "_ThumbnailImage.jpg";
+        String photoshopThumbfilename = MyVariables.getjexiftoolguiCacheFolder() + File.separator + filename.substring(0, filename.lastIndexOf('.')) + "_PhotoshopThumbnail.jpg";
+        File thumbfile = new File(thumbfilename);
+        File psthumbfile = new File(photoshopThumbfilename);
+        if (thumbfile.exists()) {
+            icon = new ImageIcon(thumbfilename);
+        } else if (psthumbfile.exists()) {
+            icon = new ImageIcon(photoshopThumbfilename);
+        } else {
+            icon = ImageFunctions.analyzeImageAndCreateIcon(file);
+        }
+        return icon;
+    }
 
+    /**
+     * This method AnalyzeImageAndCreateIcon will check if a thumbnail already exists, created by the extract thumbnails method
+     * If not, like in the case for images without any preview, it will resize the image to thumbnail
+     * This function is also called by useCachedOrCreateThumbNail
+     * @param file
+     * @return
+     */
     public static ImageIcon analyzeImageAndCreateIcon (File file) {
         boolean heicextension = false;
         String[] SimpleExtensions = MyConstants.JAVA_SUP_EXTENSIONS;

@@ -45,6 +45,9 @@ public class MyConstants {
     public static final String[] DATES_TIMES_STRINGS = {"YYYYMMDDHHMMSS", "YYYYMMDD_HHMMSS", "YYYYMMDD-HHMMSS", "YYYY_MM_DD_HH_MM_SS", "YYYY-MM-DD-HH-MM-SS"};
     public static final String[] DATES_STRINGS = {"YYYYMMDD", "YYYY_MM_DD", "YYYY-MM-DD"};
 
+    // Impossible value to prevent NPEs during radio button selection when no images loaded
+    public static final int IMPOSSIBLE_INDEX = 2147483645; // Max value integer - 2
+
     // Default font
     public static final Font appDefFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 }

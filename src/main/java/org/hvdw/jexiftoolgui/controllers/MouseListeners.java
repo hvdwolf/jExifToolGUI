@@ -1,21 +1,29 @@
 package org.hvdw.jexiftoolgui.controllers;
 
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.slf4j.LoggerFactory.getLogger;
+
 
 public class MouseListeners {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(MouseListeners.class);
 
-
-    //public static void fileTreeAndFileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, JTree fileTree, String params[]) {
-    public static void fileTreeAndFileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, String params[]) {
+    public static void FileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, String params[]) {
         // Use the mouse listener for the single cell double-click selection for the left table to be able to
         // display the image in the default viewer
 
@@ -32,38 +40,87 @@ public class MouseListeners {
                 logger.debug("mouselistener: selected cell in row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
             }
         });
-        // the mouse listener on the tree
-/*        MouseListener ml = new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                String fpath;
-                int selRow = fileTree.getRowForLocation(e.getX(), e.getY());
-                TreePath selPath = fileTree.getPathForLocation(e.getX(), e.getY());
-                if (!(selPath == null)) {
-                    logger.info("TreePath {}", selPath.getLastPathComponent());
-                    if (selRow != -1) {
-                        File fileOrDirectory = new File(selPath.getLastPathComponent().toString());
-                        if (!fileOrDirectory.isDirectory()) {
-                            if (isOsFromMicrosoft()) {
-                                fpath = selPath.getLastPathComponent().toString().replace("\\", "/");
-                            } else {
-                                fpath = selPath.getLastPathComponent().toString();
-                            }
-                            MyVariables.setSelectedImagePath(fpath);
 
-                            if (e.getClickCount() == 1) {
-                                //mySingleClick(selRow, selPath);
-                                //String[] params = whichRBselected();
-                                Utils.getImageInfoFromSelectedTreeFile(params, ListexiftoolInfotable);
-                            } else if (e.getClickCount() == 2) {
-                                //myDoubleClick(selRow, selPath);
-                                Utils.displaySelectedImageInExternalViewer();
-                            }
-                        }
-                    }
+    }
+
+
+    public static void filesJListListener(JList iconViewList, JTable ListexiftoolInfotable, JLabel[] mainScreenLabels) {
+        iconViewList.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+
+                int[] selectedIndices;
+                List<Integer> selectedIndicesList = new ArrayList<Integer>();
+                List<Integer> tmpselectedIndices = new ArrayList<>();
+                JList list =(JList) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int listCell = list.getSelectedIndex();
+                MyVariables.setSelectedRowOrIndex(listCell);
+                if (mouseEvent.getClickCount() == 2 && list.getSelectedIndex() != -1) {
+                    logger.debug("double-click registered from filesJlist from index {}", String.valueOf(listCell));
+                    Utils.displaySelectedImageInExternalViewer();
+                }
+                logger.debug("single-click mouselistener: selected cell in index {}", String.valueOf(listCell));
+                String[] params = MyVariables.getmainScreenParams();
+                String res = Utils.getImageInfoFromSelectedFile(params);
+                Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                File[] files = MyVariables.getLoadedFiles();
+                if (res.startsWith("jExifToolGUI")) {
+                    mainScreenLabels[3].setText(" ");
+                } else {
+                    mainScreenLabels[3].setText(files[selectedRowOrIndex].getPath());
                 }
             }
-        };
-        fileTree.addMouseListener(ml); */
+        });
     }
+
+
+
+    public static class iconViewListSelectionHandler implements ListSelectionListener {
+
+        public void valueChanged(ListSelectionEvent e) {
+            // Perfectly working row selection method of first program
+            List<Integer> tmpselectedIndices = new ArrayList<>();
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            List<Integer> selectedIndicesList = new ArrayList<>();
+            int[] selectedIndices = null;
+
+            if (lsm.isSelectionEmpty()) {
+                logger.debug("no grid view index selected");
+            } else {
+                // Find out which indexes are selected.
+                int minIndex = lsm.getMinSelectionIndex();
+                int maxIndex = lsm.getMaxSelectionIndex();
+                for (int i = minIndex; i <= maxIndex; i++) {
+                    if (lsm.isSelectedIndex(i)) {
+                        tmpselectedIndices.add(i);
+                        int SelectedRowOrIndex = i;
+                        MyVariables.setSelectedRowOrIndex(i);
+                        logger.info("MyVariables.getSelectedRowOrIndex() {}", MyVariables.getSelectedRowOrIndex());
+                    }
+                }
+                String[] params = MyVariables.getmainScreenParams();
+                String res = Utils.getImageInfoFromSelectedFile(params);
+                //Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
+
+                int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
+                File[] files = MyVariables.getLoadedFiles();
+                /*if (res.startsWith("jExifToolGUI")) {
+                    lblFileNamePath.setText(" ");
+                } else {
+                    lblFileNamePath.setText(files[selectedRowOrIndex].getPath());
+                }*/
+
+                selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
+                logger.info("Selected grid indices: {}", tmpselectedIndices);
+                logger.info("Save indices {}", Arrays.toString(selectedIndices));
+                selectedIndicesList = tmpselectedIndices;
+                MyVariables.setselectedIndicesList(selectedIndicesList);
+                MyVariables.setSelectedFilenamesIndices(selectedIndices);
+            }
+        }
+    }
+
 
 }
