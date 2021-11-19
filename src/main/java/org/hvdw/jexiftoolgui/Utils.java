@@ -807,6 +807,28 @@ public class Utils {
             files = MyVariables.getLoadedFiles();
         }
         if (files != null) {
+            // First show some text to the users when starting to load
+            // In the right table
+            String res = "jExifToolGUI\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages") + "\t" +
+                    ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages");
+            displayInfoForSelectedImage(res, ListexiftoolInfotable);
+            // And it the left grid
+            DefaultListModel iconViewListModel = new DefaultListModel();
+            int count = 0;
+            JList loadingTexts = new JList(iconViewListModel);
+            loadingTexts.setCellRenderer( new LabelGridIconRenderer());
+            loadingTexts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+            loadingTexts.setFixedCellHeight(180);
+            loadingTexts.setFixedCellWidth(180);
+            loadingTexts.setVisibleRowCount(-1);
+            for (int i =0; i <= 19; i++ ) {
+                iconViewListModel.add(count++, new LabelIcon(null, ResourceBundle.getBundle("translations/program_strings").getString("pt.loadingimages")));
+            }
+            LeftGridScrollPanel.setViewportView(loadingTexts);
+            MyVariables.seticonView(loadingTexts);
+
+
             // First initialize our data Hashmap
             HashMap <String, HashMap<String, String> > imagesData = new HashMap<String, HashMap<String, String>>();
             MyVariables.setimagesData(imagesData);
