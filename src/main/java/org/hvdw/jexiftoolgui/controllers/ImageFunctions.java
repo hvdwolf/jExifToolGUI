@@ -1,12 +1,14 @@
 package org.hvdw.jexiftoolgui.controllers;
 
-
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -34,7 +36,7 @@ public class ImageFunctions {
     / This gets all image data using exiftool, but only returns the basic image data
     / The total tag data is put into a hashmap via a getter/setter
      */
-    public static int[] getbasicImageData (File file) {
+    public static int[] getImageMetaData (File file) {
         // BASIC_IMG_DATA = {"-n", "-S", "-imagewidth", "-imageheight", "-orientation", "-iso", "-fnumber", "-exposuretime", "-focallength", "-focallengthin35mmformat"}
         int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
         long tmpvalue;
@@ -93,11 +95,31 @@ public class ImageFunctions {
     }
 
     /*
-    / This only gets width, height and rotation for an image. It is slower than java but gives better results for orientation
-     */
-
+    / This only gets width, height and rotation for an image. Although exiftool is slower than java for jpeg, it is faster for other file formats
+    * and gives better results for orientation. See also below the getImageDimension method: same performance
+    */
     public static int[] getWidthHeightOrientation (File file) {
         int[] basicdata = {0, 0, 999, 0, 0, 0, 0, 0};
+
+        /*
+        // Standard java imageIO
+        //BufferedImage bimg = ImageIO.read(new File(filename));
+        //int width          = bimg.getWidth();
+        //int height         = bimg.getHeight();
+
+        //Or
+        public static int getOrientation(File imageFile){
+            int result = 0;
+            ImageIcon image = new ImageIcon(imageFile.getPath());
+            if (image.getIconWidth() > image.getIconHeight()) {
+                result = 0;
+            } else {
+                result = 1;
+            }
+            image = null;
+            return result;
+       }
+       */
 
         String exiftool = Utils.platformExiftool();
         List<String> cmdparams = new ArrayList<String>();
@@ -138,6 +160,42 @@ public class ImageFunctions {
         }
         return basicdata;
     }
+
+    /**
+     * Gets image dimensions for given file
+     * @param imgFile image file
+     * @return dimensions of image
+     * @throws IOException if the file is not a known image
+     *
+     *  This is one of the fastest, if not the fastest, java method to get this data
+     *  for png files is is between 50~100ms
+     *  but average operation is around 700 ms for jpegs
+     *  while exiftool does it in ~235ms
+     */
+    public static Dimension getImageDimension(File imgFile) throws IOException {
+        int pos = imgFile.getName().lastIndexOf(".");
+        if (pos == -1)
+            throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
+        String suffix = imgFile.getName().substring(pos + 1);
+        Iterator<ImageReader> iter = ImageIO.getImageReadersBySuffix(suffix);
+        while(iter.hasNext()) {
+            ImageReader reader = iter.next();
+            try {
+                ImageInputStream stream = new FileImageInputStream(imgFile);
+                reader.setInput(stream);
+                int width = reader.getWidth(reader.getMinIndex());
+                int height = reader.getHeight(reader.getMinIndex());
+                return new Dimension(width, height);
+            } catch (IOException e) {
+                logger.error("Error reading: " + imgFile.getAbsolutePath(), e);
+            } finally {
+                reader.dispose();
+            }
+        }
+
+        throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
+    }
+
 
     /*
     / This one is used to get all metadata in the background for further use

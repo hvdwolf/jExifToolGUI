@@ -75,7 +75,7 @@ public class JavaImageViewer {
         image = files[newindex];
         MyVariables.setCurrentFileInViewer(image);
         try {
-            basicdata = ImageFunctions.getbasicImageData(image);
+            basicdata = ImageFunctions.getImageMetaData(image);
         } catch (NullPointerException npe) {
             npe.printStackTrace();
             bde = true;
@@ -174,7 +174,7 @@ public class JavaImageViewer {
 
 
         try {
-            basicdata = ImageFunctions.getbasicImageData(image);
+            basicdata = ImageFunctions.getImageMetaData(image);
         } catch (NullPointerException npe) {
             npe.printStackTrace();
             bde = true;

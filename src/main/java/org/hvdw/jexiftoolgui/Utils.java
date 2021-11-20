@@ -829,7 +829,7 @@ public class Utils {
             MyVariables.seticonView(loadingTexts);
 
 
-            // First initialize our data Hashmap
+            // Initialize our data Hashmap
             HashMap <String, HashMap<String, String> > imagesData = new HashMap<String, HashMap<String, String>>();
             MyVariables.setimagesData(imagesData);
 
@@ -985,7 +985,7 @@ public class Utils {
             logger.debug("Now working on image: " + filename);
 
             if (loadMetadata) {
-                ImageFunctions.getbasicImageData(file);
+                ImageFunctions.getImageMetaData(file);
             }
 
             if (showCreatePreviews) { //User wants a preview
@@ -1104,7 +1104,7 @@ public class Utils {
         logger.debug("Now working on image: " + filename);
 
         if (!(loadMetadata)) {
-            ImageFunctions.getbasicImageData(file);
+            ImageFunctions.getImageMetaData(file);
         }
 
         if (loadMetadata) { //means we have it in the big table, we don't need it here
@@ -1252,8 +1252,55 @@ public class Utils {
             //displayInfoForSelectedImage(res, ListexiftoolInfotable);
         }
 
+
         return res;
     }
+
+/*    public String[] WidthHeightOrientation (File file) {
+        String[] WHO = null;
+        Metadata metadata = null;
+
+        /// Drew Noakes library
+        //*Metadata metadata = null;
+        File file = new File(MyVariables.getSelectedImagePath());
+        try {
+            metadata = ImageMetadataReader.readMetadata(file);
+        } catch (ImageProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        for (Directory directory : metadata.getDirectories()) {
+            if ( (directory.getName()).contains("JPEG") || (directory.getName()).contains("Exif IFD0") ) {
+                logger.info("this directory {}", directory.getName());
+                for (Tag tag : directory.getTags()) {
+                    //System.out.format("[%s] - %s = %s", directory.getName(), tag.getTagName(), tag.getDescription());
+                    logger.info("|| {} || {} || {}", directory.getName(), tag.getTagName(), tag.getDescription());
+                }
+                if (directory.hasErrors()) {
+                    for (String error : directory.getErrors()) {
+                        //System.err.format("ERROR: %s", error);
+                        logger.error("ERROR {}", error);
+                    }
+                }
+            }
+        }*/
+
+        /*try {
+            metadata = ImageMetadataReader.readMetadata(file);
+        } catch (ImageProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+        String width =
+
+
+        return WHO;
+    } */
 
     /**
      * This getImageInfoFromSelectedFile is called from methods that loop through files and need info

@@ -97,7 +97,7 @@ public class MouseListeners {
                         tmpselectedIndices.add(i);
                         int SelectedRowOrIndex = i;
                         MyVariables.setSelectedRowOrIndex(i);
-                        logger.info("MyVariables.getSelectedRowOrIndex() {}", MyVariables.getSelectedRowOrIndex());
+                        //logger.info("MyVariables.getSelectedRowOrIndex() {}", MyVariables.getSelectedRowOrIndex());
                     }
                 }
                 String[] params = MyVariables.getmainScreenParams();
@@ -113,8 +113,8 @@ public class MouseListeners {
                 }*/
 
                 selectedIndices = tmpselectedIndices.stream().mapToInt(Integer::intValue).toArray();
-                logger.info("Selected grid indices: {}", tmpselectedIndices);
-                logger.info("Save indices {}", Arrays.toString(selectedIndices));
+                logger.debug("Selected grid indices: {}", tmpselectedIndices);
+                //logger.info("Save indices {}", Arrays.toString(selectedIndices));
                 selectedIndicesList = tmpselectedIndices;
                 MyVariables.setselectedIndicesList(selectedIndicesList);
                 MyVariables.setSelectedFilenamesIndices(selectedIndices);
