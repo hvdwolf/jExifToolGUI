@@ -994,7 +994,7 @@ public class Utils {
 
             //logger.info("Before display: Singlecolumntable {} ShowCreatePreview {} loadMetadata {}", singleColumnTable, showCreatePreview, loadMetadata);
             if (showCreatePreviews) {
-                iconViewListModel.add(count++, new LabelIcon(icon, filename));
+                iconViewListModel.add(count++, new LabelIcon(icon, "<html>" + filename + "</html>"));
                 if (loadMetadata) {
                     String imginfo = returnBasicImageDataString(filename, "html");
                 }
@@ -1005,7 +1005,7 @@ public class Utils {
                     //ImgFilenameRow[1] = imginfo;
                     ImgFilenameRow[0] = new LabelIcon(null, imginfo);
                 } else {
-                    ImgFilenameRow[0] = new LabelIcon(null, filename);
+                    ImgFilenameRow[0] = new LabelIcon(null, "<html>" + filename + "</html>");
                 }
                 tableModel.addRow(ImgFilenameRow);
             }
@@ -1525,13 +1525,13 @@ public class Utils {
                     String[] sortedLines = strList.stream().toArray(String[]::new);
                     for (String line : sortedLines) {
                         String[] cells = line.split("\\t", 3);
-                        model.addRow(new Object[]{cells[0], cells[1], cells[2] });
+                        model.addRow(new Object[]{cells[0], cells[1], "<html>" + cells[2] + "</html>" });
                     }
                 } else {
                     for (String line : lines) {
                         //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
                         String[] cells = line.split("\\t", 3);
-                        model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                        model.addRow(new Object[]{cells[0], cells[1], "<html>" + cells[2] + "</html>"});
                     }
                 }
             }

@@ -117,7 +117,7 @@ public class CompareImagesWindow {
         theader.add(ResourceBundle.getBundle("translations/program_strings").getString("vdtab.tabletag"));
         for (int index : selectedIndices) {
             String filename = files[index].getName();
-            theader.add(files[index].getName());
+            theader.add("<html>" + (files[index].getName()) + "</html>");
         }
         String[] tableheader = theader.stream().toArray(String[]::new);
 
@@ -145,7 +145,7 @@ public class CompareImagesWindow {
                     setIcon(null);
                     setHorizontalTextPosition(JLabel.LEFT);
                     setHorizontalAlignment(JLabel.LEFT);
-                    super.setValue(value);
+                    super.setValue("<html>" + value + "</html>");
                 }
             }
         });
