@@ -32,37 +32,41 @@ public class CheckPreferences {
 
         if (exiftool_exists) {
             String exiftool_path = prefs.getByKey(EXIFTOOL_PATH, "");
-            File tmpFile = new File(exiftool_path);
-            boolean exists = tmpFile.exists();
-            if (!exists) {
-                logger.debug("the exiftool path in the preferences being \"{} \" isn't found", exiftool_path);
-                exiftool_path = null;
-                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 300,ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttitle"), JOptionPane.WARNING_MESSAGE);
-            }
-            logger.trace("exists is {}", exists);
-            logger.info("preference exiftool returned: {}",exiftool_path);
-            if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
-                // Try to find exiftool in the path
-                res = Utils.getExiftoolPath();
-                //
-                logger.trace("result from getExiftoolPath(): {}", res);
-            } else {
-                res = exiftool_path;
-                boolean isWindows = Utils.isOsFromMicrosoft();
-                if (isWindows) {
-                    cmdparams.add("\"" + res + "\"");
+            if ( !(exiftool_path.contains("jexiftoolgui.db")) ) {
+                File tmpFile = new File(exiftool_path);
+                boolean exists = tmpFile.exists();
+                if (!exists) {
+                    logger.debug("the exiftool path in the preferences being \"{} \" isn't found", exiftool_path);
+                    exiftool_path = null;
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 300, ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttext")), ResourceBundle.getBundle("translations/program_strings").getString("prefs.etprefincorrecttitle"), JOptionPane.WARNING_MESSAGE);
+                }
+                logger.trace("exists is {}", exists);
+                logger.info("preference exiftool returned: {}", exiftool_path);
+                if (exiftool_path == null || exiftool_path.isEmpty() || !exists) {
+                    // Try to find exiftool in the path
+                    res = Utils.getExiftoolPath();
+                    //
+                    logger.trace("result from getExiftoolPath(): {}", res);
                 } else {
-                    cmdparams.add(res);
-                }
-                cmdparams.add("-ver");
-                try {
-                    String exv = CommandRunner.runCommand(cmdparams).replace("\n", "").replace("\r", "");
-                    OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exiftoolavailable") + exv);
-                    MyVariables.setExiftoolVersion(exv);
-                } catch (IOException | InterruptedException ex) {
-                    logger.debug("Error executing command");
-                }
+                    res = exiftool_path;
+                    boolean isWindows = Utils.isOsFromMicrosoft();
+                    if (isWindows) {
+                        cmdparams.add("\"" + res + "\"");
+                    } else {
+                        cmdparams.add(res);
+                    }
+                    cmdparams.add("-ver");
+                    try {
+                        String exv = CommandRunner.runCommand(cmdparams).replace("\n", "").replace("\r", "");
+                        OutputLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.exiftoolavailable") + exv);
+                        MyVariables.setExiftoolVersion(exv);
+                    } catch (IOException | InterruptedException ex) {
+                        logger.debug("Error executing command");
+                    }
 
+                }
+            } else { //user has selected jexiftoolgui.db as exiftool. It happens
+                res = Utils.getExiftoolPath();
             }
         } else { // does not exist
             res = Utils.getExiftoolPath();
