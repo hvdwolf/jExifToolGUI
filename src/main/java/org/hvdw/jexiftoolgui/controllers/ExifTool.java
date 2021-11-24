@@ -48,7 +48,7 @@ public class ExifTool {
                 } else {
                     exiftool = "no exiftool binary";
                 }
-            } else if (tmpstr.contains("exiftool")) {
+            } else if ( (tmpstr.contains("exiftool")) && (!(tmpstr.contains("jexiftoolgui.db"))) ) {
                 exiftool = selectedBinary;
             } else {
                 exiftool = "no exiftool binary";
