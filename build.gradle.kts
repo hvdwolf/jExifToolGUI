@@ -39,13 +39,10 @@ repositories {
 dependencies {
 
     //// Log4J and SLF4J configuration dependencies.
-    implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
-    implementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
-    implementation(files("$projectDir/libs/logback-core-1.2.3.jar"))
-    implementation(files("$projectDir/libs/logback-classic-1.2.3.jar"))
-    // No longer use bloated jackson
-    //implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = "2.11.3")
-    //implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.11.3")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.32")
+    implementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.32")
+    implementation(files("$projectDir/libs/logback-core-1.2.7.jar"))
+    implementation(files("$projectDir/libs/logback-classic-1.2.7.jar"))
 
     // Add minimal json (35Kb), to be used for Nominatim queries and other json activities
     implementation(group = "com.eclipsesource.minimal-json", name = "minimal-json", version = "0.9.5")
@@ -64,26 +61,11 @@ dependencies {
     // Or use Xchart: https://github.com/knowm/XChart    https://knowm.org/open-source/xchart/
     //implementation(group = "org.knowm.xchart", name = "xchart", version = "3.6.5")
 
-////////////////////////////////////////////////////////////////////////////
-    // Twelve monkeys imageio (supports bmp, jpeg, jpeg-2000, PNM (PBM/PGM/PPM/PAM), PSD, TIFF, HDR, IFF, PCX
-    // PICT, SGI, TGA, ICNS, ICO & CUR, SVG, WMF)
-//    implementation("com.twelvemonkeys.imageio:imageio-core:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-bmp:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-hdr:3.6")
-////    implementation("com.twelvemonkeys.imageio:imageio-icns:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-iff:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-metadata:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-pcx:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-pict:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-pnm:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-psd:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-sgi:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-tga:3.6")
-//    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.6")
-////    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    //implementation(fileTree(mapOf("dir" to "tw-libs", "include" to listOf("*.jar"))))
+/////////////////////////////////////////////////////
+    // Drew Noakes  metadata extractor
+    // https://github.com/drewnoakes/metadata-extractor
+    //implementation(group="com.drewnoakes", name="metadata-extractor", version="2.16.0")
 
 
 /////////////////////////////////////////////////
@@ -96,12 +78,11 @@ dependencies {
 //////////////////////////////////////////////////
     // sqlite
     //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
-    implementation(files("$projectDir/libs/sqlite-jdbc-3.32.3.2.jar"))
+    implementation(files("$projectDir/libs/sqlite-jdbc-3.36.0.3.jar"))
 
 
     // The opencsv library jar
-    implementation(files("$projectDir/libs/opencsv-5.3.jar"))
-    //implementation(group = "com.opencsv", name = "opencsv", version = "5.3")
+    implementation(files("$projectDir/libs/opencsv-5.5.2.jar"))
 
     //jxmapviewer2 https://github.com/msteiger/jxmapviewer2
     implementation(group = "org.jxmapviewer", name = "jxmapviewer2", version = "2.6")
@@ -110,18 +91,12 @@ dependencies {
     // Testing dependencies
     testImplementation(group = "junit", name = "junit", version = "4.12")
     testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
-    //testImplementation(group = "ch.qos.logback", name = "logback-core", version = "1.2.3")
-    //testImplementation(group = "ch.qos.logback", name = "logback-classic", version = "1.2.3")
-    testImplementation(files("$projectDir/libs/logback-core-1.2.3.jar"))
-    testImplementation(files("$projectDir/libs/logback-classic-1.2.3.jar"))
+    testImplementation(files("$projectDir/libs/logback-core-1.2.7.jar"))
+    testImplementation(files("$projectDir/libs/logback-classic-1.2.7.jar"))
 
 }
 
 java {
-    //sourceCompatibility = JavaVersion.VERSION_1_8
-    //targetCompatibility = JavaVersion.VERSION_1_8
-    // Undo version 11 again. 95% or more of OSes and distributions still use java 8
-    // Redo java_11. We will deliver a jre11 if neccessary. Simple as that
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 
