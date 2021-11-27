@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import static org.hvdw.jexiftoolgui.MyConstants.IMPOSSIBLE_INDEX;
 import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftoolguiFolder;
 
 
@@ -3659,7 +3658,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent e) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 //logger.info("MyVariables.getSelectedRowOrIndex {}", MyVariables.getSelectedRowOrIndex());
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     logger.info("radiobutton selected: {}", radioButtonViewAll.getText());
                     MyVariables.setmainScreenParams(whichRBselected());
                     String res = Utils.getImageInfoFromSelectedFile(MyConstants.ALL_PARAMS);
@@ -3681,7 +3680,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 //logger.info("MyVariables.getSelectedRowOrIndex {}", MyVariables.getSelectedRowOrIndex());
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     logger.info("radiobutton selected: {}", radioButtoncommonTags.getText());
                     MyVariables.setmainScreenParams(whichRBselected());
                     String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
@@ -3705,7 +3704,7 @@ private String getSeparatorString() {
             public void actionPerformed(ActionEvent actionEvent) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
                 //logger.info("MyVariables.getSelectedRowOrIndex {}", MyVariables.getSelectedRowOrIndex());
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     if (radioButtoncommonTags.isSelected()) {
                         MyVariables.setmainScreenParams(whichRBselected());
                         String[] params = Utils.getWhichCommonTagSelected(comboBoxViewCommonTags);
@@ -3729,7 +3728,7 @@ private String getSeparatorString() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     MyVariables.setmainScreenParams(whichRBselected());
                     String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
@@ -3742,7 +3741,7 @@ private String getSeparatorString() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     if (radioButtonByTagName.isSelected()) {
                         MyVariables.setmainScreenParams(whichRBselected());
                         String res = Utils.selectImageInfoByTagName(comboBoxViewByTagName, files);
@@ -3757,7 +3756,7 @@ private String getSeparatorString() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     MyVariables.setmainScreenParams(whichRBselected());
                     String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
                     Utils.displayInfoForSelectedImage(res, ListexiftoolInfotable);
@@ -3770,7 +3769,7 @@ private String getSeparatorString() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int selectedRowOrIndex = MyVariables.getSelectedRowOrIndex();
-                if ( !(selectedRowOrIndex == IMPOSSIBLE_INDEX) ) {
+                if ( !(selectedRowOrIndex == MyConstants.IMPOSSIBLE_INDEX) ) {
                     if (radioButtonCameraMakes.isSelected()) {
                         MyVariables.setmainScreenParams(whichRBselected());
                         String res = Utils.selectImageInfoByTagName(comboBoxViewCameraMake, files);
@@ -3965,7 +3964,7 @@ private String getSeparatorString() {
     //Can't set null object in setter (File files[])
     // So make the selectedroworindex impossibly high
     private void preventNullPointerAssignments() {
-        MyVariables.setSelectedRowOrIndex(IMPOSSIBLE_INDEX);
+        MyVariables.setSelectedRowOrIndex(MyConstants.IMPOSSIBLE_INDEX);
     }
 
     // Sets the necessary screen texts. We choose this way as we have now more control over width
@@ -4056,7 +4055,7 @@ private String getSeparatorString() {
     // This is where it all starts
     // initialisation of the Application
     public mainScreen(JFrame frame) throws IOException, InterruptedException {
-        boolean preferences = false;
+        boolean exiftool_found = false;
 
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -4098,12 +4097,27 @@ private String getSeparatorString() {
 
         // Now check the preferences
         CheckPreferences CP = new CheckPreferences();
-        preferences = CP.checkPreferences(rootPanel, OutputLabel);
-        if (!preferences) {
+        /*String ET_preference = CP.checkExifToolPreference();
+        if ( ET_preference.contains("Preference null_empty_notexisting") || ET_preference.contains("No exiftool preference yet") ) {
+            String res = ExifTool.getExiftoolInPath();
+        } */
+
+        exiftool_found = CP.checkPreferences(rootPanel, OutputLabel);
+        logger.debug("ExifToolPath from CheckPreferences: {}", MyVariables.getExifToolPath());
+        if (!exiftool_found) {
             ExifTool.checkExifTool(mainScreen.this.rootPanel);
         } else {
-            if ( !(MyVariables.getExifToolPath() == null) && "c:\\windows\\exiftool.exe".equals( (MyVariables.getExifToolPath()).toLowerCase() ) ) {
+            if ( (MyVariables.getExifToolPath() != null) && "c:\\windows\\exiftool.exe".equals( (MyVariables.getExifToolPath()).toLowerCase() ) ) {
                 JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtext"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
+                ExifTool.checkExifTool(mainScreen.this.rootPanel);
+            } else if ( (MyVariables.getExifToolPath() != null) && ( (MyVariables.getExifToolPath()).toLowerCase().contains("exiftool(-k).exe") || (MyVariables.getExifToolPath()).toLowerCase().contains("-k version")) ) {
+                JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.exifk"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
+                ExifTool.checkExifTool(mainScreen.this.rootPanel);
+            }
+            // Now check if it is executable
+            String isExecutable = ExifTool.showVersion(OutputLabel);
+            if (isExecutable.contains("Error executing command")) {
+                JOptionPane.showMessageDialog(rootPanel, ProgramTexts.wrongETbinaryfromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
                 ExifTool.checkExifTool(mainScreen.this.rootPanel);
             }
         }

@@ -1562,47 +1562,6 @@ public class Utils {
     }
 
 
-    /*
-    * This method tries to find exiftool in the path on the several OSes
-     */
-    public static String getExiftoolPath() {
-        String res;
-        List<String> cmdparams;
-        Application.OS_NAMES currentOs = getCurrentOsName();
-
-        if (currentOs == Application.OS_NAMES.MICROSOFT) {
-            //String[] params = {"c:\\Windows\\System32\\where.exe", "exiftool.exe"};
-            String[] params = {"c:\\Windows\\System32\\cmd.exe", "/c", "where", "exiftool"};
-            //String[] params = {"where", "exiftool"};
-            cmdparams = Arrays.asList(params);
-        } else {
-            String[] params = {"which", "exiftool"};
-            cmdparams = Arrays.asList(params);
-        }
-
-        try {
-            res = CommandRunner.runCommand(cmdparams); // res returns path to exiftool; on error on windows "INFO: Could not ...", on linux returns nothing
-        } catch (IOException | InterruptedException ex) {
-            logger.debug("Error executing command");
-            res = ex.getMessage();
-        }
-
-        if (currentOs == Application.OS_NAMES.MICROSOFT) {
-            // First check whether we have multiple exiftool versions in our path
-            String[] lines = res.split(System.getProperty("line.separator"));
-            logger.debug("lines is {}", Arrays.toString(lines));
-            logger.info("line 0 is {}", lines[0]);
-            logger.info("number of lines {}", Integer.toString(lines.length));
-            if ( ("c:\\windows\\exiftool.exe".equals(lines[0].toLowerCase())) && (lines.length>1) ) {
-                res = lines[1];
-            } else if ( "c:\\windows\\exiftool.exe".equals(lines[0].toLowerCase()) ) {
-                res = lines[0];
-            } else {
-                res = lines[0];
-            }
-        }
-        return res;
-    }
 
     /*
     * Setc checkboxes on first copy data tab. These are the cehckboxes for the selective copy
