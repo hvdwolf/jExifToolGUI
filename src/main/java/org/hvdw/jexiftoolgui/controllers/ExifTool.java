@@ -150,7 +150,7 @@ public class ExifTool {
                 JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else if ( returnValue.contains("exiftool(-k).exe") || returnValue.contains("-k")) {
-                JOptionPane.showMessageDialog(myComponent, ResourceBundle.getBundle("translations/program_strings").getString("exift.exifktxt"), ResourceBundle.getBundle("translations/program_strings").getString("exift.exifktitle"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exift.exifktxt")), ResourceBundle.getBundle("translations/program_strings").getString("exift.exifktitle"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else { // Yes. It looks like we have a correct exiftool selected
                 // remove all possible line breaks

@@ -4108,10 +4108,10 @@ private String getSeparatorString() {
             ExifTool.checkExifTool(mainScreen.this.rootPanel);
         } else {
             if ( (MyVariables.getExifToolPath() != null) && "c:\\windows\\exiftool.exe".equals( (MyVariables.getExifToolPath()).toLowerCase() ) ) {
-                JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtext"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtext")), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
                 ExifTool.checkExifTool(mainScreen.this.rootPanel);
             } else if ( (MyVariables.getExifToolPath() != null) && ( (MyVariables.getExifToolPath()).toLowerCase().contains("exiftool(-k).exe") || (MyVariables.getExifToolPath()).toLowerCase().contains("-k version")) ) {
-                JOptionPane.showMessageDialog(rootPanel, ResourceBundle.getBundle("translations/program_strings").getString("exift.exifk"), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exift.exifk")), ResourceBundle.getBundle("translations/program_strings").getString("exift.notinwinpathtitle"), JOptionPane.WARNING_MESSAGE);
                 ExifTool.checkExifTool(mainScreen.this.rootPanel);
             }
             // Now check if it is executable
