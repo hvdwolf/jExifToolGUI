@@ -328,29 +328,29 @@ public class PreferencesDialog extends JDialog {
     }
 
     private void savePrefs() {
-        logger.info("Saving the preferences");
-        logger.info("artist {}", ArtisttextField.getText());
-        logger.info("copyrights {}", CopyrightstextField.getText());
-        logger.info("credit {}", CreditstextField.getText());
-        logger.info("exiftool {}", ExiftoolLocationtextField.getText());
-        logger.info("defaultstartfolder {}", ImgStartFoldertextField.getText());
-        logger.info("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
-        logger.info("Check for new version on startup {}", CheckVersioncheckBox.isSelected());
-        logger.info("metadatalanguage {}", metadataLanuagecomboBox.getSelectedItem());
-        logger.info("raw viewer {}", RawViewerLocationtextField.getText());
-        logger.info("Preferred application language", localecomboBox.getSelectedItem());
+        logger.debug("Saving the preferences");
+        logger.debug("artist {}", ArtisttextField.getText());
+        logger.debug("copyrights {}", CopyrightstextField.getText());
+        logger.debug("credit {}", CreditstextField.getText());
+        logger.debug("exiftool {}", ExiftoolLocationtextField.getText());
+        logger.debug("defaultstartfolder {}", ImgStartFoldertextField.getText());
+        logger.debug("uselastopenedfolder {}", UseLastOpenedFoldercheckBox.isSelected());
+        logger.debug("Check for new version on startup {}", CheckVersioncheckBox.isSelected());
+        logger.debug("metadatalanguage {}", metadataLanuagecomboBox.getSelectedItem());
+        logger.debug("raw viewer {}", RawViewerLocationtextField.getText());
+        logger.debug("Preferred application language", localecomboBox.getSelectedItem());
         if (JFilechooserradioButton.isSelected()) {
-            logger.info("Preferred file dialog", "jfilechooser");
+            logger.debug("Preferred file dialog", "jfilechooser");
         } else {
-            logger.info("Preferred file dialog", "awtdialog");
+            logger.debug("Preferred file dialog", "awtdialog");
         }
-        logger.info("showdecimaldegrees {}", decimaldegreescheckBox.isSelected());
-        logger.info("useg1group {}", useG1GroupcheckBox.isSelected());
-        logger.info("preservemodifydate {}", preserveModDatecheckBox.isSelected());
-        logger.info("loglevel {}", loglevelcomboBox.getSelectedItem());
-        logger.info("userdefinedfilefilter {}", udFilefiltertextField.getText());
-        logger.info("userdefinedfont {}", String.valueOf(allSystemFonts.getSelectedValue()));
-        logger.info("userdefinedfontsize {}", String.valueOf(fontSizes.getSelectedValue()));
+        logger.debug("showdecimaldegrees {}", decimaldegreescheckBox.isSelected());
+        logger.debug("useg1group {}", useG1GroupcheckBox.isSelected());
+        logger.debug("preservemodifydate {}", preserveModDatecheckBox.isSelected());
+        logger.debug("loglevel {}", loglevelcomboBox.getSelectedItem());
+        logger.debug("userdefinedfilefilter {}", udFilefiltertextField.getText());
+        logger.debug("userdefinedfont {}", String.valueOf(allSystemFonts.getSelectedValue()));
+        logger.debug("userdefinedfontsize {}", String.valueOf(fontSizes.getSelectedValue()));
 
 
         if (!(retrievedPreferences.get("Artist").equals(ArtisttextField.getText()))) {
