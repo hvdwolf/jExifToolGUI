@@ -144,10 +144,10 @@ public class ExifTool {
 
             logger.info("returnValue is: {}", returnValue);
             if (returnValue.equals("cancelled")) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.cancelledETlocatefromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.lookupcancelled"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("exift.cancelledetlocatefromstartup")), ResourceBundle.getBundle("translations/program_strings").getString("exift.lookupcancelled"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else if (returnValue.equals("no exiftool binary")) {
-                JOptionPane.showMessageDialog(myComponent, ProgramTexts.wrongETbinaryfromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongetbinaryfromstartup")), ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             } else if ( returnValue.contains("exiftool(-k).exe") || returnValue.contains("-k")) {
                 JOptionPane.showMessageDialog(myComponent, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exift.exifktxt")), ResourceBundle.getBundle("translations/program_strings").getString("exift.exifktitle"), JOptionPane.WARNING_MESSAGE);

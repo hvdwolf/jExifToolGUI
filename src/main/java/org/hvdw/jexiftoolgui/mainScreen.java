@@ -3395,7 +3395,7 @@ private String getSeparatorString() {
                 selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EGpanod.copyGpanoFromSelected(getGpanoFields(), gpanoStitchingSoftwaretextField, gpanoPTcomboBox, getGpanoCheckBoxes());
-                    JOptionPane.showMessageDialog(rootPanel, ProgramTexts.GpanoSetSaveCheckboxes, "Set Save checkboxes", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("gpano.savecheckboxestxt")), ResourceBundle.getBundle("translations/program_strings").getString("gpano.savecheckboxestitle"), JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
@@ -3411,7 +3411,7 @@ private String getSeparatorString() {
                     if (allFieldsFilled) {
                         EGpanod.writeGpanoTags(getGpanoFields(), getGpanoCheckBoxes(), gpanoStitchingSoftwaretextField, gpanoPTcomboBox, progressBar);
                     } else {
-                        JOptionPane.showMessageDialog(rootPanel, ProgramTexts.NotAllMandatoryFields, "Not all manadatory fields complete", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("gpano.mandatoryfilestxt")), ResourceBundle.getBundle("translations/program_strings").getString("gpano.mandatoryfilestitle"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -4117,7 +4117,7 @@ private String getSeparatorString() {
             // Now check if it is executable
             String isExecutable = ExifTool.showVersion(OutputLabel);
             if (isExecutable.contains("Error executing command")) {
-                JOptionPane.showMessageDialog(rootPanel, ProgramTexts.wrongETbinaryfromStartup, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongetbinaryfromstartup")), ResourceBundle.getBundle("translations/program_strings").getString("exift.wrongexebin"), JOptionPane.WARNING_MESSAGE);
                 ExifTool.checkExifTool(mainScreen.this.rootPanel);
             }
         }

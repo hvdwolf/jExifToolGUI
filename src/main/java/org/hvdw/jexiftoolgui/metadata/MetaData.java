@@ -198,7 +198,7 @@ public class MetaData {
                     CommandRunner.runCommandWithProgressBar(params, progressBar);
                 }
             } else {
-                JOptionPane.showMessageDialog(rootpanel, ProgramTexts.NoOptionSelected, "No copy option selected", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("copyd.nooptionsselectedtxt")), ResourceBundle.getBundle("translations/program_strings").getString("copyd.nooptionsselectedtitle"), JOptionPane.WARNING_MESSAGE);
             }
         //}
     }
@@ -351,7 +351,7 @@ public class MetaData {
                 }
                 CommandRunner.outputAfterCommand(TotalOutput.toString());
             } else {
-                JOptionPane.showMessageDialog(rootpanel, ProgramTexts.NoOptionSelected, "No copy option selected", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("copyd.nooptionsselectedtxt")), ResourceBundle.getBundle("translations/program_strings").getString("copyd.nooptionsselectedtitle"), JOptionPane.WARNING_MESSAGE);
             }
         }
     }
