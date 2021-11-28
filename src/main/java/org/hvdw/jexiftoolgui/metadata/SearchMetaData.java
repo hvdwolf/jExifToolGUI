@@ -20,6 +20,7 @@ public class SearchMetaData {
     public static List<String> searchMetaData(JPanel rootPanel, String searchPhrase) {
         List<String> result = new ArrayList<>();
         HashMap <String, HashMap<String, String> > imagesData = MyVariables.getimagesData();
+        //logger.info("in searchmetada \n\n{}", imagesData.toString());
 
         for (Map.Entry<String, HashMap<String, String>> outerEntry: imagesData.entrySet()) {
             String imageName = outerEntry.getKey();
@@ -40,7 +41,7 @@ public class SearchMetaData {
                 }
             }
             // Now sort the list of results, if not empty
-            if (!(result.isEmpty()) && !(result == null)) {
+            if ((result != null) && !(result.isEmpty())) {
                 result = result.stream().sorted().collect(Collectors.toList());
             }
         }

@@ -3,10 +3,7 @@ package org.hvdw.jexiftoolgui.view;
 import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.hvdw.jexiftoolgui.Application;
 import org.hvdw.jexiftoolgui.MyVariables;
-import org.hvdw.jexiftoolgui.Utils;
-import org.hvdw.jexiftoolgui.mainScreen;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -14,9 +11,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -118,21 +115,26 @@ public class FoundMetaData extends JDialog {
         foundMetadataLabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("smd.foundmetadata") + " \"" + MyVariables.getSearchPhrase() + "\".");
         Object[] row = new Object[1];
         for (String metadata : foundMetadata) {
-            logger.debug(metadata);
+            logger.debug("the found metadata per line {}", metadata);
             String[] cells = metadata.split("\\t");
-            if ("value-key".equals(cells[1])) {
+            List<String> cellsList = new ArrayList<String>();
+            //List<String> cellsList = Arrays.asList(cells);  // A direct arrays.aslist makes the list also immutable
+            cellsList.addAll(Arrays.asList(cells));
+            if (cellsList.size() < 4) {
+                cellsList.add("Error in tag or value");
+            } else if (cellsList.size() < 3) {
+                cellsList.add("Error in tag or value");
+                cellsList.add("Error in tag or value");
+            }
+            if ("value-key".equals(cellsList.get(1))) {
                 secondcolumn = ResourceBundle.getBundle("translations/program_strings").getString("smd.value");
-                //secondcolumn = ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.key") + ")";
-                //thirdcolumn = ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ": " + cells[2] + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.key") + ": " + cells[3] + ")";
-                thirdcolumn = cells[2] + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.key") + ": " + cells[3] + ")";
+                thirdcolumn = cellsList.get(2) + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.key") + ": " + cellsList.get(3) + ")";
             } else {
                 secondcolumn = ResourceBundle.getBundle("translations/program_strings").getString("smd.key");
-                //secondcolumn = ResourceBundle.getBundle("translations/program_strings").getString("smd.key") + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ")";
-                //thirdcolumn = ResourceBundle.getBundle("translations/program_strings").getString("smd.key") + ": " + cells[2] + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ": " + cells[3] + ")";
-                thirdcolumn = cells[2] + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ": " + cells[3] + ")";
+                thirdcolumn = cellsList.get(2) + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ": " + cellsList.get(3) + ")";
             }
-            model.addRow(new Object[]{cells[0], secondcolumn, thirdcolumn});
-            imageNames.add(folderPath + File.separatorChar + cells[0]);
+            model.addRow(new Object[]{cellsList.get(0), secondcolumn, thirdcolumn});
+            imageNames.add(folderPath + File.separatorChar + cellsList.get(0));
 
 
         }
