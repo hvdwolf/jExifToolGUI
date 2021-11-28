@@ -77,9 +77,8 @@ dependencies {
     implementation(files("$projectDir/libs/pdfa-7.1.12.jar"))
 //////////////////////////////////////////////////
     // sqlite
-    //implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.32.3")
-    implementation(files("$projectDir/libs/sqlite-jdbc-3.36.0.3.jar"))
-
+    implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3")
+    //implementation(files("$projectDir/libs/sqlite-jdbc-3.36.0.3.jar"))
 
     // The opencsv library jar
     implementation(files("$projectDir/libs/opencsv-5.5.2.jar"))

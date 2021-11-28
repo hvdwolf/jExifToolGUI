@@ -108,7 +108,6 @@ public class Utils {
         Utils.SetLoggingLevel(SelectFavorite.class);
         Utils.SetLoggingLevel(SelectmyLens.class);
         Utils.SetLoggingLevel(SimpleWebView.class);
-        Utils.SetLoggingLevel(MetadataExtractor.class);
     }
 
 
