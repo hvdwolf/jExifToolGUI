@@ -428,7 +428,6 @@ public class mainScreen {
     private JTable previewTable;
     private JPanel gpsButtonPanel3;
     private JButton gpssearchLocationButtonCoordinates;
-    private JButton button1;
     private JScrollPane LeftGridScrollPanel;
     private JList iconViewList;
     private ImageIcon icon;
@@ -2247,9 +2246,9 @@ private String getSeparatorString() {
         copyInsideSaveDataTo = new JButton();
         this.$$$loadButtonText$$$(copyInsideSaveDataTo, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.saveto"));
         panel54.add(copyInsideSaveDataTo);
-        final JButton button2 = new JButton();
-        this.$$$loadButtonText$$$(button2, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
-        panel54.add(button2);
+        final JButton button1 = new JButton();
+        this.$$$loadButtonText$$$(button1, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
+        panel54.add(button1);
         final JPanel panel55 = new JPanel();
         panel55.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.exportimport"), panel55);
@@ -2953,13 +2952,13 @@ private String getSeparatorString() {
                 // Works on loaded images, not on selected images
                 SearchMetadataDialog SMD = new SearchMetadataDialog();
                 String searchPhrase = SMD.displayDialog(rootPanel);
-                if ( !(searchPhrase.isEmpty()) && !(searchPhrase == null) ) {
+                if ( (searchPhrase != null) && !(searchPhrase.isEmpty()) ) {
                     MyVariables.setSearchPhrase(searchPhrase);
                     logger.debug("searchPhrase: {}", searchPhrase);
                     List<String> result = SearchMetaData.searchMetaData(rootPanel, searchPhrase);
-                    if (!(result.isEmpty()) && !(result == null)) {
+                    if ( (result != null) && !(result.isEmpty())) {
                         for (String line : result) {
-                            logger.debug(line);
+                            logger.debug("found key or value {}",line);
                         }
                         FoundMetaData FMD = new FoundMetaData();
                         FMD.showDialog(rootPanel, result);
@@ -4205,6 +4204,7 @@ private String getSeparatorString() {
                 }
             }
         });
+
     }
 
 

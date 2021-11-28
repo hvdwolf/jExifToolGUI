@@ -108,6 +108,7 @@ public class Utils {
         Utils.SetLoggingLevel(SelectFavorite.class);
         Utils.SetLoggingLevel(SelectmyLens.class);
         Utils.SetLoggingLevel(SimpleWebView.class);
+        Utils.SetLoggingLevel(MetadataExtractor.class);
     }
 
 
@@ -849,6 +850,8 @@ public class Utils {
                     filename = files[0].getName().replace("\\", "/");
                     lblimgSourceFolder.setText(files[0].getParent());
                     firstFile = files[0];
+                    // LET OP, Toegevoegd
+                    MyVariables.setSelectedImagePath(files[0].getParent());
                     MyVariables.setSinglePreview(files[0]);
                     MyVariables.setSinglePreviewFileName(filename);
 
@@ -1121,61 +1124,6 @@ public class Utils {
         //MyVariables.setSelectedColumn(0);
     }
 
-    private static void getImageInfoFromSelectedTreeFile(String[] whichInfo,JTable ListexiftoolInfotable) {
-
-        //String fpath = "";
-        List<String> cmdparams = new ArrayList<String>();
-        //int selectedRow = MyVariables.getSelectedRowOrIndexOrIndex();
-        //List<Integer> selectedIndicesList =  MyVariables.getselectedIndicesList();
-
-        //if (selectedIndicesList.size() < 2) { //Meaning we have only one image selected
-            Application.OS_NAMES currentOsName = getCurrentOsName();
-
-            cmdparams.add(Utils.platformExiftool().trim());
-            // Check if we want to use G1 instead of G
-            boolean useGroup1 = prefs.getByKey(USE_G1_GROUP, false);
-            if (useGroup1) {
-                for (int i = 0; i < whichInfo.length; i++) {
-                    if ("-G".equals(whichInfo[i])) {
-                        whichInfo[i] = whichInfo[i].replace("-G", "-G1");
-                    }
-                }
-            }
-            //Always read exif data as utf8
-            //cmdparams.add("-use");
-            //cmdparams.add("mwg");
-            // Check for chosen metadata language
-            if (!"".equals(getmetadataLanguage())) {
-                cmdparams.add("-lang");
-                cmdparams.add(getmetadataLanguage());
-            }
-            // Check if user wants to see decimal degrees
-            if (UseDecimalDegrees()) {
-                cmdparams.add("-c");
-                cmdparams.add("%+.6f");
-            }
-            // Check if users wants to see the tags alphabetically sorted
-            if (Sorted_Tags()) {
-                cmdparams.add("-sort");
-            }
-            // Check if user wants to see the tags using STRUCTS
-            if (Display_Structured_Data()) {
-                cmdparams.add("-struct");
-            }
-            cmdparams.addAll(Arrays.asList(whichInfo));
-            logger.trace("image file path: {}", MyVariables.getSelectedImagePath());
-            cmdparams.add(MyVariables.getSelectedImagePath());
-
-            logger.trace("before runCommand: {}", cmdparams);
-            try {
-                String res = CommandRunner.runCommand(cmdparams);
-                logger.trace("res is {}", res);
-                displayInfoForSelectedImage(res, ListexiftoolInfotable);
-            } catch (IOException | InterruptedException ex) {
-                logger.error("Error executing command", ex);
-            }
-
-    }
 
     /*
      * This is the ImageInfo method that is called by all when displaying the exiftool info from the image
@@ -1256,51 +1204,6 @@ public class Utils {
         return res;
     }
 
-/*    public String[] WidthHeightOrientation (File file) {
-        String[] WHO = null;
-        Metadata metadata = null;
-
-        /// Drew Noakes library
-        //*Metadata metadata = null;
-        File file = new File(MyVariables.getSelectedImagePath());
-        try {
-            metadata = ImageMetadataReader.readMetadata(file);
-        } catch (ImageProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        for (Directory directory : metadata.getDirectories()) {
-            if ( (directory.getName()).contains("JPEG") || (directory.getName()).contains("Exif IFD0") ) {
-                logger.info("this directory {}", directory.getName());
-                for (Tag tag : directory.getTags()) {
-                    //System.out.format("[%s] - %s = %s", directory.getName(), tag.getTagName(), tag.getDescription());
-                    logger.info("|| {} || {} || {}", directory.getName(), tag.getTagName(), tag.getDescription());
-                }
-                if (directory.hasErrors()) {
-                    for (String error : directory.getErrors()) {
-                        //System.err.format("ERROR: %s", error);
-                        logger.error("ERROR {}", error);
-                    }
-                }
-            }
-        }*/
-
-        /*try {
-            metadata = ImageMetadataReader.readMetadata(file);
-        } catch (ImageProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
-        String width =
-
-
-        return WHO;
-    } */
 
     /**
      * This getImageInfoFromSelectedFile is called from methods that loop through files and need info

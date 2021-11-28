@@ -196,11 +196,115 @@ public class ImageFunctions {
         throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
     }
 
+    /*
+/ This one is used to get all metadata in the background for further use
+ */
+    public static void getImageData (JLabel[] mainScreenLabels, JProgressBar progressBar, JButton buttonSearchMetadata) {
+
+        HashMap<String, String> imgBasicData = new HashMap<String, String>();
+
+        String exiftool = Utils.platformExiftool();
+        List<String> basiccmdparams = new ArrayList<String>();
+        basiccmdparams.add(exiftool.trim());
+        basiccmdparams.add("-n");
+        basiccmdparams.add("-S");
+        basiccmdparams.add("-a");
+
+        boolean files_null = false;
+        File[] files = MyVariables.getLoadedFiles();
+
+        SwingWorker sw = new SwingWorker<Void, Void>() {
+            public Void doInBackground() {
+                List<String> cmdparams = new ArrayList<String>();
+                cmdparams.addAll(basiccmdparams);
+                for (File file : files) {
+                    cmdparams.add(file.getPath());
+                }
+                logger.debug("Show getBulkImageData command string: {}", String.join(" ", cmdparams));
+                String imgTags = "";
+                try {
+                    imgTags = CommandRunner.runCommand(cmdparams);
+                    logger.debug("complete images metadata is {}", imgTags);
+                } catch (IOException | InterruptedException ex) {
+                    logger.error("Error executing command", ex.toString());
+                }
+                int counter = 0;
+                if (imgTags.length() > 0) {
+                    String filename = "";
+                    String prev_filename = "";
+                    String[] lines = imgTags.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
+                    boolean initialized = true;
+
+                    HashMap<String, String> imgBasicData = new HashMap<String, String>();
+                    MyVariables.setimgBasicData(imgBasicData);
+                    HashMap<String, HashMap<String, String>> imagesData = new HashMap<String, HashMap<String, String>>();
+                    MyVariables.setimagesData(imagesData);
+                    for (String line : lines) {
+                        if (line.startsWith("======== ")) {
+                            String[] arrfilename = line.split(" ",2);
+                            //logger.info("filename : {}", filename);
+                            filename = arrfilename[1].trim();
+                            //logger.info("\n\n\nfile no. : {} filename: {}\n\n", String.valueOf(counter), filename);
+                            if (counter == 0) {
+                                prev_filename = filename;
+                                //imgBasicData.clear();
+                                imgBasicData = new HashMap<String, String>();
+                                //imagesData.clear();
+                            } else {
+                                MyVariables.setimgBasicData(imgBasicData);
+                                logger.debug("\n\n prev_filename {} imgBasicData {}\n\n", prev_filename, imgBasicData.toString());
+                                //logger.debug("\n\n prev_filename {}\n\n", prev_filename);
+                                imagesData = MyVariables.getimagesData();
+                                imagesData.put(prev_filename, imgBasicData);
+                                MyVariables.setimagesData(imagesData);
+                                prev_filename = filename;
+                                //imgBasicData.clear();
+                                imgBasicData = new HashMap<String, String>();
+                            }
+                            counter++;
+                        } else {
+                            if (line.contains(":")) {
+                                String[] parts = line.split(":", 2);
+                                imgBasicData.put(parts[0].trim(), parts[1].trim());
+                            } else {
+                                imgBasicData.put("Error in tag", "Error in value");
+                                logger.info("Error in tag or value for file {}", filename);
+                            }
+                        }
+                    }
+                    // And the last image data
+                    logger.debug("\n\n prev_filename {}\n\n", prev_filename);
+                    imagesData = MyVariables.getimagesData();
+                    imagesData.put(prev_filename, imgBasicData);
+                    MyVariables.setimagesData(imagesData);
+                    //logger.info("imagesData\n {}", imagesData.toString());
+                    imgBasicData.clear();
+                    MyVariables.setimgBasicData(imgBasicData);
+                }
+                //logger.info("MyVariables.getimagesData().toString() \n{}",MyVariables.getimagesData().toString());
+                //logger.debug("\n\n\n\ncounter : {}", String.valueOf(counter));
+
+                return null;
+            }
+            @Override
+            public void done() {
+                logger.debug("Finished reading all the metadata in the background");
+                progressBar.setVisible(false);
+                mainScreenLabels[0].setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.finishedreadingmetadabackground"));
+                buttonSearchMetadata.setEnabled(true);
+            }
+        };
+        sw.execute();
+
+    }
+
+
 
     /*
     / This one is used to get all metadata in the background for further use
      */
-    public static void getImageData (JLabel[] mainScreenLabels, JProgressBar progressBar, JButton buttonSearchMetadata) {
+    // This is the old one reading file by file taking 3 - 5 times as long
+/*    public static void getImageData (JLabel[] mainScreenLabels, JProgressBar progressBar, JButton buttonSearchMetadata) {
 
         HashMap<String, String> imgBasicData = new HashMap<String, String>();
 
@@ -256,7 +360,7 @@ public class ImageFunctions {
         };
         sw.execute();
 
-    }
+    } */
 
 
 
