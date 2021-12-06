@@ -2932,7 +2932,7 @@ private String getSeparatorString() {
                 logger.info("buttonCompare pressed");
                 if (selectedIndicesList.size() > 25) {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.max25imgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.max25imgs"), JOptionPane.WARNING_MESSAGE);
-                } else if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                } else if ( (selectedIndicesList != null) && (selectedIndicesList.size() > 0) ) {
                     //List<String[]> allMetadata = CompareImages.CompareImages(selectedIndicesList, whichRBselected(), progressBar, OutputLabel);
                     CompareImages.CompareImages(selectedIndicesList, whichRBselected(), progressBar, OutputLabel);
                     //CompareImagesWindow.Initialize(allMetadata);

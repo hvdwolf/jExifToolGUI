@@ -299,71 +299,6 @@ public class ImageFunctions {
     }
 
 
-
-    /*
-    / This one is used to get all metadata in the background for further use
-     */
-    // This is the old one reading file by file taking 3 - 5 times as long
-/*    public static void getImageData (JLabel[] mainScreenLabels, JProgressBar progressBar, JButton buttonSearchMetadata) {
-
-        HashMap<String, String> imgBasicData = new HashMap<String, String>();
-
-        String exiftool = Utils.platformExiftool();
-        List<String> basiccmdparams = new ArrayList<String>();
-        basiccmdparams.add(exiftool.trim());
-        basiccmdparams.add("-n");
-        basiccmdparams.add("-S");
-        basiccmdparams.add("-a");
-
-        boolean files_null = false;
-        File[] files = MyVariables.getLoadedFiles();
-
-        SwingWorker sw = new SwingWorker<Void, Void>() {
-            public Void doInBackground() {
-                for (File file : files) {
-                    String filename = file.getName().replace("\\", "/");
-                    List<String> cmdparams = new ArrayList<String>();
-                    cmdparams.addAll(basiccmdparams);
-                    cmdparams.add(file.getPath());
-                    String imgTags = "";
-
-                    try {
-                        imgTags = CommandRunner.runCommand(cmdparams);
-                        logger.debug("res is {}", imgTags);
-                    } catch (IOException | InterruptedException ex) {
-                        logger.error("Error executing command", ex.toString());
-                    }
-
-                    if (imgTags.length() > 0) {
-                        String[] lines = imgTags.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
-                        for (String line : lines) {
-                            String[] parts = line.split(":", 2);
-                            imgBasicData.put(parts[0].trim(), parts[1].trim());
-                        }
-                        MyVariables.setimgBasicData(imgBasicData);
-                        logger.trace("imgBasicData {}", imgBasicData);
-                        HashMap<String, HashMap<String, String>> imagesData = MyVariables.getimagesData();
-                        imagesData.put(filename, imgBasicData);
-                        MyVariables.setimagesData(imagesData);
-                        // Note: 100 images will create 300~600 Kb in the total imagesData hashmap.
-                    }
-                }
-                return null;
-            }
-            @Override
-            public void done() {
-                logger.debug("Finished reading all the metadata in the background");
-                progressBar.setVisible(false);
-                mainScreenLabels[0].setText(ResourceBundle.getBundle("translations/program_strings").getString("pt.finishedreadingmetadabackground"));
-                buttonSearchMetadata.setEnabled(true);
-            }
-        };
-        sw.execute();
-
-    } */
-
-
-
     /*
     / This method is used to mass extract thumbnails from images, either by load folder, load images or "dropped" images.
      */
@@ -438,10 +373,6 @@ public class ImageFunctions {
         cmdparams.add("-b");
         cmdparams.add("-W");
         cmdparams.add(tempWorkDir + File.separator + "%f_%t%-c.%s");
-        /*cmdparams.add("-preview:ThumbnailImage");
-        cmdparams.add("-preview:PhotoshopThumbnail");
-        cmdparams.add("-preview:JpgFromRaw");
-        cmdparams.add("-preview:PreviewImage");*/
         cmdparams.add("-preview:all");
 
         if (isWindows) {
@@ -558,7 +489,6 @@ public class ImageFunctions {
         }
 
         if ( (heicextension) && currentOsName == APPLE) { // For Apple we deviate
-//            if ( (tifextension || heicextension) && currentOsName == APPLE) { // For Apple we deviate
             logger.info("do sipsConvertToJPG for {}", filename);
             String exportResult = ImageFunctions.sipsConvertToJPG(file, "thumb");
             if ("Success".equals(exportResult)) {
@@ -580,7 +510,6 @@ public class ImageFunctions {
             //reset our heic flag
             heicextension = false;
         } else if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg") || filenameExt.toLowerCase().equals("tif")) || (filenameExt.toLowerCase().equals("tiff")) ) {
-//        } else if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
             if (cachedthumbfile.exists()) {
                 icon = ImageFunctions.createIcon(file);
                 return icon;
@@ -599,7 +528,8 @@ public class ImageFunctions {
                 icon = new ImageIcon(resizedImg);
                 // Save our created icon
                 if ( (filenameExt.toLowerCase().equals("jpg")) || (filenameExt.toLowerCase().equals("jpeg")) ) {
-                    BufferedImage thumbImg = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(),BufferedImage.TYPE_INT_RGB);
+                    //BufferedImage thumbImg = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(),BufferedImage.TYPE_INT_RGB);
+                    BufferedImage thumbImg = (BufferedImage) icon.getImage();
                     StandardFileIO.saveIconToCache(filename, thumbImg);
                 } else { //tiff
                     //BufferedImage thumbImg = new BufferedImage(icon);
@@ -630,11 +560,6 @@ public class ImageFunctions {
             return icon;
         } else { //We have a RAW image extension or something else like audio/video
             String exportResult = "";
-            // First check if we still have a preview
-            /*if (!thumbfile.exists() || !psthumbfile.exists() || !prevthumbfile.exists()) {
-                // Export previews for current (RAW) image to tempWorkfolder
-                exportResult = ImageFunctions.ExportPreviewsThumbnailsForIconDisplay(file, bSimpleExtension, filenameExt);
-            }*/
             exportResult = "Success";
             if ("Success".equals(exportResult)) {
                 //Hoping we have a thumbnail
@@ -813,8 +738,6 @@ public class ImageFunctions {
     / like "sips -s format JPEG -Z 160 test.heic --out test.jpg"
      */
     public static String sipsConvertToJPG(File file, String size) {
-        //ImageIcon icon = null;
-        //Runtime runtime = Runtime.getRuntime();
         List<String> cmdparams = new ArrayList<String>();
         String exportResult = "Success";
 
@@ -911,17 +834,13 @@ public class ImageFunctions {
         }
 
         Image newScaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_FAST);
-        // Buffered image for drawing scaled image:
-        int type = (img.getTransparency() == Transparency.OPAQUE) ?
-                BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        // OLD BufferedImage scaledImg = new BufferedImage(scaledWidth, scaledHeight, type);
-        BufferedImage scaledImg = new BufferedImage(newScaledImg.getWidth(null), newScaledImg.getHeight(null), type);
+        BufferedImage scaledImg = new BufferedImage(newScaledImg.getWidth(null), newScaledImg.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = scaledImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
         // Draw the scaled image.
-        g2.drawImage(img, 0, 0, scaledWidth, scaledHeight, null);
+        g2.drawImage(img, 0, 0, scaledWidth, scaledHeight, Color.WHITE, null);
         g2.dispose();
 
         return scaledImg;

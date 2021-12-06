@@ -208,52 +208,6 @@ public class CompareImages {
                     end = System.currentTimeMillis();
                     logger.debug("Creating category_tagname list + hashset {} ms", (end - start));
 
-
-                    // Create the category_tagname hashmap based on DB
-                   /* start = System.currentTimeMillis();
-                    String sql = "select distinct category,tagname from imageinforows order by category,tagname";
-                    String queryresult = SQLiteJDBC.generalQuery(sql, "disk");
-                    if (queryresult.length() > 0) {
-                        String[] lines = queryresult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
-                        for (String line : lines) {
-                            //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
-                            String[] fields = line.split("\\t", 3);
-                            //category_tagname.put(fields[0], fields[1]);
-                            logger.trace("category: {}, tagname {}", fields[0], fields[1]);
-                            category_tagname.add(new String[] { fields[0], fields[1] });
-                        }
-                    }
-                    end = System.currentTimeMillis();
-                    logger.info("Create the category_tagname hashmap takes {} ms", (end - start)); */
-
-                    // Now get the data per image
-                    /*start = System.currentTimeMillis();
-                    for (String[] cat_tag: category_tagname) {
-                        sql = "select category,tagname,imgindex,filename,value from ImageInfoRows where category='" + cat_tag[0] +"' and tagname='" + cat_tag[1] + "' group by category,tagname,filename order by category,tagname";
-                        queryresult = SQLiteJDBC.generalQuery(sql, "disk");
-                        if (queryresult.length() > 0) {
-                            String[] lines = queryresult.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
-                            String[] values = new String[selectedIndices.size() + 2];
-                            for (String line : lines) {
-                                logger.debug("line: {}", line);
-                                String[] fields = line.split("\\t", 5);
-                                values[0] = fields[0];
-                                values[1] = fields[1];
-                                for (int index : selectedIndices) {
-                                    values[ (Integer.parseInt(fields[2]) + 2)] = fields[4];
-                                }
-                            }
-                            allMetadata.add(values);
-                            logger.trace("array for table {}",Arrays.toString(values));
-                        }
-                    }
-                    end = System.currentTimeMillis();
-                    logger.info("Now get the data per image takes {} ms", (end - start)); */
-
-                    /*for (String[] metadata: allMetadata) {
-                        logger.info("metadata {}", Arrays.toString(metadata));
-                    }*/
-
                     start = System.currentTimeMillis();
                     for (String cat_tag : unique_cat_tag) {
                         String[] values = new String[selectedIndices.size() + 2];
