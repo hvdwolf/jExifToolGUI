@@ -22,16 +22,16 @@ vrae-display	19	Image Title	xmp-vrae:ImageTitle
 vrae-display	20	Image Agent	xmp:Creator	
 vrae-display	21	Image Date	IPTC:DateCreated	
 vrae-display	22	Image Description	xmp-vrae:ImageDescription	
-vrae-display	23	Image Inscription	xmp-vrae:ImageInscription	
-vrae-display	24	Image Subject	xmp-vrae:ImageSubject	
-vrae-display	25	Image Relation	xmp-vrae:ImageRelation	
-vrae-display	26	Image Source	xmp-vrae:ImageSource	
-vrae-display	27	Image ID	xmp-vrae:ImageRefid	
-vrae-display	28	Image URL	xmp-vrae:ImageHref	
-vrae-display	29	Image Rights	xmp-dc:Rights	
-vrae-display	30	Work Metadata Date	xmp-vrae:WorkMetadataDate	
-vrae-display	31	Work Metadata Id	xmp-vrae:WorkMetadataId	
-vrae-display	32	Work Metadata Source	xmp-vrae:WorkMetadataSource	
+vrae-display    23  Image Work Type xmp-vrae:ImageWorktype 
+vrae-display	24  Image Inscription	xmp-vrae:ImageInscription	
+vrae-display	25	Image Subject	xmp-vrae:ImageSubject	
+vrae-display	26	Image Relation	xmp-vrae:ImageRelation	
+vrae-display	27	Image Source	xmp-vrae:ImageSource	
+vrae-display	28	Image ID	xmp-vrae:ImageRefid	
+vrae-display	29	Image URL	xmp-vrae:ImageHref	
+vrae-display	30	Image Rights	xmp-dc:Rights	
+vrae-display	31	Work Metadata Date	xmp-vrae:WorkMetadataDate	
+vrae-display	32	Work Metadata Id	xmp-vrae:WorkMetadataId	
 vrae-display	33	Work Metadata Href	xmp-vrae:WorkMetadataHref	
 vrae-display	34	Work Href	xmp-vrae:WorkHref	
 vrae-display	35	Admin Collection	xmp-dc:Publisher	
