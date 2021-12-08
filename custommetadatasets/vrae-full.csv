@@ -22,7 +22,7 @@ vrae-full	19	Image Title	xmp-vrae:ImageTitle
 vrae-full	20	Image Agent	xmp:Creator	
 vrae-full	21	Image Date	IPTC:DateCreated	
 vrae-full	22	Image Description	xmp-vrae:ImageDescription	
-vrae-full   23  Image Work Type xmp-vrae:ImageWorktype 
+vrae-full	23	Image Work Type	xmp-vrae:ImageWorktype 
 vrae-full	24	Image Inscription	xmp-vrae:ImageInscription	
 vrae-full	25	Image Subject	xmp-vrae:ImageSubject	
 vrae-full	26	Image Relation	xmp-vrae:ImageRelation	
