@@ -1,0 +1,16 @@
+customset_name	rowcount	screen_label	tag	default_value
+dc	0	Title	xmp-dc:Title	
+dc	1	Creator	xmp-dc:creator	
+dc	2	Subject	xmp-dc:subject	
+dc	3	Description	xmp-dc:description	
+dc	4	Publisher	xmp-dc:publisher	
+dc	5	Contributor	xmp-dc:contributor	
+dc	6	Coverage	xmp-dc:coverage	
+dc	7	Date	xmp-dc:date	
+dc	8	Type	xmp-dc:type	
+dc	9	Format	xmp-dc:format	
+dc	10	Rights	xmp-dc:rights	
+dc	11	Source	xmp-dc:source	
+dc	12	Language	xmp-dc:language	
+dc	13	Relation	xmp-dc:relation	
+dc	14	Identifier	xmp-dc:identifier	
