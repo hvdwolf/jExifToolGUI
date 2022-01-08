@@ -4303,6 +4303,10 @@ private String getSeparatorString() {
         GuiConfig.LoadGuiConfig(frame);
         //frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
+        frame.setDefaultLookAndFeelDecorated(true);
+        Locale currentLocale = MyVariables.getCurrentLocale();
+        logger.info("Set Locale to: {}", currentLocale);
+        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 
         frame.setVisible(true);
 

@@ -1,9 +1,11 @@
 package org.hvdw.jexiftoolgui.view;
 
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.event.HyperlinkListener;
 
@@ -12,6 +14,8 @@ public class WebPageInPanel extends JFrame {
 
     public void WebPageInPanel(JPanel rootPanel, String url, int panelWidth, int panelHeight) {
         JFrame webFrame = new JFrame();
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        webFrame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         this.setIconImage(Utils.getFrameIcon());
 
         //setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

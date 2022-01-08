@@ -21,6 +21,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.PRESERVE_MODIFY_DATE;
@@ -48,6 +49,8 @@ public class ShiftDateTime extends JDialog {
 
     public ShiftDateTime() {
         setContentPane(shiftDateTimePane);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        shiftDateTimePane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 

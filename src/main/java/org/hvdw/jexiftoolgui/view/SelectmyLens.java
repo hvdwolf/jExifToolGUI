@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SelectmyLens extends JDialog {
@@ -35,6 +36,8 @@ public class SelectmyLens extends JDialog {
 
     public SelectmyLens() {
         setContentPane(contentPane);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        contentPane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         getRootPane().setDefaultButton(OKbutton);
 

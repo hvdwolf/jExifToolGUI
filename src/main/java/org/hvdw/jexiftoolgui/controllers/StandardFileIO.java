@@ -19,10 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
@@ -192,6 +190,8 @@ public class StandardFileIO {
         logger.debug("startfolder for load images via JFilechooser {}", startFolder);
 
         final JFileChooser jchooser = new JFileChooser(startFolder, fsv);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        jchooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 
         if (!"".equals(userDefinedFilefilter)) {
             String[] uDefFilefilter = userDefinedFilefilter.split(",");
@@ -235,12 +235,16 @@ public class StandardFileIO {
     public static File[] getFileNamesAwt(JPanel myComponent) {
 
         Frame dialogframe = new Frame();
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        dialogframe.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         String startFolder = getFolderPathToOpenBasedOnPreferences();
         String userDefinedFilefilter = prefs.getByKey(USER_DEFINED_FILE_FILTER, "");
         logger.debug("startfolder for load images via Awt {}", startFolder);
 
         //logger.info("startfolder {}", startFolder);
         FileDialog fdchooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadimages"), FileDialog.LOAD);
+        //Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        fdchooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         Application.OS_NAMES os = Utils.getCurrentOsName();
         if (os == APPLE) {
             System.setProperty("apple.awt.fileDialogForDirectories", "false");
@@ -304,6 +308,8 @@ public class StandardFileIO {
         }
 
         final JFileChooser jchooser = new JFileChooser(startFolder, fsv);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        jchooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         jchooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"));
         jchooser.resetChoosableFileFilters();
         jchooser.setAcceptAllFileFilterUsed(false);
@@ -336,6 +342,8 @@ public class StandardFileIO {
         String SelectedFolder;
 
         Frame dialogframe = new Frame();
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        dialogframe.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         String startFolder = getFolderPathToOpenBasedOnPreferences();
         logger.debug("startFolder for Opening folder with Awt {}", getFolderPathToOpenBasedOnPreferences());
         Application.OS_NAMES os = Utils.getCurrentOsName();
@@ -347,6 +355,7 @@ public class StandardFileIO {
             System.setProperty("apple.awt.use-file-dialog-packages", "false");
         }
         FileDialog fdchooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
+        fdchooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         fdchooser.setDirectory(startFolder);
         fdchooser.setMultipleMode(false);
         fdchooser.setVisible(true);
@@ -586,6 +595,8 @@ public class StandardFileIO {
         String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
         if ("jfilechooser".equals(prefFileDialog)) {
             final JFileChooser chooser = new JFileChooser(startFolder);
+            Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+            chooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
             chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"));
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int status = chooser.showOpenDialog(myComponent);
@@ -598,6 +609,8 @@ public class StandardFileIO {
         } else {
             JFrame dialogframe = new JFrame("");
             FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
+            Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+            dialogframe.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
             chooser.setDirectory(startFolder);
             chooser.setMultipleMode(false);
             chooser.setVisible(true);

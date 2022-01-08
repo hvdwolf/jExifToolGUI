@@ -52,6 +52,8 @@ public class ModifyDateTime extends JDialog {
 
     public ModifyDateTime() {
         setContentPane(rootModifyDateTimePane);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        rootModifyDateTimePane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 

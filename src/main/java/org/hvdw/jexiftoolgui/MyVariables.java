@@ -3,10 +3,7 @@ package org.hvdw.jexiftoolgui;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is the big setter/getter class for the entire program
@@ -58,6 +55,7 @@ public class MyVariables {
     private boolean createPreviewsCheckBox = true;
     private String ExifToolPath;
     private JList iconView;
+    private Locale CurrentLocale;
 
     // The actual getters and setters
 
@@ -215,4 +213,7 @@ public class MyVariables {
 
     public static JList geticonView() { return staticInstance.iconView;}
     public static void seticonView(JList cnVw) {staticInstance.iconView = cnVw; }
+
+    public static Locale getCurrentLocale() { return staticInstance.CurrentLocale; }
+    public static void setCurrentLocale(Locale curLoc) { staticInstance.CurrentLocale = curLoc; }
 }

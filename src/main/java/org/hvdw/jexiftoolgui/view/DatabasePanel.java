@@ -1,5 +1,6 @@
 package org.hvdw.jexiftoolgui.view;
 
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Locale;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
@@ -105,6 +107,8 @@ public class DatabasePanel {
         BufferedImage img = null;
 
         JFrame frame = new JFrame("Database diagram");
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         contentPane = new DiagramPanel();
         frame.setContentPane(contentPane);

@@ -90,6 +90,8 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
     public MetadataUserCombinations() {
 
         setContentPane(metadatapanel);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        metadatapanel.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         getRootPane().setDefaultButton(saveasButton);
         this.setIconImage(Utils.getFrameIcon());

@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 
@@ -23,6 +24,7 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
 public class Application {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Application.class);
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
+    public static ResourceBundle resourceBundle;
 
     public static void main(String[] args)  {
 
@@ -52,9 +54,16 @@ public class Application {
             String[] localearray = prefLocale.split(" - ");
             //logger.info("localearray[0] {}", localearray[0]);
             String[] splitlocale = localearray[0].split("_");
-            //logger.info("splitlocale[0] {} splitlocale[1] {}", splitlocale[0].trim(), splitlocale[1].trim());
+            logger.info("splitlocale[0] {} splitlocale[1] {}", splitlocale[0].trim(), splitlocale[1].trim());
             Locale.setDefault(new Locale(splitlocale[0].trim(), splitlocale[1].trim()));
+            logger.info("Continuing in {}, selecting {} ", prefLocale, splitlocale[0]);
+            //String[] splitPrefLocale = prefLocale.split("_");
+            Locale currentLocale = new Locale.Builder().setLanguage(splitlocale[0].trim()).setRegion(splitlocale[1].trim()).build();
+            MyVariables.setCurrentLocale(currentLocale);
+            resourceBundle = ResourceBundle.getBundle("translations/program_strings", new Locale(splitlocale[0].trim(), splitlocale[1].trim()));
         } else {
+            Locale currentLocale = Locale.getDefault();
+            MyVariables.setCurrentLocale(currentLocale);
             logger.info("Continuing in system language or, if not translated, in English");
         }
 

@@ -3,12 +3,14 @@ package org.hvdw.jexiftoolgui.view;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SearchMetadataDialog extends JDialog {
@@ -23,6 +25,8 @@ public class SearchMetadataDialog extends JDialog {
 
     public SearchMetadataDialog() {
         setContentPane(contentPane);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        contentPane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 

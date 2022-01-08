@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import static org.hvdw.jexiftoolgui.Utils.getCurrentOsName;
 
@@ -162,6 +163,8 @@ public class JavaImageViewer {
         }
 
         JFrame frame = new JFrame(fileName);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel imageViewPane = new JPanel();
         frame.setContentPane(imageViewPane);

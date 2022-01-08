@@ -18,6 +18,8 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -86,6 +88,9 @@ public class PreferencesDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonSave);
         this.setIconImage(Utils.getFrameIcon());
+
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        contentPanel.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 
         buttonSave.addActionListener(e -> onSave());
         buttonCancel.addActionListener(e -> onCancel());
@@ -272,6 +277,8 @@ public class PreferencesDialog extends JDialog {
 
         if ("jfilechooser".equals(prefFileDialog)) {
             final JFileChooser chooser = new JFileChooser();
+            Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+            chooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
             chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("prefs.locateprefimgfolder"));
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int status = chooser.showOpenDialog(myComponent);
@@ -281,6 +288,8 @@ public class PreferencesDialog extends JDialog {
             }
         } else {
             JFrame dialogframe = new JFrame("");
+            Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+            dialogframe.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
             FileDialog chooser = new FileDialog(dialogframe, ResourceBundle.getBundle("translations/program_strings").getString("stfio.loadfolder"), FileDialog.LOAD);
             //chooser.setDirectory(startFolder);
             chooser.setMultipleMode(false);
@@ -302,6 +311,8 @@ public class PreferencesDialog extends JDialog {
         String selectedBinary = "";
 
         final JFileChooser chooser = new JFileChooser();
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        chooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("prefs.locaterawviewer"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
@@ -505,7 +516,8 @@ public class PreferencesDialog extends JDialog {
         String[] exiftoolLanguages = languages.split("\\r?\\n"); // split on new lines
         metadataLanuagecomboBox.setModel(new DefaultComboBoxModel(exiftoolLanguages));
         String Locales = StandardFileIO.readTextFileAsStringFromResource("texts/Locales.txt");
-        String[] appLocales = Locales.split("\\r?\\n"); // split on new lines
+        //String[] appLocales = Locales.split("\\r?\\n"); // split on new lines
+        String[] appLocales = {"System default - default", "de_DE - Deutsch", "en_US - English", "es_ES - Español", "he_HE - עִברִית", "nb_NO - Norsk (bokmål)", "nl_NL - Nederlands", "ru_RU - Pусский"};
         localecomboBox.setModel(new DefaultComboBoxModel(appLocales));
         filedialogexplained.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.dialogexplained")));
         logleveltext.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.logleveltext")));
@@ -718,7 +730,7 @@ public class PreferencesDialog extends JDialog {
         this.$$$loadLabelText$$$(label12, this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.applanguage"));
         panel13.add(label12, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         localecomboBox = new JComboBox();
-        panel13.add(localecomboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel13.add(localecomboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         final JPanel panel14 = new JPanel();
         panel14.setLayout(new GridLayoutManager(9, 2, new Insets(5, 5, 5, 5), -1, -1));
         tabbedPanel.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "prefs.system"), panel14);

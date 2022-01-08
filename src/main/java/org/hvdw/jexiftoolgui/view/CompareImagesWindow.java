@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -36,6 +37,8 @@ public class CompareImagesWindow {
 
         // Define the frame, the ScrollPanel with the table, the buttonpanel with the close button
         JFrame frame = new JFrame();
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         frame.setTitle(ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.comparetitle"));
         frame.setIconImage(Utils.getFrameIcon());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

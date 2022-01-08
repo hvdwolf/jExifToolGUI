@@ -444,6 +444,8 @@ public class ExiftoolDatabase {
         contentPane = new DiagramPanel();
         frame.setContentPane(contentPane);
         frame.setIconImage(Utils.getFrameIcon());
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 
         try {
             img = ImageIO.read(DiagramPanel.class.getResource("/jexiftoolgui-diagram.png"));
@@ -479,6 +481,8 @@ public class ExiftoolDatabase {
 
         setVisible(true); */
         JFrame frame = new JFrame(ResourceBundle.getBundle("translations/program_strings").getString("exiftooldb.title"));
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         frame.setIconImage(Utils.getFrameIcon());
         try {
             frame.setContentPane(new ExiftoolDatabase(frame).rootDBpanel);

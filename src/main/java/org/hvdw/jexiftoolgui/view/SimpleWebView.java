@@ -3,6 +3,7 @@ package org.hvdw.jexiftoolgui.view;
 import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 public class SimpleWebView extends JDialog {
 
@@ -25,6 +27,8 @@ public class SimpleWebView extends JDialog {
     public SimpleWebView() {
 
         setContentPane(contentPane);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        contentPane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         this.setIconImage(Utils.getFrameIcon());
 

@@ -66,6 +66,8 @@ public class JxMapViewer extends JDialog {
 
     public JxMapViewer() {
         setContentPane(contentPane);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        contentPane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
         this.setIconImage(Utils.getFrameIcon());
         getRootPane().setDefaultButton(searchLocationbutton);

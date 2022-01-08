@@ -81,6 +81,8 @@ public class RenamePhotos extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         this.setIconImage(Utils.getFrameIcon());
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        rootRenamingPane.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 
         // button listeners
         buttonOK.addActionListener(new ActionListener() {
@@ -141,6 +143,8 @@ public class RenamePhotos extends JDialog {
 
         String startFolder = StandardFileIO.getFolderPathToOpenBasedOnPreferences();
         final JFileChooser chooser = new JFileChooser(startFolder);
+        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
+        chooser.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         chooser.setDialogTitle(ResourceBundle.getBundle("translations/program_strings").getString("rph.locateimgfolder"));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int status = chooser.showOpenDialog(myComponent);
