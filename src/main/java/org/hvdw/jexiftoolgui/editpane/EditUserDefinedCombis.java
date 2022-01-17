@@ -90,7 +90,7 @@ public class EditUserDefinedCombis {
             customconfiglabel.setVisible(false);
         } else {
             strcustomconfigfile = queryResult.trim();
-            customconfiglabel.setText("This set is using custom config file: " + queryResult);
+            customconfiglabel.setText(ResourceBundle.getBundle("translations/program_strings").getString("udc.thisset") + " " + queryResult);
             customconfiglabel.setVisible(true);
         }
     }
