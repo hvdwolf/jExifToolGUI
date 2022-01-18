@@ -173,13 +173,15 @@ public class EditUserDefinedCombis {
         // Now get the tags from table
         for (String value : tablerowdata) {
             logger.debug("tag derived from table {}", model.getValueAt(rowcounter,1));
-            if (model.getValueAt(rowcounter,1).toString().startsWith("-")) {
-                cmdparams.add(model.getValueAt(rowcounter,1).toString().trim());
-                tagnames.add(model.getValueAt(rowcounter,1).toString().trim().substring(1));
-            } else { //tag without - (minus sign/hyphen) as prefix
-                cmdparams.add("-" + model.getValueAt(rowcounter,1).toString().trim());
-                tagnames.add(model.getValueAt(rowcounter,1).toString().trim());
+            String tname = model.getValueAt(rowcounter,1).toString();
+            if (tname.startsWith("-")) {
+                tname = tname.substring(1);
             }
+            // Format the output using exiftool -p option rather than relying on the default output.
+            // The format used is: TAGNAME=VALUE
+            cmdparams.add("-p");
+            cmdparams.add(tname + "=${" + tname + "}");
+            tagnames.add(tname);
             rowcounter++;
         }
         cmdparams.add(fpath);
@@ -202,13 +204,15 @@ public class EditUserDefinedCombis {
         tablerowdata = MyVariables.getuserCombiTableValues();
 
         for (String line : lines) {
-            String[] returnedValuesRow = line.split(":", 2); // Only split on first : as some tags also contain (multiple) :
-            String SpaceStrippedTag = returnedValuesRow[0].replaceAll("\\s+","");  // regex "\s" is space, extra \ to escape the first \
+            String[] returnedValuesRow = line.split("=", 2); // Only split on first : as some tags also contain (multiple) :
+            if (returnedValuesRow.length < 2) // line does not contain "TAGNAME=VALUE" so skip it, eg warning messages
+                continue;
+            String SpaceStrippedTag = returnedValuesRow[0];
             logger.debug("returnedValuesRow tag {}; returnedValuesRow value {}; SpaceStrippedTag {}", returnedValuesRow[0], returnedValuesRow[1], SpaceStrippedTag);
 
             rowcounter =0;
             for (String tagname: tablerowdata) {
-                if (model.getValueAt(rowcounter,1).toString().contains(SpaceStrippedTag)) {
+                if (model.getValueAt(rowcounter,1).toString().equals(SpaceStrippedTag)) {
                     model.setValueAt(returnedValuesRow[1].trim(),rowcounter,2);
                 }
                 rowcounter++;
