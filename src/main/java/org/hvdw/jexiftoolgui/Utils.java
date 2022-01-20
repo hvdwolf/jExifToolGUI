@@ -324,9 +324,9 @@ public class Utils {
             copyright = "-iptc:copyrightnotice=" + prefs.getByKey(COPYRIGHTS, "");
             AlwaysAddParams.add(copyright);
         }
-        AlwaysAddParams.add("-exif:ProcessingSoftware=\"jExifToolGUI " + ProgramTexts.Version + "\"");
+        AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);
         //AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
-        AlwaysAddParams.add("-xmp:Software=\"jExifToolGUI " + ProgramTexts.Version + "\"");
+        AlwaysAddParams.add("-xmp:Software=jExifToolGUI " + ProgramTexts.Version);
 
 
         return AlwaysAddParams;
