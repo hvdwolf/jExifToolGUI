@@ -66,7 +66,7 @@ public class EditUserDefinedCombis {
             for (String line : lines) {
                 String[] cells = line.split("\\t", 4);
                 model.addRow(new Object[]{cells[0], cells[1], cells[2]});
-                tablerowdata.add(cells[2]);
+                tablerowdata.add("");
             }
             MyVariables.setuserCombiTableValues(tablerowdata);
         }
@@ -125,15 +125,18 @@ public class EditUserDefinedCombis {
             cmdparams.add("-overwrite_original");
         }
         cmdparams.addAll(Utils.AlwaysAdd());
-
+        cmdparams.add("-n"); // Need is this for some tags, eg Orientation
+        boolean hasChanged = false;
         for (String value : tablerowdata) {
-            if ( (!model.getValueAt(rowcounter, 2).equals(value)) || (!model.getValueAt(rowcounter, 2).equals("")) ) { //not equal, table value has changed OR table value not empty -> means default value
+            if ( !model.getValueAt(rowcounter, 2).equals(value) ) {
+                hasChanged = true;
                 logger.info("tag {}; original value {}; modified tablecell value {}", model.getValueAt(rowcounter,1), tablerowdata.get(rowcounter), model.getValueAt(rowcounter,2));
                 if (model.getValueAt(rowcounter,1).toString().startsWith("-")) {
                     cmdparams.add(model.getValueAt(rowcounter,1).toString() + "=" + model.getValueAt(rowcounter, 2).toString().trim());
                 } else { //tag without - (minus sign/hyphen) as prefix
                     cmdparams.add("-" + model.getValueAt(rowcounter,1).toString() + "=" + model.getValueAt(rowcounter, 2).toString().trim());
                 }
+                tablerowdata.set(rowcounter, model.getValueAt(rowcounter, 2).toString().trim());
             }
             rowcounter++;
         }
@@ -147,8 +150,12 @@ public class EditUserDefinedCombis {
             }
         }
 
-        logger.info("Save user combi parameter command {}", cmdparams);
-        CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+        if (hasChanged) {
+            logger.info("Save user combi parameter command {}", cmdparams);
+            CommandRunner.runCommandWithProgressBar(cmdparams, progressBar);
+        } else {
+            logger.info("Nothing to save -- no edits made");
+        }
     }
 
     public void CopyFromSelectedImage() {
@@ -178,9 +185,9 @@ public class EditUserDefinedCombis {
                 tname = tname.substring(1);
             }
             // Format the output using exiftool -p option rather than relying on the default output.
-            // The format used is: TAGNAME=VALUE
+            // The format used is: TAGNAME::VALUE.  CANNOT USE "=" for the delimiter due to handling of args in runCommand under Windows
             cmdparams.add("-p");
-            cmdparams.add(tname + "=${" + tname + "}");
+            cmdparams.add(tname + "::${" + tname + "}");
             tagnames.add(tname);
             rowcounter++;
         }
@@ -204,8 +211,8 @@ public class EditUserDefinedCombis {
         tablerowdata = MyVariables.getuserCombiTableValues();
 
         for (String line : lines) {
-            String[] returnedValuesRow = line.split("=", 2); // Only split on first : as some tags also contain (multiple) :
-            if (returnedValuesRow.length < 2) // line does not contain "TAGNAME=VALUE" so skip it, eg warning messages
+            String[] returnedValuesRow = line.split("::", 2); // Only split on first : as some tags also contain (multiple) :
+            if (returnedValuesRow.length < 2) // line does not contain "TAGNAME::VALUE" so skip it, eg warning messages
                 continue;
             String SpaceStrippedTag = returnedValuesRow[0];
             logger.debug("returnedValuesRow tag {}; returnedValuesRow value {}; SpaceStrippedTag {}", returnedValuesRow[0], returnedValuesRow[1], SpaceStrippedTag);
@@ -213,7 +220,10 @@ public class EditUserDefinedCombis {
             rowcounter =0;
             for (String tagname: tablerowdata) {
                 if (model.getValueAt(rowcounter,1).toString().equals(SpaceStrippedTag)) {
+                    // The model data and tablerowdata values are the same when first retrieved.
+                    // Late, during save, each row is checked if it was changed.
                     model.setValueAt(returnedValuesRow[1].trim(),rowcounter,2);
+                    tablerowdata.set(rowcounter, returnedValuesRow[1].trim());
                 }
                 rowcounter++;
             }

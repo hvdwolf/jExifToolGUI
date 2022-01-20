@@ -70,7 +70,7 @@ public class CommandRunner {
                         newParams.add("exif=utf8");
                         //newParams.add("-@");
                         //} else if ( (subString.toLowerCase().contains("jpg")) || (subString.toLowerCase().contains("tif")) || (subString.toLowerCase().contains("png")) )
-                    } else if ((supImgList.stream().anyMatch(subString.toLowerCase()::contains)) && !(subString.toLowerCase().contains("-"))) {
+                    } else if ((supImgList.stream().anyMatch(subString.toLowerCase()::endsWith)) && !(subString.toLowerCase().startsWith("-"))) {
                         // These are the images
                         imgList.add("\"" + subString + "\"");
                         logger.info("img subString {}", subString);
