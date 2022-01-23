@@ -145,16 +145,17 @@ public class UpdateActions {
         String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
         // Check if vrae.config exists
         File vrae = new File(strjexiftoolguifolder + File.separator + "vrae.config");
-        if (vrae.exists()) {
-            vrae.delete();
-        }
-        String method_result = extract_resource_to_jexiftoolguiFolder("vrae.config", strjexiftoolguifolder, "");
+        if (!vrae.exists()) {
+            //vrae.delete();
+            String method_result = extract_resource_to_jexiftoolguiFolder("vrae.config", strjexiftoolguifolder, "");
 
-        // add vrae data to both tables if necessary
-        queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae-display'", "disk");
-        logger.debug("VRAE data test {}", queryresult.trim());
-        if (!"56".equals(queryresult.trim())) {
-            fill_UserMetadataCustomSet_Tables("sql/fill_vrae-display.sql");
+            // add vrae data to both tables if necessary
+            queryresult = SQLiteJDBC.generalQuery("select count(customset_name) from custommetadatasetLines where customset_name='vrae-display'", "disk");
+            logger.debug("VRAE data test {}", queryresult.trim());
+            if (queryresult.isEmpty()) {
+                fill_UserMetadataCustomSet_Tables("sql/fill_vrae-display.sql");
+            }
+
         }
 
     }
