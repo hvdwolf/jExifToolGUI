@@ -517,7 +517,7 @@ public class PreferencesDialog extends JDialog {
         metadataLanuagecomboBox.setModel(new DefaultComboBoxModel(exiftoolLanguages));
         String Locales = StandardFileIO.readTextFileAsStringFromResource("texts/Locales.txt");
         //String[] appLocales = Locales.split("\\r?\\n"); // split on new lines
-        String[] appLocales = {"System default - default", "de_DE - Deutsch", "en_US - English", "es_ES - Español", "he_HE - עִברִית", "nb_NO - Norsk (bokmål)", "nl_NL - Nederlands", "ru_RU - Pусский"};
+        String[] appLocales = {"System default - default", "de_DE - Deutsch", "en_US - English", "es_ES - Español", "iw_HE - עִברִית", "nb_NO - Norsk (bokmål)", "nl_NL - Nederlands", "ru_RU - Pусский"};
         localecomboBox.setModel(new DefaultComboBoxModel(appLocales));
         filedialogexplained.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.dialogexplained")));
         logleveltext.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.logleveltext")));
