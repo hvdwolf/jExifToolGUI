@@ -33,7 +33,7 @@ java -jar $Packr \
      --classpath ../../jExifToolGUI.jar \
      --mainclass org.hvdw.jexiftoolgui.Application \
      --resources ./logback.xml \
-     --resources ./jexiftoolgui-splashlogo.png \
+     --resources ../../src/main/resources/icons/jexiftoolgui-splashlogo.png \
      --minimizejre soft \
      --icon ./appIcon.icns \
      --vmargs Xmx2G \

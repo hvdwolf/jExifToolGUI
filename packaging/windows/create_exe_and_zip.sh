@@ -22,7 +22,6 @@ Version="$1.0"
 # I normally put launch4j next to the jExifToolGUI folder
 launch4jPATH="../../../launch4j/launch4j"
 exe_zip_path="jExifToolGUI-$Version-win-x86_64"
-#JRE="../../../java/JREs/windows-jre"
 
 cp ../../jExifToolGUI.jar .
 
