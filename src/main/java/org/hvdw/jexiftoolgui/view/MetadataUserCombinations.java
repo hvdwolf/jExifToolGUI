@@ -188,6 +188,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean configFile = false;
                 String configFileName = "";
+                String csvFileName = "";
                 String setName = customSetcomboBox.getSelectedItem().toString();
                 if (!(setName == null) && !("".equals(setName))) {
                     logger.debug("setName selected for export: {}", setName);
@@ -202,6 +203,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                         //File myObj = new File(userHome + File.separator + setName.trim() + ".csv");
                         try {
                             FileWriter csvWriter = new FileWriter(userHome + File.separator + setName.trim() + ".csv");
+                            csvFileName = userHome + File.separator + setName.trim() + ".csv";
                             csvWriter.write("customset_name\trowcount\tscreen_label\ttag\tdefault_value\n");
 
                             for (String line : lines) {
@@ -229,11 +231,12 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                             String copyresult = StandardFileIO.ExportCustomConfigFile(configFileName);
                         }
                     }
-                    String expTxt = ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptext") + ": " + setName.trim();
+                    String expTxt = ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptext") + ": " + csvFileName;
                     if (configFile) {
-                        expTxt += "\n\n" + ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptextconfig") + ": " + configFileName;
+                        String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+                        expTxt += "<br><br>" + ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptextconfig") + ": " + userHome + File.separator + configFileName;
                     }
-                    JOptionPane.showMessageDialog(metadatapanel, expTxt, ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptitle"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(metadatapanel, String.format(ProgramTexts.HTML, 600, expTxt), ResourceBundle.getBundle("translations/program_strings").getString("mduc.exptitle"), JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
