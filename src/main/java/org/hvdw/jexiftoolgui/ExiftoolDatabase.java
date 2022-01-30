@@ -444,6 +444,8 @@ public class ExiftoolDatabase {
         contentPane = new DiagramPanel();
         frame.setContentPane(contentPane);
         frame.setIconImage(Utils.getFrameIcon());
+        frame.setLocationByPlatform(true);
+        frame.setDefaultLookAndFeelDecorated(true);
         Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
         frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 

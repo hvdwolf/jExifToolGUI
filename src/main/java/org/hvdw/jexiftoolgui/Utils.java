@@ -326,7 +326,7 @@ public class Utils {
         }
         AlwaysAddParams.add("-exif:ProcessingSoftware=jExifToolGUI " + ProgramTexts.Version);
         //AlwaysAddParams.add("-exif:Software=jExifToolGUI " + ProgramTexts.Version);
-        AlwaysAddParams.add("-xmp:Software=jExifToolGUI " + ProgramTexts.Version);
+        AlwaysAddParams.add("-xmp-tiff:Software=jExifToolGUI " + ProgramTexts.Version);
 
 
         return AlwaysAddParams;
@@ -1491,7 +1491,8 @@ public class Utils {
     static public BufferedImage getFrameIcon() {
          BufferedImage frameicon = null;
          try {
-             frameicon = ImageIO.read(mainScreen.class.getResource("/icons/jexiftoolgui-frameicon.png"));
+             //frameicon = ImageIO.read(mainScreen.class.getResource("/icons/jexiftoolgui-frameicon.png"));
+             frameicon = ImageIO.read(mainScreen.class.getResource("/icons/logo20-frameicon.png"));
          } catch (IOException ioe) {
              logger.info("error loading frame icon {}", ioe.toString());
          }
