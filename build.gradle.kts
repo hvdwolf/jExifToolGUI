@@ -75,13 +75,17 @@ dependencies {
     implementation(files("$projectDir/libs/io-7.1.12.jar"))
     implementation(files("$projectDir/libs/layout-7.1.12.jar"))
     implementation(files("$projectDir/libs/pdfa-7.1.12.jar"))
+//implementation(group = "com.itextpdf", name = "kernel", version = "7.2.1")
+//implementation(group = "com.itextpdf", name = "layout", version = "7.2.1")
+//implementation(group = "com.itextpdf", name = "io", version = "7.2.1")
+//implementation(group = "com.itextpdf", name = "pdfa", version = "7.2.1")
 //////////////////////////////////////////////////
     // sqlite
     implementation(group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3")
     //implementation(files("$projectDir/libs/sqlite-jdbc-3.36.0.3.jar"))
 
     // The opencsv library jar
-    implementation(files("$projectDir/libs/opencsv-5.5.2.jar"))
+    implementation(group = "com.opencsv", name = "opencsv", version = "5.5.2")
 
     //jxmapviewer2 https://github.com/msteiger/jxmapviewer2
     implementation(group = "org.jxmapviewer", name = "jxmapviewer2", version = "2.6")
@@ -93,8 +97,6 @@ dependencies {
     //testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
     implementation(group = "ch.qos.logback", name = "logback-core", version = "1.2.10")
     implementation(group = "ch.qos.logback", name = "logback-classic", version = "1.2.10")
-    testImplementation(files("$projectDir/libs/opencsv-5.5.2.jar"))
-
 }
 
 java {
