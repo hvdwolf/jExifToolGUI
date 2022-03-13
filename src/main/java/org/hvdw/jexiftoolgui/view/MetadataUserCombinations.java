@@ -93,6 +93,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
         Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
         metadatapanel.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         setModal(true);
+        setModalityType(ModalityType.DOCUMENT_MODAL);
         getRootPane().setDefaultButton(saveasButton);
         this.setIconImage(Utils.getFrameIcon());
 
@@ -531,7 +532,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             sql = "insert into CustomMetadataset(customset_name, custom_config) values('" + setName + "','" + custom_config + "')";
             queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
             if (!"".equals(queryresult)) { //means we have an error
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(metadatapanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                 queryresultcounter += 1;
             } else {
                 logger.info("no of tablerowcells {}", tableRowsCells.size());
@@ -543,7 +544,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     logger.debug(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(metadatapanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.ERROR_MESSAGE);
                         queryresultcounter += 1;
                     }
                     rowcount++;
@@ -553,12 +554,12 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             if (queryresultcounter == 0) {
                 loadCurrentSets("fill_combo");
                 customSetcomboBox.setSelectedItem(setName);
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(metadatapanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
             }
         } else { // update
             queryresult = SQLiteModel.deleteCustomSetRows(setName);
             if (!"".equals(queryresult)) { //means we have an error
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetitle"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(metadatapanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorupdatetitle"), JOptionPane.ERROR_MESSAGE);
             } else {
                 logger.debug("no of tablerowcells {}", tableRowsCells.size());
                 // deleting the old records went OK, now (re)insert the rows
@@ -569,7 +570,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
                     logger.debug(sql);
                     queryresult = SQLiteJDBC.insertUpdateQuery(sql, "disk");
                     if (!"".equals(queryresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(metadatapanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttext") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.errorinserttitel"), JOptionPane.INFORMATION_MESSAGE);
                         queryresultcounter += 1;
                     }
                     rowcount++;
@@ -579,7 +580,7 @@ public class MetadataUserCombinations extends JDialog implements TableModelListe
             if (queryresultcounter == 0) {
                 loadCurrentSets("fill_combo");
                 customSetcomboBox.setSelectedItem(setName);
-                JOptionPane.showMessageDialog(rootpanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(metadatapanel, ResourceBundle.getBundle("translations/program_strings").getString("mduc.saved") + " " + setName, ResourceBundle.getBundle("translations/program_strings").getString("mduc.savedb"), JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
