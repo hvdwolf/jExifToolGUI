@@ -1,8 +1,8 @@
 package org.hvdw.jexiftoolgui;
 
-import ch.qos.logback.classic.Level;
 import org.hvdw.jexiftoolgui.controllers.SingletonEnum;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -30,11 +30,7 @@ public class Application {
 
         // Doesn't work but leave in
         System.out.println(SingletonEnum.INSTANCE);
-
-        /*String logLevel = prefs.getByKey(LOG_LEVEL, "Info");
-        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-        Level level = Level.toLevel(logLevel.toUpperCase());
-        root.setLevel(level); */
+        
         Utils.SetApplicationWideLogLevel();
         logger.info("Start application jExifToolGUI");
 

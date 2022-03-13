@@ -121,6 +121,7 @@ public class Utils {
     static public void SetLoggingLevel(Class usedClass) {
         String logLevel = prefs.getByKey(LOG_LEVEL, "Info");
         ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(usedClass);
+        //Logger logger = getLogger(usedClass);
         // hardcode in case of debugging/troubleshooting
         //logLevel = "Trace";
 

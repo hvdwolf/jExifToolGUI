@@ -446,6 +446,11 @@ public class ExiftoolDatabase {
         frame.setIconImage(Utils.getFrameIcon());
         frame.setLocationByPlatform(true);
         frame.setDefaultLookAndFeelDecorated(true);
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception weTried) {
+            logger.error("Could not start GUI.", weTried);
+        }
         Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
         frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
 

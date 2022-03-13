@@ -42,10 +42,10 @@ rm -rf $App/Contents/MacOS/ExifTool/t $App/Contents/MacOS/ExifTool/html $App/Con
 
 
 
-printf "Create the 145MB (full) dmg\n\n"
+printf "Create the 150MB (full) dmg\n\n"
 mkdir -p tmp/dmg
 # 125MB dmg
-dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=145
+dd if=/dev/zero of=tmp/jExifToolGUI.dmg bs=1M count=150
 
 /sbin/mkfs.hfsplus -v "jExifToolGUI-x86_64 $Version" tmp/jExifToolGUI.dmg
 

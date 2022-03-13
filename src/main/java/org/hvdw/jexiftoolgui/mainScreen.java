@@ -46,8 +46,7 @@ import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.checkforjexiftool
 
 
 public class mainScreen {
-    //private static final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(mainScreen.class);
-    private final static Logger logger = (Logger) LoggerFactory.getLogger(mainScreen.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(mainScreen.class);
 
     private IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
     //private JFrame rootFrame;

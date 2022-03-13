@@ -37,6 +37,11 @@ public class CompareImagesWindow {
 
         // Define the frame, the ScrollPanel with the table, the buttonpanel with the close button
         JFrame frame = new JFrame();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception weTried) {
+            logger.error("Could not start GUI.", weTried);
+        }
         Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
         frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         frame.setTitle(ResourceBundle.getBundle("translations/program_strings").getString("cmpimg.comparetitle"));

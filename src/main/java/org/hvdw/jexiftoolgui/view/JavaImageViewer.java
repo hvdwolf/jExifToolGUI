@@ -169,6 +169,11 @@ public class JavaImageViewer {
         JPanel imageViewPane = new JPanel();
         frame.setContentPane(imageViewPane);
         frame.setIconImage(Utils.getFrameIcon());
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception weTried) {
+            logger.error("Could not set getSystemLookAndFeelClassName.", weTried);
+        }
 
         /* Get screen size */
         int[] resolution = Utils.getResolution();
