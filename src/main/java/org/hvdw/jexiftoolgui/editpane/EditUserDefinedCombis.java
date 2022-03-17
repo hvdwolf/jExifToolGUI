@@ -29,33 +29,51 @@ public class EditUserDefinedCombis {
 
     JTable usercombiTable;
     MyTableModel model;
+    TableModelListener modelListener;
     List<String> tablerowdata = new ArrayList<String>();
+    List<String> defaultValues = new ArrayList<String>();
     String strcustomconfigfile = "";
 
     /*
-    / This option makes only the 3rd column (0, 1, 2) editable
-    / column 1 (no. 0) & 2 (no. 1) are ready-only
+    / This option makes only the 3rd (tag value) and 4th (Save checkbox) columns (2, 3) editable
+    / column 1 (no. 0) & 2 (no. 1) are ready-only.
+    / Also override getColumnClass to allow for the Save checkbox in 4th column.
      */
     public class MyTableModel extends DefaultTableModel {
         public boolean isCellEditable(int row, int column){
-            return column == 2;
+            return column == 2 || column == 3;
         }
 
+        public Class getColumnClass(int column) {
+            if (column == 3)
+                return Boolean.class;
+            else
+                return String.class;
+        }
     }
+
     /*
     / This method updates the table in case we have selected another combi from the JCombobox
      */
     public void UpdateTable(JPanel rootpanel, JComboBox combicombobox, JScrollPane userCombiPane) {
+        if (model != null && modelListener != null)
+            model.removeTableModelListener(modelListener);
 
-        List<String> tablerowdata = new ArrayList<String>();
-        usercombiTable = new JTable(new MyTableModel());
+        tablerowdata.clear();
+        defaultValues.clear();
 
-        model = ((MyTableModel) (usercombiTable.getModel()));
-        model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mduc.columnlabel"),
-                ResourceBundle.getBundle("translations/program_strings").getString("mduc.columntag"),
-                ResourceBundle.getBundle("translations/program_strings").getString("mduc.columndefault")});
-        model.setRowCount(0);
-        Object[] row = new Object[1];
+        if (model == null) {
+            model = new MyTableModel();
+            model.setColumnIdentifiers(new String[]{ResourceBundle.getBundle("translations/program_strings").getString("mduc.columnlabel"),
+                    ResourceBundle.getBundle("translations/program_strings").getString("mduc.columntag"),
+                    ResourceBundle.getBundle("translations/program_strings").getString("mduc.columndefault"),
+                    ResourceBundle.getBundle("translations/program_strings").getString("label.save")});
+        }
+        else
+            model.setRowCount(0);
+
+        if (usercombiTable == null)
+            usercombiTable = new JTable(model);
 
         String setName = combicombobox.getSelectedItem().toString();
         String sql = "select screen_label, tag, default_value from custommetadatasetLines where customset_name='" + setName.trim() + "' order by rowcount";
@@ -65,19 +83,40 @@ public class EditUserDefinedCombis {
 
             for (String line : lines) {
                 String[] cells = line.split("\\t", 4);
-                model.addRow(new Object[]{cells[0], cells[1], cells[2]});
+                String defVal = cells[2].trim();
+                model.addRow(new Object[]{cells[0], cells[1], defVal, defVal.length() == 0 ? Boolean.FALSE : Boolean.TRUE});
                 tablerowdata.add("");
+                defaultValues.add(defVal); // We'll use the default values again during a copy operation
             }
             MyVariables.setuserCombiTableValues(tablerowdata);
         }
         userCombiPane.setViewportView(usercombiTable);
+        // Make the Save column narrower.
+        usercombiTable.getColumnModel().getColumn(3).setMinWidth(50);
+        usercombiTable.getColumnModel().getColumn(3).setMaxWidth(110);
+        usercombiTable.getColumnModel().getColumn(3).setPreferredWidth(70);
 
-        usercombiTable.getModel().addTableModelListener(new TableModelListener() {
-            public void tableChanged(TableModelEvent e) {
-                logger.debug("source {}; firstRow {}; lastRow {}, column{}", e.getSource(), e.getFirstRow(), e.getLastRow(), e.getColumn());
-                logger.debug("tag {}; original value {}; modified tablecell value {}", model.getValueAt(e.getFirstRow(),1), tablerowdata.get(e.getFirstRow()), model.getValueAt(e.getFirstRow(),e.getColumn()));
-            }
-        });
+       if (modelListener == null) {
+            modelListener = new TableModelListener() {
+                // React to edits of tag values.  If value is different to original value then tick the Save checkbox
+                public void tableChanged(TableModelEvent e) {
+                    int col = e.getColumn();
+                    if (col == 3) // No need to react to checkboxes
+                        return;
+                    int row = e.getFirstRow();
+                    Object originalValue = tablerowdata.get(row);
+                    Object modifiedValue = model.getValueAt(row, col);
+                    logger.debug("source {}; firstRow {}; lastRow {}, column{}", e.getSource(), row, e.getLastRow(), col);
+                    logger.debug("tag {}; original value {}; modified tablecell value {}", model.getValueAt(row, 1), originalValue, modifiedValue);
+                    if (originalValue.equals(modifiedValue))
+                        model.setValueAt(Boolean.FALSE, row, 3);
+                    else
+                        model.setValueAt(Boolean.TRUE, row, 3);
+                }
+            };
+        }
+
+        model.addTableModelListener(modelListener);
     }
 
     public void UpdateCustomConfigLabel(JComboBox combicombobox, JLabel customconfiglabel) {
@@ -100,8 +139,7 @@ public class EditUserDefinedCombis {
     }
 
     public void SaveTableValues(JCheckBox udcOverwriteOriginalscheckBox, JProgressBar progressBar) {
-        // if changed => save
-        // else if !empty => save
+        // if Save checkedbox ticked  => save
         File[] files = MyVariables.getLoadedFiles();
         int[] selectedIndices = MyVariables.getSelectedFilenamesIndices();
         tablerowdata = MyVariables.getuserCombiTableValues();
@@ -125,21 +163,25 @@ public class EditUserDefinedCombis {
             cmdparams.add("-overwrite_original");
         }
         cmdparams.addAll(Utils.AlwaysAdd());
-        cmdparams.add("-n"); // Need is this for some tags, eg Orientation
+        cmdparams.add("-n"); // Need this for some tags, eg Orientation
         boolean hasChanged = false;
+        model.removeTableModelListener(modelListener); // Temporarily remove listener to avoid triggering unnecessary events
         for (String value : tablerowdata) {
-            if ( !model.getValueAt(rowcounter, 2).equals(value) ) {
+            if ((Boolean) model.getValueAt(rowcounter, 3)) {
                 hasChanged = true;
-                logger.info("tag {}; original value {}; modified tablecell value {}", model.getValueAt(rowcounter,1), tablerowdata.get(rowcounter), model.getValueAt(rowcounter,2));
+                String cellValue = model.getValueAt(rowcounter,2).toString().trim();
+                logger.info("tag {}; original value {}; modified tablecell value {}", model.getValueAt(rowcounter,1), tablerowdata.get(rowcounter), cellValue);
                 if (model.getValueAt(rowcounter,1).toString().startsWith("-")) {
-                    cmdparams.add(model.getValueAt(rowcounter,1).toString() + "=" + model.getValueAt(rowcounter, 2).toString().trim());
+                    cmdparams.add(model.getValueAt(rowcounter,1).toString() + "=" + cellValue);
                 } else { //tag without - (minus sign/hyphen) as prefix
-                    cmdparams.add("-" + model.getValueAt(rowcounter,1).toString() + "=" + model.getValueAt(rowcounter, 2).toString().trim());
+                    cmdparams.add("-" + model.getValueAt(rowcounter,1).toString() + "=" + cellValue);
                 }
-                tablerowdata.set(rowcounter, model.getValueAt(rowcounter, 2).toString().trim());
+                tablerowdata.set(rowcounter, cellValue);
+                model.setValueAt(cellValue, rowcounter, 2);
             }
             rowcounter++;
         }
+        model.addTableModelListener(modelListener); // Add back listener
 
         for (int index: selectedIndices) {
             //logger.info("index: {}  image path: {}", index, files[index].getPath());
@@ -200,7 +242,9 @@ public class EditUserDefinedCombis {
         }
         if (res.length() > 0) {
             String[] strTagnames = tagnames.stream().toArray(String[]::new);
+            model.removeTableModelListener(modelListener); // Temporarily remove listener to avoid triggering unnecessary events
             displayCopiedInfo( res, strTagnames);
+            model.addTableModelListener(modelListener); // Add back listener
         }
 
     }
@@ -210,8 +254,14 @@ public class EditUserDefinedCombis {
         String[] lines = exiftoolInfo.split(SystemPropertyFacade.getPropertyByKey(LINE_SEPARATOR));
         tablerowdata = MyVariables.getuserCombiTableValues();
 
+        // Clear previous values and set defaults
+        for (int row = 0; row < model.getRowCount(); row++) {
+            tablerowdata.set(row, "");
+            model.setValueAt(defaultValues.get(row), row, 2);
+        }
+
         for (String line : lines) {
-            String[] returnedValuesRow = line.split("::", 2); // Only split on first : as some tags also contain (multiple) :
+            String[] returnedValuesRow = line.split("::", 2); // Only split on first :: as some tags also contain (multiple) ::
             if (returnedValuesRow.length < 2) // line does not contain "TAGNAME::VALUE" so skip it, eg warning messages
                 continue;
             String SpaceStrippedTag = returnedValuesRow[0];
@@ -221,12 +271,19 @@ public class EditUserDefinedCombis {
             for (String tagname: tablerowdata) {
                 if (model.getValueAt(rowcounter,1).toString().equals(SpaceStrippedTag)) {
                     // The model data and tablerowdata values are the same when first retrieved.
-                    // Late, during save, each row is checked if it was changed.
-                    model.setValueAt(returnedValuesRow[1].trim(),rowcounter,2);
+                    // Later, during save, each row is checked if it was changed.
                     tablerowdata.set(rowcounter, returnedValuesRow[1].trim());
+                    model.setValueAt(returnedValuesRow[1].trim(),rowcounter,2);
                 }
                 rowcounter++;
             }
+        }
+        // Tick the Save checkbox for any tags which have defaults still remaining
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 2).equals(tablerowdata.get(row)))
+                model.setValueAt(Boolean.FALSE, row, 3);
+            else
+                model.setValueAt(Boolean.TRUE, row, 3);
         }
     }
 }
