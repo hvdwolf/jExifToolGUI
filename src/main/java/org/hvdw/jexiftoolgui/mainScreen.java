@@ -2011,7 +2011,7 @@ private String getSeparatorString() {
         textFieldOtherSeparator.setPreferredSize(new Dimension(25, 38));
         panel35.add(textFieldOtherSeparator);
         final JPanel panel36 = new JPanel();
-        panel36.setLayout(new GridLayoutManager(2, 1, new Insets(10, 20, 10, 20), -1, -1));
+        panel36.setLayout(new GridLayoutManager(1, 1, new Insets(10, 20, 10, 20), -1, -1));
         panel36.setMinimumSize(new Dimension(750, 204));
         panel36.setPreferredSize(new Dimension(800, 550));
         tabbedPaneEditfunctions.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "ed.usercombis"), panel36);
@@ -2065,8 +2065,6 @@ private String getSeparatorString() {
         panel40.add(udcOverwriteOriginalscheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final Spacer spacer6 = new Spacer();
         panel40.add(spacer6, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer7 = new Spacer();
-        panel36.add(spacer7, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel41 = new JPanel();
         panel41.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPaneRight.addTab(this.$$$getMessageFromBundle$$$("translations/program_strings", "maintab.copydata"), panel41);
@@ -2156,10 +2154,10 @@ private String getSeparatorString() {
         tagsToXmpradioButton.setSelected(true);
         this.$$$loadButtonText$$$(tagsToXmpradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "copyd.tagstoxmp"));
         panel49.add(tagsToXmpradioButton);
+        final Spacer spacer7 = new Spacer();
+        panel49.add(spacer7);
         final Spacer spacer8 = new Spacer();
         panel49.add(spacer8);
-        final Spacer spacer9 = new Spacer();
-        panel49.add(spacer9);
         exif2xmpCheckBox = new JCheckBox();
         exif2xmpCheckBox.setText("exif2xmp");
         panel49.add(exif2xmpCheckBox);
@@ -2172,8 +2170,8 @@ private String getSeparatorString() {
         pdf2xmpCheckBox = new JCheckBox();
         pdf2xmpCheckBox.setText("pdf2xmp");
         panel49.add(pdf2xmpCheckBox);
-        final Spacer spacer10 = new Spacer();
-        panel48.add(spacer10, new GridConstraints(5, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer9 = new Spacer();
+        panel48.add(spacer9, new GridConstraints(5, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel50 = new JPanel();
         panel50.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel48.add(panel50, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2181,10 +2179,10 @@ private String getSeparatorString() {
         tagsToExifradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(tagsToExifradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "copyd.tagstoexif"));
         panel50.add(tagsToExifradioButton);
+        final Spacer spacer10 = new Spacer();
+        panel50.add(spacer10);
         final Spacer spacer11 = new Spacer();
         panel50.add(spacer11);
-        final Spacer spacer12 = new Spacer();
-        panel50.add(spacer12);
         iptc2exifCheckBox = new JCheckBox();
         iptc2exifCheckBox.setText("iptc2exif");
         panel50.add(iptc2exifCheckBox);
@@ -2198,10 +2196,10 @@ private String getSeparatorString() {
         tagsToIptcradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(tagsToIptcradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "copyd.tagstoiptc"));
         panel51.add(tagsToIptcradioButton);
+        final Spacer spacer12 = new Spacer();
+        panel51.add(spacer12);
         final Spacer spacer13 = new Spacer();
         panel51.add(spacer13);
-        final Spacer spacer14 = new Spacer();
-        panel51.add(spacer14);
         exif2iptcCheckBox = new JCheckBox();
         exif2iptcCheckBox.setText("exif2iptc");
         panel51.add(exif2iptcCheckBox);
@@ -2215,10 +2213,10 @@ private String getSeparatorString() {
         tagsToGpsradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(tagsToGpsradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "copyd.tagstogps"));
         panel52.add(tagsToGpsradioButton);
+        final Spacer spacer14 = new Spacer();
+        panel52.add(spacer14);
         final Spacer spacer15 = new Spacer();
         panel52.add(spacer15);
-        final Spacer spacer16 = new Spacer();
-        panel52.add(spacer16);
         xmp2gpsCheckBox = new JCheckBox();
         xmp2gpsCheckBox.setText("xmp2gps");
         panel52.add(xmp2gpsCheckBox);
@@ -2229,10 +2227,10 @@ private String getSeparatorString() {
         tagsToPdfradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(tagsToPdfradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "copyd.tagstopdf"));
         panel53.add(tagsToPdfradioButton);
+        final Spacer spacer16 = new Spacer();
+        panel53.add(spacer16);
         final Spacer spacer17 = new Spacer();
         panel53.add(spacer17);
-        final Spacer spacer18 = new Spacer();
-        panel53.add(spacer18);
         xmp2pdfCheckBox = new JCheckBox();
         xmp2pdfCheckBox.setText("xmp2pdf");
         panel53.add(xmp2pdfCheckBox);
@@ -2312,8 +2310,8 @@ private String getSeparatorString() {
         final JLabel label97 = new JLabel();
         this.$$$loadLabelText$$$(label97, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.exportto"));
         panel63.add(label97, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer19 = new Spacer();
-        panel63.add(spacer19, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer18 = new Spacer();
+        panel63.add(spacer18, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel64 = new JPanel();
         panel64.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel63.add(panel64, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2346,8 +2344,8 @@ private String getSeparatorString() {
         GenExportbuttonCancel = new JButton();
         this.$$$loadButtonText$$$(GenExportbuttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.cancel"));
         panel65.add(GenExportbuttonCancel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer20 = new Spacer();
-        panel65.add(spacer20, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer19 = new Spacer();
+        panel65.add(spacer19, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         GenExpuseMetadataTagLanguageCheckBoxport = new JCheckBox();
         GenExpuseMetadataTagLanguageCheckBoxport.setSelected(true);
         this.$$$loadButtonText$$$(GenExpuseMetadataTagLanguageCheckBoxport, this.$$$getMessageFromBundle$$$("translations/program_strings", "emd.uselang"));
@@ -2364,8 +2362,8 @@ private String getSeparatorString() {
         expPdftextLabel = new JLabel();
         expPdftextLabel.setText("expPdftextLabell");
         panel66.add(expPdftextLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-        final Spacer spacer21 = new Spacer();
-        panel66.add(spacer21, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer20 = new Spacer();
+        panel66.add(spacer20, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel67 = new JPanel();
         panel67.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
         panel66.add(panel67, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2406,8 +2404,8 @@ private String getSeparatorString() {
         exppdfDataText = new JLabel();
         this.$$$loadLabelText$$$(exppdfDataText, this.$$$getMessageFromBundle$$$("translations/program_strings", "exppdf.whichdata"));
         panel69.add(exppdfDataText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer22 = new Spacer();
-        panel69.add(spacer22, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer21 = new Spacer();
+        panel69.add(spacer21, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel70 = new JPanel();
         panel70.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 5));
         panel69.add(panel70, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -2438,8 +2436,8 @@ private String getSeparatorString() {
         exifSCradioButton.setSelected(true);
         this.$$$loadButtonText$$$(exifSCradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "esc.exiftitle"));
         panel72.add(exifSCradioButton, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer23 = new Spacer();
-        panel72.add(spacer23, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer22 = new Spacer();
+        panel72.add(spacer22, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         xmpSCradioButton = new JRadioButton();
         this.$$$loadButtonText$$$(xmpSCradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "esc.xmptitle"));
         panel72.add(xmpSCradioButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -2458,8 +2456,8 @@ private String getSeparatorString() {
         SideCarHelpbutton = new JButton();
         this.$$$loadButtonText$$$(SideCarHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel73.add(SideCarHelpbutton);
-        final Spacer spacer24 = new Spacer();
-        panel71.add(spacer24, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer23 = new Spacer();
+        panel71.add(spacer23, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel74 = new JPanel();
         panel74.setLayout(new GridLayoutManager(5, 2, new Insets(10, 0, 10, 0), -1, -1));
         panel55.add(panel74, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
@@ -2515,13 +2513,13 @@ private String getSeparatorString() {
         CommandshelpButton = new JButton();
         this.$$$loadButtonText$$$(CommandshelpButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         panel78.add(CommandshelpButton);
-        final Spacer spacer25 = new Spacer();
-        panel78.add(spacer25);
+        final Spacer spacer24 = new Spacer();
+        panel78.add(spacer24);
         final JPanel panel79 = new JPanel();
         panel79.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         panel78.add(panel79);
-        final Spacer spacer26 = new Spacer();
-        panel79.add(spacer26);
+        final Spacer spacer25 = new Spacer();
+        panel79.add(spacer25);
         AddCommandFavoritebutton = new JButton();
         this.$$$loadButtonText$$$(AddCommandFavoritebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnaddfav"));
         panel79.add(AddCommandFavoritebutton);
@@ -3517,8 +3515,10 @@ private String getSeparatorString() {
         udcCopyFrombutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
-                    EUDC.UpdateTable(rootPanel, UserCombiscomboBox, UserCombiScrollPane);
+                    if (MyVariables.getuserCombiTableValues() == null || MyVariables.getuserCombiTableValues().size() == 0) // Only update table only if user has not selected one
+                        EUDC.UpdateTable(rootPanel, UserCombiscomboBox, UserCombiScrollPane);
                     EUDC.CopyFromSelectedImage();
                 } else {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
@@ -3528,6 +3528,7 @@ private String getSeparatorString() {
         udcSaveTobutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     EUDC.SaveTableValues(udcOverwriteOriginalscheckBox, progressBar);
                 } else {

@@ -3233,7 +3233,7 @@
                           </grid>
                         </children>
                       </grid>
-                      <grid id="b02cf" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="b02cf" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="10" left="20" bottom="10" right="20"/>
                         <constraints>
                           <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.usercombis"/>
@@ -3368,11 +3368,6 @@
                               </grid>
                             </children>
                           </grid>
-                          <vspacer id="f4af9">
-                            <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                          </vspacer>
                         </children>
                       </grid>
                     </children>
