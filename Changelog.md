@@ -1,5 +1,22 @@
 # Changelog
 
+## 2022-04-03 2.0.0
+* Complete rewite of displaying image previews in the interface based on setting of Checkbox "Create Previews":
+    * Checked: **Displays the images in a resizable image grid**, instead of the table. It allows for instantanious resize.
+    * Unchecked: In a "filenames only" table in case you really want to load hundreds or more images at the time.
+* Improve reading of metadata in background with factor 3-15 (depending on number of images)
+* New splashscreen on startup (Thanks to Sebastian Gersbach). Due to Apple "anti-java" policy, this splashscreen can't be displayed in the bundle.
+* Screen output from a lot of names and metadata is now HTML-encoded. jExifToolGUI now correctly displays in UTF-8 (2-byte character encoding), also on Windows, but most platforms are not yet UTF-16 (3-byte character encoding) ready unless specifically installed, which means that Chinese and/or Taiwanese texts are not correctly displayed. HTML encoding overcomes this.
+* Add enhancement [pull request #223](https://github.com/hvdwolf/jExifToolGUI/issues/223): Added "Save" column with checkbox to User Defined Combination. (Thanks to sossw).
+* On image loading display some "placeholder" texts in the grid and the metadata table, to show the user that the program is really doing something.
+* Improve exiftool startup and preferences check. It contained a small error but it is also amazing what users manage to select as "exiftool".
+* Fix error in search/display of metadata via search button. Errors or corruptions in metadata made JTG crash in the background.
+* Updated logback to 1.2.11 to overcome the "Security Vulnerability CVE-2021-45046" (although in this java applcation nothing will happen).
+* Hebrew (עִברִית) added as language.Thanks to sufti1323.
+* Altered entire application (I hope) to enable "Right-to-Left" languages (like Hebrew).
+* Fix [issue #201](https://github.com/hvdwolf/jExifToolGUI/issues/201) (thanks sossw): "Edit data > copy from selected image = NOK"
+* Add Feature request [issue #203](https://github.com/hvdwolf/jExifToolGUI/issues/203): "User-defined metadata > Export path unknown" => Program now shows where it is saved"
+
 
 ## 2021-11-13 1.10.0
 * Complete rewrite of image loading and metadata.
