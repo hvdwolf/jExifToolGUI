@@ -9,7 +9,7 @@ jExifToolGUI also contains extensive renaming functionality based on the Exif in
 **ExifTool** is a platform-independent Perl command-line application and library for reading, writing and editing metadata in a wide variety of files.<br>
 Many thanks go to Phil Harvey for his excellent tool. Without ExifTool, this graphical frontend for ExifTool would never have existed.<br>
 [Exiftool](https://exiftool.org/) is by far the best and most extensive metadata tool available!<br>
-It reads and writes metadata information from/to many files, but primarily focuses on photos/images. It reads/writes EXIF, GPS, XMP, maker notes for many cameras, JFIF, GeoTIFF, ICC Profile, Photoshop IRB, FlashPix, ISAD(G) and many, many more tags.<br>
+It reads and writes metadata information from/to many files, but primarily focuses on photos/images. It reads/writes EXIF, GPS, XMP, maker notes for many cameras, JFIF, GeoTIFF, ICC Profile, Photoshop IRB, FlashPix, VRA Core 4, ISAD(G) and many, many more tags.<br>
 It can use a "reference" image to write the tags to a multiple set of photos or a complete directory containing photos.<br>
 
 Copylefted libre software. Use, study, change and share; with all, according to the GPLv3+ license.
