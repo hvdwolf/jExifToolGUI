@@ -1,5 +1,13 @@
 # Changelog
 
+## 2022-05-18 2.0.1
+* Add Chinese simplified translation (简体中文). Thanks to @mt25cyb (Martin). This requires of course a utf-8 font capable of displaying Chinese characters, or a truly Chinese font.
+* Fix: Debian deb: Java version was limited to V11 instead of >= V11.
+* Fix: Version check not correct for versions 2.0 and higher.
+* Extensive changes German translation. Thanks to sal0max.
+* Added a few more options to the date/time renaming options. This should actually require a big rewrite (future action).
+
+
 ## 2022-04-03 2.0.0
 * Complete rewite of displaying image previews in the interface based on setting of Checkbox "Create Previews":
     * Checked: **Displays the images in a resizable image grid**, instead of the table. It allows for instantanious resize.

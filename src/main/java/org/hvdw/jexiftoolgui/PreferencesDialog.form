@@ -612,8 +612,8 @@
                   </component>
                   <scrollpane id="5c4e0" binding="allFontsScrollPane">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="2" indent="1" use-parent-layout="false">
-                        <preferred-size width="400" height="125"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="2" indent="4" use-parent-layout="false">
+                        <preferred-size width="400" height="-1"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -624,9 +624,9 @@
                       <component id="d2d20" class="javax.swing.JList" binding="allSystemFonts">
                         <constraints/>
                         <properties>
-                          <maximumSize width="-1" height="100000"/>
+                          <maximumSize width="-1" height="10000"/>
                           <minimumSize width="-1" height="100"/>
-                          <preferredSize width="-1" height="1000"/>
+                          <preferredSize width="-1" height="5000"/>
                           <selectionMode value="0"/>
                           <visibleRowCount value="8"/>
                         </properties>

@@ -365,14 +365,14 @@ public class Utils {
                 logger.info("This version: " + ProgramTexts.Version);
                 String[] awebversion = web_version.split("\\.");  // Need to escape on literal dot instead of regex ".", which means any character
                 String[] alocalversion = (ProgramTexts.Version).split("\\.");
-                if (Integer.parseInt(alocalversion[0]) > Integer.parseInt(awebversion[0]) ) {
-                    newer_available = false;
+                if (Integer.parseInt(awebversion[0]) > Integer.parseInt(alocalversion[0]) ) {
+                    newer_available = true;
                     logger.debug("web_digit1 {} local_digit1 {} newer_available {}",awebversion[0], alocalversion[0], newer_available);
-                } else if (Integer.parseInt(alocalversion[1]) > Integer.parseInt(awebversion[1]) ) {
-                    newer_available = false;
+                } else if (Integer.parseInt(awebversion[1]) > Integer.parseInt(alocalversion[1]) ) {
+                    newer_available = true;
                     logger.debug("web_digit2 {} local_digit2 {} newer_available {}",awebversion[1], alocalversion[1], newer_available);
-                } else if (Integer.parseInt(alocalversion[2]) > Integer.parseInt(awebversion[2]) ) {
-                    newer_available = false;
+                } else if (Integer.parseInt(awebversion[2]) > Integer.parseInt(alocalversion[2]) ) {
+                    newer_available = true;
                     logger.debug("web_digit2 {} local_digit2 {} newer_available {}",awebversion[2], alocalversion[2], newer_available);
                 }
                 //int version_compare = web_version.compareTo(ProgramTexts.Version);

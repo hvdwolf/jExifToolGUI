@@ -224,7 +224,15 @@ public class RenamePhotos extends JDialog {
                 } else if (prefixDate_timecomboBox.getSelectedItem() == "YYYY-MM-DD-HH-MM-SS") {
                     prefix_message = "YYYY-MM-DD-HH-MM-SS";
                     prefixformat = "%Y-%m-%d-%H-%M-%S";
-                }
+                } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYMMDD HHMMSS") {
+                    suffix_message = "YYYMMDD HHMMSS";
+                    suffixformat = "%Y%m%d %H%M%S";
+                } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY_MM_DD HH_MM_SS") {
+                    suffix_message = "YYYY_MM_DD HH_MM_SS";
+                    suffixformat = "%Y_%m_%d %H_%M_%S";
+                } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY-MM-DD HH-MM-SS") {
+                    suffix_message = "YYYY-MM-DD HH-MM-SS";
+                    suffixformat = "%Y-%m-%d %H-%M-%S";                }
                 fulldatetime = true;
             } else if (prefixDateradioButton.isSelected()) {
                 if (prefixDatecomboBox.getSelectedItem() == "YYYYMMDD") {
@@ -278,7 +286,15 @@ public class RenamePhotos extends JDialog {
                     } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY-MM-DD-HH-MM-SS") {
                         suffix_message = "YYYY-MM-DD-HH-MM-SS";
                         suffixformat = "%Y-%m-%d-%H-%M-%S";
-                    }
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYMMDD HHMMSS") {
+                        suffix_message = "YYYMMDD HHMMSS";
+                        suffixformat = "%Y%m%d %H%M%S";
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY_MM_DD HH_MM_SS") {
+                        suffix_message = "YYYY_MM_DD HH_MM_SS";
+                        suffixformat = "%Y_%m_%d %H_%M_%S";
+                    } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY-MM-DD HH-MM-SS") {
+                        suffix_message = "YYYY-MM-DD HH-MM-SS";
+                        suffixformat = "%Y-%m-%d %H-%M-%S";                    }
                     fulldatetime = true;
                 } else if (suffixDateradioButton.isSelected()) {
                     if (suffixDatecomboBox.getSelectedItem() == "YYYYMMDD") {

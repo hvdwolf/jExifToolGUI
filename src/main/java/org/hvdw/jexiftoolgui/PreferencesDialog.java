@@ -517,7 +517,7 @@ public class PreferencesDialog extends JDialog {
         metadataLanuagecomboBox.setModel(new DefaultComboBoxModel(exiftoolLanguages));
         String Locales = StandardFileIO.readTextFileAsStringFromResource("texts/Locales.txt");
         //String[] appLocales = Locales.split("\\r?\\n"); // split on new lines
-        String[] appLocales = {"System default - default", "de_DE - Deutsch", "en_US - English", "es_ES - Español", "iw_HE - עִברִית", "nb_NO - Norsk (bokmål)", "nl_NL - Nederlands", "ru_RU - Pусский"};
+        String[] appLocales = {"System default - default", "de_DE - Deutsch", "en_US - English", "es_ES - Español", "iw_HE - עִברִית", "nb_NO - Norsk (bokmål)", "nl_NL - Nederlands", "ru_RU - Pусский", "zh_CN - 简体中文"};
         localecomboBox.setModel(new DefaultComboBoxModel(appLocales));
         filedialogexplained.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.dialogexplained")));
         logleveltext.setText(String.format(ProgramTexts.HTML, 500, ResourceBundle.getBundle("translations/program_strings").getString("prefs.logleveltext")));
@@ -831,11 +831,11 @@ public class PreferencesDialog extends JDialog {
         fontJPanel.add(fontPreview, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         allFontsScrollPane = new JScrollPane();
         allFontsScrollPane.setVerticalScrollBarPolicy(20);
-        fontJPanel.add(allFontsScrollPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(400, 125), null, 1, false));
+        fontJPanel.add(allFontsScrollPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(400, -1), null, 4, false));
         allSystemFonts = new JList();
-        allSystemFonts.setMaximumSize(new Dimension(-1, 100000));
+        allSystemFonts.setMaximumSize(new Dimension(-1, 10000));
         allSystemFonts.setMinimumSize(new Dimension(-1, 100));
-        allSystemFonts.setPreferredSize(new Dimension(-1, 1000));
+        allSystemFonts.setPreferredSize(new Dimension(-1, 5000));
         allSystemFonts.setSelectionMode(0);
         allSystemFonts.setVisibleRowCount(8);
         allFontsScrollPane.setViewportView(allSystemFonts);

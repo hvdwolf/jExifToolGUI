@@ -38,7 +38,7 @@ public class MyConstants {
     public static final String[] JAVA_SUP_EXTENSIONS = {"bmp","gif,","jpg", "jpeg", "png", "tif", "tiff"};
 
     // Date_time and Date strings
-    public static final String[] DATES_TIMES_STRINGS = {"YYYYMMDDHHMMSS", "YYYYMMDD_HHMMSS", "YYYYMMDD-HHMMSS", "YYYY_MM_DD_HH_MM_SS", "YYYY-MM-DD-HH-MM-SS"};
+    public static final String[] DATES_TIMES_STRINGS = {"YYYYMMDDHHMMSS", "YYYYMMDD_HHMMSS", "YYYYMMDD-HHMMSS", "YYYY_MM_DD_HH_MM_SS", "YYYY-MM-DD-HH-MM-SS", "YYYYMMDD HHMMSS", "YYYY_MM_DD HH_MM_SS", "YYYY-MM-DD HH-MM-SS"};
     public static final String[] DATES_STRINGS = {"YYYYMMDD", "YYYY_MM_DD", "YYYY-MM-DD"};
 
     // Impossible value to prevent NPEs during radio button selection when no images loaded
