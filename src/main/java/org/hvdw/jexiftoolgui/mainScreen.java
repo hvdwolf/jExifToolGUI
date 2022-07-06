@@ -4151,7 +4151,7 @@ private String getSeparatorString() {
 
         // Use the mouselistener for the double-click to display the image
         // on the filenamestable
-        MouseListeners.FileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected());
+        MouseListeners.FileNamesTableMouseListener(tableListfiles, ListexiftoolInfotable, whichRBselected(), OutputLabel);
 
         //Listen to drop events
         rootPanelDropListener();

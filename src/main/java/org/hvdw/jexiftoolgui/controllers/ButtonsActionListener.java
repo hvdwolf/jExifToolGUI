@@ -53,6 +53,7 @@ public class ButtonsActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent gav) { // gav = gui ActionEvent
         List<Integer> selectedIndicesList = new ArrayList<Integer>();
+        OutputLabel.setText("");
 
         // This is not nice object oriented programming but gives a nice clear structured overview
         switch (gav.getActionCommand()) {

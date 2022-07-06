@@ -69,6 +69,7 @@ public class MenuActionListener implements ActionListener  {
         if (selectedIndicesList == null) {
             selectedIndicesList = new ArrayList<>();
         }
+        OutputLabel.setText("");
 
         switch (mev.getActionCommand()) {
             case "Preferences":

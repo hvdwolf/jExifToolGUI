@@ -6,16 +6,12 @@ import org.hvdw.jexiftoolgui.Utils;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -23,7 +19,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MouseListeners {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(MouseListeners.class);
 
-    public static void FileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, String params[]) {
+    public static void FileNamesTableMouseListener(JTable tableListfiles, JTable ListexiftoolInfotable, String[] params, JLabel OutputLabel) {
         // Use the mouse listener for the single cell double-click selection for the left table to be able to
         // display the image in the default viewer
 
@@ -37,6 +33,7 @@ public class MouseListeners {
                     Utils.displaySelectedImageInExternalViewer();
                     logger.debug("double-click registered from thumbstable from row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
                 }
+                OutputLabel.setText("");
                 logger.debug("mouselistener: selected cell in row {} and column {}", String.valueOf(trow), String.valueOf(tcolumn));
             }
         });
@@ -59,6 +56,7 @@ public class MouseListeners {
                     logger.debug("double-click registered from filesJlist from index {}", String.valueOf(listCell));
                     Utils.displaySelectedImageInExternalViewer();
                 }
+                mainScreenLabels[0].setText("");
                 logger.debug("single-click mouselistener: selected cell in index {}", String.valueOf(listCell));
                 String[] params = MyVariables.getmainScreenParams();
                 String res = Utils.getImageInfoFromSelectedFile(params);
