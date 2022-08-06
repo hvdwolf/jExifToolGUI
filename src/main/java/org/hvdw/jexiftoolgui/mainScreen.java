@@ -3162,8 +3162,10 @@ private String getSeparatorString() {
                 JxMapViewer JMV = new JxMapViewer();
                 Map<String, String> place = JMV.showDialog( ""); // Search using empty fields
                 if (!"empty".equals(place.get("empty"))) {
-                    gpsLatDecimaltextField.setText(place.get("geoLatitude"));
-                    gpsLonDecimaltextField.setText(place.get("geoLongitude"));
+                    if (place.get("saveGpsLocation").equals("true")) {
+                        gpsLatDecimaltextField.setText(place.get("geoLatitude"));
+                        gpsLonDecimaltextField.setText(place.get("geoLongitude"));
+                    }
                     gpsStateProvincetextField.setText(place.get("state"));
                     gpsCountrytextField.setText(place.get("country"));
                     gpsLocationtextField.setText(place.get("display_Name"));
@@ -3216,8 +3218,10 @@ private String getSeparatorString() {
                 JxMapViewer JMV = new JxMapViewer();
                 Map<String, String> place = JMV.showDialog(coordinates); // Search using empty fields
                 if (!"empty".equals(place.get("empty"))) {
-                    gpsLatDecimaltextField.setText(place.get("geoLatitude"));
-                    gpsLonDecimaltextField.setText(place.get("geoLongitude"));
+                    if (place.get("saveGpsLocation").equals("true")) {
+                        gpsLatDecimaltextField.setText(place.get("geoLatitude"));
+                        gpsLonDecimaltextField.setText(place.get("geoLongitude"));
+                    }
                     gpsStateProvincetextField.setText(place.get("state"));
                     gpsCountrytextField.setText(place.get("country"));
                     gpsLocationtextField.setText(place.get("display_Name"));
