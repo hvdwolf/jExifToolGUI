@@ -40,6 +40,7 @@ import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
  */
 public class JxMapViewer extends JDialog {
     private JPanel contentPane;
+    private JButton buttonLocation;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField SearchtextField;
@@ -71,6 +72,13 @@ public class JxMapViewer extends JDialog {
         setModal(true);
         this.setIconImage(Utils.getFrameIcon());
         getRootPane().setDefaultButton(searchLocationbutton);
+
+        buttonLocation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onOnlyLocation();
+            }
+        });
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -145,10 +153,16 @@ public class JxMapViewer extends JDialog {
         });
     }
 
+    private void onOnlyLocation() {
+        selectedPlace.put("saveGpsLocation", "false");
+        dispose();
+    }
 
     private void onOK() {
         //returnPlace = new String[]{lblDisplay_Name.getText().trim(), lblLatitude.getText().trim(), lblLongitude.getText().trim()};
+        selectedPlace.put("saveGpsLocation", "true");
         if (!"".equals(lblLatitude.getText())) {
+            selectedPlace.put("saveGpsLocation", "true");
             try {
                 Double doub = Double.parseDouble(lblLatitude.getText().trim());
                 prefs.storeByKey(LATITUDE, lblLatitude.getText().trim());
@@ -176,6 +190,7 @@ public class JxMapViewer extends JDialog {
         //returnPlace = new String[]{"", "", ""};
         selectedPlace = new HashMap<>();
         selectedPlace.put("empty", "empty");
+        selectedPlace.put("saveGpsLocation", "true");
         dispose();
     }
 
@@ -280,6 +295,7 @@ public class JxMapViewer extends JDialog {
         try {
             String getResult = Nominatim.ReverseSearch(latitude, longitude);
             selectedPlace = Nominatim.parseReverseLocationJson(getResult);
+            selectedPlace.put("saveGpsLocation", "true");
             lblDisplay_Name.setText(selectedPlace.get("display_Name"));
             GeoPosition topleft = new GeoPosition(Double.parseDouble(selectedPlace.get("bbX1")), Double.parseDouble(selectedPlace.get("bbY1")));
             GeoPosition topright = new GeoPosition(Double.parseDouble(selectedPlace.get("bbX2")), Double.parseDouble(selectedPlace.get("bbY1")));
@@ -510,14 +526,17 @@ public class JxMapViewer extends JDialog {
         final Spacer spacer1 = new Spacer();
         panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
+        panel2.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
         this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("translations/program_strings", "mpv.okbtn"));
-        panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(buttonOK, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("translations/program_strings", "dlg.close"));
-        panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(buttonCancel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        buttonLocation = new JButton();
+        this.$$$loadButtonText$$$(buttonLocation, this.$$$getMessageFromBundle$$$("translations/program_strings", "mpv.locationbtn"));
+        panel2.add(buttonLocation, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
