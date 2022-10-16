@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cp program_strings_en.properties program_strings.properties
+cp program_help_texts_en.properties program_help_texts.properties
+cp program_strings_zh-CN.properties program_strings_zh_CN.properties
+cp program_help_texts_zh-CN.properties program_help_texts_zh_CN.properties
+cp program_help_texts_id.properties program_help_texts_in.properties
+cp program_strings_id.properties program_strings_in.properties

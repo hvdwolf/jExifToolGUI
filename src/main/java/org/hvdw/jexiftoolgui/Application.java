@@ -47,14 +47,22 @@ public class Application {
 
         String prefLocale = prefs.getByKey(PREFERRED_APP_LANGUAGE, "System default");
         if (!prefLocale.contains("default")) {
+            // We have two deviations here.
+            // Simplified Chinese is according ISO maintained as zn-CH, but java wants zn_CH.
+            // Indonesian (bahasa) is according ISO maintained as id, but java wants in_ID.
+            // Before compilation the script "copybeforecompile.sh" must be executed.
+            // That script is inside src/main/resources/translations
             String[] localearray = prefLocale.split(" - ");
             String[] splitlocale = null;
-            //logger.info("localearray[0] {}", localearray[0]);
+            Boolean singlelocale = false;
             if (localearray[0].contains("-")) { // in case of simplified chinese
                 splitlocale = localearray[0].split("-");
             } else {
                 splitlocale = localearray[0].split("_");
             }
+            //splitlocale[0] = "id";
+            //splitlocale[1] = "ID";
+            //logger.info("locale set to id");
             logger.info("splitlocale[0] {} splitlocale[1] {}", splitlocale[0].trim(), splitlocale[1].trim());
             Locale.setDefault(new Locale(splitlocale[0].trim(), splitlocale[1].trim()));
             logger.info("Continuing in {}, selecting {} ", prefLocale, splitlocale[0]);
