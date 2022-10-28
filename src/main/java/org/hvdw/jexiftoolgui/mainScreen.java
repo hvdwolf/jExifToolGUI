@@ -3621,6 +3621,7 @@ private String getSeparatorString() {
         });
         GenExportbuttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                selectedIndicesList = MyVariables.getselectedIndicesList();
                 if ( ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) || (!("".equals(ExpImgFoldertextField.getText()))) ) {
                     ExportMetadata.writeExport(rootPanel, getGeneralExportRadiobuttons(), getGeneralExportCheckButtons(), exportUserCombicomboBox, progressBar, ExpImgFoldertextField.getText(), includeSubFoldersCheckBox.isSelected());
                 } else {

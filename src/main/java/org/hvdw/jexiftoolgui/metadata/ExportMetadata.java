@@ -33,10 +33,12 @@ public class ExportMetadata {
         String filepath = ""; // Again: we need this for the csv option
         int[] selectedIndices = null;
         File[] files = null;
-        if ("".equals(ExpImgFoldertextField)) {
+        if (ExpImgFoldertextField.isBlank()) { //if the foldertextfield is empty; we need to have selected images
             selectedIndices = MyVariables.getSelectedFilenamesIndices();
             files = MyVariables.getLoadedFiles();
+            logger.info("passed the if field");
         }
+
         String createdExportFiles = "";
         String createdExportFileExtension = "";
         int counter = 1;
@@ -163,7 +165,7 @@ public class ExportMetadata {
                 }
 
                 // Use files from previews or a folder
-                if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+                if (!(ExpImgFoldertextField.isBlank())) { // if the foldertextfield is not empty; folder takes precedence over preview files
                     logger.debug("exporting from folder {}", ExpImgFoldertextField );
                     createdExportFiles = "<a href=\"file://" + ExpImgFoldertextField + "\">" +  ExpImgFoldertextField + "</a><br>";
                     logger.debug("includesubfolder {}", includeSubFolders);
@@ -234,7 +236,7 @@ public class ExportMetadata {
                                     CommandRunner.runCommand(params);
                                     progressBar.setVisible(false);
                                     SimpleWebView WV = new SimpleWebView();
-                                    if (!("".equals(ExpImgFoldertextField))) { //folder specified
+                                    if (!(ExpImgFoldertextField.isBlank())) { //folder specified
                                         WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfolder") + ":<br><br>" + finalCreatedExportFiles)), 700, (int) (100 + (finalCounter * 15)));
                                     } else {
                                         WV.HTMLView(ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles"), String.format(ProgramTexts.HTML, 600, (ResourceBundle.getBundle("translations/program_strings").getString("emd.expfiles") + ":<br><br>" + finalCreatedExportFiles)), 700, (int) (100 + (finalCounter * 15)));
@@ -271,7 +273,7 @@ public class ExportMetadata {
                                     String result = CommandRunner.runCommand(params);
                                     progressBar.setVisible(false);
                                     logger.trace("\n\n\nresult {}", result);
-                                    if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+                                    if (!(ExpImgFoldertextField.isBlank())) { // folder takes precedence over preview files
                                         // do something
                                         if (isWindows) {
                                             writer[0] = new BufferedWriter(new FileWriter(ExpImgFoldertextField.replace("\\", "/") + File.separator + "out.csv"));
@@ -438,7 +440,7 @@ public class ExportMetadata {
         int[] selectedIndices = null;
         File[] files = null;
         String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("dlg.continue"),  ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
-        if (("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+        if (ExpImgFoldertextField.isBlank()) { // foldertexfield empty; otherwise folder takes precedence over preview files
             selectedIndices = MyVariables.getSelectedFilenamesIndices();
             files = MyVariables.getLoadedFiles();
         }
@@ -473,7 +475,7 @@ public class ExportMetadata {
             // choice 1: Cancel
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+            if (ExpImgFoldertextField.isBlank()) { // folder takes precedence over preview files
                 // exiftool -o %d%f.exif -all -unsafe DIR   ; exiftool -o %d%f.exif -all -unsafe -r DIR
                 cmdparams = new ArrayList<String>();
                 cmdparams.add(Utils.platformExiftool());
@@ -537,10 +539,11 @@ public class ExportMetadata {
         //String[] options = {ResourceBundle.getBundle("translations/program_strings").getString("esc.all"), ResourceBundle.getBundle("translations/program_strings").getString("dlg.cancel")};
         int[] selectedIndices = null;
         File[] files = null;
-        if (("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+        if (ExpImgFoldertextField.isBlank()) { // folder takes precedence over preview files
             selectedIndices = MyVariables.getSelectedFilenamesIndices();
             files = MyVariables.getLoadedFiles();
         }
+
 
         logger.info("Create xmp sidecar");
         int choice = JOptionPane.showOptionDialog(rootpanel, String.format(ProgramTexts.HTML, 450, ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptext")), ResourceBundle.getBundle("translations/program_strings").getString("esc.xmptitle"),
@@ -552,7 +555,7 @@ public class ExportMetadata {
             // choice 2: Cancel
             boolean isWindows = Utils.isOsFromMicrosoft();
 
-            if (!("".equals(ExpImgFoldertextField))) { // folder takes precedence over preview files
+            if (!(ExpImgFoldertextField.isBlank())) { // folder takes precedence over preview files
                 cmdparams = new ArrayList<String>();
                 cmdparams.add(Utils.platformExiftool());
                 cmdparams.add("-o");
