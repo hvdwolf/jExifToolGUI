@@ -177,8 +177,10 @@ public class RenamePhotos extends JDialog {
         for (int digit = 2; digit <= 6; digit++) {
             DigitscomboBox.addItem(digit);
         }
+        StartOnImgcomboBox.addItem(ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitszero"));
         StartOnImgcomboBox.addItem(ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitsone"));
         StartOnImgcomboBox.addItem(ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitstwo"));
+        StartOnImgcomboBox.setSelectedIndex(1);
     }
 
     private void rename_photos() {
@@ -336,8 +338,6 @@ public class RenamePhotos extends JDialog {
                 } else if (suffixOriginalFilenameradioButton.isSelected()) {
                     //suffix_message = "${filename}";
                     //suffix = "${filename}";
-                    //String tmpstr = "${filename}";
-                    //logger.info("bestandsnaam is ${filename}");
                     suffix_message = "${BaseName}";
                     suffix = "${BaseName}";
                     suffixformat = "";
@@ -358,6 +358,10 @@ public class RenamePhotos extends JDialog {
 
             // Finally: Does the user want to start counting as of the first image or starting on the second image
             if (StartOnImgcomboBox.getSelectedIndex() == 0) {
+                startcounting = "";
+                logger.info("Do not count");
+                startcounting_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitszero");
+            } else if (StartOnImgcomboBox.getSelectedIndex() == 1) {
                 startcounting = "nc";
                 logger.info("start counting on 1st image");
                 startcounting_message = ResourceBundle.getBundle("translations/program_strings").getString("rph.nooffidgitsone");
@@ -427,11 +431,14 @@ public class RenamePhotos extends JDialog {
                 if (!suffixDonNotUseradioButton.isSelected()) {
                     exifcommands.append("_" + suffix);
                 }
-                if (fulldatetime) {
-                    // This means that the autonumber should only work on images that have the same full datetime
-                    exifcommands.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
-                } else {
-                    exifcommands.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
+                //logger.info("combobox selection " + StartOnImgcomboBox.getSelectedItem());
+                if ((StartOnImgcomboBox.getSelectedIndex() > 0)) {
+                    if (fulldatetime) {
+                        // This means that the autonumber should only work on images that have the same full datetime
+                        exifcommands.append("%-" + DigitscomboBox.getSelectedItem() + startcounting);
+                    } else {
+                        exifcommands.append("%-." + DigitscomboBox.getSelectedItem() + startcounting);
+                    }
                 }
                 if (!"".equals(prefixformat)) {
                     // This means that the prefix is a date(time), we do need an additional cmdparams command
@@ -476,31 +483,10 @@ public class RenamePhotos extends JDialog {
                     if (isWindows) {
                         cmdparams.add(exifcommands.toString());
                         for (int index : selectedFilenamesIndices) {
-                            /*if ("${filename}".equals(suffix_message)) {
-                                String fileName = files[index].getName();
-                                int pos = fileName.lastIndexOf(".");
-                                if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
-                                    fileName = fileName.substring(0, pos);
-                                }
-                                cmdparams.add(fileName.replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
-                            } else {
-                                cmdparams.add(files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
-                            } */
                             cmdparams.add(files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
                         }
                     } else {
                         for (int index : selectedFilenamesIndices) {
-                            //exifcommands.append(" " + files[index].getPath().replaceAll(" ", "\\ ").replace("(", "\\(").replace(")", "\\)"));
-                            /*if ("${filename}".equals(suffix_message)) {
-                                String fileName = files[index].getName();
-                                int pos = fileName.lastIndexOf(".");
-                                if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
-                                    fileName = fileName.substring(0, pos);
-                                }
-                                exifcommands.append(" '" + fileName.replace("(", "\\(").replace(")", "\\)") + "'");
-                            } else {
-                                exifcommands.append(" '" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "'");
-                            }*/
                             exifcommands.append(" '" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "'");
                         }
                         cmdparams.add(exifcommands.toString());
