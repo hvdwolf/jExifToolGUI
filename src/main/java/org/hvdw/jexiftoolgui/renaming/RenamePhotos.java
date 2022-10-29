@@ -9,6 +9,7 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.PreferencesFacade;
+import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -26,6 +27,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.IPreferencesFacade.PreferenceKey.*;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
+import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.USER_HOME;
 
 public class RenamePhotos extends JDialog {
     private JPanel rootRenamingPane;
@@ -232,7 +235,8 @@ public class RenamePhotos extends JDialog {
                     suffixformat = "%Y_%m_%d %H_%M_%S";
                 } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY-MM-DD HH-MM-SS") {
                     suffix_message = "YYYY-MM-DD HH-MM-SS";
-                    suffixformat = "%Y-%m-%d %H-%M-%S";                }
+                    suffixformat = "%Y-%m-%d %H-%M-%S";
+                }
                 fulldatetime = true;
             } else if (prefixDateradioButton.isSelected()) {
                 if (prefixDatecomboBox.getSelectedItem() == "YYYYMMDD") {
@@ -294,7 +298,8 @@ public class RenamePhotos extends JDialog {
                         suffixformat = "%Y_%m_%d %H_%M_%S";
                     } else if (suffixDatetimecomboBox.getSelectedItem() == "YYYY-MM-DD HH-MM-SS") {
                         suffix_message = "YYYY-MM-DD HH-MM-SS";
-                        suffixformat = "%Y-%m-%d %H-%M-%S";                    }
+                        suffixformat = "%Y-%m-%d %H-%M-%S";
+                    }
                     fulldatetime = true;
                 } else if (suffixDateradioButton.isSelected()) {
                     if (suffixDatecomboBox.getSelectedItem() == "YYYYMMDD") {
@@ -329,8 +334,12 @@ public class RenamePhotos extends JDialog {
                     suffix = "${exif:focallengthin35mmformat}";
                     suffixformat = "";
                 } else if (suffixOriginalFilenameradioButton.isSelected()) {
-                    suffix_message = "${filename}";
-                    suffix = "${filename}";
+                    //suffix_message = "${filename}";
+                    //suffix = "${filename}";
+                    //String tmpstr = "${filename}";
+                    //logger.info("bestandsnaam is ${filename}");
+                    suffix_message = "${BaseName}";
+                    suffix = "${BaseName}";
                     suffixformat = "";
                 }
             }
@@ -382,21 +391,26 @@ public class RenamePhotos extends JDialog {
                 // Check if wee need to preserver the file modify date
                 boolean preserveModifyDate = prefs.getByKey(PRESERVE_MODIFY_DATE, true);
                 if ((suffixDonNotUseradioButton.isSelected()) && (prefixStringradioButton.isSelected())) {
+                    String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
+                    String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
                     // string as prefix and no suffix
                     if (isWindows) {
                         cmdparams.add(Utils.platformExiftool().replace("\\", "/"));
                         if (preserveModifyDate) {
                             cmdparams.add("-preserve");
+                            cmdparams.add("-config");
+                            cmdparams.add(strjexiftoolguifolder + File.separator + "extra_functions.config");
                         }
                         exifcommands = new StringBuilder("\"-FileName=" + prefix);
                     } else {
                         // The < or > redirect options cannot directly be used within a single param on unixes/linuxes
                         cmdparams.add("/bin/sh");
                         cmdparams.add("-c");
+                        String configFile = " -config" + strjexiftoolguifolder + File.separator + "extra_functions.config ";
                         if (preserveModifyDate) {
-                            exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " -preserve '-FileName=" + prefix);
+                            exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + configFile + " -preserve '-FileName=" + prefix);
                         } else {
-                            exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " '-FileName=" + prefix);
+                            exifcommands = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + configFile + " '-FileName=" + prefix);
                         }
                     }
                 } else { // Or a suffix or date(time), or both
@@ -462,11 +476,31 @@ public class RenamePhotos extends JDialog {
                     if (isWindows) {
                         cmdparams.add(exifcommands.toString());
                         for (int index : selectedFilenamesIndices) {
+                            /*if ("${filename}".equals(suffix_message)) {
+                                String fileName = files[index].getName();
+                                int pos = fileName.lastIndexOf(".");
+                                if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+                                    fileName = fileName.substring(0, pos);
+                                }
+                                cmdparams.add(fileName.replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
+                            } else {
+                                cmdparams.add(files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
+                            } */
                             cmdparams.add(files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
                         }
                     } else {
                         for (int index : selectedFilenamesIndices) {
                             //exifcommands.append(" " + files[index].getPath().replaceAll(" ", "\\ ").replace("(", "\\(").replace(")", "\\)"));
+                            /*if ("${filename}".equals(suffix_message)) {
+                                String fileName = files[index].getName();
+                                int pos = fileName.lastIndexOf(".");
+                                if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+                                    fileName = fileName.substring(0, pos);
+                                }
+                                exifcommands.append(" '" + fileName.replace("(", "\\(").replace(")", "\\)") + "'");
+                            } else {
+                                exifcommands.append(" '" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "'");
+                            }*/
                             exifcommands.append(" '" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "'");
                         }
                         cmdparams.add(exifcommands.toString());
@@ -704,7 +738,7 @@ public class RenamePhotos extends JDialog {
         this.$$$loadButtonText$$$(suffixOriginalFilenameradioButton, this.$$$getMessageFromBundle$$$("translations/program_strings", "rph.orgfilename"));
         panel17.add(suffixOriginalFilenameradioButton);
         final JLabel label8 = new JLabel();
-        label8.setText("${filename}");
+        label8.setText("BaseName");
         panel17.add(label8);
         final JPanel panel18 = new JPanel();
         panel18.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));

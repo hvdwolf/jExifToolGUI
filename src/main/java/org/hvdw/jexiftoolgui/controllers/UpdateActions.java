@@ -160,6 +160,19 @@ public class UpdateActions {
 
     }
 
+    static void update_2_0() {
+        String queryresult = "";
+
+        // our data folder
+        String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
+        // Check if extra_functions.config exists
+        File vrae = new File(strjexiftoolguifolder + File.separator + "extra_functions.config");
+        if (!vrae.exists()) {
+            //vrae.delete();
+            String method_result = extract_resource_to_jexiftoolguiFolder("extra_functions.config", strjexiftoolguifolder, "");
+        }
+    }
+
     // ################## Start of the update stuff ####################
     // This is where we add extra tables or table data after an update that added extra functionality
     // This can also be to alter table commands
@@ -175,6 +188,7 @@ public class UpdateActions {
                 update_1_6();
                 update_1_7();
                 update_1_9();
+                update_2_0(); // Actually 2.0.2
                 //logger.debug("Checked and when necessary did the updates");
                 return null;
             }

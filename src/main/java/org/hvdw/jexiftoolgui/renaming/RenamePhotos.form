@@ -400,7 +400,7 @@
                       <component id="55b02" class="javax.swing.JLabel">
                         <constraints/>
                         <properties>
-                          <text value="${filename}"/>
+                          <text value="BaseName"/>
                         </properties>
                       </component>
                     </children>
