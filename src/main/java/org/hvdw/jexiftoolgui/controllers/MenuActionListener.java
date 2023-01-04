@@ -2,6 +2,7 @@ package org.hvdw.jexiftoolgui.controllers;
 
 import org.hvdw.jexiftoolgui.*;
 import org.hvdw.jexiftoolgui.datetime.DateTime;
+import org.hvdw.jexiftoolgui.datetime.ModifyAllDateTime;
 import org.hvdw.jexiftoolgui.datetime.ModifyDateTime;
 import org.hvdw.jexiftoolgui.datetime.ShiftDateTime;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -133,7 +134,15 @@ public class MenuActionListener implements ActionListener  {
                     JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
                 }
                 break;
-            case "Set file date to DateTimeOriginal":
+            case "Modify all dates and times":
+                if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
+                    ModifyAllDateTime MADT = new ModifyAllDateTime();
+                    MADT.showDialog(progressBar);
+                    OutputLabel.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(rootPanel, String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgslong")), ResourceBundle.getBundle("translations/program_strings").getString("msd.noimgs"), JOptionPane.WARNING_MESSAGE);
+                }
+                break;            case "Set file date to DateTimeOriginal":
                 if ( !(selectedIndicesList == null) && (selectedIndicesList.size() > 0) ) {
                     dateTime.setFileDateTimeToDateTimeOriginal(progressBar, "image");
                 } else {

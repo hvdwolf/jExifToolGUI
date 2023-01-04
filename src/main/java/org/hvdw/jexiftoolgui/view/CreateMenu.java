@@ -65,6 +65,10 @@ public class CreateMenu {
         menuItem.setActionCommand("Modify Date/time");
         menuItem.addActionListener(mal);
         myMenu.add(menuItem);
+        menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.modifyalldatetime"));
+        menuItem.setActionCommand("Modify all dates and times");
+        menuItem.addActionListener(mal);
+        myMenu.add(menuItem);
         menuItem = new JMenuItem(ResourceBundle.getBundle("translations/program_strings").getString("dtmenu.setfiledatetodatetimeoriginal"));
         menuItem.setActionCommand("Set file date to DateTimeOriginal");
         menuItem.addActionListener(mal);
