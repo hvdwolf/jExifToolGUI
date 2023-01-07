@@ -99,6 +99,10 @@ public class ModifyAllDateTime extends JDialog {
             cmdparams.add("-overwrite_original");
         }
         cmdparams.add("-AllDates=" + DatetextField.getText().trim());
+        cmdparams.add("-track1:trackcreatedate=" + DatetextField.getText().trim());
+        cmdparams.add("-track1:trackmodifydate=" + DatetextField.getText().trim());
+        cmdparams.add("-track2:mediacreatedate=" + DatetextField.getText().trim());
+        cmdparams.add("-track2:mediamodifydate=" + DatetextField.getText().trim());
 
         for (int index : selectedFilenamesIndices) {
             if (Utils.isOsFromMicrosoft()) {
