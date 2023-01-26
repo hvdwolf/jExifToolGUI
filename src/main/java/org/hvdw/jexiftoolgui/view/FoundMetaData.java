@@ -84,6 +84,7 @@ public class FoundMetaData extends JDialog {
                 File[] uniqueFileNames = {};
                 ArrayList<File> uniqueFileNamesList = new ArrayList<>();
                 for (String fileName : uniqueImageNames) {
+                    logger.debug("found filename for reload {}", fileName);
                     uniqueFileNamesList.add(new File(fileName));
                 }
                 uniqueFileNames = uniqueFileNamesList.toArray(uniqueFileNames);
@@ -134,9 +135,7 @@ public class FoundMetaData extends JDialog {
                 thirdcolumn = cellsList.get(2) + " (" + ResourceBundle.getBundle("translations/program_strings").getString("smd.value") + ": " + cellsList.get(3) + ")";
             }
             model.addRow(new Object[]{cellsList.get(0), secondcolumn, thirdcolumn});
-            imageNames.add(folderPath + File.separatorChar + cellsList.get(0));
-
-
+            imageNames.add(cellsList.get(0));
         }
 
 
