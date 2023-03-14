@@ -402,6 +402,7 @@ public class RenamePhotos extends JDialog {
                         cmdparams.add(Utils.platformExiftool().replace("\\", "/"));
                         if (preserveModifyDate) {
                             cmdparams.add("-preserve");
+                            // We also need the extra config file in case of "Basename" renaming options
                             cmdparams.add("-config");
                             cmdparams.add(strjexiftoolguifolder + File.separator + "extra_functions.config");
                         }
@@ -476,18 +477,18 @@ public class RenamePhotos extends JDialog {
                         cmdparams.add(exifcommands.toString());
                         cmdparams.add(RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
                     } else {
-                        exifcommands.append(" " + RenamingSourceFoldertextField.getText().replace(File.separator, "/"));
+                        exifcommands.append(" \"" + RenamingSourceFoldertextField.getText().replace(File.separator, "/") + "\"");
                         cmdparams.add(exifcommands.toString());
                     }
                 } else { // we have images selected in the main screen
                     if (isWindows) {
                         cmdparams.add(exifcommands.toString());
                         for (int index : selectedFilenamesIndices) {
-                            cmdparams.add(files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)"));
+                            cmdparams.add("\"" + files[index].getPath().replace("\\", "/").replace("(", "\\(").replace(")", "\\)") + "\"");
                         }
                     } else {
                         for (int index : selectedFilenamesIndices) {
-                            exifcommands.append(" '" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "'");
+                            exifcommands.append(" \"" + files[index].getPath().replace("(", "\\(").replace(")", "\\)") + "\"");
                         }
                         cmdparams.add(exifcommands.toString());
                     }
