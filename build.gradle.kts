@@ -55,6 +55,7 @@ dependencies {
 
     // Missing helpers and common utils in java
     implementation(group="org.apache.commons", name="commons-lang3", version="3.11")
+    implementation(group="commons-io", name="commons-io", version="2.7")
 
     // At some time maybe when I feel like adding charts to display ISOs, focal length, aperture and the like
     //implementation(group = "org.jfree", name = "jfreechart", version = "1.5.0")
