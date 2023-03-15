@@ -7,8 +7,8 @@
 # appimagetool: Download from https://github.com/AppImage/AppImageKit/releases
 # jre V11: download from https://adoptopenjdk.net/releases.html. Untar it and rename resulting folder to jre (to keepit simple over the versions)
 # Specify where we have installed our (unpacked) jre
-JRE="/var/host/media/removable/128GB/software/java/JREs/linux-jdk-11.0.12+7-jre/"
-IET="/var/host/media/removable/128GB/software/perl/Image-ExifTool-12.30"
+JRE="/home/hvdwolf/software/java/linux-jdk-11.0.15+10-jre/"
+IET="/mnt/chromeos/removable/128GB/software/perl/Image-ExifTool-12.30"
 
 
 if [ "$1" = "" ]
@@ -89,7 +89,7 @@ cd ..
 #
 wget -c https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage
 chmod +x appimagetool-x86_64.AppImage
-./appimagetool-x86_64.AppImage -n ${AppDir}
+ARCH=x86_64 ./appimagetool-x86_64.AppImage -n ${AppDir}
 
 #
 # Rename the created app image
