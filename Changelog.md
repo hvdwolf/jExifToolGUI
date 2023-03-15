@@ -1,5 +1,21 @@
 # Changelog
 
+## 2023-01-xx 2.0.2
+* Added Portuguese Brazilian language (40% translated). Thanks to fnogcps
+* Add Indonesian language/translation (bahasa Indonesia) (60% translated). Thanks to kodra. Required some extra work as java expects the long outdated "in_ID" instead of "id" or "id_ID".
+* Added Russian language (70% translated). Thanks to AHOHNMYC
+* Adapt MacOS bundle creation script to enable both a native x86_64 bundle and a native aarch64 ("new" M1) bundle.
+* Fix [issue #286](https://github.com/hvdwolf/jExifToolGUI/issues/286): "Search through metadata - reload images has path twice".
+* Fix [issue #281](https://github.com/hvdwolf/jExifToolGUI/issues/281): "ExifTool Commands panel > Help window []" -> Add additional link in exiftool commands to more examples.
+* Improvement [issue #280](https://github.com/hvdwolf/jExifToolGUI/issues/280): "CreateDate and other EXIF properties not set on quicktime movies". Exif info is diffult to save into videos, apart from some xmp-exif. Some users use the (specific) exif edit pane, but this does not work. Added new menu item "Date/Time -> "Modify All dates & times". It uses the exiftool "-AllDates" and "track1"/"track2" dates to update any date tag be it exif, xmp, pdf, quicktime, etc.
+* Fix [issue #245](https://github.com/hvdwolf/jExifToolGUI/issues/245) and [issue #279 (duplicate)](https://github.com/hvdwolf/jExifToolGUI/issues/279): "Commandline can't handle spaces in path".
+* Fix [issue #273](https://github.com/hvdwolf/jExifToolGUI/issues/273): "Error "no images selected" when exporting metadata...".
+* Fix [issue #267](https://github.com/hvdwolf/jExifToolGUI/issues/267): "Deb has missing dependencies on Ubuntu".
+* Fix [issue #256](https://github.com/hvdwolf/jExifToolGUI/issues/256): "double extensions when renaming with original filename as suffix". Now using extra custom config to extract basename (Thanks Phil for the example.config). Also added an option to not add a counter if using original filename.
+
+
+
+ 
 ## 2022-05-18 2.0.1
 * Add Chinese simplified translation (简体中文). Thanks to @mt25cyb (Martin). This requires of course a utf-8 font capable of displaying Chinese characters, or a truly Chinese font.
 * Fix: Debian deb: Java version was limited to V11 instead of >= V11.
