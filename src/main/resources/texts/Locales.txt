@@ -6,5 +6,7 @@ in_ID - Bahasa Indonesia
 iw_HE - עִברִית
 nb_NO - Norsk (bokmål)
 nl_NL - Nederlands
-ru_RU - Pусский
+pt_BR - Portugues do Brasil
+ru_RU - русский язык
+uk_UK - украї́нська мо́ва
 
