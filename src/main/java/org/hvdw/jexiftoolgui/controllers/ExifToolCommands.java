@@ -10,6 +10,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -62,23 +63,25 @@ public class ExifToolCommands {
         cmdparams.clear();
         StringBuilder tmpcmpstring = new StringBuilder();
         if (Utils.isOsFromMicrosoft()) {
-            cmdparams.add("cmd");
-            cmdparams.add("/c");
-            tmpcmpstring = new StringBuilder( " " + Utils.platformExiftool().replace("\\", "/") + " " + orgCommands + " ");
+            cmdparams.add("\"" + Utils.platformExiftool().replace("\\", "/") + "\"" );
+            String[] splitCommands = orgCommands.split(" ");
+            List<String> listCommands = Arrays.asList(splitCommands);
+            cmdparams.addAll(listCommands);
         } else { //Linux & MacOS
             cmdparams.add("/bin/sh");
             cmdparams.add("-c");
             tmpcmpstring = new StringBuilder(Utils.platformExiftool().replaceAll(" ", "\\ ") + " " + orgCommands + " ");
         }
 
-        if ( !("".equals(ETCommandsFoldertextField)) ) {
+        if ( !("".equals(ETCommandsFoldertextField)) ) { // The folder line is used
             if (IncludeSubFolders) {
                 tmpcmpstring.append(" ").append("-r");
             }
             if (Utils.isOsFromMicrosoft()) {
-                tmpcmpstring.append(" ").append("\"" + ETCommandsFoldertextField.replace("\\", "/") + "\"");
+                cmdparams.add(" \"" + ETCommandsFoldertextField + "\" ");
             } else {
-                tmpcmpstring.append(" ").append(ETCommandsFoldertextField.replaceAll(" ", "\\ "));
+                //tmpcmpstring.append(" ").append("\"" + ETCommandsFoldertextField.replaceAll(" ", "\\ ") + "\"");
+                tmpcmpstring.append(" \"" + ETCommandsFoldertextField + "\" ");
             }
 
         } else {
@@ -88,18 +91,19 @@ public class ExifToolCommands {
                 logger.debug("finalIMG {}", finalIMG);
 
                 if (Utils.isOsFromMicrosoft()) {
-                    tmpcmpstring.append(" ").append("\"" + files[index].getPath().replace("\\", "/") + "\"");
+                    cmdparams.add("\"" + files[index].getPath() + "\"");
                 } else {
-                    tmpcmpstring.append(" ").append(files[index].getPath().replaceAll(" ", "\\ "));
+                    tmpcmpstring.append(" \"" + files[index].getPath() + "\" ");
                 }
                 //try
 
             }
         }
-        // for Windows, linux and MacOS
-        cmdparams.add(tmpcmpstring.toString());
+        if (!Utils.isOsFromMicrosoft()) { // Do this on linux and MacOS due to bash command
+            cmdparams.add(tmpcmpstring.toString());
+        }
 
-        logger.debug("cmdparams {}", cmdparams.toString());
+        logger.info("cmdparams {}", cmdparams.toString());
 
         Executor executor = Executors.newSingleThreadExecutor();
         boolean finalHtmlOutput = htmlOutput;
