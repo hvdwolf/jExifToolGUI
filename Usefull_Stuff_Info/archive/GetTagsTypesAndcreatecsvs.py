@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys, os, csv, shutil
 import xml.etree.ElementTree as ET
@@ -48,8 +48,8 @@ for filename in os.listdir(fpath):
                     tag_g0 = tags.get('g0')
                     tag_g1 = tags.get('g1')
                     tag_g2 = tags.get('g2')
-                    if tag_type <> 'undef':
-		                tag_csv_file_writer.writerow([prefix_basename[0], tag_name, tag_type, tag_writable, tag_g0, tag_g1, tag_g2])
+                    if tag_type != 'undef':
+                        tag_csv_file_writer.writerow([prefix_basename[0], tag_name, tag_type, tag_writable, tag_g0, tag_g1, tag_g2])
 
         with open(os.path.join(csvPath, prefix_basename[0] + '-group.csv'), mode='w') as table_csv_file:
             table_csv_file_writer = csv.writer(table_csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

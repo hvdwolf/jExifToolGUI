@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import xml.etree.ElementTree as ET
@@ -27,5 +27,5 @@ for child in root:  # The child is the table inside the xml
         tag_name = tags.get('name')
         tag_type = tags.get('type')
         tag_writable = tags.get('writable')
-        if tag_writable == 'true' and tag_type <> 'undef':
+        if tag_writable == 'true' and tag_type != 'undef':
             print("name: " + tag_name + "; type: " + tag_type)
