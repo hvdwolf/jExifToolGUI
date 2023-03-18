@@ -75,10 +75,14 @@ public class ExifToolCommands {
 
         if ( !("".equals(ETCommandsFoldertextField)) ) { // The folder line is used
             if (IncludeSubFolders) {
-                tmpcmpstring.append(" ").append("-r");
+                if (Utils.isOsFromMicrosoft()) {
+                    cmdparams.add("-r");
+                } else {
+                    tmpcmpstring.append(" ").append("-r");
+                }
             }
             if (Utils.isOsFromMicrosoft()) {
-                cmdparams.add(" \"" + ETCommandsFoldertextField + "\" ");
+                cmdparams.add("\"" + ETCommandsFoldertextField + "\"");
             } else {
                 //tmpcmpstring.append(" ").append("\"" + ETCommandsFoldertextField.replaceAll(" ", "\\ ") + "\"");
                 tmpcmpstring.append(" \"" + ETCommandsFoldertextField + "\" ");
