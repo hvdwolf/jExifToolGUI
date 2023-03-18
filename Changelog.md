@@ -13,7 +13,8 @@
 * Fix [issue #267](https://github.com/hvdwolf/jExifToolGUI/issues/267): "Deb has missing dependencies on Ubuntu".
 * Fix [issue #256](https://github.com/hvdwolf/jExifToolGUI/issues/256): "double extensions when renaming with original filename as suffix". Now using extra custom config to extract basename (Thanks Phil for the example.config). Also added an option to not add a counter if using original filename.
 
-
+**Known bugs/ToDo:**<br>
+Currently the database update functions do not work correctly. I upgraded drivers in 2.0.0, got unexplainable errors, downgraded the drivers again, but errors remained. A next version will come without database and switch to file based configs (csv, xml, json) for custom metadatasets and favorites.<br><br>
 
  
 ## 2022-05-18 2.0.1
