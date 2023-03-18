@@ -7,8 +7,8 @@
 # appimagetool: Download from https://github.com/AppImage/AppImageKit/releases
 # jre V11: download from https://adoptopenjdk.net/releases.html. Untar it and rename resulting folder to jre (to keepit simple over the versions)
 # Specify where we have installed our (unpacked) jre
-JRE="/home/hvdwolf/software/java/linux-jdk-11.0.15+10-jre/"
-IET="/mnt/chromeos/removable/128GB/software/perl/Image-ExifTool-12.30"
+JRE="/mnt/chromeos/removable/128GB/software/java/JREs/linux-jdk-11.0.12+7-jre"
+IET="/mnt/chromeos/removable/128GB/software/perl/Image-ExifTool-12.58"
 
 
 if [ "$1" = "" ]
@@ -50,7 +50,7 @@ cp ../jexiftoolgui.desktop .
 cp ../jexiftoolgui.appdata.xml usr/share/metainfo
 
 
-# As an Appimage need to be a completely portable entity, we will as of 1.8.2 (unreleased) also include exiftool
+# As an Appimage need to be a completely portable entity, we will also include exiftool
 # This requires you to download the latest exiftool from https://exiftool.org and untar it
 # We simply use the "uninstalled" version. Below line specifies the version and optional path
 #mkdir -p usr/local/bin
