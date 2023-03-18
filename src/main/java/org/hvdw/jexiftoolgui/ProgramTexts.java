@@ -6,7 +6,7 @@ public class ProgramTexts {
      */
     public static final String Author = "Harry van der Wolf";
     public static final String ProjectWebSite = "http://hvdwolf.github.io/jExifToolGUI";
-    public static final String Version = "2.0.1";
+    public static final String Version = "2.0.2";
     public static final String HTML = "<html><body style='width: %1spx'>%1s";
     public static final String downloadInstallET = "The program will now open the ExifTool website in your browser and then the program will close itself.<br>"
             +"After having downloaded and installed ExifTool you can reopen jExifToolGUI.<br><br>If ExifTool is in your PATH, jExifToolGUI will simply continue.<br><br>"

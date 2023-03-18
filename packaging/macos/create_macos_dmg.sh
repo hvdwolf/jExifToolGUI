@@ -44,10 +44,10 @@ else
     dd if=/dev/zero of=jExifToolGUI.dmg bs=1M count=300
 fi
 
-printf "do the /sbin/mkfs.hfsplus -v \"jExifToolGUI-$arch $Version\" jExifToolGUI.dmg"
+printf "do the /sbin/mkfs.hfsplus -v \"jExifToolGUI-$arch $Version\" jExifToolGUI.dmg\n"
 /sbin/mkfs.hfsplus -v "jExifToolGUI-$arch $Version" jExifToolGUI.dmg
 
-printf "do the sudo mount -o loop jExifToolGUI.dmg tmp"
+printf "do the sudo mount -o loop jExifToolGUI.dmg tmp\n"
 sudo mount -o loop -t hfsplus jExifToolGUI.dmg tmp
 sudo cp -a  jExifToolGUI.app tmp
 #sudo mv  jExifToolGUI.app tmp/dmg/
@@ -57,7 +57,7 @@ cd tmp
 sudo ln -s /Applications Applications
 cd ..
 
-printf "sudo umount tmp"
+printf "sudo umount tmp\n"
 sudo umount tmp
 mv jExifToolGUI.dmg ./"jExifToolGUI-$arch-macos-$Version-with_jre.dmg"
 zip -9 ./"jExifToolGUI-$arch-macos-$Version-with_jre.dmg.zip" ./"jExifToolGUI-$arch-macos-$Version-with_jre.dmg"

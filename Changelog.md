@@ -1,10 +1,10 @@
 # Changelog
 
-## 2023-01-xx 2.0.2
+## 2023-03-18 2.0.2
+* Adapt MacOS bundle creation script to enable both a native x86_64 bundle and a native aarch64 ("new" M1) bundle. Note that this aach64 bundle is 125MB bigger due to the included java.
 * Added Portuguese Brazilian language (40% translated). Thanks to fnogcps
 * Add Indonesian language/translation (bahasa Indonesia) (60% translated). Thanks to kodra. Required some extra work as java expects the long outdated "in_ID" instead of "id" or "id_ID".
 * Added Russian language (70% translated). Thanks to AHOHNMYC
-* Adapt MacOS bundle creation script to enable both a native x86_64 bundle and a native aarch64 ("new" M1) bundle.
 * Fix [issue #286](https://github.com/hvdwolf/jExifToolGUI/issues/286): "Search through metadata - reload images has path twice".
 * Fix [issue #281](https://github.com/hvdwolf/jExifToolGUI/issues/281): "ExifTool Commands panel > Help window []" -> Add additional link in exiftool commands to more examples.
 * Improvement [issue #280](https://github.com/hvdwolf/jExifToolGUI/issues/280): "CreateDate and other EXIF properties not set on quicktime movies". Exif info is diffult to save into videos, apart from some xmp-exif. Some users use the (specific) exif edit pane, but this does not work. Added new menu item "Date/Time -> "Modify All dates & times". It uses the exiftool "-AllDates" and "track1"/"track2" dates to update any date tag be it exif, xmp, pdf, quicktime, etc.
