@@ -7,6 +7,7 @@ import static org.hvdw.jexiftoolgui.controllers.SQLiteJDBC.*;
 public class SQLiteModel {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(org.hvdw.jexiftoolgui.controllers.SQLiteJDBC.class);
 
+    /*
     static public String getDBversion() {
         String sql = "select version from ExiftoolVersion limit 1";
         return singleFieldQuery(sql, "version");
@@ -16,6 +17,7 @@ public class SQLiteModel {
         String sql = "SELECT taggroup FROM Groups order by taggroup";
         return singleFieldQuery(sql, "taggroup");
     }
+    */
 
     static public String getdefinedlensnames() {
         String sql = "select lens_name from myLenses order by lens_Name";

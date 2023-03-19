@@ -3,9 +3,7 @@ package org.hvdw.jexiftoolgui;
 import ch.qos.logback.classic.Logger;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import org.hvdw.jexiftoolgui.controllers.SQLiteJDBC;
-import org.hvdw.jexiftoolgui.model.SQLiteModel;
+import org.hvdw.jexiftoolgui.controllers.CSVUtils;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
@@ -14,7 +12,6 @@ import org.hvdw.jexiftoolgui.view.DatabasePanel;
 import org.hvdw.jexiftoolgui.view.SelectFavorite;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
@@ -23,9 +20,10 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -43,11 +41,6 @@ public class ExiftoolReference {
     private JButton searchLikebutton;
     private JButton edbHelpbutton;
     private JLabel exiftoolRefversion;
-    private JButton buttonDBdiagram;
-    private JTextField sqlQuerytextField;
-    private JButton sqlExecutebutton;
-    private JButton SaveQuerybutton;
-    private JButton loadQuerybutton;
     private JPanel ExiftoolDBPanel;
     private JPanel rootDBpanel;
 
@@ -57,7 +50,9 @@ public class ExiftoolReference {
 
     private AddFavorite AddFav = new AddFavorite();
     private SelectFavorite SelFav = new SelectFavorite();
-    private DiagramPanel contentPane;
+
+    List<String[]> csvGroupsTagsList = new ArrayList<>();
+
 
     public ExiftoolReference(JFrame frame) throws IOException, InterruptedException {
         /*setContentPane(rootDBpanel);
@@ -70,8 +65,17 @@ public class ExiftoolReference {
         String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags));
-        exiftoolRefText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
-        exiftoolRefversion.setText(String.format(ProgramTexts.HTML, 100, ResourceBundle.getBundle("translations/program_strings").getString("edb.etrefversion") + "<br>" + ProgramTexts.ETrefVersion));
+        // Read all the groups and tags
+        //List<String[]> csvGroupsTagsList = new ArrayList<>();
+        csvGroupsTagsList = CSVUtils.ReadCSVfromResources("texts/g1_groups_tags.csv");
+        if (csvGroupsTagsList.isEmpty()) {
+            logger.info("We have an empty list");
+        } else {
+            logger.info("Rows in list " + csvGroupsTagsList.size());
+        }
+
+        exiftoolRefText.setText(String.format(ProgramTexts.HTML, 850, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
+        exiftoolRefversion.setText(String.format(ProgramTexts.HTML, 200, ResourceBundle.getBundle("translations/program_strings").getString("edb.etrefversion") + " " + ProgramTexts.ETrefVersion));
         // Make all tables read-only unless ....
         DBResultsTable.setDefaultEditor(Object.class, null);
 
@@ -80,8 +84,9 @@ public class ExiftoolReference {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!"".equals(queryTagLiketextField.getText())) {
-                    String queryResult = SQLiteModel.queryByTagname(queryTagLiketextField.getText(), true);
-                    displayQueryResults(queryResult, DBResultsTable);
+                    List<String[]> resultGroupsTagsList = new ArrayList<>();
+                    resultGroupsTagsList = queryFullList(csvGroupsTagsList, queryTagLiketextField.getText(), "byTag");
+                    displayListQueryResults(resultGroupsTagsList, DBResultsTable);
                 } else {
                     JOptionPane.showMessageDialog(ExiftoolDBPanel, "No search string provided!", "No search string", JOptionPane.WARNING_MESSAGE);
                 }
@@ -91,21 +96,15 @@ public class ExiftoolReference {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (radiobuttonQueryByGroup.isSelected()) {
-                    String queryResult = SQLiteModel.queryByTagname(comboBoxQueryByTagName.getSelectedItem().toString(), false);
-                    displayQueryResults(queryResult, DBResultsTable);
+                    List<String[]> resultGroupsTagsList = new ArrayList<>();
+                    resultGroupsTagsList = queryFullList(csvGroupsTagsList, comboBoxQueryByTagName.getSelectedItem().toString(), "byGroup");
+                    displayListQueryResults(resultGroupsTagsList, DBResultsTable);
+                    //displayQueryResults(queryResult, DBResultsTable);
+
                 }
             }
         });
-        comboBoxQueryCameraMake.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (radiobuttonQueryByCameraMake.isSelected()) {
-                    String queryResult = SQLiteModel.queryByTagname(comboBoxQueryCameraMake.getSelectedItem().toString(), false);
-                    displayQueryResults(queryResult, DBResultsTable);
-                }
-            }
-        });
-        //edbHelpbutton.setActionCommand("edbHb");
+
         edbHelpbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -113,60 +112,56 @@ public class ExiftoolReference {
                 JOptionPane.showMessageDialog(ExiftoolDBPanel, String.format(ProgramTexts.HTML, 700, ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbhelptext")), ResourceBundle.getBundle("translations/program_help_texts").getString("exiftooldbtitle"), JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        sqlExecutebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (!"".equals(sqlQuerytextField.getText())) {
-                    String queryResult = SQLiteModel.ownQuery(sqlQuerytextField.getText());
-                    if (!queryResult.contains("SQLITE_ERROR")) {
-                        displayOwnQueryResults(sqlQuerytextField.getText(), queryResult, DBResultsTable);
-                    } else { // We do have an "[SQLITE_ERROR] SQL error or missing database ...."
-                        JOptionPane.showMessageDialog(ExiftoolDBPanel, "You have an error in your query.\nPlease check!", "incorrect sql query", JOptionPane.WARNING_MESSAGE);
-                    }
-                } else { //user did not proved an sql string
-                    JOptionPane.showMessageDialog(ExiftoolDBPanel, "No sql query provided!", "No sql query", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        //SaveQuerybutton.setActionCommand("SQb");
-        SaveQuerybutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.debug("button SaveQuerybutton pressed");
-                if (sqlQuerytextField.getText().length() > 0) {
-                    AddFav.showDialog(ExiftoolDBPanel, "DB_query", sqlQuerytextField.getText());
-                } else {
-                    JOptionPane.showMessageDialog(ExiftoolDBPanel, "No query given", "No query", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        //loadQuerybutton.setActionCommand("lQb");
-        loadQuerybutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.debug("button loadQuerybutton pressed");
-                LoadQueryFavorite(ExiftoolDBPanel, sqlQuerytextField);
-            }
-        });
-        //buttonDBdiagram.setActionCommand("bDBb");
-        buttonDBdiagram.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.debug("button buttonDBdiagram pressed");
-                DisplayDiagram();
-            }
-        });
 
     }
 
-    static String convertWritable(String writable) {
-        // For some stupid reason SQLJDBC always changes "Yes" or "true" to 1, and "false" or "No" to null.
-        // So here we have to change it back
-        if ("1".equals(writable)) {
-            return "Yes";
+    static List<String[]> queryFullList(List<String[]> csvGroupsTagsList, String queryString, String queryBy) {
+        List<String[]> result = new ArrayList<>();
+
+        logger.debug("Used queryBy is: " + queryBy + " number of rows in csvGroupsTagsList " + csvGroupsTagsList.size());
+        if (queryBy.equals("byGroup")) {
+            logger.debug("Inside queryBy => byGroup");
+            for (String[] row : csvGroupsTagsList) {
+                if (queryString.equals(row[0])) {
+                    result.add(row);
+                }
+            }
         } else {
-            return "No";
+            logger.info("Inside queryBy => byTag");
+            for (String[] row : csvGroupsTagsList) {
+                // Inside csv: TagNameGroup (from g1 group in this case),TagName,TagType,Writable,G0,G1,G2
+                if ((row[1].toLowerCase()).contains(queryString.toLowerCase())) {
+                    result.add(row);
+                }
+            }
         }
+        logger.info("result list contains " + result.size());
+        return result;
+    }
+
+    public static void displayListQueryResults(List<String[]> queryResult, JTable DBResultsTable) {
+        DefaultTableModel model = (DefaultTableModel) DBResultsTable.getModel();
+        model.setColumnIdentifiers(new String[]{"Group G0", "Group G1", "Group G2", "Tagname", "TagType", "Writable"});
+        DBResultsTable.getColumnModel().getColumn(0).setPreferredWidth(125);
+        DBResultsTable.getColumnModel().getColumn(1).setPreferredWidth(125);
+        DBResultsTable.getColumnModel().getColumn(2).setPreferredWidth(125);
+        DBResultsTable.getColumnModel().getColumn(3).setPreferredWidth(300);
+        DBResultsTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+        DBResultsTable.getColumnModel().getColumn(5).setPreferredWidth(70);
+        model.setRowCount(0);
+
+        Object[] row = new Object[1];
+
+        if (!queryResult.isEmpty()) {
+
+            for (String line[] : queryResult) {
+                //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
+                // Inside csv: TagNameGroup (from g1 group in this case),TagName,TagType,Writable,G0,G1,G2
+                // In table: Group G0, Group G1, Group G2, Tagname, TagType, Writable
+                model.addRow(new Object[]{line[4], line[5], line[6], line[1], line[2], line[3]});
+            }
+        }
+
     }
 
     public static void displayQueryResults(String queryResult, JTable DBResultsTable) {
@@ -174,8 +169,8 @@ public class ExiftoolReference {
         model.setColumnIdentifiers(new String[]{"Group", "Tagname", "TagType", "Writable"});
         DBResultsTable.getColumnModel().getColumn(0).setPreferredWidth(100);
         DBResultsTable.getColumnModel().getColumn(1).setPreferredWidth(260);
-        DBResultsTable.getColumnModel().getColumn(2).setPreferredWidth(240);
-        DBResultsTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+        DBResultsTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        DBResultsTable.getColumnModel().getColumn(3).setPreferredWidth(70);
         model.setRowCount(0);
 
         Object[] row = new Object[1];
@@ -186,7 +181,7 @@ public class ExiftoolReference {
             for (String line : lines) {
                 //String[] cells = lines[i].split(":", 2); // Only split on first : as some tags also contain (multiple) :
                 String[] cells = line.split("\\t", 4);
-                model.addRow(new Object[]{cells[0], cells[1], cells[2], convertWritable(cells[3])});
+                model.addRow(new Object[]{cells[0], cells[1], cells[2], cells[3]});
             }
         }
 
@@ -213,21 +208,6 @@ public class ExiftoolReference {
         }
     }
 
-    public void LoadQueryFavorite(JPanel rootpanel, JTextField sqlQuerytextField) {
-        String queryresult = "";
-
-        String favName = SelFav.showDialog(rootpanel, "DB_query");
-        logger.debug("returned selected favorite: " + favName);
-        if (!"".equals(favName)) {
-            String sql = "select command_query from userFavorites where favorite_type='DB_query' and favorite_name='" + favName + "' limit 1";
-            queryresult = SQLiteJDBC.generalQuery(sql, "disk");
-            logger.debug("returned command: " + queryresult);
- /*           // We do save to the database using single quotes, so if the command or the query contains single quotes we need to escape them
-            // Upon retrieval we need to rool back as the user would see those escaped single quotes in his/her command
-            String queryresult_unescaped = queryresult.replace("\'", "'"); */
-            sqlQuerytextField.setText(queryresult);
-        }
-    }
 
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
@@ -246,15 +226,16 @@ public class ExiftoolReference {
     private void $$$setupUI$$$() {
         rootDBpanel = new JPanel();
         rootDBpanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        rootDBpanel.setMinimumSize(new Dimension(700, 500));
-        rootDBpanel.setPreferredSize(new Dimension(850, 700));
+        rootDBpanel.setMinimumSize(new Dimension(850, 500));
+        rootDBpanel.setPreferredSize(new Dimension(1150, 700));
         ExiftoolDBPanel = new JPanel();
-        ExiftoolDBPanel.setLayout(new GridLayoutManager(5, 2, new Insets(10, 10, 10, 10), -1, -1));
+        ExiftoolDBPanel.setLayout(new GridLayoutManager(4, 2, new Insets(10, 10, 10, 10), -1, -1));
         ExiftoolDBPanel.setPreferredSize(new Dimension(800, 550));
-        rootDBpanel.add(ExiftoolDBPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        rootDBpanel.add(ExiftoolDBPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         databaseScrollPanel = new JScrollPane();
-        ExiftoolDBPanel.add(databaseScrollPanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        ExiftoolDBPanel.add(databaseScrollPanel, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         DBResultsTable = new JTable();
+        DBResultsTable.setPreferredScrollableViewportSize(new Dimension(1050, 400));
         databaseScrollPanel.setViewportView(DBResultsTable);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -280,7 +261,7 @@ public class ExiftoolReference {
         comboBoxQueryCameraMake.setVisible(false);
         panel2.add(comboBoxQueryCameraMake);
         final JPanel panel3 = new JPanel();
-        panel3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panel3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         ExiftoolDBPanel.add(panel3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label1 = new JLabel();
@@ -298,35 +279,9 @@ public class ExiftoolReference {
         exiftoolRefversion = new JLabel();
         Font exiftoolRefversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolRefversion.getFont());
         if (exiftoolRefversionFont != null) exiftoolRefversion.setFont(exiftoolRefversionFont);
-        this.$$$loadLabelText$$$(exiftoolRefversion, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.edbversion"));
-        exiftoolRefversion.setToolTipText("The exiftool version to build the included database version is not necessarily the same as your installed exiftool version");
+        this.$$$loadLabelText$$$(exiftoolRefversion, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.etrefversion"));
+        exiftoolRefversion.setToolTipText("The exiftool version to build the included data set version is not necessarily the same as your installed exiftool version");
         ExiftoolDBPanel.add(exiftoolRefversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        buttonDBdiagram = new JButton();
-        this.$$$loadButtonText$$$(buttonDBdiagram, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.btndiagram"));
-        buttonDBdiagram.setToolTipText("Opens a browser displaying the DB diagram");
-        ExiftoolDBPanel.add(buttonDBdiagram, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridLayoutManager(3, 4, new Insets(5, 5, 5, 5), -1, -1));
-        ExiftoolDBPanel.add(panel4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        sqlQuerytextField = new JTextField();
-        panel4.add(sqlQuerytextField, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        Font label2Font = this.$$$getFont$$$(null, Font.BOLD, -1, label2.getFont());
-        if (label2Font != null) label2.setFont(label2Font);
-        this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.ownquery"));
-        panel4.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqlExecutebutton = new JButton();
-        this.$$$loadButtonText$$$(sqlExecutebutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btngo"));
-        panel4.add(sqlExecutebutton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        SaveQuerybutton = new JButton();
-        this.$$$loadButtonText$$$(SaveQuerybutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnaddfav"));
-        panel4.add(SaveQuerybutton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        loadQuerybutton = new JButton();
-        this.$$$loadButtonText$$$(loadQuerybutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "yc.btnloadfav"));
-        panel4.add(loadQuerybutton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel4.add(spacer1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**
@@ -427,54 +382,6 @@ public class ExiftoolReference {
      */
     public JComponent $$$getRootComponent$$$() {
         return rootDBpanel;
-    }
-
-    /*
-    / Below method and class display the database diagram in an "independent" window.
-     */
-    private class DiagramPanel extends JPanel {
-    }
-
-    public void DisplayDiagram() {
-        BufferedImage img = null;
-
-        JFrame frame = new JFrame("Database diagram");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        contentPane = new DiagramPanel();
-        frame.setContentPane(contentPane);
-        frame.setIconImage(Utils.getFrameIcon());
-        frame.setLocationByPlatform(true);
-        frame.setDefaultLookAndFeelDecorated(true);
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception weTried) {
-            logger.error("Could not start GUI.", weTried);
-        }
-        Locale currentLocale = new Locale.Builder().setLocale(MyVariables.getCurrentLocale()).build();
-        frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
-
-        try {
-            img = ImageIO.read(DiagramPanel.class.getResource("/jexiftoolgui-diagram.png"));
-        } catch (IOException ioe) {
-            logger.info("erorr loading diagram png {}", ioe.toString());
-        }
-
-        JPanel thePanel = new JPanel(new BorderLayout());
-        thePanel.setBackground(Color.white);
-        thePanel.setOpaque(true);
-        thePanel.add(new JLabel(new ImageIcon(img)), BorderLayout.PAGE_START);
-
-        JScrollPane theScroller = new JScrollPane(thePanel);
-        theScroller.setPreferredSize(new Dimension(830, 600));
-        frame.add(theScroller);
-
-        frame.setLocationByPlatform(true);
-        // Position to screen center.
-        //Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
-        //setLocation((int) (screen_size.getWidth() - getWidth()) / 2,
-        //        (int) (screen_size.getHeight() - getHeight()) / 2);
-        frame.pack();
-        frame.setVisible(true);
     }
 
 

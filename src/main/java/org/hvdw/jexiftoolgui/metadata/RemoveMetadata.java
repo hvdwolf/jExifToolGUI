@@ -10,7 +10,6 @@ import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
-import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

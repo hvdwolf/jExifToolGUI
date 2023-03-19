@@ -2,14 +2,16 @@ package org.hvdw.jexiftoolgui.controllers;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.hvdw.jexiftoolgui.controllers.StandardFileIO.getResourceAsStream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -22,28 +24,18 @@ public class CSVUtils {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(CSVUtils.class);
 
 
-    public static String ReadCSV(String csvFile) throws IOException {
+    public static List<String[]> ReadCSV(Path csvFile) throws IOException {
 
-        String result = "";
+        String[] line;
 
-        CSVReader reader = null;
-        try {
-            //reader = new CSVReader(new FileReaderHeaderAware(csvFile));
-            reader = new CSVReader(new FileReader(csvFile));
-            // Either use a String array
-            String[] line;
-            try {
-                while ((line = reader.readNext()) != null) {
-                    //System.out.println("Country [id= " + line[0] + ", code= " + line[1] + " , name=" + line[2] + "]");
+        List<String[]> csvList = new ArrayList<>();
+        try (Reader reader = Files.newBufferedReader(csvFile)) {
+            try (CSVReader csvReader = new CSVReader(reader)) {
+                //String[] line;
+                while ((line = csvReader.readNext()) != null) {
+                    csvList.add(line);
                 }
             } catch (CsvValidationException e) {
-                logger.error("CsvValidationException {}", e);
-                e.printStackTrace();
-            }
-            // Or use a List<String[]>
-            try {
-                List<String[]> myEntries = reader.readAll();
-            } catch (CsvException e) {
                 logger.error("CsvValidationException {}", e);
                 e.printStackTrace();
             }
@@ -51,7 +43,31 @@ public class CSVUtils {
             e.printStackTrace();
         }
 
-    return result;
+    return csvList;
+    }
+
+    public static List<String[]> ReadCSVfromResources(String csvFile) throws IOException {
+
+        String[] line;
+
+        List<String[]> csvList = new ArrayList<>();
+        InputStream is = getResourceAsStream(csvFile);
+        //try (Reader reader = Files.newBufferedReader(Paths.get(csvFile))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            try (CSVReader csvReader = new CSVReader(reader)) {
+                //String[] line;
+                while ((line = csvReader.readNext()) != null) {
+                    csvList.add(line);
+                }
+            } catch (CsvValidationException e) {
+                logger.error("CsvValidationException {}", e);
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return csvList;
     }
 
     public static void WriteCSV(String csvFile, String[] csvData) throws IOException {
