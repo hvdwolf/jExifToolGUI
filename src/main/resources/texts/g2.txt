@@ -1,0 +1,14 @@
+Audio
+Author
+Camera
+Device
+Document
+ExifTool
+Image
+Location
+Other
+Preview
+Printing
+Time
+Unknown
+Video
