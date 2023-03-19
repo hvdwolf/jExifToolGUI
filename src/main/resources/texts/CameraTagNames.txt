@@ -1,9 +1,13 @@
 Apple
 Canon
 Casio
+FujiFilm
+GoPro
 HP
 Kodak
+Kyocera
 Leaf
+Leica
 Minolta
 Motorola
 Nikon
@@ -13,4 +17,5 @@ Pentax
 Ricoh
 Samsung
 Sanyo
+Sigma
 Sony

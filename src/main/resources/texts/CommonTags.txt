@@ -2,6 +2,7 @@ exif
 xmp
 iptc
 composite
+file
 gps
 location
 lens data

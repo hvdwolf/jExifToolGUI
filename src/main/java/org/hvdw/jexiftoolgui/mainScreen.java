@@ -653,8 +653,8 @@ private String getSeparatorString() {
         comboBoxViewCommonTags.setModel(new DefaultComboBoxModel(allTags));
         pdfcomboBoxExpCommonTags.setModel(new DefaultComboBoxModel(allTags));
 
-        String sqlGroups = SQLiteModel.getGroups();
-        Tags = sqlGroups.split("\\r?\\n"); // split on new lines
+        String TagGroups = StandardFileIO.readTextFileAsStringFromResource("texts/g1.txt");
+        Tags = TagGroups.split("\\r?\\n"); // split on new lines
         comboBoxViewByTagName.setModel(new DefaultComboBoxModel(Tags));
         //comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
         pdfcomboBoxExpByTagName.setModel(new DefaultComboBoxModel(Tags));
@@ -4002,8 +4002,6 @@ private String getSeparatorString() {
         lblMapcoordinates.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("gps.extsearch")));
 
 
-        // database version
-        //exiftoolDBversion.setText(String.format(ProgramTexts.HTML,100,"exiftool DB version:<br>" + SQLiteJDBC.getDBversion()));
         // Special dynamic version string
         logger.trace("check for exiftool version");
         String exiftool = Utils.platformExiftool();

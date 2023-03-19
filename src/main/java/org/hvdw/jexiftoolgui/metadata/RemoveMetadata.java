@@ -8,6 +8,7 @@ import org.hvdw.jexiftoolgui.controllers.CommandRunner;
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.ProgramTexts;
 import org.hvdw.jexiftoolgui.Utils;
+import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.slf4j.LoggerFactory;
@@ -165,8 +166,8 @@ public class RemoveMetadata extends JDialog {
     private void initDialog() {
         //RemoveMetaDataUiText.setContentType("text/html");
         RemoveMetaDataUiText.setText(String.format(ProgramTexts.HTML, 620, (ResourceBundle.getBundle("translations/program_strings").getString("rmd.toptext") + "<br><br>")));
-        String sqlGroups = SQLiteModel.getGroups();
-        String[] Tags = sqlGroups.split("\\r?\\n"); // split on new lines
+        String TagGroups = StandardFileIO.readTextFileAsStringFromResource("texts/g1.txt");
+        String[] Tags = TagGroups.split("\\r?\\n"); // split on new lines
         remcomboBoxExpByTagName.setModel(new DefaultComboBoxModel(Tags));
         remcomboBoxExpByTagName.setEnabled(false);
 

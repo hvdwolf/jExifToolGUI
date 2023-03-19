@@ -31,10 +31,10 @@ import java.util.ResourceBundle;
 
 import static org.hvdw.jexiftoolgui.facades.SystemPropertyFacade.SystemPropertyKey.LINE_SEPARATOR;
 
-public class ExiftoolDatabase {
+public class ExiftoolReference {
     private JScrollPane databaseScrollPanel;
     private JTable DBResultsTable;
-    private JLabel exiftoolDBText;
+    private JLabel exiftoolRefText;
     private JRadioButton radiobuttonQueryByGroup;
     private JComboBox comboBoxQueryByTagName;
     private JRadioButton radiobuttonQueryByCameraMake;
@@ -42,7 +42,7 @@ public class ExiftoolDatabase {
     private JTextField queryTagLiketextField;
     private JButton searchLikebutton;
     private JButton edbHelpbutton;
-    private JLabel exiftoolDBversion;
+    private JLabel exiftoolRefversion;
     private JButton buttonDBdiagram;
     private JTextField sqlQuerytextField;
     private JButton sqlExecutebutton;
@@ -59,20 +59,19 @@ public class ExiftoolDatabase {
     private SelectFavorite SelFav = new SelectFavorite();
     private DiagramPanel contentPane;
 
-    public ExiftoolDatabase(JFrame frame) throws IOException, InterruptedException {
+    public ExiftoolReference(JFrame frame) throws IOException, InterruptedException {
         /*setContentPane(rootDBpanel);
         setModal(true);
         this.setIconImage(Utils.getFrameIcon());*/
 
-        String sqlGroups = SQLiteModel.getGroups();
-        String[] Tags = sqlGroups.split("\\r?\\n"); // split on new lines
+        String TagGroups = StandardFileIO.readTextFileAsStringFromResource("texts/g1.txt");
+        String[] Tags = TagGroups.split("\\r?\\n"); // split on new lines
         comboBoxQueryByTagName.setModel(new DefaultComboBoxModel(Tags));
         String TagNames = StandardFileIO.readTextFileAsStringFromResource("texts/CameraTagNames.txt");
         Tags = TagNames.split("\\r?\\n"); // split on new lines
         comboBoxQueryCameraMake.setModel(new DefaultComboBoxModel(Tags));
-        exiftoolDBText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
-        // database version
-        exiftoolDBversion.setText(String.format(ProgramTexts.HTML, 100, "exiftool DB version:<br>" + SQLiteModel.getDBversion()));
+        exiftoolRefText.setText(String.format(ProgramTexts.HTML, 600, ResourceBundle.getBundle("translations/program_strings").getString("edb.toptext")));
+        exiftoolRefversion.setText(String.format(ProgramTexts.HTML, 100, ResourceBundle.getBundle("translations/program_strings").getString("edb.etrefversion") + "<br>" + ProgramTexts.ETrefVersion));
         // Make all tables read-only unless ....
         DBResultsTable.setDefaultEditor(Object.class, null);
 
@@ -260,9 +259,9 @@ public class ExiftoolDatabase {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         ExiftoolDBPanel.add(panel1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        exiftoolDBText = new JLabel();
-        this.$$$loadLabelText$$$(exiftoolDBText, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.toptext"));
-        panel1.add(exiftoolDBText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exiftoolRefText = new JLabel();
+        this.$$$loadLabelText$$$(exiftoolRefText, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.toptext"));
+        panel1.add(exiftoolRefText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         ExiftoolDBPanel.add(panel2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -296,12 +295,12 @@ public class ExiftoolDatabase {
         edbHelpbutton = new JButton();
         this.$$$loadButtonText$$$(edbHelpbutton, this.$$$getMessageFromBundle$$$("translations/program_strings", "button.help"));
         ExiftoolDBPanel.add(edbHelpbutton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        exiftoolDBversion = new JLabel();
-        Font exiftoolDBversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolDBversion.getFont());
-        if (exiftoolDBversionFont != null) exiftoolDBversion.setFont(exiftoolDBversionFont);
-        this.$$$loadLabelText$$$(exiftoolDBversion, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.edbversion"));
-        exiftoolDBversion.setToolTipText("The exiftool version to build the included database version is not necessarily the same as your installed exiftool version");
-        ExiftoolDBPanel.add(exiftoolDBversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        exiftoolRefversion = new JLabel();
+        Font exiftoolRefversionFont = this.$$$getFont$$$(null, Font.ITALIC, -1, exiftoolRefversion.getFont());
+        if (exiftoolRefversionFont != null) exiftoolRefversion.setFont(exiftoolRefversionFont);
+        this.$$$loadLabelText$$$(exiftoolRefversion, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.edbversion"));
+        exiftoolRefversion.setToolTipText("The exiftool version to build the included database version is not necessarily the same as your installed exiftool version");
+        ExiftoolDBPanel.add(exiftoolRefversion, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonDBdiagram = new JButton();
         this.$$$loadButtonText$$$(buttonDBdiagram, this.$$$getMessageFromBundle$$$("translations/program_strings", "edb.btndiagram"));
         buttonDBdiagram.setToolTipText("Opens a browser displaying the DB diagram");
@@ -492,7 +491,7 @@ public class ExiftoolDatabase {
         frame.applyComponentOrientation(ComponentOrientation.getOrientation(currentLocale));
         frame.setIconImage(Utils.getFrameIcon());
         try {
-            frame.setContentPane(new ExiftoolDatabase(frame).rootDBpanel);
+            frame.setContentPane(new ExiftoolReference(frame).rootDBpanel);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
             logger.error("InterruptedException or IOException creating ExiftoolDatabase frame: {}", e);

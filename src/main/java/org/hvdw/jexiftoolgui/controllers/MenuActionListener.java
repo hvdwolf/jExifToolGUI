@@ -188,7 +188,7 @@ public class MenuActionListener implements ActionListener  {
                 SmL.showDialog(rootPanel, "delete lens");
                 break;
             case "ExiftoolDatabase":
-                ExiftoolDatabase.showDialog();
+                ExiftoolReference.showDialog();
                 break;
             case "About jExifToolGUI":
                 WV.HTMLView(ResourceBundle.getBundle("translations/program_help_texts").getString("abouttitle"), ResourceBundle.getBundle("translations/program_help_texts").getString("abouttext"), 500, 450);
