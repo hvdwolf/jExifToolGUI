@@ -12,7 +12,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -106,7 +108,7 @@ public class CreateUpdatemyLens extends JDialog {
         lensnametable.setDefaultEditor(Object.class, null);
 
         // Get current defined lenses
-        String lensnames = Lenses.loadlensnames();
+        List<File> lensnames = Lenses.loadlensnames();
         logger.info("retrieved lensnames: " + lensnames);
         Lenses.displaylensnames(lensnames, lensnametable);
 

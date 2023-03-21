@@ -97,15 +97,13 @@ public class Utils {
         Utils.SetLoggingLevel(GuiConfig.class);
 
         Utils.SetLoggingLevel(CreateMenu.class);
-        Utils.SetLoggingLevel(DatabasePanel.class);
+        Utils.SetLoggingLevel(ExifToolReferencePanel.class);
         Utils.SetLoggingLevel(JavaImageViewer.class);
         Utils.SetLoggingLevel(LinkListener.class);
         Utils.SetLoggingLevel(WebPageInPanel.class);
-        Utils.SetLoggingLevel(AddFavorite.class);
+        Utils.SetLoggingLevel(Favorites.class);
         Utils.SetLoggingLevel(CreateUpdatemyLens.class);
-        Utils.SetLoggingLevel(DeleteFavorite.class);
         Utils.SetLoggingLevel(MetadataUserCombinations.class);
-        Utils.SetLoggingLevel(SelectFavorite.class);
         Utils.SetLoggingLevel(SelectmyLens.class);
         Utils.SetLoggingLevel(SimpleWebView.class);
     }

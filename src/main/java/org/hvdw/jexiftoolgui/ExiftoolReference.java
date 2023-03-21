@@ -7,9 +7,7 @@ import org.hvdw.jexiftoolgui.controllers.CSVUtils;
 import org.hvdw.jexiftoolgui.controllers.StandardFileIO;
 import org.hvdw.jexiftoolgui.facades.IPreferencesFacade;
 import org.hvdw.jexiftoolgui.facades.SystemPropertyFacade;
-import org.hvdw.jexiftoolgui.view.AddFavorite;
-import org.hvdw.jexiftoolgui.view.DatabasePanel;
-import org.hvdw.jexiftoolgui.view.SelectFavorite;
+import org.hvdw.jexiftoolgui.view.ExifToolReferencePanel;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -46,10 +44,7 @@ public class ExiftoolReference {
 
 
     private static IPreferencesFacade prefs = IPreferencesFacade.defaultInstance;
-    private final static Logger logger = (Logger) LoggerFactory.getLogger(DatabasePanel.class);
-
-    private AddFavorite AddFav = new AddFavorite();
-    private SelectFavorite SelFav = new SelectFavorite();
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(ExifToolReferencePanel.class);
 
     List<String[]> csvGroupsTagsList = new ArrayList<>();
 

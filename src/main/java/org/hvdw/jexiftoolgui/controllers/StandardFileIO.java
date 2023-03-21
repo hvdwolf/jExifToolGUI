@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 
 
 import static org.hvdw.jexiftoolgui.Application.OS_NAMES.APPLE;
@@ -456,16 +457,87 @@ public class StandardFileIO {
         return copyResult;
     }
 
+    static void moveFiles(File source, File destination) {
+        try {
+            FileUtils.copyDirectory(source, destination);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Create subfolders inside our jexiftoolgui data folder
+    // We do this from our below checkforjexiftoolguiFolder()
+    public static String checkforJTGsubfolder(String subFolderName) {
+
+        String result = "";
+
+        File newsubFolder = new File(subFolderName);
+        if (!newsubFolder.exists()) { // the cache folder does not exist yet
+            try {
+                Files.createDirectories(Paths.get(subFolderName));
+            } catch (IOException e) {
+                logger.error("Error creating cache directory " + subFolderName);
+                e.printStackTrace();
+                result = "Error creating subfolder " + subFolderName;
+            }
+        }
+        result = subFolderName;
+        return result;
+    }
 
     // Check if we have a jexiftoolgui_custom folder in $HOME with defaults
     public static String checkforjexiftoolguiFolder() {
         String method_result = "";
         String fileToBecopied = "";
         File copyFile = null;
+        Path dataFolder, cacheFolder, logsFolder;
+        dataFolder = cacheFolder = logsFolder = null;
+        File fdataFolder, fcacheFolder, flogsFolder;
+        fdataFolder = fcacheFolder = flogsFolder = null;
         String userHome = SystemPropertyFacade.getPropertyByKey(USER_HOME);
         // Check if folder exists
         String strjexiftoolguifolder = userHome + File.separator + MyConstants.MY_DATA_FOLDER;
+
+        /* Do this for later if we are really going to move our jexiftoolgui_data folder
+        if (Utils.isOsFromMicrosoft()) {
+            dataFolder = Paths.get(userHome, "AppData", "Roaming", MyConstants.MY_BASE_FOLDER);
+            cacheFolder = Paths.get(userHome, "AppData", "Local", MyConstants.MY_BASE_FOLDER, "cache");
+            logsFolder = Paths.get(userHome, "AppData", "Local", MyConstants.MY_BASE_FOLDER, "logs");
+        } else {
+            dataFolder = Paths.get(userHome, ".local", "share", MyConstants.MY_BASE_FOLDER, "data");
+            cacheFolder = Paths.get(userHome, ".cache", MyConstants.MY_BASE_FOLDER);
+            logsFolder = Paths.get(userHome, ".local", "share", MyConstants.MY_BASE_FOLDER, "logs");
+        }
+        */
         File jexiftoolguifolder = new File(strjexiftoolguifolder);
+        /* Do this for later if we are really going to move our jexiftoolgui_data folder
+        if (jexiftoolguifolder.exists()) {
+
+            fcacheFolder = cacheFolder.toFile();
+            if (!fcacheFolder.exists()) { // no cachefolder yet
+                try {
+                    Files.createDirectories(cacheFolder);
+                    File oldCacheFolder = new File(strjexiftoolguifolder + File.separator + "cache");
+                    moveFiles(new File(strjexiftoolguifolder + File.separator + "cache"), fcacheFolder);
+                    oldCacheFolder.delete();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                    method_result = "Error creating directory " + cacheFolder;
+                    logger.error("Error creating directory " + cacheFolder);
+                }
+            }
+            fdataFolder = dataFolder.toFile();
+            if (!fdataFolder.exists()) { // no datafolder yet
+
+            }
+        }
+
+
+        flogsFolder = logsFolder.toFile();
+
+
+        File jexiftoolguifolder = new File(strjexiftoolguifolder);
+        */
         if (!jexiftoolguifolder.exists()) { // no folder yet
             // First create jexiftoolgui_custom in userHome
             try {
@@ -480,17 +552,26 @@ public class StandardFileIO {
         }
 
         // Check on our cache directory and if it doesn't exist: create it!
-        String strjexiftoolguicachefolder = strjexiftoolguifolder + File.separator + "cache";
-        File jexiftoolguicachefolder = new File(strjexiftoolguicachefolder);
-        if (!jexiftoolguicachefolder.exists()) { // the cache folder does not exist yet
-            try {
-                Files.createDirectories(Paths.get(strjexiftoolguicachefolder));
-            } catch (IOException e) {
-                logger.error("Error creating cache directory " + strjexiftoolguicachefolder);
-                e.printStackTrace();
+        String strsubfolder = checkforJTGsubfolder(strjexiftoolguifolder + File.separator + "cache");
+        // Save this much used to a getter/setter
+        MyVariables.setjexiftoolguiCacheFolder(strsubfolder);
+        // Check on our lenses directory and if it doesn't exist: create it!
+        strsubfolder = checkforJTGsubfolder(strjexiftoolguifolder + File.separator + "lenses");
+        String result = extract_resource_to_jexiftoolguiFolder("example_lens.hashmap", strjexiftoolguifolder, "lenses");
+        MyVariables.setlensFolder(strsubfolder);
+        // Check on our custommetadataset directory and if it doesn't exist: create it!
+        strsubfolder = checkforJTGsubfolder(strjexiftoolguifolder + File.separator + "custommetadatasets");
+        MyVariables.setcustommetadatasetFolder(strsubfolder);
+        // Check on our args directory and if it doesn't exist: create it!
+        strsubfolder = checkforJTGsubfolder(strjexiftoolguifolder + File.separator + "args");
+        String argsfolder = strjexiftoolguifolder + File.separator + "args";
+        String args_files[] = {"exif2iptc.args","gps2xmp.args","iptc2xmp.args","pdf2xmp.args","xmp2gps.args","xmp2pdf.args","exif2xmp.args","iptc2exif.args","iptcCore.args","xmp2exif.args","xmp2iptc.args"};
+        for (String args_file : args_files) {
+            File tst_arg_file = new File(argsfolder + File.separator + args_file);
+            if (!tst_arg_file.exists()) {
+                result = extract_resource_to_jexiftoolguiFolder("args" + File.separator + args_file, strjexiftoolguifolder, "args");
             }
         }
-        MyVariables.setjexiftoolguiCacheFolder(strjexiftoolguicachefolder);
 
         // Now check if our database exists
         fileToBecopied = strjexiftoolguifolder + File.separator + "jexiftoolgui.db";
@@ -506,6 +587,17 @@ public class StandardFileIO {
             method_result = "exists";
             logger.debug("the database already exists.");
             MyVariables.setjexiftoolguiDBPath(fileToBecopied);
+        }
+
+        // Check if we have our (default) favorites.hashmap file
+        fileToBecopied = strjexiftoolguifolder + File.separator + "favorites.hashmap";
+        copyFile = new File(fileToBecopied);
+        if (!copyFile.exists()) {
+            logger.debug("no favorites.hashmap yet; trying to create it");
+            method_result = extract_resource_to_jexiftoolguiFolder("favorites.hashmap", strjexiftoolguifolder, "");
+            if ("success".equals(method_result)) {
+                logger.info("copied the initial favorites.hashmap yet");
+            }
         }
 
         //logger.info("string for DB: " + MyVariables.getjexiftoolguiDBPath());
@@ -699,6 +791,80 @@ public class StandardFileIO {
         };
         sw.execute();
 
+    }
+
+    // Write Hashmap file
+    public static String writeHashMapToFile(File hashmapfile, HashMap<String, String> myHashMap) {
+        String result = "";
+        BufferedWriter bf = null;
+
+        try {
+            // create new BufferedWriter for the output file
+            bf = new BufferedWriter(new FileWriter(hashmapfile));  // BufferedWriter overwites if exists, otherwise creates
+            // iterate map entries
+            for (Map.Entry<String, String> key_value : myHashMap.entrySet()) {
+                // put key and value separated by a colon
+                bf.write(key_value.getKey() + "::" + key_value.getValue());
+                // new line
+                bf.newLine();
+            }
+            bf.flush();
+            result = "successfully saved";
+        }
+        catch (IOException e) {
+            logger.error("Saving hashmap to file {} gives error {}", hashmapfile.toString(), e.toString());
+            e.printStackTrace();
+            result = "Error saving hashmap to file " + hashmapfile.toString();
+        }
+        finally {
+            try {
+                // always close the writer
+                bf.close();
+            }
+            catch (Exception e) {
+            }
+        }
+        return result;
+    }
+
+    public static HashMap<String, String> readHashMapFromFile(File hashmapfile) {
+
+        HashMap<String, String> myHashmap = new HashMap<String, String>();
+        BufferedReader br = null;
+        try {
+            // create BufferedReader object from the File
+            br = new BufferedReader(new FileReader(hashmapfile));
+
+            String line = null;
+
+            // read file line by line
+            while ((line = br.readLine()) != null) {
+                // split the line by the separator:
+                String[] parts = line.split("::");
+                // first part is name, second is number
+                String key = parts[0].trim();
+                String value = parts[1].trim();
+
+                if (!key.equals("") && !value.equals(""))
+                    myHashmap.put(key, value);
+            }
+        }
+        catch (Exception e) {
+            logger.error("Loading hashmap from file {} failed with error {}", hashmapfile.getName(), e.toString());
+            e.printStackTrace();
+        }
+        finally {
+            // Always close the BufferedReader
+            if (br != null) {
+                try {
+                    br.close();
+                }
+                catch (Exception e) {
+                };
+            }
+        }
+
+        return myHashmap;
     }
 
 }

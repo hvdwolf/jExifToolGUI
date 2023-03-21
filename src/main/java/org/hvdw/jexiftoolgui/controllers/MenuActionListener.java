@@ -180,8 +180,8 @@ public class MenuActionListener implements ActionListener  {
                 UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                 break;
             case "DeleteFavorites":
-                DeleteFavorite DelFavs = new DeleteFavorite();
-                DelFavs.showDialog(rootPanel);
+                Favorites Favs = new Favorites();
+                Favs.showDialog(rootPanel, "DeleteFavorite", "Exiftool_Command", "");
                 break;
             case "DeleteLenses":
                 SelectmyLens SmL = new SelectmyLens();

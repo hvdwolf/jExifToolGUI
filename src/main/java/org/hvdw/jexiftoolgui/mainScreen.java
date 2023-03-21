@@ -459,7 +459,6 @@ public class mainScreen {
     //private DatabasePanel DBP = new DatabasePanel();
     private CreateUpdatemyLens CUL = new CreateUpdatemyLens();
     private EditStringdata ESd = new EditStringdata();
-    private AddFavorite AddFav = new AddFavorite();
     private MetadataUserCombinations MD = new MetadataUserCombinations();
     private SimpleWebView WV = new SimpleWebView();
     private EditUserDefinedCombis EUDC = new EditUserDefinedCombis();

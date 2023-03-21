@@ -71,11 +71,21 @@ public class CSVUtils {
     }
 
     public static void WriteCSV(String csvFile, String[] csvData) throws IOException {
-
         //CSVWriter writer = new CSVWriter(new FileWriter(csvFile), '\t');
         CSVWriter writer = new CSVWriter(new FileWriter(csvFile));
         writer.writeNext(csvData);
         writer.close();
+    }
+
+    public static void WriteCSVList(String csvFile, List<String[]> csvData) throws IOException {
+        //using custom delimiter and quote character
+        //CSVWriter csvWriter = new CSVWriter(writer, '#', '\'');
+        FileWriter fw = new FileWriter(new File(csvFile));
+        try (CSVWriter writer = new CSVWriter(fw)) {
+            for (String[] line : csvData) {
+                writer.writeNext(line);
+            }
+        }
     }
 
 }

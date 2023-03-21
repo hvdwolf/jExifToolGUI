@@ -2,7 +2,7 @@ package org.hvdw.jexiftoolgui.controllers;
 
 import org.hvdw.jexiftoolgui.MyVariables;
 import org.hvdw.jexiftoolgui.Utils;
-import org.hvdw.jexiftoolgui.view.SelectFavorite;
+import org.hvdw.jexiftoolgui.view.Favorites;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class ExifToolCommands {
 
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ExifToolCommands.class);
 
-    private SelectFavorite SelFav = new SelectFavorite();
+    private Favorites Favs = new Favorites();
 
     public void executeCommands(String Commands, JEditorPane Output, JRadioButton UseNonPropFontradioButton, JProgressBar progressBar, String ETCommandsFoldertextField, boolean IncludeSubFolders) {
         int[] selectedIndices = null;
@@ -146,17 +146,4 @@ public class ExifToolCommands {
         counter++;
     }
 
-    public void LoadCommandFavorite(JPanel rootpanel, JTextField CommandsParameterstextField) {
-        String queryresult = "";
-
-        String favName = SelFav.showDialog(rootpanel, "Exiftool_Command");
-        logger.debug("returned selected favorite: " + favName);
-        if (!"".equals(favName)) {
-            String sql = "select command_query from userFavorites where favorite_type='Exiftool_Command' and favorite_name='" + favName + "' limit 1";
-            queryresult = SQLiteJDBC.generalQuery(sql, "disk");
-            logger.debug("returned command: " + queryresult);
-
-            CommandsParameterstextField.setText(queryresult);
-        }
-    }
 }

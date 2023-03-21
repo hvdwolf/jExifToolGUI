@@ -12,7 +12,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -105,6 +108,7 @@ public class SelectmyLens extends JDialog {
         //setLocationRelativeTo(null);
         rp = rootpanel;
         setLocationByPlatform(true);
+        List<File> lensnames = new ArrayList<File>();
         setTitle(ResourceBundle.getBundle("translations/program_strings").getString("selectlens.title"));
         if ("load lens".equals(action)) {
             selectLensTopText.setText(loadLensTxt);
@@ -122,7 +126,7 @@ public class SelectmyLens extends JDialog {
         // Make table readonly
         lensnametable.setDefaultEditor(Object.class, null);
         // Get current defined lenses
-        String lensnames = Lenses.loadlensnames();
+        lensnames = Lenses.loadlensnames();
         logger.info("retrieved lensnames: " + lensnames);
         Lenses.displaylensnames(lensnames, lensnametable);
 

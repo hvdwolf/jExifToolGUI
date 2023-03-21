@@ -118,6 +118,7 @@ public class UpdateActions {
         }
     }
 
+    /*
     static void update_1_7() {
         // our data folder
         String strjexiftoolguifolder = SystemPropertyFacade.getPropertyByKey(USER_HOME) + File.separator + MyConstants.MY_DATA_FOLDER;
@@ -136,7 +137,7 @@ public class UpdateActions {
         for (String args_file : args_files) {
             String method_result = extract_resource_to_jexiftoolguiFolder("args" + File.separator + args_file, strjexiftoolguifolder, "args");
         }
-    }
+    } */
 
     static void update_1_9() {
         String queryresult = "";
@@ -186,7 +187,7 @@ public class UpdateActions {
             public Void doInBackground() {
                 update_1_4();
                 update_1_6();
-                update_1_7();
+                //update_1_7();
                 update_1_9();
                 update_2_0(); // Actually 2.0.2
                 //logger.debug("Checked and when necessary did the updates");
