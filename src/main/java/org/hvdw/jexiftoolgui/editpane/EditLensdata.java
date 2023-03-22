@@ -355,4 +355,19 @@ public class EditLensdata {
         }
     }
 
+    public void deletelensconfig(JPanel SMLcontentPane, String lensname) {
+        String str_lens_file = "";
+        if (lensname.contains(".hashmap")) {
+            str_lens_file = MyVariables.getlensFolder() +  File.separator + lensname;
+        } else {
+            str_lens_file = MyVariables.getlensFolder() + File.separator + lensname + ".hashmap";
+        }
+        File lens_file = new File(str_lens_file);
+        if (lens_file.exists()) {
+            lens_file.delete();
+            JOptionPane.showMessageDialog(SMLcontentPane, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("sellens.deleted") + " " + lensname), ResourceBundle.getBundle("translations/program_strings").getString("sellens.deletedshort"), JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }
+
 }
