@@ -1,15 +1,14 @@
-exif_lensmodel:Leica DG Summilux 25/f1.4
-makernotes_focusdistance:null
-lens_name:pipo
-exif_lensmake:Panasonic
-exif_meteringmode:Multi-segment
-makernotes_lensfirmwareversion:0.1.0.0
-makernotes_conversionlens: Off
-exif_fnumber:1.4
-exif_focallength:25
-composite_lensid:null
-exif_lensserialnumber:123456-ABC
-exif_maxaperturevalue:22
-makernotes_lenstype:LUMIX G VARIO 14-140/F3.5-5.6
-exif_focallengthIn35mmformat:50
-lens_description:
+exif_lensmodel::Leica DG Summilux 25/f1.4
+makernotes_focusdistance::null
+lens_name::pipo
+exif_lensmake::Panasonic
+exif_meteringmode::Multi-segment
+makernotes_lensfirmwareversion::0.1.0.0
+makernotes_conversionlens:: Off
+exif_fnumber::1.4
+exif_focallength::25
+composite_lensid::null
+exif_lensserialnumber::123456-ABC
+exif_maxaperturevalue::22
+makernotes_lenstype::LUMIX G VARIO 14-140/F3.5-5.6
+exif_focallengthIn35mmformat::50

@@ -166,7 +166,7 @@ public class Favorites extends JDialog {
         if (!"".equals(chosenname)) { // user gave a favorites name
             // Check if already exists
             if (loadedFavorites.containsKey(chosenname)) {
-                int result = JOptionPane.showConfirmDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.overwrite") + chosenname + "\"?",
+                int result = JOptionPane.showConfirmDialog(jp, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("fav.overwrite") + chosenname + "\"?"),
                         ResourceBundle.getBundle("translations/program_strings").getString("fav.overwriteshort"), JOptionPane.OK_CANCEL_OPTION);
                 if (result == 0) { //OK
                     // user wants us to overwrite
@@ -174,9 +174,9 @@ public class Favorites extends JDialog {
                     loadedFavorites.put(chosenname, cmd_qry);
                     writeresult = StandardFileIO.writeHashMapToFile(favoritesFile, loadedFavorites);
                     if ("Error saving".contains(writeresult)) { //means we have an error
-                        JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerror") + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerrshort"), JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(jp, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerror") + chosenname), ResourceBundle.getBundle("translations/program_strings").getString("fav.updateerrshort"), JOptionPane.ERROR_MESSAGE);
                     } else { //success
-                        JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.saved") + " " + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.savedshort"), JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(jp, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("fav.saved") + " " + chosenname), ResourceBundle.getBundle("translations/program_strings").getString("fav.savedshort"), JOptionPane.INFORMATION_MESSAGE);
                     }
                 } // result 2 means cancel; do nothing
             } else { // No name from hashmap loadedFavorites, so a new favorite record
@@ -184,13 +184,13 @@ public class Favorites extends JDialog {
                 loadedFavorites.put(chosenname, cmd_qry);
                 writeresult = StandardFileIO.writeHashMapToFile(favoritesFile, loadedFavorites);
                 if ("Error saving".contains(writeresult)) { //means we have an error
-                    JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterror") + " " + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterrshort"), JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(jp, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterror") + " " + chosenname), ResourceBundle.getBundle("translations/program_strings").getString("fav.inserterrshort"), JOptionPane.ERROR_MESSAGE);
                 } else { //success
-                    JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.saved") + "" + chosenname, ResourceBundle.getBundle("translations/program_strings").getString("fav.savedshort"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(jp, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("fav.saved") + "" + chosenname), ResourceBundle.getBundle("translations/program_strings").getString("fav.savedshort"), JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else { // user did not provide a lensname to insert/update
-            JOptionPane.showMessageDialog(jp, ResourceBundle.getBundle("translations/program_strings").getString("fav.nofavname"), ResourceBundle.getBundle("translations/program_strings").getString("fav.nofavnameshort"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jp, String.format(ProgramTexts.HTML, 400, ResourceBundle.getBundle("translations/program_strings").getString("fav.nofavname")), ResourceBundle.getBundle("translations/program_strings").getString("fav.nofavnameshort"), JOptionPane.ERROR_MESSAGE);
         }
 
         //return queryresult;
@@ -302,7 +302,7 @@ public class Favorites extends JDialog {
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(15, 15, 15, 15), -1, -1));
-        contentPane.setPreferredSize(new Dimension(700, 300));
+        contentPane.setPreferredSize(new Dimension(700, 500));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
@@ -343,7 +343,7 @@ public class Favorites extends JDialog {
         scrollPane = new JScrollPane();
         panel4.add(scrollPane, new GridConstraints(4, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         favoritestable = new JTable();
-        favoritestable.setPreferredScrollableViewportSize(new Dimension(600, 400));
+        favoritestable.setPreferredScrollableViewportSize(new Dimension(600, 300));
         scrollPane.setViewportView(favoritestable);
         final Spacer spacer2 = new Spacer();
         panel4.add(spacer2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
