@@ -109,8 +109,6 @@ public class Utils {
     }
 
 
-
-
     public static boolean containsIndices(int[] selectedIndices) {
         List<Integer> intList = IntStream.of(selectedIndices).boxed().collect(Collectors.toList());
         return intList.size() != 0;

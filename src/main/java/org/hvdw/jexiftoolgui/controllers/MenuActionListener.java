@@ -12,7 +12,6 @@ import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.RemoveMetadata;
 import org.hvdw.jexiftoolgui.model.CompareImages;
 import org.hvdw.jexiftoolgui.model.GuiConfig;
-import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.renaming.RenamePhotos;
 import org.hvdw.jexiftoolgui.view.*;
 
@@ -175,8 +174,8 @@ public class MenuActionListener implements ActionListener  {
                 break;
             case "UserMetadata":
                 MD.showDialog(rootPanel);
-                String sqlsets = SQLiteModel.getdefinedCustomSets();
-                String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+                MetadataUserCombinations MUC = new MetadataUserCombinations();
+                String[] views = MUC.loadCustomSets("fill_combo");
                 UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));
                 break;
             case "DeleteFavorites":

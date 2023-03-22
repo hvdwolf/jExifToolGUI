@@ -36,6 +36,7 @@ public class MyVariables {
     private String ExiftoolVersion;
     private List<List> tableRowsCells;
     private List<String> userCombiTableValues;
+    private List<String[]> listCustomSetsNamesPaths;
     private List<Integer> selectedIndicesList;
     private String[] CustomCombis;
     private String delayedOutput;
@@ -165,6 +166,9 @@ public class MyVariables {
 
     public static List<String> getuserCombiTableValues() { return staticInstance.userCombiTableValues; }
     public static void setuserCombiTableValues (List<String> userCTV) { staticInstance.userCombiTableValues = userCTV; }
+
+    public static List<String[]> getlistCustomSetsNamesPaths() { return staticInstance.listCustomSetsNamesPaths; }
+    public static void setlistCustomSetsNamesPaths (List<String[]> stlstcstmstsnmspths) {staticInstance.listCustomSetsNamesPaths = stlstcstmstsnmspths; }
 
     public static String[] getCustomCombis() { return Arrays.copyOf(staticInstance.CustomCombis, staticInstance.CustomCombis.length); }
     public static void setCustomCombis(String[] CustomCombisfromDB) { staticInstance.CustomCombis = Arrays.copyOf(CustomCombisfromDB, CustomCombisfromDB.length); }

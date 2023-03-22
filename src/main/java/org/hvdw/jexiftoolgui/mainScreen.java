@@ -14,7 +14,6 @@ import org.hvdw.jexiftoolgui.metadata.MetaData;
 import org.hvdw.jexiftoolgui.metadata.SearchMetaData;
 import org.hvdw.jexiftoolgui.model.CompareImages;
 import org.hvdw.jexiftoolgui.model.GuiConfig;
-import org.hvdw.jexiftoolgui.model.SQLiteModel;
 import org.hvdw.jexiftoolgui.view.*;
 import org.slf4j.LoggerFactory;
 
@@ -628,8 +627,8 @@ private String getSeparatorString() {
 
     private void fillAllComboboxes() {
         //Combobox on User combi edit tab; do as first as we need it again
-        String sqlsets = SQLiteModel.getdefinedCustomSets();
-        String[] views = sqlsets.split("\\r?\\n"); // split on new lines
+        MetadataUserCombinations MUC = new MetadataUserCombinations();
+        String[] views = MUC.loadCustomSets("fill_combo");
         // use setter to be later use it for common tags in Utils.getWhichCommonTagSelected
         MyVariables.setCustomCombis(views);
         UserCombiscomboBox.setModel(new DefaultComboBoxModel(views));

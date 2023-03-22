@@ -1,7 +1,10 @@
 package org.hvdw.jexiftoolgui.controllers;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBaseBuilder;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
+import com.opencsv.enums.CSVReaderNullFieldIndicator;
 import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.*;
@@ -24,14 +27,22 @@ public class CSVUtils {
     private final static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) getLogger(CSVUtils.class);
 
 
-    public static List<String[]> ReadCSV(Path csvFile) throws IOException {
+    public static List<String[]> ReadCSV(Path csvFile, String separator) throws IOException {
 
         String[] line;
 
+        // CSVReader reader = new CSVReaderBuilder(inputStreamReader)
+        //                .withFieldAsNull(CSVReaderNullFieldIndicator.EMPTY_SEPARATORS)
+        //                // Skip the header
+        //                .withSkipLines(1)
+        //                .build();
+
+        //         try (Reader reader = Files.newBufferedReader(csvFile)) {
+        //            try (CSVReader csvReader = new CSVReader(reader)) {
         List<String[]> csvList = new ArrayList<>();
         try (Reader reader = Files.newBufferedReader(csvFile)) {
-            try (CSVReader csvReader = new CSVReader(reader)) {
-                //String[] line;
+            //try (CSVReader csvReader = new CSVReader(reader, "\t")){
+            try (CSVReader csvReader = new CSVReaderBuilder(reader).withFieldAsNull(CSVReaderNullFieldIndicator.EMPTY_SEPARATORS).withSkipLines(1).build()) {
                 while ((line = csvReader.readNext()) != null) {
                     csvList.add(line);
                 }
@@ -43,7 +54,8 @@ public class CSVUtils {
             e.printStackTrace();
         }
 
-    return csvList;
+        //logger.info("the list {}", csvList);
+        return csvList;
     }
 
     public static List<String[]> ReadCSVfromResources(String csvFile) throws IOException {
@@ -54,7 +66,7 @@ public class CSVUtils {
         InputStream is = getResourceAsStream(csvFile);
         //try (Reader reader = Files.newBufferedReader(Paths.get(csvFile))) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
-            try (CSVReader csvReader = new CSVReader(reader)) {
+            try (CSVReader csvReader = new CSVReaderBuilder(reader).withFieldAsNull(CSVReaderNullFieldIndicator.EMPTY_SEPARATORS).withSkipLines(1).build()) {
                 //String[] line;
                 while ((line = csvReader.readNext()) != null) {
                     csvList.add(line);

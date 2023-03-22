@@ -1,4 +1,5 @@
 #!/bin/bash
+cd src/main/resources/translations/
 
 cp program_strings_en.properties program_strings.properties
 cp program_help_texts_en.properties program_help_texts.properties
