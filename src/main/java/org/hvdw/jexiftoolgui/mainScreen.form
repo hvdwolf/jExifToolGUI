@@ -398,7 +398,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <grid id="f072c" binding="ExifEditpanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="f072c" binding="ExifEditpanel" layout-manager="GridLayoutManager" row-count="14" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="20" bottom="0" right="20"/>
                         <constraints>
                           <tabbedpane title-resource-bundle="translations/program_strings" title-key="ed.exiftab"/>
@@ -409,322 +409,9 @@
                         </properties>
                         <border type="none"/>
                         <children>
-                          <grid id="9b5ed" binding="Camera_Equipment" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="5" left="0" bottom="5" right="0"/>
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="none"/>
-                            <children>
-                              <component id="6cf7c" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.make"/>
-                                </properties>
-                              </component>
-                              <component id="eadad" class="javax.swing.JTextField" binding="ExifMaketextField">
-                                <constraints>
-                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="74ba6" class="javax.swing.JCheckBox" binding="ExifMakecheckBox">
-                                <constraints>
-                                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                              <component id="a06de" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font style="1"/>
-                                  <text resource-bundle="translations/program_strings" key="label.save"/>
-                                </properties>
-                              </component>
-                              <component id="99790" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font style="1"/>
-                                  <preferredSize width="650" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.cameraequip"/>
-                                </properties>
-                              </component>
-                              <component id="50f40" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.model"/>
-                                </properties>
-                              </component>
-                              <component id="c1ef9" class="javax.swing.JTextField" binding="ExifModeltextField">
-                                <constraints>
-                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="2df15" class="javax.swing.JCheckBox" binding="ExifModelcheckBox">
-                                <constraints>
-                                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                            </children>
-                          </grid>
-                          <grid id="be7a8" binding="DateTime" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="5" left="0" bottom="5" right="0"/>
-                            <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="none"/>
-                            <children>
-                              <component id="e8e06" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font style="1"/>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.datetime"/>
-                                </properties>
-                              </component>
-                              <component id="6999a" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.dtformat"/>
-                                </properties>
-                              </component>
-                              <component id="db6d2" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.modifydate"/>
-                                </properties>
-                              </component>
-                              <component id="984b4" class="javax.swing.JTextField" binding="ExifModifyDatetextField">
-                                <constraints>
-                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="dd3d2" class="javax.swing.JCheckBox" binding="ExifModifyDatecheckBox">
-                                <constraints>
-                                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                              <component id="8c02c" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.datetimeoriginal"/>
-                                </properties>
-                              </component>
-                              <component id="9d528" class="javax.swing.JTextField" binding="ExifDateTimeOriginaltextField">
-                                <constraints>
-                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="41cfb" class="javax.swing.JCheckBox" binding="ExifDateTimeOriginalcheckBox">
-                                <constraints>
-                                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                              <component id="7b8a" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.createdate"/>
-                                </properties>
-                              </component>
-                              <component id="c574c" class="javax.swing.JTextField" binding="ExifCreateDatetextField">
-                                <constraints>
-                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="92424" class="javax.swing.JCheckBox" binding="ExifCreateDatecheckBox">
-                                <constraints>
-                                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                            </children>
-                          </grid>
-                          <grid id="208e4" binding="CreativeTags" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="5" left="0" bottom="5" right="0"/>
-                            <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="none"/>
-                            <children>
-                              <component id="5656c" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.artist"/>
-                                </properties>
-                              </component>
-                              <component id="a26d2" class="javax.swing.JTextField" binding="ExifArtistCreatortextField">
-                                <constraints>
-                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="3224e" class="javax.swing.JCheckBox" binding="ExifArtistCreatorcheckBox">
-                                <constraints>
-                                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                              <component id="1f0cc" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font style="1"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.creatags"/>
-                                </properties>
-                              </component>
-                              <component id="fa118" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <maximumSize width="250" height="18"/>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.copyright"/>
-                                </properties>
-                              </component>
-                              <component id="e9fa7" class="javax.swing.JTextField" binding="ExifCopyrighttextField">
-                                <constraints>
-                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="80271" class="javax.swing.JCheckBox" binding="ExifCopyrightcheckBox">
-                                <constraints>
-                                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                              <component id="a34f4" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.usercomm"/>
-                                </properties>
-                              </component>
-                              <component id="c76fe" class="javax.swing.JTextField" binding="ExifUsercommenttextField">
-                                <constraints>
-                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="25"/>
-                                </properties>
-                              </component>
-                              <component id="20296" class="javax.swing.JCheckBox" binding="ExifUsercommentcheckBox">
-                                <constraints>
-                                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                              <component id="cd2a0" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="150" height="18"/>
-                                  <text resource-bundle="translations/program_strings" key="exif.description"/>
-                                </properties>
-                              </component>
-                              <component id="a2194" class="javax.swing.JTextArea" binding="ExifDescriptiontextArea">
-                                <constraints>
-                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <preferredSize width="500" height="80"/>
-                                  <wrapStyleWord value="true"/>
-                                </properties>
-                              </component>
-                              <component id="c5452" class="javax.swing.JCheckBox" binding="ExifDescriptioncheckBox">
-                                <constraints>
-                                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <selected value="true"/>
-                                  <text value=""/>
-                                </properties>
-                              </component>
-                            </children>
-                          </grid>
                           <grid id="82e8f" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                             <constraints>
-                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                              <grid row="12" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
@@ -751,7 +438,7 @@
                           </grid>
                           <grid id="fc630" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                             <constraints>
-                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                              <grid row="13" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
@@ -776,6 +463,289 @@
                               </component>
                             </children>
                           </grid>
+                          <component id="99790" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <preferredSize width="650" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.cameraequip"/>
+                            </properties>
+                          </component>
+                          <component id="6cf7c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.make"/>
+                            </properties>
+                          </component>
+                          <component id="eadad" class="javax.swing.JTextField" binding="ExifMaketextField">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="74ba6" class="javax.swing.JCheckBox" binding="ExifMakecheckBox">
+                            <constraints>
+                              <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="50f40" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.model"/>
+                            </properties>
+                          </component>
+                          <component id="c1ef9" class="javax.swing.JTextField" binding="ExifModeltextField">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="2df15" class="javax.swing.JCheckBox" binding="ExifModelcheckBox">
+                            <constraints>
+                              <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="a06de" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text resource-bundle="translations/program_strings" key="label.save"/>
+                            </properties>
+                          </component>
+                          <component id="e8e06" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.datetime"/>
+                            </properties>
+                          </component>
+                          <component id="6999a" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.dtformat"/>
+                            </properties>
+                          </component>
+                          <component id="db6d2" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.modifydate"/>
+                            </properties>
+                          </component>
+                          <component id="984b4" class="javax.swing.JTextField" binding="ExifModifyDatetextField">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="dd3d2" class="javax.swing.JCheckBox" binding="ExifModifyDatecheckBox">
+                            <constraints>
+                              <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="8c02c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.datetimeoriginal"/>
+                            </properties>
+                          </component>
+                          <component id="9d528" class="javax.swing.JTextField" binding="ExifDateTimeOriginaltextField">
+                            <constraints>
+                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="41cfb" class="javax.swing.JCheckBox" binding="ExifDateTimeOriginalcheckBox">
+                            <constraints>
+                              <grid row="5" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="7b8a" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.createdate"/>
+                            </properties>
+                          </component>
+                          <component id="c574c" class="javax.swing.JTextField" binding="ExifCreateDatetextField">
+                            <constraints>
+                              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="92424" class="javax.swing.JCheckBox" binding="ExifCreateDatecheckBox">
+                            <constraints>
+                              <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="1f0cc" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font style="1"/>
+                              <text resource-bundle="translations/program_strings" key="exif.creatags"/>
+                            </properties>
+                          </component>
+                          <component id="5656c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.artist"/>
+                            </properties>
+                          </component>
+                          <component id="a26d2" class="javax.swing.JTextField" binding="ExifArtistCreatortextField">
+                            <constraints>
+                              <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="3224e" class="javax.swing.JCheckBox" binding="ExifArtistCreatorcheckBox">
+                            <constraints>
+                              <grid row="8" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="fa118" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="250" height="18"/>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.copyright"/>
+                            </properties>
+                          </component>
+                          <component id="e9fa7" class="javax.swing.JTextField" binding="ExifCopyrighttextField">
+                            <constraints>
+                              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="80271" class="javax.swing.JCheckBox" binding="ExifCopyrightcheckBox">
+                            <constraints>
+                              <grid row="9" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="a34f4" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.usercomm"/>
+                            </properties>
+                          </component>
+                          <component id="c76fe" class="javax.swing.JTextField" binding="ExifUsercommenttextField">
+                            <constraints>
+                              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="25"/>
+                            </properties>
+                          </component>
+                          <component id="20296" class="javax.swing.JCheckBox" binding="ExifUsercommentcheckBox">
+                            <constraints>
+                              <grid row="10" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="cd2a0" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="150" height="18"/>
+                              <text resource-bundle="translations/program_strings" key="exif.description"/>
+                            </properties>
+                          </component>
+                          <component id="a2194" class="javax.swing.JTextArea" binding="ExifDescriptiontextArea">
+                            <constraints>
+                              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <preferredSize width="500" height="80"/>
+                              <wrapStyleWord value="true"/>
+                            </properties>
+                          </component>
+                          <component id="c5452" class="javax.swing.JCheckBox" binding="ExifDescriptioncheckBox">
+                            <constraints>
+                              <grid row="11" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <selected value="true"/>
+                              <text value=""/>
+                            </properties>
+                          </component>
                         </children>
                       </grid>
                       <grid id="3e98c" layout-manager="GridLayoutManager" row-count="13" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
