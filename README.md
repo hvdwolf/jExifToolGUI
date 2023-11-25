@@ -1,6 +1,14 @@
 # jExifToolGUI
 **Graphical frontend for the excellent command-line ExifTool by Phil Harvey.**
 
+**DEVELOPMENT HAS STOPPED**<br>
+**After many years, I decided to stop the development. I lost all interest in "special" photography like animal, bird and panorama photography. I sold all my equipment and got myself an expensive smartphone with good main lens, ultrawide and 3x tele which fits my needs on hikes/walks, travels and holidays, but doesn't require any progam other than Google Photos (for example).**<br>
+I know there are bugs in the program and I know there are still things that can be improved. And there are users asking for more functionality.
+So again: apologies for leaving it in this state where some users stumble on serious bugs or not completed functionality, but at the same time in a state where most users can easily and comfortably use it.
+
+If someone wants to take over, please let me know and I give full access to the repository. It is 100% open source anyway. Or you simply fork it and continue it in your own way.<br><br><br>
+<HR>
+
 ![multi platform jExifToolGUI](https://github.com/hvdwolf/jExifToolGUI/blob/master/images/multi-platform-1280.jpg)
 **jExifToolGUI** is a java/Swing program for Windows/Linux/macOS that functions as a graphical frontend (GUI) for [exiftool](https://exiftool.org/).<br><br>
 jExifToolGUI is (just) a graphical frontend for ExifTool. It can use a "reference" image to write the tags to a multiple set of photos, like GPS tags for photos taken at the same location but somehow miss or contain incorrect GPS info.<br>
