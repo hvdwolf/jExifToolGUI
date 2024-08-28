@@ -95,8 +95,8 @@ dependencies {
 	//testImplementation(group = "junit", name = "junit", version = "4.11")
 	//testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.8.2")
 	//testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
-	implementation(group = "ch.qos.logback", name = "logback-core", version = "1.2.11")
-	implementation(group = "ch.qos.logback", name = "logback-classic", version = "1.2.11")
+	implementation(group = "ch.qos.logback", name = "logback-core", version = "1.4.14")
+	implementation(group = "ch.qos.logback", name = "logback-classic", version = "1.4.12")
 	implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.36")
 	//implementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.36")
 }
